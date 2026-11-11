@@ -1,0 +1,86 @@
+{
+  "kind": "prop",
+  "name": "toast",
+  "title_vi": "Lát bánh mì phết bơ (toast)",
+  "description_vi": "Lát bánh mì sandwich 3D phóng to, khoảng 0,47 × 0,45 × 0,06. Viền vỏ màu nâu, mặt ruột vàng nhạt, nóc phồng tròn kiểu bánh gối. Lớp bơ vàng bóng dày 0,015, mép gợn sóng, có thêm một cục bơ nhỏ; bơ phết ở mặt trên, mặt dưới hoặc cả hai mặt (tham số butter). Ở chế độ thường, gốc nằm ở tâm khối bánh để lật quanh trục Y. Đặt splat: true thì được trạng thái bánh đã rơi úp mặt bơ: vỏ ngửa lên, bánh hơi bẹp, bơ loang gợn sóng ra quanh viền trên sàn kèm vài giọt bắn và cục bơ bẹp lòi ra một bên. Ở chế độ này gốc nằm ở mặt sàn (z = 0).",
+  "dim": "3d",
+  "params": {
+    "butter": {
+      "type": "string",
+      "default": "top",
+      "enum": [
+        "top",
+        "bottom",
+        "both",
+        "none"
+      ],
+      "desc_vi": "Mặt có phết bơ: top = trên, bottom = dưới, both = cả hai, none = bánh trơn"
+    },
+    "splat": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "true: bánh đã đáp úp mặt bơ xuống sàn, hơi bẹp, bơ loang quanh viền; gốc ở mặt sàn"
+    },
+    "pat": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có cục bơ nhỏ nằm trên lớp bơ (chế độ splat thì cục bơ bẹp lòi ra cạnh bánh)"
+    },
+    "squash": {
+      "type": "number",
+      "default": 0.75,
+      "desc_vi": "Độ dẹt theo chiều dày khi splat (1 = không ép)"
+    },
+    "crust_color": {
+      "type": "array",
+      "default": [
+        0.42,
+        0.17,
+        0.04
+      ],
+      "desc_vi": "Màu vỏ bánh (linear)"
+    },
+    "crumb_color": {
+      "type": "array",
+      "default": [
+        0.95,
+        0.76,
+        0.38
+      ],
+      "desc_vi": "Màu ruột bánh (linear)"
+    },
+    "butter_color": {
+      "type": "array",
+      "default": [
+        0.98,
+        0.72,
+        0.08
+      ],
+      "desc_vi": "Màu bơ (linear, nên đậm cho tươi)"
+    },
+    "scale": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Hệ số phóng to cả lát bánh"
+    }
+  },
+  "parts": [
+    "bread",
+    "butter"
+  ],
+  "tags": [
+    "food",
+    "toast",
+    "bread",
+    "butter",
+    "kitchen",
+    "falls",
+    "flip",
+    "3d"
+  ],
+  "notes_vi": "Mình chưa dựng thử trong Blender và chưa render ảnh nào: chỉ mới viết code và đối chiếu với `core/geo.py`. Hãy để bước dựng thumbnail tự động kiểm tra, nhất là viền mực của lớp bơ mỏng (0,015).\n\n- **Lật bánh:** chế độ thường lấy gốc ở tâm khối bánh, mặt bơ 'top' hướng +Z. Muốn lật thì xoay gốc (hoặc phần `<id>_bread` cùng `<id>_butter`) quanh trục Y 180°. Nóc phồng nằm về phía +Y.\n- **Splat:** khi splat: true, gốc ở mặt sàn. Lát bánh nằm vỏ ngửa lên, bị ép dẹt theo `squash`. Vũng bơ gợn sóng rộng khoảng 0,58 lòi ra quanh viền bánh, thêm 5 giọt bơ bắn và cục bơ bẹp lòi ra một bên. Ở chế độ này tham số butter chỉ có nghĩa là 'none' (không có bơ) hoặc có bơ.\n- **Các phần con:**\n  - `<id>_bread` là mesh vỏ; mặt ruột `<id>_bread_crumb` là con của nó nên đi theo.\n  - `<id>_butter` là một empty gom các lớp `_butter_top`/`_butter_bottom`/`_butter_puddle`, `_butter_pat` và `_butter_drop*`. Bật hoặc tắt hiện cả nhóm bơ bằng một track.\n- **Cách làm ruột bánh:** mặt ruột là một khối đùn thụt vào 3,2 cm, nhô ra 3 mm mỗi mặt. Nhờ vậy viền vỏ nâu hiện thành vòng quanh, không cần gán nhiều vật liệu cho một mesh.\n- **Tên vật liệu:** gắn mã màu (`toast_crust_<rgb>`…) nên đổi màu không đụng bản khác.\n- **Hướng dùng gợi ý:** cảnh \"bánh lật giữa không trung\" dùng một bản thường; cảnh đáp đất thì đổi sang một bản `splat: true` ngay tại khung va chạm (ẩn/hiện bằng visibility).",
+  "status": "draft",
+  "brief_vi": "Lát bánh mì 3D phóng to, khoảng 0,45 × 0,45 × 0,06: vỏ nâu, ruột vàng nhạt, nóc hơi phồng kiểu bánh sandwich. Tham số butter: 'top' | 'bottom' | 'both' (lớp bơ vàng bóng dày khoảng 0,015, mép bơ gợn sóng, có thêm một cục bơ nhỏ). Gốc ở tâm khối để xoay lật quanh trục Y. Khi splat: true, dựng lát bánh đã đáp úp mặt bơ (vỏ ngửa lên), hơi ép dẹt; vệt bơ vàng loang ra quanh viền trên sàn; gốc ở mặt sàn (z = 0). Tên con: <id>_bread, <id>_butter. parts: bread, butter",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T04:39:22"
+}
