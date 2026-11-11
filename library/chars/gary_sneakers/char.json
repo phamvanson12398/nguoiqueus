@@ -1,0 +1,724 @@
+{
+ "kind": "char",
+ "name": "gary_sneakers",
+ "title_vi": "Gary Sneakers — Gary đi giày thể thao mới",
+ "description_vi": "Bản sao Gary (sơ mi trắng, gile xanh lá 3 khuy, nơ đỏ, kính tròn, tóc nâu đen chải lệch, cùng 7 biểu cảm), chỉ khác đôi sneaker trắng mới tinh: to, đế trắng dày có rãnh xám, hai sọc xanh dương bên hông, gót xanh, dây giày đen, điểm bóng trên mũi. Mũi giày cao tới z ≈ 0,18, cổ giày tới 0,23. Đôi giày là gag chạy dọc video: Gary nâng niu nó, lát bánh rơi trúng nó.",
+ "materials": {
+  "gary_sneakers_shirt": [
+   0.95,
+   0.95,
+   0.93
+  ],
+  "gary_sneakers_vest": [
+   0.08,
+   0.38,
+   0.14
+  ],
+  "gary_sneakers_bowtie": [
+   0.85,
+   0.08,
+   0.1
+  ],
+  "gary_sneakers_hair": [
+   0.2,
+   0.12,
+   0.07
+  ],
+  "gary_sneakers_upper": [
+   0.84,
+   0.87,
+   0.92
+  ],
+  "gary_sneakers_sole": [
+   1,
+   1,
+   1
+  ],
+  "gary_sneakers_stripe": [
+   0.02,
+   0.2,
+   0.85
+  ],
+  "gary_sneakers_tread": [
+   0.22,
+   0.24,
+   0.28
+  ]
+ },
+ "cfg": {
+  "leg": [
+   0.78,
+   0.38,
+   0.36
+  ],
+  "torso": [
+   0.84,
+   0.9,
+   "gary_sneakers_shirt"
+  ],
+  "arm": [
+   0.36,
+   0.72,
+   0.35,
+   0.33
+  ],
+  "head": [
+   1.4,
+   0.48
+  ]
+ },
+ "faces": [
+  "neutral",
+  "angry",
+  "shock",
+  "worried",
+  "grumpy",
+  "smug_closed",
+  "smirk"
+ ],
+ "extras": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "vest",
+   "pts": [
+    [
+     -0.4,
+     0.7
+    ],
+    [
+     -0.12,
+     0.84
+    ],
+    [
+     0,
+     0.55
+    ],
+    [
+     0.12,
+     0.84
+    ],
+    [
+     0.4,
+     0.7
+    ],
+    [
+     0.4,
+     0.18
+    ],
+    [
+     0.3,
+     0.05
+    ],
+    [
+     -0.3,
+     0.05
+    ],
+    [
+     -0.4,
+     0.18
+    ]
+   ],
+   "mat": "gary_sneakers_vest",
+   "z": 0.15,
+   "outline": 0.03
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn0",
+   "c": [
+    0,
+    0.45
+   ],
+   "r": 0.03,
+   "z": 0.2,
+   "mat": "gary_sneakers_shirt"
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn1",
+   "c": [
+    0,
+    0.32
+   ],
+   "r": 0.03,
+   "z": 0.2,
+   "mat": "gary_sneakers_shirt"
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn2",
+   "c": [
+    0,
+    0.19
+   ],
+   "r": 0.03,
+   "z": 0.2,
+   "mat": "gary_sneakers_shirt"
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "bowL",
+   "pts": [
+    [
+     0,
+     0.86
+    ],
+    [
+     -0.13,
+     0.93
+    ],
+    [
+     -0.13,
+     0.79
+    ]
+   ],
+   "mat": "gary_sneakers_bowtie",
+   "z": 0.22,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "bowR",
+   "pts": [
+    [
+     0,
+     0.86
+    ],
+    [
+     0.13,
+     0.93
+    ],
+    [
+     0.13,
+     0.79
+    ]
+   ],
+   "mat": "gary_sneakers_bowtie",
+   "z": 0.22,
+   "outline": 0.02
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "knot",
+   "c": [
+    0,
+    0.86
+   ],
+   "r": 0.035,
+   "z": 0.25,
+   "mat": "gary_sneakers_bowtie"
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoeL_upper",
+   "pts": [
+    [
+     -0.33,
+     -0.71
+    ],
+    [
+     -0.34,
+     -0.57
+    ],
+    [
+     -0.29,
+     -0.51
+    ],
+    [
+     -0.19,
+     -0.51
+    ],
+    [
+     -0.13,
+     -0.55
+    ],
+    [
+     -0.07,
+     -0.56
+    ],
+    [
+     0.02,
+     -0.58
+    ],
+    [
+     0.07,
+     -0.64
+    ],
+    [
+     0.07,
+     -0.71
+    ]
+   ],
+   "mat": "gary_sneakers_upper",
+   "z": 0.08,
+   "outline": 0.035
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoeL_sole",
+   "pts": {
+    "rrect": [
+     -0.13,
+     -0.745,
+     0.44,
+     0.075,
+     0.035
+    ]
+   },
+   "mat": "gary_sneakers_sole",
+   "z": 0.09,
+   "outline": 0.035
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeL_tread",
+   "pts": [
+    [
+     -0.32,
+     -0.765
+    ],
+    [
+     0.06,
+     -0.765
+    ]
+   ],
+   "w": 0.015,
+   "z": 0.1,
+   "mat": "gary_sneakers_tread"
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeL_stripeA",
+   "pts": [
+    [
+     -0.31,
+     -0.665
+    ],
+    [
+     -0.18,
+     -0.635
+    ],
+    [
+     -0.04,
+     -0.645
+    ]
+   ],
+   "w": 0.045,
+   "z": 0.1,
+   "mat": "gary_sneakers_stripe"
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeL_stripeB",
+   "pts": [
+    [
+     -0.31,
+     -0.605
+    ],
+    [
+     -0.19,
+     -0.578
+    ],
+    [
+     -0.09,
+     -0.588
+    ]
+   ],
+   "w": 0.032,
+   "z": 0.1,
+   "mat": "gary_sneakers_stripe"
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoeL_heel",
+   "pts": {
+    "rrect": [
+     -0.315,
+     -0.56,
+     0.05,
+     0.1,
+     0.02
+    ]
+   },
+   "mat": "gary_sneakers_stripe",
+   "z": 0.1,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeL_lace1",
+   "pts": [
+    [
+     -0.16,
+     -0.545
+    ],
+    [
+     -0.1,
+     -0.57
+    ]
+   ],
+   "w": 0.02,
+   "z": 0.11
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeL_lace2",
+   "pts": [
+    [
+     -0.11,
+     -0.565
+    ],
+    [
+     -0.05,
+     -0.59
+    ]
+   ],
+   "w": 0.02,
+   "z": 0.11
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoeL_gloss",
+   "pts": {
+    "ellipse": [
+     -0.02,
+     -0.615,
+     0.045,
+     0.02,
+     16
+    ]
+   },
+   "mat": "gary_sneakers_sole",
+   "z": 0.11,
+   "outline": 0
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoeR_upper",
+   "pts": [
+    [
+     0.05,
+     -0.71
+    ],
+    [
+     0.04,
+     -0.57
+    ],
+    [
+     0.09,
+     -0.51
+    ],
+    [
+     0.19,
+     -0.51
+    ],
+    [
+     0.25,
+     -0.55
+    ],
+    [
+     0.31,
+     -0.56
+    ],
+    [
+     0.4,
+     -0.58
+    ],
+    [
+     0.45,
+     -0.64
+    ],
+    [
+     0.45,
+     -0.71
+    ]
+   ],
+   "mat": "gary_sneakers_upper",
+   "z": 0.08,
+   "outline": 0.035
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoeR_sole",
+   "pts": {
+    "rrect": [
+     0.25,
+     -0.745,
+     0.44,
+     0.075,
+     0.035
+    ]
+   },
+   "mat": "gary_sneakers_sole",
+   "z": 0.09,
+   "outline": 0.035
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeR_tread",
+   "pts": [
+    [
+     0.06,
+     -0.765
+    ],
+    [
+     0.44,
+     -0.765
+    ]
+   ],
+   "w": 0.015,
+   "z": 0.1,
+   "mat": "gary_sneakers_tread"
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeR_stripeA",
+   "pts": [
+    [
+     0.07,
+     -0.665
+    ],
+    [
+     0.2,
+     -0.635
+    ],
+    [
+     0.34,
+     -0.645
+    ]
+   ],
+   "w": 0.045,
+   "z": 0.1,
+   "mat": "gary_sneakers_stripe"
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeR_stripeB",
+   "pts": [
+    [
+     0.07,
+     -0.605
+    ],
+    [
+     0.19,
+     -0.578
+    ],
+    [
+     0.29,
+     -0.588
+    ]
+   ],
+   "w": 0.032,
+   "z": 0.1,
+   "mat": "gary_sneakers_stripe"
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoeR_heel",
+   "pts": {
+    "rrect": [
+     0.065,
+     -0.56,
+     0.05,
+     0.1,
+     0.02
+    ]
+   },
+   "mat": "gary_sneakers_stripe",
+   "z": 0.1,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeR_lace1",
+   "pts": [
+    [
+     0.22,
+     -0.545
+    ],
+    [
+     0.28,
+     -0.57
+    ]
+   ],
+   "w": 0.02,
+   "z": 0.11
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "shoeR_lace2",
+   "pts": [
+    [
+     0.27,
+     -0.565
+    ],
+    [
+     0.33,
+     -0.59
+    ]
+   ],
+   "w": 0.02,
+   "z": 0.11
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoeR_gloss",
+   "pts": {
+    "ellipse": [
+     0.36,
+     -0.615,
+     0.045,
+     0.02,
+     16
+    ]
+   },
+   "mat": "gary_sneakers_sole",
+   "z": 0.11,
+   "outline": 0
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "hair",
+   "pts": [
+    [
+     -0.47,
+     0.12
+    ],
+    [
+     -0.4,
+     0.34
+    ],
+    [
+     -0.15,
+     0.48
+    ],
+    [
+     0.2,
+     0.47
+    ],
+    [
+     0.45,
+     0.3
+    ],
+    [
+     0.47,
+     0.12
+    ],
+    [
+     0.3,
+     0.3
+    ],
+    [
+     0.05,
+     0.32
+    ],
+    [
+     -0.1,
+     0.25
+    ],
+    [
+     -0.3,
+     0.28
+    ]
+   ],
+   "mat": "gary_sneakers_hair",
+   "z": 0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "glass-1",
+   "pts": {
+    "ring": [
+     -0.15,
+     -0.02,
+     0.12,
+     0.11,
+     24
+    ]
+   },
+   "w": 0.03,
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "glass1",
+   "pts": {
+    "ring": [
+     0.15,
+     -0.02,
+     0.12,
+     0.11,
+     24
+    ]
+   },
+   "w": 0.03,
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "bridge",
+   "pts": [
+    [
+     -0.035,
+     0
+    ],
+    [
+     0.035,
+     0
+    ]
+   ],
+   "w": 0.03,
+   "z": 0.2
+  }
+ ],
+ "tags": [
+  "boss",
+  "office",
+  "gary_variant",
+  "sneakers",
+  "running_gag"
+ ],
+ "status": "draft",
+ "brief_vi": "Bản sao Gary (cùng màu, nơ đỏ, kính tròn, gile xanh, tóc, cùng faces: neutral angry shock worried grumpy smug_closed smirk), chỉ thay giày bằng sneaker trắng mới, bóng, to, có đế dày và sọc xanh dương hai bên, viền mực rõ, để giày nổi bật trong gag chạy dọc video. Mũi giày cao tới khoảng z 0,18 (lát bánh rơi đáp lên ở z 0,2).",
+ "designed_by": "claude_bridge",
+ "updated": "2026-11-11T04:51:35",
+ "review": {
+  "score": 8,
+  "summary_vi": "Đạt. Nhìn là nhận ra Gary (nơ đỏ, kính tròn, gile xanh, tóc chải lệch), 7 biểu cảm đều đọc rõ, sneaker trắng sọc xanh đặt đúng chỗ ở chân và nổi bật trên nền. Hạn chế: giày không đi theo chân khi bước, và trong cảnh toàn thân giày khá nhỏ, nên cảnh gag cần quay cận.",
+  "problems": [
+   "Sneaker gắn vào torso chứ không gắn vào cẳng chân (extras chỉ cho torso/head), nên khi đi hay chạy, giày đứng yên còn chân vung đi. Nếu gag có cảnh Gary chạy, cần thêm on='footL'/'footR' trong builder.py và check_char_json.",
+   "Trong cảnh toàn thân, giày chỉ chiếm khoảng 20 px trên ảnh 512, sọc xanh thấy rõ nhưng dây giày và vệt bóng gần như mất. Cảnh gag giày nên punch-in hoặc dùng cảnh cận chân.",
+   "Bộ ảnh review chỉ có cận mặt và thumb toàn thân, không có ảnh cận giày, nên chưa kiểm tra được giày đen gốc có lộ ra sau sneaker hay không. Nhìn ở thumb thì không thấy lộ."
+  ]
+ }
+}
