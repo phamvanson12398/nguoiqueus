@@ -1,0 +1,172 @@
+{
+ "kind": "char",
+ "name": "joe",
+ "title_vi": "Joe — công nhân sửa đường",
+ "description_vi": "Công nhân: áo xanh dương có sọc phản quang vàng, túi ngực, mũ bảo hộ cam có gờ, tóc nâu lộ sau tai. Hiền, hơi ngây ngô, tự hào về việc mình làm.",
+ "materials": {
+  "joe_blue": [
+   0.03,
+   0.22,
+   0.55
+  ],
+  "hivis": [
+   0.95,
+   0.85,
+   0.05
+  ],
+  "hardhat": [
+   0.98,
+   0.3,
+   0.02
+  ],
+  "hardhat_d": [
+   0.75,
+   0.18,
+   0.01
+  ],
+  "hair": [
+   0.36,
+   0.22,
+   0.12
+  ]
+ },
+ "cfg": {
+  "leg": [
+   0.74,
+   0.36,
+   0.34
+  ],
+  "torso": [
+   0.8,
+   0.82,
+   "joe_blue"
+  ],
+  "arm": [
+   0.33,
+   0.66,
+   0.34,
+   0.32
+  ],
+  "head": [
+   1.34,
+   0.5
+  ]
+ },
+ "faces": [
+  "neutral",
+  "happy",
+  "smirk",
+  "wink",
+  "shock",
+  "focus",
+  "smug_closed"
+ ],
+ "extras": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "stripe",
+   "pts": {
+    "rrect": [
+     0,
+     0.32,
+     0.78,
+     0.12,
+     0.03
+    ]
+   },
+   "mat": "hivis",
+   "z": 0.17,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pocket",
+   "pts": {
+    "rrect": [
+     0.18,
+     0.58,
+     0.18,
+     0.15,
+     0.03
+    ]
+   },
+   "mat": "joe_blue",
+   "z": 0.17,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "hair",
+   "pts": {
+    "ellipse": [
+     -0.36,
+     0.06,
+     0.16,
+     0.22,
+     24
+    ]
+   },
+   "mat": "hair",
+   "z": -0.05
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "hat",
+   "pts": {
+    "ellipse": [
+     0,
+     0.2,
+     0.47,
+     0.4,
+     30,
+     0,
+     3.141592653589793
+    ]
+   },
+   "mat": "hardhat",
+   "z": 0.08
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "hat_ridge",
+   "pts": [
+    [
+     0,
+     0.2
+    ],
+    [
+     0,
+     0.58
+    ]
+   ],
+   "w": 0.035,
+   "z": 0.12
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "brim",
+   "pts": {
+    "rrect": [
+     0.04,
+     0.2,
+     1.12,
+     0.12,
+     0.05
+    ]
+   },
+   "mat": "hardhat_d",
+   "z": 0.13
+  }
+ ],
+ "hold_y": 0.42,
+ "tags": [
+  "worker",
+  "hero"
+ ]
+}

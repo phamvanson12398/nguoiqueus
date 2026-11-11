@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "whyshorts/story.schema.json",
+  "title": "WhyShorts story.json",
+  "description": "One video, frame-based. See STORY.md. Values may be numbers or safe math expressions (strings) evaluated per frame.",
+  "type": "object",
+  "required": ["meta", "camera"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["fps", "frames"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {"type": "string"},
+        "slug": {"type": "string"},
+        "fps": {"type": "integer", "enum": [24, 25, 30, 60]},
+        "frames": {"type": "integer", "minimum": 1},
+        "seed": {"type": "integer"},
+        "voice": {"type": "string"},
+        "output": {"type": "string"},
+        "samples": {"type": "integer", "minimum": 1}
+      }
+    },
+    "defs": {"type": "object", "additionalProperties": {"type": "string"}, "description": "named helpers, usually 'lambda f: ...'"},
+    "consts": {"type": "object", "additionalProperties": {"type": "number"}},
+    "world": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "sky": {"type": "array", "items": {"$ref": "#/$defs/rgb"}, "minItems": 3, "maxItems": 3},
+        "sky_strength": {"type": "number"},
+        "sun": {"type": "object", "properties": {
+          "energy": {"type": "number"}, "color": {"$ref": "#/$defs/rgb"}, "angle_deg": {"type": "number"},
+          "rot_deg": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3}}, "additionalProperties": false}
+      }
+    },
+    "sets": {"type": "array", "items": {"$ref": "#/$defs/set"}},
+    "camera": {"oneOf": [{"$ref": "#/$defs/camera_v2"}, {"$ref": "#/$defs/camera_v3"}]},
+    "chars": {"type": "array", "items": {"$ref": "#/$defs/char"}},
+    "visibility": {"type": "object", "additionalProperties": {"$ref": "#/$defs/ranges"}},
+    "tracks": {"type": "array", "items": {"$ref": "#/$defs/track"}},
+    "words": {"type": "array", "items": {"type": "array", "prefixItems": [{"type": "number"}, {"type": "string"}], "minItems": 2, "maxItems": 2}},
+    "captions": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "highlight": {"type": "array", "items": {"type": "string"}},
+        "impact": {"type": "array", "items": {"type": "string"}},
+        "burst_word": {"type": ["string", "null"]},
+        "lift": {"$ref": "#/$defs/ranges"}
+      }
+    },
+    "fx": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "dust": {"type": "array", "items": {
+          "type": "object", "required": ["frame", "pos"], "additionalProperties": false,
+          "properties": {"frame": {"type": "integer"}, "pos": {"$ref": "#/$defs/vec3"}, "n": {"type": "integer"},
+                         "radius": {"type": "number"}, "size": {"type": "number"}, "life": {"type": "integer"}, "rise": {"type": "number"}}}}
+      }
+    },
+    "teleport_holds": {"type": "array", "items": {"type": "string"}},
+    "sound": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "music": {"type": "object", "additionalProperties": false, "properties": {
+          "mood": {"enum": ["playful", "sneaky", "tense"]}, "gain": {"type": "number"}, "gain_with_voice": {"type": "number"},
+          "duck": {"type": "array", "items": {"type": "integer"}},
+          "duck_window": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2}}},
+        "ambience": {"type": "object", "additionalProperties": false, "properties": {"kind": {"enum": ["city", "wind", "none"]}, "gain": {"type": "number"}}},
+        "sfx_gain_with_voice": {"type": "number"},
+        "auto": {"type": "object", "additionalProperties": false, "properties": {
+          "enabled": {"type": "boolean"}, "avoid": {"type": "array", "items": {"type": "integer"}},
+          "gesture_chars": {"type": "array", "items": {"type": "string"}}}},
+        "events": {"type": "array", "items": {"type": "array", "prefixItems": [{"type": "integer"}, {"$ref": "#/$defs/sfx"}, {"type": "number"}], "minItems": 3, "maxItems": 3}},
+        "repeat": {"type": "array", "items": {"type": "object", "required": ["name", "from", "to", "every", "gain"], "additionalProperties": false, "properties": {
+          "name": {"$ref": "#/$defs/sfx"}, "from": {"type": "integer"}, "to": {"type": "integer"}, "every": {"type": "integer", "minimum": 1},
+          "gain": {"type": "number"}, "note": {"type": "string"}}}}
+      }
+    },
+    "notes": {}
+  },
+  "$defs": {
+    "value": {"type": ["number", "string"], "description": "number or expression string"},
+    "vec3": {"type": ["array", "string"], "items": {"$ref": "#/$defs/value"}, "minItems": 3, "maxItems": 3},
+    "rgb": {"type": "array", "items": {"type": "number", "minimum": 0, "maximum": 1}, "minItems": 3, "maxItems": 3},
+    "range": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2},
+    "ranges": {"type": "array", "items": {"$ref": "#/$defs/range"}},
+    "let": {"type": "object", "additionalProperties": {"$ref": "#/$defs/value"}},
+    "sfx": {"enum": ["whoosh", "swish", "pop", "tick", "boing", "thud", "bonk", "step", "slide_up", "slide_down", "steam", "rumble",
+                     "ding", "squeak", "zip_out", "crash", "scratch", "horn", "chug", "sad_trombone", "gulp", "cash"]},
+    "face": {"enum": ["neutral", "happy", "smirk", "wink", "angry", "shock", "worried", "grumpy", "focus", "smug_closed"]},
+    "placed": {
+      "type": "object", "required": ["id", "type"],
+      "properties": {
+        "id": {"type": "string", "description": "Blender object name of the prop root; used as track/visibility target"},
+        "type": {"type": "string", "description": "library/props/<type>"},
+        "params": {"type": "object"},
+        "on": {"type": "string", "description": "set part (e.g. 'plane') or character part ('torso', 'head')"},
+        "loc": {"$ref": "#/$defs/vec3"}, "rot": {"$ref": "#/$defs/vec3"}, "scale": {"$ref": "#/$defs/vec3"},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "set": {
+      "type": "object", "required": ["type"], "additionalProperties": false,
+      "properties": {"id": {"type": "string"}, "type": {"type": "string"}, "params": {"type": "object"},
+                     "props": {"type": "array", "items": {"$ref": "#/$defs/placed"}}, "note": {"type": "string"}}
+    },
+    "segment": {
+      "type": "object",
+      "properties": {
+        "from": {"$ref": "#/$defs/value"}, "to": {"$ref": "#/$defs/value"}, "ranges": {"$ref": "#/$defs/ranges"},
+        "let": {"$ref": "#/$defs/let"}, "note": {"type": "string"},
+        "location": {"$ref": "#/$defs/vec3"}, "rotation_euler": {"$ref": "#/$defs/vec3"}, "scale": {"$ref": "#/$defs/vec3"}
+      },
+      "additionalProperties": false
+    },
+    "track": {
+      "type": "object", "required": ["target"], "additionalProperties": false,
+      "properties": {
+        "target": {"type": "string"},
+        "use": {"type": "string", "description": "library/motions/<name>.json template"},
+        "params": {"type": "object", "additionalProperties": {"$ref": "#/$defs/value"}},
+        "frames": {"$ref": "#/$defs/range"},
+        "let": {"$ref": "#/$defs/let"},
+        "segments": {"type": "array", "items": {"$ref": "#/$defs/segment"}},
+        "default": {"$ref": "#/$defs/segment"},
+        "note": {"type": "string"}
+      }
+    },
+    "arm": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "array", "prefixItems": [{"const": "ik"}, {"type": "array", "items": {"$ref": "#/$defs/value"}, "minItems": 2, "maxItems": 2}, {"$ref": "#/$defs/value"}], "minItems": 3, "maxItems": 3},
+        {"type": "array", "prefixItems": [{"const": "ang"}, {"$ref": "#/$defs/value"}, {"$ref": "#/$defs/value"}], "minItems": 3, "maxItems": 3}
+      ]
+    },
+    "pose": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "from": {"$ref": "#/$defs/value"}, "to": {"$ref": "#/$defs/value"}, "ranges": {"$ref": "#/$defs/ranges"},
+        "let": {"$ref": "#/$defs/let"}, "note": {"type": "string"},
+        "armL": {"$ref": "#/$defs/arm"}, "armR": {"$ref": "#/$defs/arm"},
+        "legs": {"type": ["string", "array"]}, "tilt": {"$ref": "#/$defs/value"},
+        "body": {"type": "array", "items": {"$ref": "#/$defs/value"}, "minItems": 2, "maxItems": 2},
+        "lean": {"$ref": "#/$defs/value"}
+      }
+    },
+    "char": {
+      "type": "object", "required": ["id", "type"], "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string"}, "type": {"type": "string", "description": "library/chars/<type>"},
+        "loc": {"$ref": "#/$defs/vec3"},
+        "faces": {"type": "array", "items": {"$ref": "#/$defs/face"}},
+        "props": {"type": "array", "items": {"$ref": "#/$defs/placed"}},
+        "fx": {"type": "array", "items": {"oneOf": [
+          {"type": "object", "properties": {"type": {"const": "steam"}, "ranges": {"$ref": "#/$defs/ranges"}}, "required": ["type"], "additionalProperties": false},
+          {"type": "object", "properties": {"type": {"const": "drips"}, "from": {"type": "integer"}}, "required": ["type"], "additionalProperties": false}]}},
+        "reacts": {"type": "array", "items": {"type": "array", "prefixItems": [{"type": "integer"}, {"enum": ["hop", "flinch", "shiver", "proud"]}], "minItems": 2, "maxItems": 2}},
+        "reaction_fx": {"type": "array", "items": {"type": "integer"}},
+        "talk": {"$ref": "#/$defs/ranges"},
+        "expressions": {"type": "array", "items": {"type": "array", "prefixItems": [{"type": "integer"}, {"$ref": "#/$defs/face"}], "minItems": 2, "maxItems": 2}},
+        "blinks": {"type": "array", "items": {"type": "integer"}},
+        "skin_keys": {"type": "array", "items": {"type": "array", "prefixItems": [{"type": "integer"}, {"$ref": "#/$defs/rgb"}], "minItems": 2, "maxItems": 2}},
+        "blocking": {"type": "object", "additionalProperties": false, "properties": {
+          "segments": {"type": "array", "items": {"$ref": "#/$defs/segment"}}, "default": {"$ref": "#/$defs/segment"},
+          "let": {"$ref": "#/$defs/let"}, "frames": {"$ref": "#/$defs/range"}}},
+        "pose": {"type": "object", "additionalProperties": false, "properties": {
+          "default": {"$ref": "#/$defs/pose"}, "segments": {"type": "array", "items": {"$ref": "#/$defs/pose"}}}},
+        "note": {"type": "string"}
+      }
+    },
+    "camera_v2": {
+      "type": "object", "required": ["rig", "shots"], "additionalProperties": false,
+      "properties": {
+        "rig": {"const": "shots_v2"}, "lens": {"type": "number"}, "hand": {"type": "number"},
+        "shots": {"type": "array", "items": {"type": "object", "required": ["a", "b", "lens"], "additionalProperties": false, "properties": {
+          "a": {"type": "integer"}, "b": {"type": "integer"}, "note": {"type": "string"}, "lens": {"type": "number"},
+          "cam": {"type": "array", "items": {"$ref": "#/$defs/vec3"}, "minItems": 2, "maxItems": 2},
+          "look": {"type": "array", "items": {"$ref": "#/$defs/vec3"}, "minItems": 2, "maxItems": 2},
+          "track": {"type": "object", "required": ["cam", "look"], "properties": {"let": {"$ref": "#/$defs/let"}, "cam": {"$ref": "#/$defs/vec3"}, "look": {"$ref": "#/$defs/vec3"}}, "additionalProperties": false},
+          "whip": {"type": "boolean"}, "fstop": {"type": "number"}}}},
+        "shakes": {"type": "array", "items": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}},
+        "punch": {"type": "array", "items": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}}
+      }
+    },
+    "camera_v3": {
+      "type": "object", "required": ["rig", "seqs"], "additionalProperties": false,
+      "properties": {
+        "rig": {"const": "v3"}, "lens": {"type": "number"}, "hand": {"type": "number"},
+        "seqs": {"type": "array", "items": {"type": "object", "required": ["a", "b", "keys"], "additionalProperties": false, "properties": {
+          "a": {"type": "integer"}, "b": {"type": "integer"}, "note": {"type": "string"},
+          "keys": {"type": "array", "minItems": 1, "items": {"type": "array", "prefixItems": [
+            {"type": "integer"}, {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+            {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3}, {"type": "number"}, {"type": "number"}], "minItems": 4, "maxItems": 5}},
+          "ease_in": {"type": "boolean"}, "ease_out": {"type": "boolean"},
+          "follow": {"$ref": "#/$defs/vec3"}, "follow_w": {"type": "number"}, "omega": {"type": "number"}}}},
+        "trans": {"type": "object", "additionalProperties": {"type": "array", "prefixItems": [{"enum": ["whip", "push", "match", "cut"]}, {"type": "number"}], "minItems": 1, "maxItems": 2}},
+        "punch": {"type": "array", "items": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 4}},
+        "shakes": {"type": "array", "items": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3}}
+      }
+    }
+  }
+}

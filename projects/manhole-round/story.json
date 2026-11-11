@@ -1,0 +1,848 @@
+{
+  "meta": {
+    "title": "Why Manhole Covers Are Round",
+    "slug": "manhole-round",
+    "fps": 30,
+    "frames": 1350,
+    "seed": 7,
+    "voice": "voice.wav",
+    "output": "manhole_round_v2.mp4",
+    "samples": 32
+  },
+  "defs": {
+    "roll_x": "lambda f: lerp(0.6, 3.6, ease((f - 1017) / (1105 - 1017)) * 0.3 + 0.7 * max(0, min(1, (f - 1017) / (1105 - 1017))))",
+    "joe_lift": "lambda f: 0.04 * sin(f / FPS * 3) + (0.12 * sin(pi * (f - 225) / 15) if 225 <= f <= 240 else 0)",
+    "joe_sqx": "lambda f: lerp(1.0, 0.55, ease((f - 316) / 30)) if 316 <= f <= 357 else 1.0"
+  },
+  "sets": [
+    {
+      "type": "street",
+      "props": [
+        {"id": "HoleRound", "type": "manhole_hole", "params": {"kind": "round"}, "loc": [0.0, 4.0, 0]},
+        {"id": "HoleSquare", "type": "manhole_hole", "params": {"kind": "square"}, "loc": [0.0, 4.0, 0]},
+        {"id": "cv_round_hole", "type": "manhole_cover", "params": {"kind": "round"}, "loc": [0.0, 4.0, 0.02]},
+        {"id": "cv_drop0", "type": "manhole_cover", "params": {"kind": "square"}},
+        {"id": "cv_drop1", "type": "manhole_cover", "params": {"kind": "square"}},
+        {"id": "cv_drop2", "type": "manhole_cover", "params": {"kind": "square"}},
+        {"id": "cv_drop_round", "type": "manhole_cover", "params": {"kind": "round"}},
+        {"id": "cv_roll", "type": "manhole_cover", "params": {"kind": "round"}}
+      ]
+    },
+    {"type": "office"},
+    {
+      "type": "diagram_board",
+      "props": [
+        {"id": "dg_square_set", "type": "diagram_square_hole", "on": "plane"},
+        {"id": "dg_round_set", "type": "diagram_round_hole", "on": "plane"}
+      ]
+    }
+  ],
+  "camera": {
+    "rig": "shots_v2",
+    "lens": 30,
+    "hand": 0.01,
+    "shots": [
+      {
+        "a": 1,
+        "b": 75,
+        "note": "Gary giới thiệu, cầm bìa",
+        "cam": [[-2.0, -1.0, 1.4], [-1.6, -0.2, 1.4]],
+        "look": [[0.6, 4.3, 1.2], [0.8, 4.3, 1.3]],
+        "lens": 26,
+        "fstop": 8.0
+      },
+      {
+        "a": 76,
+        "b": 170,
+        "note": "Gary nói: tròn phí kim loại",
+        "cam": [[2.9, 1.8, 1.25], [2.6, 2.2, 1.3]],
+        "look": [[0.6, 4.2, 1.1], [0.7, 4.2, 1.25]],
+        "lens": 30
+      },
+      {
+        "a": 171,
+        "b": 224,
+        "note": "Gary nổi cáu: làm vuông đi",
+        "cam": [[1.6, 2.4, 1.9], [1.5, 2.65, 1.95]],
+        "look": [[1.0, 4.3, 1.88], [1.0, 4.3, 1.93]],
+        "lens": 34,
+        "fstop": 2.8
+      },
+      {
+        "a": 225,
+        "b": 278,
+        "note": "Joe cầm nắp vuông, tự hào",
+        "cam": [[-1.9, 1.5, 1.2], [-1.7, 1.9, 1.25]],
+        "look": [[-0.85, 4.1, 1.5], [-0.85, 4.1, 1.55]],
+        "lens": 32,
+        "whip": true
+      },
+      {
+        "a": 279,
+        "b": 357,
+        "note": "Joe xoay nắp",
+        "cam": [[-2.4, 1.0, 1.1], [-2.0, 1.6, 1.1]],
+        "look": [[-0.45, 4.0, 1.05], [-0.4, 4.0, 1.05]],
+        "lens": 28
+      },
+      {
+        "a": 358,
+        "b": 410,
+        "note": "CLANG 1: nắp rơi xuống cống",
+        "cam": [[1.4, 1.9, 1.9], [1.3, 2.1, 1.85]],
+        "look": [[-0.15, 4.0, 0.45], [-0.15, 4.0, 0.45]],
+        "lens": 28
+      },
+      {
+        "a": 411,
+        "b": 565,
+        "note": "Sơ đồ: đường chéo dài hơn cạnh",
+        "cam": [[500.0, -7.7, 1.3], [500.0, -7.3, 1.3]],
+        "look": [[500.0, 0.3, 1.3], [500.0, 0.3, 1.3]],
+        "lens": 45,
+        "whip": true,
+        "fstop": 64
+      },
+      {
+        "a": 566,
+        "b": 690,
+        "note": "Gary đưa nắp nữa: CLANG 2, 3",
+        "cam": [[0.3, -0.5, 1.2], [0.25, 0.3, 1.2]],
+        "look": [[0.05, 4.2, 1.15], [0.05, 4.2, 1.2]],
+        "lens": 28,
+        "whip": true
+      },
+      {
+        "a": 691,
+        "b": 813,
+        "note": "Sam thò lên đội nắp làm mũ",
+        "cam": [[0.6, 0.5, 0.75], [0.5, 0.9, 0.8]],
+        "look": [[0.0, 4.0, 0.72], [0.0, 4.0, 0.8]],
+        "lens": 28
+      },
+      {
+        "a": 814,
+        "b": 858,
+        "note": "Joe mang nắp tròn về",
+        "cam": [[-1.9, 1.4, 1.3], [-1.7, 1.8, 1.3]],
+        "look": [[-0.85, 4.1, 1.5], [-0.85, 4.1, 1.55]],
+        "lens": 32,
+        "whip": true
+      },
+      {
+        "a": 859,
+        "b": 970,
+        "note": "Sơ đồ: tròn rộng như nhau",
+        "cam": [[500.0, -7.7, 1.3], [500.0, -7.3, 1.3]],
+        "look": [[500.0, 0.3, 1.3], [500.0, 0.3, 1.3]],
+        "lens": 45,
+        "whip": true,
+        "fstop": 64
+      },
+      {
+        "a": 971,
+        "b": 1016,
+        "note": "Thả nắp tròn vào vừa khít",
+        "cam": [[1.3, 2.0, 1.6], [1.2, 2.2, 1.55]],
+        "look": [[-0.15, 4.0, 0.5], [-0.15, 4.0, 0.5]],
+        "lens": 28,
+        "whip": true
+      },
+      {
+        "a": 1017,
+        "b": 1110,
+        "note": "Lăn nắp tròn trên phố",
+        "track": {"let": {"x": "roll_x(f)"}, "cam": ["x - 0.6", 0.0, 1.15], "look": ["x - 0.3", 3.0, 0.85]},
+        "lens": 26,
+        "fstop": 5.6
+      },
+      {
+        "a": 1111,
+        "b": 1188,
+        "note": "Gary xem hóa đơn",
+        "cam": [[1.8, 2.2, 1.6], [1.7, 2.5, 1.65]],
+        "look": [[1.0, 4.3, 1.6], [1.0, 4.3, 1.75]],
+        "lens": 30,
+        "whip": true,
+        "fstop": 2.8
+      },
+      {
+        "a": 1189,
+        "b": 1280,
+        "note": "Gary: được, nhưng giữ cái vuông",
+        "cam": [[2.2, 1.6, 1.4], [2.0, 2.0, 1.45]],
+        "look": [[1.0, 4.3, 1.45], [1.0, 4.3, 1.5]],
+        "lens": 30
+      },
+      {
+        "a": 1281,
+        "b": 1350,
+        "note": "Văn phòng: nắp vuông làm bàn cà phê",
+        "cam": [[300.45, 0.0, 1.2], [300.45, 0.3, 1.15]],
+        "look": [[300.7, 3.1, 0.95], [300.7, 3.1, 0.95]],
+        "lens": 28,
+        "whip": true
+      }
+    ],
+    "shakes": [[360, 0.06], [171, 0.03], [631, 0.05], [674, 0.05], [760, 0.03], [1005, 0.02]],
+    "punch": [[213, 1.22], [360, 1.18], [631, 1.12], [674, 1.18], [838, 1.15], [1068, 1.2], [1291, 1.12]]
+  },
+  "chars": [
+    {
+      "id": "joe",
+      "type": "joe",
+      "loc": [-0.85, 4.1, 0.0],
+      "props": [
+        {"id": "joe_sq", "type": "cover2d", "params": {"kind": "square"}, "loc": [0, 0.42, 0.45]},
+        {"id": "joe_rd", "type": "cover2d", "params": {"kind": "round"}, "loc": [0, 0.42, 0.45]}
+      ],
+      "reacts": [[248, "proud"], [358, "hop"], [631, "flinch"], [674, "hop"], [838, "proud"], [1300, "proud"]],
+      "reaction_fx": [358, 674],
+      "expressions": [
+        [1, "neutral"],
+        [248, "happy"],
+        [262, "focus"],
+        [345, "shock"],
+        [411, "neutral"],
+        [566, "neutral"],
+        [631, "shock"],
+        [643, "focus"],
+        [674, "shock"],
+        [691, "shock"],
+        [814, "smirk"],
+        [971, "smug_closed"],
+        [1017, "happy"],
+        [1111, "neutral"],
+        [1300, "wink"]
+      ],
+      "blinks": [60, 300, 520, 900, 1150],
+      "blocking": {
+        "segments": [
+          {"from": 1, "to": 224, "location": [-40, 40, 0]},
+          {"from": 279, "to": 357, "location": [-0.6, 4.0, 0]},
+          {"from": 1017, "to": 1110, "location": ["roll_x(f) - 0.95", 3.05, "0.03 * abs(sin(f * 0.42))"]},
+          {"from": 1111, "to": 1350, "location": [-1.4, 4.4, 0]}
+        ],
+        "default": {"location": [-0.85, 4.1, 0.0]}
+      },
+      "pose": {
+        "default": {},
+        "segments": [
+          {
+            "ranges": [[225, 357], [600, 627], [643, 670]],
+            "note": "cầm nắp vuông",
+            "armL": ["ik", ["-0.38 * joe_sqx(f) - 0.02", "0.42 + joe_lift(f)"], -1],
+            "armR": ["ik", ["0.38 * joe_sqx(f) + 0.02", "0.42 + joe_lift(f)"], 1]
+          },
+          {
+            "ranges": [[358, 410], [628, 642], [671, 690]],
+            "note": "tay không sau khi rơi",
+            "armL": ["ik", [-0.36, 0.42], -1],
+            "armR": ["ik", [0.36, 0.42], 1],
+            "body": [0.0, -0.02]
+          },
+          {
+            "from": 814,
+            "to": 990,
+            "note": "khoe nắp tròn",
+            "let": {"hy": "0.55 if f < 971 else 0.42"},
+            "armL": ["ik", [-0.43, "hy"], -1],
+            "armR": ["ik", [0.43, "hy"], 1]
+          },
+          {
+            "from": 1017,
+            "to": 1110,
+            "note": "đi bộ, tay đẩy nắp lăn",
+            "let": {"ph": "(f - 1017) * 0.42"},
+            "legs": "walk_legs(ph)",
+            "armR": ["ik", [0.62, 0.15], 1],
+            "armL": ["ang", "-0.35 * sin(ph)", 0.2]
+          },
+          {
+            "from": 991,
+            "to": 1016,
+            "note": "phủi tay",
+            "armL": ["ik", [-0.1, "0.25 + 0.04 * sin(f)"], -1],
+            "armR": ["ik", [0.1, "0.25 - 0.04 * sin(f)"], 1]
+          }
+        ]
+      }
+    },
+    {
+      "id": "gary",
+      "type": "gary",
+      "loc": [1.0, 4.3, 0.0],
+      "props": [
+        {"id": "gary_clip", "type": "clipboard", "loc": [-0.3, 0.38, 0.42]},
+        {"id": "gary_bill", "type": "bill", "loc": [0.0, 0.62, 0.45]},
+        {"id": "gary_sq", "type": "cover2d", "params": {"kind": "square"}, "loc": [0, 0.4, 0.46]}
+      ],
+      "fx": [{"type": "steam", "ranges": [[171, 224]]}],
+      "talk": [[122, 153], [172, 224], [1189, 1199], [1230, 1282]],
+      "skin_keys": [[170, [0.98, 0.98, 0.97]], [180, [0.92, 0.28, 0.25]], [224, [0.92, 0.28, 0.25]], [225, [0.98, 0.98, 0.97]]],
+      "reacts": [[171, "shiver"], [631, "flinch"], [674, "hop"], [1140, "shiver"], [1230, "proud"]],
+      "reaction_fx": [631, 674, 1140],
+      "expressions": [
+        [1, "neutral"],
+        [97, "grumpy"],
+        [171, "angry"],
+        [225, "grumpy"],
+        [566, "grumpy"],
+        [631, "shock"],
+        [645, "grumpy"],
+        [674, "shock"],
+        [700, "shock"],
+        [1111, "neutral"],
+        [1140, "worried"],
+        [1189, "grumpy"],
+        [1230, "smug_closed"],
+        [1281, "smirk"]
+      ],
+      "blinks": [40, 140, 260, 600, 1120],
+      "blocking": {
+        "segments": [
+          {"from": 1017, "to": 1110, "location": [-40, 40, 0]},
+          {"from": 1281, "to": 1350, "location": [301.1, 3.3, 0.0]}
+        ],
+        "default": {"location": [1.0, 4.3, 0.0]}
+      },
+      "pose": {
+        "default": {"armL": ["ik", [-0.47, 0.3], -1]},
+        "segments": [
+          {
+            "from": 120,
+            "to": 168,
+            "note": "gõ bút vào bìa",
+            "armR": ["ik", [-0.2, "0.42 + 0.05 * abs(sin((f - 120) * 0.35))"], 1]
+          },
+          {
+            "from": 171,
+            "to": 224,
+            "note": "nổi cáu, chỉ tay, run",
+            "armR": ["ang", "lerp(0.25, 2.0, pease(f, 171, 6)) + 0.15 * sin(f * 1.6)", 0.25],
+            "body": ["0.012 * sin(f * 2.9)", 0]
+          },
+          {
+            "from": 566,
+            "to": 600,
+            "note": "đưa thêm một cái",
+            "let": {"u": "pease(f, 566, 8)"},
+            "armR": ["ang", "lerp(0.25, -1.3, u)", "lerp(-0.1, -0.2, u)"]
+          },
+          {"from": 631, "to": 640, "note": "giật mình", "armR": ["ang", 2.3, 0.6]},
+          {"from": 601, "to": 813, "armR": ["ang", -0.35, 0.6]},
+          {
+            "from": 1111,
+            "to": 1188,
+            "note": "cầm hóa đơn",
+            "armL": ["ik", [-0.2, 0.6], -1],
+            "armR": ["ik", [0.2, 0.6], 1],
+            "tilt": "-0.18 * pease(f, 1154, 8)"
+          },
+          {
+            "from": 1189,
+            "to": 1229,
+            "note": "khoanh tay",
+            "let": {"u": "pease(f, 1189, 7)"},
+            "armL": ["ik", ["lerp(-0.47, 0.22, u)", "lerp(0.30, 0.48, u)"], 1],
+            "armR": ["ik", ["lerp(0.36, -0.22, u)", "lerp(0.1, 0.42, u)"], -1]
+          },
+          {
+            "from": 1230,
+            "to": 1280,
+            "note": "ôm nắp vuông",
+            "armL": ["ik", [-0.4, 0.4], -1],
+            "armR": ["ik", [0.4, 0.4], 1],
+            "tilt": "0.08 * sin(f * 0.25)"
+          },
+          {
+            "from": 1281,
+            "to": 1350,
+            "note": "chống nạnh",
+            "armL": ["ik", [-0.44, 0.12], 1],
+            "armR": ["ik", [0.44, 0.12], -1]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sam",
+      "type": "sam",
+      "loc": [0.0, 4.0, -5.0],
+      "props": [
+        {
+          "id": "sam_hat",
+          "type": "cover2d",
+          "on": "head",
+          "params": {"kind": "square", "size": 0.78},
+          "loc": [0, 0.5, 0.25],
+          "rot": [0, 0, 0.12]
+        }
+      ],
+      "fx": [{"type": "drips", "from": 746}],
+      "reacts": [[785, "hop"]],
+      "reaction_fx": [785],
+      "expressions": [[1, "worried"], [785, "shock"]],
+      "blocking": {
+        "segments": [
+          {
+            "from": 746,
+            "to": 813,
+            "let": {"u": "(f - 746) / 12.0"},
+            "location": [
+              0.0,
+              4.0,
+              "lerp(-2.7, -1.12, min(1, u)) + (0.12 * sin(min(1, u) * pi) if u < 1.6 else 0) + 0.02 * sin(f * 0.3)"
+            ]
+          }
+        ],
+        "default": {"location": [0.0, 4.0, -6]}
+      },
+      "pose": {"default": {"armL": ["ik", [-0.58, 0.47], -1], "armR": ["ik", [0.58, 0.47], 1], "tilt": "0.05 * sin(f * 0.2)"}}
+    }
+  ],
+  "visibility": {
+    "HoleRound": [[1, 224], [860, 1350]],
+    "HoleSquare": [[225, 859]],
+    "cv_round_hole": [[1, 224], [1005, 1350]],
+    "dg_square_set": [[411, 565]],
+    "dg_round_set": [[859, 970]],
+    "joe_sq": [[225, 357], [600, 627], [643, 670]],
+    "joe_rd": [[814, 990]],
+    "gary_clip": [[1, 1110]],
+    "gary_bill": [[1111, 1188]],
+    "gary_sq": [[1230, 1280]]
+  },
+  "tracks": [
+    {"target": "cv_drop0", "use": "drop_tumble", "params": {"t0": 356, "x": 0.0, "y": 4.0}},
+    {"target": "cv_drop1", "use": "drop_tumble", "params": {"t0": 628, "x": 0.0, "y": 4.0}},
+    {"target": "cv_drop2", "use": "drop_tumble", "params": {"t0": 671, "x": 0.0, "y": 4.0}},
+    {"target": "cv_drop_round", "use": "drop_seat", "params": {"t0": 990, "x": 0.0, "y": 4.0}},
+    {
+      "target": "cv_roll",
+      "segments": [
+        {
+          "from": 1017,
+          "to": 1110,
+          "let": {"x": "roll_x(f)"},
+          "location": ["x", 3.0, "0.45 + 0.005 * abs(sin(f * 0.9))"],
+          "rotation_euler": ["pi / 2", "(x - 0.6) / 0.45", 0]
+        }
+      ],
+      "default": {"location": [0, 0, -6], "rotation_euler": ["pi / 2", 0, 0]}
+    },
+    {
+      "target": "joe_sq",
+      "segments": [{"ranges": [[225, 357], [600, 627], [643, 670]], "scale": ["joe_sqx(f)", 1, 1]}],
+      "default": {"scale": [1, 1, 1]}
+    },
+    {
+      "target": "joe_sq",
+      "segments": [{"ranges": [[225, 357], [600, 627], [643, 670]], "location": [0, "0.42 + joe_lift(f)", 0.45]}]
+    },
+    {"target": "joe_rd", "segments": [{"from": 814, "to": 990, "location": [0, "0.55 if f < 971 else 0.42", 0.45]}]},
+    {
+      "target": "bill_strip",
+      "segments": [{"from": 1111, "to": 1188, "let": {"u": "ease((f - 1113) / 27)"}, "scale": [1, "max(0.03, u * 1.9)", 1]}],
+      "default": {"scale": [1, 0.03, 1]}
+    },
+    {
+      "target": "dg_sq_cover",
+      "segments": [
+        {"from": 1, "to": 424, "scale": [1, 1, 1], "rotation_euler": [0, 0, 0.0], "location": [0, 0.0, 0.05]},
+        {
+          "from": 425,
+          "to": 512,
+          "let": {"u": "ease((f - 425) / 10)"},
+          "scale": ["1 - u", "1 - u", 1],
+          "rotation_euler": [0, 0, 0.0],
+          "location": [0, "2.0 * u", 0.05]
+        },
+        {
+          "from": 513,
+          "to": 547,
+          "let": {"u": "ease((f - 513) / 10)"},
+          "scale": [1, "lerp(1, 0.12, u)", 1],
+          "rotation_euler": [0, 0, "radians(45) * u"],
+          "location": [0, "lerp(1.5, 0, u)", 0.35]
+        },
+        {
+          "from": 548,
+          "to": 1350,
+          "let": {"u": "ease((f - 548) / 12)"},
+          "scale": ["1 - u * 0.9", "0.12 * (1 - u)", 1],
+          "rotation_euler": [0, 0, "radians(45)"],
+          "location": [0, "-0.3 * u", 0.35]
+        }
+      ]
+    },
+    {"target": "dg_diag", "default": {"let": {"s": "pop_scale(f, 453)"}, "scale": ["s", "s", 1]}},
+    {"target": "dg_l_diag", "default": {"let": {"s": "pop_scale(f, 456)"}, "scale": ["s", "s", 1]}},
+    {"target": "dg_side", "default": {"let": {"s": "pop_scale(f, 497)"}, "scale": ["s", "s", 1]}},
+    {"target": "dg_l_side", "default": {"let": {"s": "pop_scale(f, 500)"}, "scale": ["s", "s", 1]}},
+    {
+      "target": "dg_rd_cover",
+      "segments": [
+        {"from": 1, "to": 869, "scale": [1, 1, 1]},
+        {"from": 870, "to": 929, "let": {"u": "ease((f - 870) / 8)"}, "scale": ["1 - u", "1 - u", 1]},
+        {"from": 930, "to": 1350, "let": {"u": "ease((f - 930) / 8)"}, "scale": [1, "lerp(0.001, 0.12, u)", 1]}
+      ]
+    },
+    {
+      "target": "dg_rd_cover",
+      "default": {
+        "location": [0, 0, "0.35 if f >= 930 else 0.05"],
+        "rotation_euler": [0, 0, "(f - 930) * 0.07 if f >= 930 else 0"]
+      }
+    },
+    {
+      "target": "dg_diam_pivot",
+      "default": {"let": {"s": "pop_scale(f, 872)"}, "scale": ["s", "s", 1], "rotation_euler": [0, 0, "(f - 872) * 0.07"]}
+    },
+    {"target": "dg_l_same", "default": {"let": {"s": "pop_scale(f, 885)"}, "scale": ["s", "s", 1]}},
+    {"target": "dg_l_never", "default": {"let": {"s": "pop_scale(f, 945)"}, "scale": ["s", "s", 1]}}
+  ],
+  "words": [
+    [0.0, "Meet"],
+    [0.19, "Gary."],
+    [0.92, "Gary"],
+    [1.28, "runs"],
+    [1.47, "the"],
+    [1.65, "city"],
+    [2.02, "budget,"],
+    [2.58, "and"],
+    [2.79, "Gary"],
+    [3.21, "hates"],
+    [3.64, "circles."],
+    [4.06, "Circles"],
+    [4.48, "waste"],
+    [4.69, "metal,\""],
+    [5.12, "he"],
+    [5.33, "says."],
+    [5.72, "Make"],
+    [5.92, "the"],
+    [6.11, "manhole"],
+    [6.7, "covers"],
+    [7.09, "square.\""],
+    [7.5, "So"],
+    [7.65, "Joe"],
+    [7.81, "makes"],
+    [8.11, "them"],
+    [8.27, "square."],
+    [8.68, "Day"],
+    [8.89, "one."],
+    [9.3, "Joe"],
+    [9.5, "lifts"],
+    [9.7, "the"],
+    [9.9, "new"],
+    [10.11, "cover,"],
+    [10.51, "turns"],
+    [10.71, "it"],
+    [10.91, "just"],
+    [11.11, "a"],
+    [11.31, "little..."],
+    [11.72, "and"],
+    [11.92, "CLANG."],
+    [12.32, "It"],
+    [12.52, "drops"],
+    [12.71, "straight"],
+    [12.9, "down"],
+    [13.1, "the"],
+    [13.3, "hole."],
+    [13.69, "See,"],
+    [14.16, "a"],
+    [14.34, "square"],
+    [14.53, "is"],
+    [14.71, "wider"],
+    [15.08, "corner"],
+    [15.44, "to"],
+    [15.63, "corner"],
+    [15.99, "than"],
+    [16.18, "it"],
+    [16.36, "is"],
+    [16.54, "side"],
+    [16.73, "to"],
+    [16.91, "side."],
+    [17.09, "Tilt"],
+    [17.28, "it,"],
+    [17.84, "and"],
+    [18.04, "it"],
+    [18.24, "slips"],
+    [18.44, "right"],
+    [18.64, "through."],
+    [18.84, "Gary"],
+    [19.24, "orders"],
+    [19.64, "another"],
+    [20.24, "one."],
+    [21.02, "CLANG."],
+    [21.21, "And"],
+    [21.4, "another."],
+    [22.44, "CLANG."],
+    [23.06, "Now"],
+    [23.23, "the"],
+    [23.4, "city"],
+    [23.74, "is"],
+    [23.92, "out"],
+    [24.09, "three"],
+    [24.26, "covers,"],
+    [24.86, "and"],
+    [25.02, "a"],
+    [25.18, "guy"],
+    [25.34, "in"],
+    [25.5, "the"],
+    [25.66, "sewer"],
+    [25.99, "is"],
+    [26.15, "wearing"],
+    [26.47, "one"],
+    [26.63, "as"],
+    [26.79, "a"],
+    [26.95, "hat."],
+    [27.11, "So"],
+    [27.27, "Joe"],
+    [27.44, "brings"],
+    [27.6, "back"],
+    [27.76, "the"],
+    [27.92, "circle."],
+    [28.64, "A"],
+    [28.81, "circle"],
+    [29.14, "is"],
+    [29.31, "the"],
+    [29.48, "same"],
+    [29.65, "width"],
+    [29.81, "no"],
+    [29.98, "matter"],
+    [30.32, "how"],
+    [30.48, "you"],
+    [30.65, "turn"],
+    [30.82, "it,"],
+    [30.99, "so"],
+    [31.15, "it"],
+    [31.32, "can"],
+    [31.49, "never"],
+    [31.82, "fall"],
+    [31.99, "in."],
+    [32.38, "You"],
+    [32.57, "never"],
+    [32.94, "have"],
+    [33.13, "to"],
+    [33.32, "line"],
+    [33.51, "it"],
+    [33.69, "up."],
+    [33.88, "And"],
+    [34.07, "a"],
+    [34.26, "cover"],
+    [34.63, "that"],
+    [34.82, "weighs"],
+    [35.01, "over"],
+    [35.38, "a"],
+    [35.57, "hundred"],
+    [35.94, "pounds?"],
+    [36.13, "You"],
+    [36.32, "just"],
+    [36.51, "roll"],
+    [36.69, "it."],
+    [37.08, "Gary"],
+    [37.44, "looks"],
+    [37.62, "at"],
+    [37.8, "the"],
+    [37.98, "bill."],
+    [38.44, "Then"],
+    [38.6, "at"],
+    [38.77, "the"],
+    [38.93, "circle."],
+    [39.62, "Fine,\""],
+    [39.98, "he"],
+    [40.34, "says."],
+    [40.98, "But"],
+    [41.19, "I'm"],
+    [41.39, "keeping"],
+    [41.8, "the"],
+    [42.01, "square"],
+    [42.21, "one.\""],
+    [42.74, "As"],
+    [42.87, "a"],
+    [43.01, "coffee"],
+    [43.27, "table."]
+  ],
+  "captions": {
+    "highlight": [
+      "square",
+      "clang",
+      "corner",
+      "side",
+      "three",
+      "hat",
+      "circle",
+      "same",
+      "width",
+      "never",
+      "hundred",
+      "pounds",
+      "roll",
+      "bill",
+      "fine",
+      "coffee",
+      "table",
+      "budget",
+      "circles"
+    ],
+    "impact": ["clang"],
+    "lift": [[411, 565], [859, 970]]
+  },
+  "fx": {
+    "dust": [
+      {"frame": 360, "pos": [0.0, 4.0, 0.0], "n": 10, "radius": 0.85, "size": 1.0, "life": 22, "rise": 0.5},
+      {"frame": 631, "pos": [0.0, 4.0, 0.0], "n": 10, "radius": 0.85, "size": 1.0, "life": 22, "rise": 0.5},
+      {"frame": 674, "pos": [0.0, 4.0, 0.0], "n": 10, "radius": 0.85, "size": 1.0, "life": 22, "rise": 0.5},
+      {"frame": 750, "pos": [0.0, 4.0, 0.0], "n": 6, "radius": 0.6, "size": 0.7},
+      {"frame": 1005, "pos": [0.0, 4.0, 0.0], "n": 6, "radius": 0.75, "size": 0.45, "life": 16, "rise": 0.12},
+      {
+        "frame": 1023,
+        "pos": ["roll_x(1023)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1032,
+        "pos": ["roll_x(1032)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1041,
+        "pos": ["roll_x(1041)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1050,
+        "pos": ["roll_x(1050)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1059,
+        "pos": ["roll_x(1059)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1068,
+        "pos": ["roll_x(1068)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1077,
+        "pos": ["roll_x(1077)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1086,
+        "pos": ["roll_x(1086)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1095,
+        "pos": ["roll_x(1095)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      },
+      {
+        "frame": 1104,
+        "pos": ["roll_x(1104)", 3.0, 0.0],
+        "n": 2,
+        "radius": 0.25,
+        "size": 0.35,
+        "life": 14,
+        "rise": 0.15
+      }
+    ]
+  },
+  "sound": {
+    "music": {"mood": "playful", "gain": 0.16, "gain_with_voice": 0.1, "duck": [360, 631, 674], "duck_window": [-4, 30]},
+    "ambience": {"kind": "city", "gain": 0.04},
+    "sfx_gain_with_voice": 0.8,
+    "auto": {"avoid": [360, 631, 674], "gesture_chars": ["joe", "gary"]},
+    "events": [
+      [125, "tick", 0.25],
+      [136, "tick", 0.25],
+      [147, "tick", 0.25],
+      [158, "tick", 0.25],
+      [171, "rumble", 0.5],
+      [174, "steam", 0.3],
+      [250, "ding", 0.18],
+      [330, "squeak", 0.2],
+      [356, "slide_down", 0.3],
+      [360, "crash", 0.55],
+      [361, "thud", 0.5],
+      [392, "thud", 0.18],
+      [440, "swish", 0.25],
+      [453, "pop", 0.3],
+      [497, "pop", 0.3],
+      [513, "squeak", 0.25],
+      [548, "slide_down", 0.35],
+      [562, "thud", 0.2],
+      [600, "pop", 0.3],
+      [626, "slide_down", 0.25],
+      [631, "crash", 0.5],
+      [632, "thud", 0.45],
+      [643, "pop", 0.3],
+      [669, "slide_down", 0.25],
+      [674, "crash", 0.5],
+      [675, "thud", 0.45],
+      [690, "scratch", 0.3],
+      [728, "slide_down", 0.25],
+      [748, "boing", 0.5],
+      [790, "gulp", 0.35],
+      [808, "squeak", 0.2],
+      [838, "ding", 0.4],
+      [872, "swish", 0.25],
+      [885, "pop", 0.3],
+      [931, "swish", 0.2],
+      [945, "ding", 0.3],
+      [990, "swish", 0.25],
+      [1005, "thud", 0.35],
+      [1006, "pop", 0.3],
+      [1068, "boing", 0.25],
+      [1113, "zip_out", 0.3],
+      [1140, "gulp", 0.4],
+      [1146, "cash", 0.3],
+      [1168, "squeak", 0.2],
+      [1195, "slide_down", 0.3],
+      [1236, "pop", 0.3],
+      [1291, "ding", 0.35],
+      [1300, "pop", 0.25]
+    ],
+    "repeat": [{"name": "step", "from": 1021, "to": 1105, "every": 11, "gain": 0.35, "note": "bước chân khi lăn nắp"}]
+  }
+}

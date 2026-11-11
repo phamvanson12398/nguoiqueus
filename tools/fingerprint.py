@@ -17,8 +17,13 @@ os.makedirs(out_dir, exist_ok=True)
 
 t0 = time.time()
 g = {"__file__": scene_path, "__name__": "__main__"}
-sys.argv = [sys.argv[0]]                       # the scene must not see our arguments
-exec(compile(open(scene_path, encoding="utf-8").read(), scene_path, "exec"), g)
+if scene_path.endswith(".json"):                # story.json -> run builder.py on it
+    _builder = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "builder.py")
+    g["__file__"] = _builder; sys.argv = [sys.argv[0], "--", scene_path]
+    exec(compile(open(_builder, encoding="utf-8").read(), _builder, "exec"), g)
+else:
+    sys.argv = [sys.argv[0]]                   # the scene must not see our arguments
+    exec(compile(open(scene_path, encoding="utf-8").read(), scene_path, "exec"), g)
 BUILD_S = time.time() - t0
 sc = bpy.context.scene
 

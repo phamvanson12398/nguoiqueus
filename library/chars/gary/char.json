@@ -1,0 +1,303 @@
+{
+ "kind": "char",
+ "name": "gary",
+ "title_vi": "Gary — trưởng phòng ngân sách",
+ "description_vi": "Quản lý keo kiệt: sơ mi trắng, gile xanh lá có 3 khuy, nơ đỏ, kính tròn, tóc nâu đen chải lệch. Hay cáu (mặt đỏ, bốc hơi), ôm bìa kẹp hồ sơ.",
+ "materials": {
+  "gary_shirt": [
+   0.95,
+   0.95,
+   0.93
+  ],
+  "gary_vest": [
+   0.08,
+   0.38,
+   0.14
+  ],
+  "bowtie": [
+   0.85,
+   0.08,
+   0.1
+  ],
+  "gary_hair": [
+   0.2,
+   0.12,
+   0.07
+  ]
+ },
+ "cfg": {
+  "leg": [
+   0.78,
+   0.38,
+   0.36
+  ],
+  "torso": [
+   0.84,
+   0.9,
+   "gary_shirt"
+  ],
+  "arm": [
+   0.36,
+   0.72,
+   0.35,
+   0.33
+  ],
+  "head": [
+   1.4,
+   0.48
+  ]
+ },
+ "faces": [
+  "neutral",
+  "angry",
+  "shock",
+  "worried",
+  "grumpy",
+  "smug_closed",
+  "smirk"
+ ],
+ "extras": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "vest",
+   "pts": [
+    [
+     -0.4,
+     0.7
+    ],
+    [
+     -0.12,
+     0.84
+    ],
+    [
+     0,
+     0.55
+    ],
+    [
+     0.12,
+     0.84
+    ],
+    [
+     0.4,
+     0.7
+    ],
+    [
+     0.4,
+     0.18
+    ],
+    [
+     0.3,
+     0.05
+    ],
+    [
+     -0.3,
+     0.05
+    ],
+    [
+     -0.4,
+     0.18
+    ]
+   ],
+   "mat": "gary_vest",
+   "z": 0.15,
+   "outline": 0.03
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn0",
+   "c": [
+    0.0,
+    0.45
+   ],
+   "r": 0.03,
+   "z": 0.2,
+   "mat": "gary_shirt"
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn1",
+   "c": [
+    0.0,
+    0.32
+   ],
+   "r": 0.03,
+   "z": 0.2,
+   "mat": "gary_shirt"
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn2",
+   "c": [
+    0.0,
+    0.19
+   ],
+   "r": 0.03,
+   "z": 0.2,
+   "mat": "gary_shirt"
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "bowL",
+   "pts": [
+    [
+     0,
+     0.86
+    ],
+    [
+     -0.13,
+     0.93
+    ],
+    [
+     -0.13,
+     0.79
+    ]
+   ],
+   "mat": "bowtie",
+   "z": 0.22,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "bowR",
+   "pts": [
+    [
+     0,
+     0.86
+    ],
+    [
+     0.13,
+     0.93
+    ],
+    [
+     0.13,
+     0.79
+    ]
+   ],
+   "mat": "bowtie",
+   "z": 0.22,
+   "outline": 0.02
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "knot",
+   "c": [
+    0,
+    0.86
+   ],
+   "r": 0.035,
+   "z": 0.25,
+   "mat": "bowtie"
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "hair",
+   "pts": [
+    [
+     -0.47,
+     0.12
+    ],
+    [
+     -0.4,
+     0.34
+    ],
+    [
+     -0.15,
+     0.48
+    ],
+    [
+     0.2,
+     0.47
+    ],
+    [
+     0.45,
+     0.3
+    ],
+    [
+     0.47,
+     0.12
+    ],
+    [
+     0.3,
+     0.3
+    ],
+    [
+     0.05,
+     0.32
+    ],
+    [
+     -0.1,
+     0.25
+    ],
+    [
+     -0.3,
+     0.28
+    ]
+   ],
+   "mat": "gary_hair",
+   "z": 0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "glass-1",
+   "pts": {
+    "ring": [
+     -0.15,
+     -0.02,
+     0.12,
+     0.11,
+     24
+    ]
+   },
+   "w": 0.03,
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "glass1",
+   "pts": {
+    "ring": [
+     0.15,
+     -0.02,
+     0.12,
+     0.11,
+     24
+    ]
+   },
+   "w": 0.03,
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "bridge",
+   "pts": [
+    [
+     -0.035,
+     0.0
+    ],
+    [
+     0.035,
+     0.0
+    ]
+   ],
+   "w": 0.03,
+   "z": 0.2
+  }
+ ],
+ "tags": [
+  "boss",
+  "antagonist",
+  "office"
+ ]
+}

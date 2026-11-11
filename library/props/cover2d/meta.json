@@ -1,0 +1,10 @@
+{
+  "kind": "prop", "dim": "2d", "name": "cover2d", "title_vi": "Nắp cống cầm tay (2D)",
+  "description_vi": "Nắp cống 2D để nhân vật cầm (gắn vào torso) hoặc đội như mũ (gắn vào head). Tròn có vân vòng, vuông có lưới.",
+  "params": {
+    "kind": {"type": "string", "enum": ["round", "square"], "default": "square"},
+    "size": {"type": "number|null", "default": null, "desc_vi": "bán kính (tròn, mặc định 0.42) hoặc cạnh (vuông, mặc định 0.76)"}
+  },
+  "hold": {"square": "hai tay ik ở (±0.4, y của đồ vật)", "round": "hai tay ik ở (±0.43, y)"},
+  "tags": ["hand", "2d"]
+}

@@ -1,0 +1,134 @@
+{
+ "kind": "char",
+ "name": "sam",
+ "title_vi": "Sam — công nhân dưới cống",
+ "description_vi": "Công nhân dưới cống: áo cam có hai sọc phản quang, râu nâu. Hay lo lắng, đổ mồ hôi.",
+ "materials": {
+  "sam_vest": [
+   0.98,
+   0.45,
+   0.05
+  ],
+  "sam_refl": [
+   0.9,
+   0.9,
+   0.9
+  ],
+  "sam_beard": [
+   0.45,
+   0.28,
+   0.15
+  ]
+ },
+ "cfg": {
+  "leg": [
+   0.74,
+   0.36,
+   0.34
+  ],
+  "torso": [
+   0.82,
+   0.82,
+   "sam_vest"
+  ],
+  "arm": [
+   0.34,
+   0.66,
+   0.34,
+   0.32
+  ],
+  "head": [
+   1.34,
+   0.48
+  ],
+  "eye_y": 0.02
+ },
+ "faces": [
+  "shock",
+  "worried"
+ ],
+ "extras": [
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "ref-0.2",
+   "pts": [
+    [
+     -0.2,
+     0.15
+    ],
+    [
+     -0.2,
+     0.75
+    ]
+   ],
+   "w": 0.06,
+   "z": 0.17,
+   "mat": "sam_refl"
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "ref0.2",
+   "pts": [
+    [
+     0.2,
+     0.15
+    ],
+    [
+     0.2,
+     0.75
+    ]
+   ],
+   "w": 0.06,
+   "z": 0.17,
+   "mat": "sam_refl"
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "beard",
+   "pts": [
+    [
+     -0.36,
+     -0.15
+    ],
+    [
+     -0.2,
+     -0.38
+    ],
+    [
+     0,
+     -0.46
+    ],
+    [
+     0.2,
+     -0.38
+    ],
+    [
+     0.36,
+     -0.15
+    ],
+    [
+     0.2,
+     -0.28
+    ],
+    [
+     0,
+     -0.3
+    ],
+    [
+     -0.2,
+     -0.28
+    ]
+   ],
+   "mat": "sam_beard",
+   "z": 0.04,
+   "outline": 0.025
+  }
+ ],
+ "tags": [
+  "worker",
+  "sewer"
+ ]
+}

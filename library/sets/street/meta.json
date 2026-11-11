@@ -1,0 +1,17 @@
+{
+  "kind": "set",
+  "name": "street",
+  "title_vi": "Đường phố",
+  "description_vi": "Phố thành phố ban ngày: mặt đường nhựa, vỉa hè, vạch giữa, vạch qua đường, dãy nhà ngẫu nhiên có cửa sổ, đèn đường, cây, cọc giao thông, trụ cứu hỏa. Đường chạy theo trục +Y, khoảng diễn quanh (0, 4).",
+  "space": "mặt đường z=0, x từ -5 đến 5; nhà ở |x| > 8",
+  "params": {
+    "length": {"type": "number", "default": 120.0, "desc_vi": "nhà xây từ y=-8 tới giá trị này"},
+    "crosswalk_y": {"type": "number", "default": 9.5, "desc_vi": "vị trí vạch qua đường"},
+    "cones": {"type": "array", "default": [[-2.1, 5.6], [2.3, 5.8], [-2.6, 3.0], [2.9, 2.6]], "desc_vi": "vị trí cọc giao thông (x, y)"},
+    "hydrant": {"type": "array|null", "default": [5.4, 6.5], "desc_vi": "vị trí trụ cứu hỏa, null = bỏ"},
+    "lamps": {"type": "integer", "default": 8},
+    "trees": {"type": "integer", "default": 10}
+  },
+  "notes_vi": "Dùng bộ sinh số ngẫu nhiên chung (meta.seed), nên đổi thứ tự bối cảnh sẽ đổi dãy nhà.",
+  "tags": ["city", "outdoor", "day"]
+}

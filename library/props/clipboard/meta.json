@@ -1,0 +1,6 @@
+{
+  "kind": "prop", "dim": "2d", "name": "clipboard", "title_vi": "Bìa kẹp hồ sơ (2D)",
+  "description_vi": "Bìa kẹp hồ sơ có giấy và kẹp kim loại. Gắn vào torso ở khoảng (-0.30, 0.38, 0.42), tay trái ik (-0.47, 0.30) bend -1.",
+  "params": {"prefix": {"type": "string", "default": "clip"}},
+  "tags": ["hand", "2d", "office"]
+}

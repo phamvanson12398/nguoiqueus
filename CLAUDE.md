@@ -85,3 +85,12 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
 - Lưu ý: `primitive_uv_sphere_add` của Blender cho thứ tự loop khác nhau giữa các lần chạy (tọa độ đỉnh vẫn giống). Đôi khi việc này làm lệch 1/255 ở vài điểm ảnh, kể cả khi chạy bản gốc hai lần. Vì vậy fingerprint so topology đã chuẩn hóa thay vì thứ tự loop.
 - Trên Windows: chạy `tools\verify_manhole.bat`.
 - Script cảnh mới: gọi `core.start(N, FPS, out_dir)` trước tiên; `geo.init()`, `fx.init()`, `faces.init()` sau khi tạo camera. Script tự xóa `core.*` khỏi `sys.modules` để chạy lại trong giao diện Blender không giữ trạng thái cũ.
+
+### Bước 2 — xong (chờ người dùng xác nhận trên máy Windows)
+- Định dạng video: `story.json`, đặc tả trong `STORY.md`, kiểm tra bằng `story.schema.json` (JSON Schema 2020-12). Giá trị là số hoặc biểu thức an toàn (`core/expr.py`, chỉ cho phép danh sách tên trắng, không có thuộc tính/import).
+- `builder.py`: `--check`, `--preview a,b,c`, `--render`. Báo lỗi theo đường dẫn trong file (ví dụ `chars[0].expressions[2]: unknown face 'confused'`). Camera `shots_v2` (kiểu cũ) và `v3` (dùng cho video mới, có `cam_report`).
+- Thư viện: `library/sets/{street,office,diagram_board}`, `library/props/{manhole_cover,manhole_hole,cover2d,clipboard,bill,diagram_square_hole,diagram_round_hole}`, `library/chars/{joe,gary,sam}/char.json` (cấu hình + mô tả, đóng vai meta), `library/motions/{drop_tumble,drop_seat}.json`. Mỗi món có `thumb.png` (`tools/thumbs.py`); xem tổng hợp ở `library/contact_sheet.png`.
+- `projects/manhole-round/story.json`: dựng ra **giống hệt** `manhole_scene_v2.py` (dữ liệu cảnh, âm thanh, 5 khung render). `projects/demo-v3/story.json`: ví dụ ngắn dùng camera v3, làm mẫu cho `plan_shots`.
+- Core thêm: lưu đệm vật liệu theo tên, `geo.arrow2d/label/points`, `fx.add_steam/add_drips`.
+- Trên Windows: chạy `tools\verify_story.bat`.
+- Thứ tự trong `sets`/`props`/`chars` là thứ tự tạo vật thể: đổi thứ tự sẽ đổi dãy nhà ngẫu nhiên và tên lưới (render vẫn đúng, chỉ không còn giống hệt bản cũ).

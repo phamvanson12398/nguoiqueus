@@ -1,0 +1,13 @@
+{
+  "kind": "prop", "dim": "2d", "name": "diagram_square_hole", "title_vi": "Sơ đồ: lỗ vuông",
+  "description_vi": "Sơ đồ 2D: lỗ vuông, nắp vuông to hơn phía trên, mũi tên cạnh (xanh) và đường chéo (đỏ) có nhãn. Gắn lên part 'plane' của diagram_board.",
+  "params": {
+    "prefix": {"type": "string", "default": "dg"},
+    "side": {"type": "number", "default": 1.8},
+    "cover": {"type": "number", "default": 2.05},
+    "label_side": {"type": "string", "default": "SIDE"},
+    "label_diag": {"type": "string", "default": "1.4x LONGER"}
+  },
+  "parts": ["<prefix>_sq_cover", "<prefix>_side", "<prefix>_diag", "<prefix>_l_side", "<prefix>_l_diag"],
+  "tags": ["diagram", "geometry"]
+}

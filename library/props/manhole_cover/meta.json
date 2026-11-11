@@ -1,0 +1,12 @@
+{
+  "kind": "prop", "dim": "3d", "name": "manhole_cover", "title_vi": "Nắp cống (3D)",
+  "description_vi": "Nắp cống gang. Tròn: vân vòng tròn. Vuông: vân ô bàn cờ, vát cạnh. Gốc tọa độ ở tâm, nằm phẳng, dày 6 cm.",
+  "params": {
+    "kind": {"type": "string", "enum": ["round", "square"], "default": "round"},
+    "radius": {"type": "number", "default": 0.45, "desc_vi": "bán kính nắp tròn (m)"},
+    "side": {"type": "number", "default": 0.80, "desc_vi": "cạnh nắp vuông (m)"},
+    "thickness": {"type": "number", "default": 0.06}
+  },
+  "motions": ["drop_tumble", "drop_seat"],
+  "tags": ["street", "metal", "falls", "rolls"]
+}

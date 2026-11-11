@@ -1,0 +1,13 @@
+{
+  "kind": "motion",
+  "name": "drop_seat",
+  "title_vi": "Thả phẳng vào chỗ",
+  "description_vi": "Vật từ trên tay (cao z0, lệch một chút) hạ xuống và xoay phẳng vào đúng chỗ (lắp vừa). Ngoài khoảng: giấu dưới đất.",
+  "params": {"t0": 0, "dur": 15, "x": 0.0, "y": 0.0, "z0": 0.95, "z1": 0.02, "hide_z": -6},
+  "segments": [
+    {"from": "t0", "to": "t0 + dur", "let": {"u": "(f - t0) / (dur * 1.0)"},
+     "location": ["x - 0.1 * (1 - u)", "y - 0.15 * (1 - u)", "lerp(z0, z1, u * u)"],
+     "rotation_euler": ["radians(90) * (1 - ease(u))", 0, 0]}
+  ],
+  "default": {"location": ["x", "y", "hide_z"], "rotation_euler": [0, 0, 0]}
+}

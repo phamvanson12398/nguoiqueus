@@ -1,0 +1,11 @@
+{
+  "kind": "set", "name": "office", "title_vi": "Góc văn phòng",
+  "description_vi": "Góc văn phòng: sàn gỗ, hai bức tường, cửa sổ, tranh biểu đồ cột, chậu cây, bàn thấp có cốc cà phê. Mặt bàn là một đạo cụ bất kỳ trong thư viện (mặc định: nắp cống vuông, cho gag 'giữ làm bàn cà phê').",
+  "space": "đặt xa phố (origin mặc định x=300) để camera không thấy bối cảnh khác",
+  "params": {
+    "origin": {"type": "array", "default": [300.0, 0.0]},
+    "table_top": {"type": "object|null", "default": {"type": "manhole_cover", "params": {"kind": "square"}}, "desc_vi": "đạo cụ làm mặt bàn; null = mặt gỗ"}
+  },
+  "anchors": {"table": "tâm bàn (x, y), mặt bàn cao 0.5 m"},
+  "tags": ["indoor", "office"]
+}

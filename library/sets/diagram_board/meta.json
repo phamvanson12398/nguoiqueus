@@ -1,0 +1,11 @@
+{
+  "kind": "set", "name": "diagram_board", "title_vi": "Bảng giải thích",
+  "description_vi": "Tờ giấy lớn quay về phía -Y và một mặt phẳng 2D đứng trước nó để đặt sơ đồ (part 'plane', trục x sang phải, y hướng lên). Camera đặt ở (x, y-8) nhìn thẳng, lens 45.",
+  "params": {
+    "origin": {"type": "array", "default": [500.0, 0.0, 1.5]},
+    "paper": {"type": "array", "default": [0.96, 0.93, 0.84]},
+    "size": {"type": "array", "default": [16, 14]}
+  },
+  "parts": {"plane": "empty 2D để gắn sơ đồ", "back": "tờ giấy nền"},
+  "tags": ["diagram", "explainer"]
+}

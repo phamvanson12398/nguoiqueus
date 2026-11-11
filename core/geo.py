@@ -164,3 +164,34 @@ def vis_track(obj, ranges):
 def key_loc(o, f, loc): o.location = loc; o.keyframe_insert("location", frame=f)
 def key_rot(o, f, rot): o.rotation_euler = rot; o.keyframe_insert("rotation_euler", frame=f)
 def key_scl(o, f, s): o.scale = s; o.keyframe_insert("scale", frame=f)
+
+
+def arrow2d(parent, name, p0, p1, w, m):
+    """double-headed 2D arrow between p0 and p1 (diagrams); parts: name_s, name_h1, name_h-1"""
+    g = empty(name, parent)
+    ang = math.atan2(p1[1] - p0[1], p1[0] - p0[0]); hl = 0.22
+    a0 = (p0[0] + hl * 0.8 * math.cos(ang), p0[1] + hl * 0.8 * math.sin(ang)); a1 = (p1[0] - hl * 0.8 * math.cos(ang), p1[1] - hl * 0.8 * math.sin(ang))
+    stroke(g, name + "_s", [a0, a1], w, 0.1, m=m)
+    for P_, sgn in ((p1, 1), (p0, -1)):
+        tip = P_; bx, by = P_[0] - sgn * hl * math.cos(ang), P_[1] - sgn * hl * math.sin(ang)
+        nx, ny = -math.sin(ang) * hl * 0.55, math.cos(ang) * hl * 0.55
+        shape(g, f"{name}_h{sgn}", [tip, (bx + nx, by + ny), (bx - nx, by - ny)], m, 0.1, outline=0)
+    return g
+
+
+def label(parent, name, txt, loc, size, m):
+    """centred 3D text in a 2D plane (z = 0.2)"""
+    return text(name, txt, size, parent, (loc[0], loc[1], 0.2), m)
+
+
+def points(spec):
+    """2D point list from JSON: [[x, y], ...] | {"rrect": [cx, cy, w, h, r]} | {"ellipse": [cx, cy, rx, ry, n(, a0, a1)]}
+    | {"arc": [cx, cy, rx, ry, a0_deg, a1_deg(, n)]} | {"ring": [cx, cy, rx, ry, n]} (closed ellipse for strokes)"""
+    if isinstance(spec, dict):
+        (k, a), = spec.items()
+        if k == "rrect": return rrect(*a)
+        if k == "ellipse": return ellipse(*a)
+        if k == "arc": return arc(*a)
+        if k == "ring": e = ellipse(*a); return e + [e[0]]
+        raise ValueError(f"unknown point generator {k!r}")
+    return [tuple(p) for p in spec]

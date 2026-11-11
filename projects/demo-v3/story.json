@@ -1,0 +1,46 @@
+{
+  "meta": {"title": "Builder demo (camera v3)", "slug": "demo-v3", "fps": 30, "frames": 200, "seed": 3,
+           "voice": "voice.wav", "output": "demo_v3.mp4", "samples": 32},
+  "defs": {},
+  "sets": [
+    {"type": "street", "params": {"length": 60, "cones": [[-2.0, 5.4], [2.4, 5.6]]}, "props": [
+      {"id": "hole", "type": "manhole_hole", "params": {"kind": "round"}, "loc": [0.0, 4.0, 0]},
+      {"id": "lid", "type": "manhole_cover", "params": {"kind": "round"}}
+    ]}
+  ],
+  "camera": {
+    "rig": "v3", "lens": 28,
+    "seqs": [
+      {"a": 1, "b": 100, "keys": [[1, [-2.6, 0.4, 1.3], [-0.2, 4.1, 1.15], 28, 0], [100, [-1.3, 1.5, 1.35], [-0.3, 4.1, 1.3], 31, 0]]},
+      {"a": 101, "b": 200, "keys": [[101, [1.9, 1.9, 1.6], [0.8, 4.2, 1.6], 32, 0], [200, [1.4, 2.4, 1.55], [0.6, 4.1, 1.4], 30, -3]]}
+    ],
+    "trans": {"101": ["whip", 1]},
+    "punch": [[150, 1.15, 8, 30]],
+    "shakes": [[150, 0.8, 12]]
+  },
+  "chars": [
+    {"id": "joe", "type": "joe", "loc": [-0.7, 4.0, 0.0],
+     "props": [{"id": "joe_lid", "type": "cover2d", "params": {"kind": "round"}, "loc": [0, 0.55, 0.45]}],
+     "expressions": [[1, "happy"], [150, "shock"]], "blinks": [40], "reacts": [[150, "hop"]], "reaction_fx": [150],
+     "pose": {"default": {"armL": ["ik", [-0.43, 0.55], -1], "armR": ["ik", [0.43, 0.55], 1]},
+              "segments": [{"from": 140, "to": 200, "armL": ["ik", [-0.36, 0.42], -1], "armR": ["ik", [0.36, 0.42], 1]}]}},
+    {"id": "gary", "type": "gary", "loc": [0.8, 4.2, 0.0],
+     "props": [{"id": "gary_clip", "type": "clipboard", "loc": [-0.30, 0.38, 0.42]}],
+     "expressions": [[1, "grumpy"], [150, "angry"]], "talk": [[20, 90]], "fx": [{"type": "steam", "ranges": [[150, 200]]}],
+     "pose": {"default": {"armL": ["ik", [-0.47, 0.30], -1]},
+              "segments": [{"from": 150, "to": 200, "armR": ["ang", "lerp(0.25, 2.0, pease(f, 150, 6)) + 0.15 * sin(f * 1.6)", 0.25]}]}}
+  ],
+  "visibility": {"joe_lid": [[1, 139]]},
+  "tracks": [
+    {"target": "lid", "use": "drop_seat", "params": {"t0": 140, "x": 0.0, "y": 4.0}}
+  ],
+  "words": [[0.0, "Joe"], [0.3, "found"], [0.6, "a"], [0.75, "round"], [1.1, "lid."], [2.0, "Gary"], [2.4, "wants"], [2.8, "it"], [3.0, "square."], [4.6, "CLANG!"]],
+  "captions": {"highlight": ["round", "square"], "impact": ["clang"]},
+  "fx": {"dust": [{"frame": 155, "pos": [0.0, 4.0, 0.0], "n": 8, "radius": 0.6, "size": 0.7}]},
+  "sound": {
+    "music": {"mood": "sneaky", "gain": 0.16, "gain_with_voice": 0.10, "duck": [150]},
+    "ambience": {"kind": "city", "gain": 0.04},
+    "auto": {"avoid": [150]},
+    "events": [[138, "slide_down", 0.3], [155, "thud", 0.5], [156, "pop", 0.3], [150, "steam", 0.3]]
+  }
+}

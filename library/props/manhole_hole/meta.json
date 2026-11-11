@@ -1,0 +1,10 @@
+{
+  "kind": "prop", "dim": "3d", "name": "manhole_hole", "title_vi": "Miệng cống",
+  "description_vi": "Lỗ cống trên mặt đường: đáy tối + viền kim loại. Gốc là empty ở tâm lỗ, đặt ở z=0.",
+  "params": {
+    "kind": {"type": "string", "enum": ["round", "square"], "default": "round"},
+    "radius": {"type": "number", "default": 0.45},
+    "side": {"type": "number", "default": 0.80}
+  },
+  "tags": ["street", "hole", "push-through"]
+}

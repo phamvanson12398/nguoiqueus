@@ -4,3 +4,4 @@ _verify/
 projects/*/sfx_music.wav
 projects/*/*.mp4
 projects/*/preview/
+_thumbs_tmp/

@@ -90,3 +90,51 @@ def bake_reaction_fx(c, frames, dur=16):
             c.speedlines.keyframe_insert("rotation_euler", frame=f); c.excl.keyframe_insert("location", frame=f)
         for o_ in (c.speedlines, c.excl):
             o_.scale = (0, 0, 0); o_.keyframe_insert("scale", frame=min(N, f0 + dur + 1))
+
+
+# ---------------- anger steam puffs at both sides of the head ----------------
+STEAM_PUFFS = ((0, 0, 0.11), (0.1, 0.06, 0.09), (-0.08, 0.08, 0.08), (0.03, 0.13, 0.08))
+
+
+def add_steam(c, prefix="puff"):
+    m = flat("steam", (0.97, 0.97, 0.98)); puffs = []
+    for s in (-1, 1):
+        pv = empty(f"{prefix}{s}", c.head, (s * 0.52, 0.42, 0.2))
+        for k, (dx_, dy_, r) in enumerate(STEAM_PUFFS):
+            shape(pv, f"{prefix}{s}_{k}", ellipse(dx_ * s, dy_, r, r, 20), m, 0.01 * k, outline=0.025)
+        puffs.append(pv)
+    c.steam = puffs
+    return puffs
+
+
+def bake_steam_frame(c, f, ranges):
+    """call once per frame (keys every frame); puffs rise and pop while f is inside a range"""
+    for k_, pv in enumerate(c.steam):
+        a = next((a for a, b in ranges if a <= f <= b), None)
+        if a is not None:
+            ph = ((f - a) / 16.0 + k_ * 0.5) % 1.0; s_ = math.sin(math.pi * ph) * 1.2
+            pv.scale = (s_, s_, 1); pv.location = (pv.location[0], 0.42 + 0.35 * ph, 0.2)
+        else:
+            pv.scale = (0, 0, 1)
+        pv.keyframe_insert("scale", frame=f); pv.keyframe_insert("location", frame=f)
+
+
+# ---------------- sweat drips sliding down the head ----------------
+DRIP_POS = ((-0.45, 0.25), (0.48, 0.1), (0.3, 0.55))
+
+
+def add_drips(c, positions=DRIP_POS, prefix="drip"):
+    from . import faces
+    drips = []
+    for i, (dx_, dy_) in enumerate(positions):
+        d_ = empty(f"{prefix}{i}", c.head, (dx_, dy_, 0.3))
+        shape(d_, f"{prefix}{i}s", [(0, 0.08), (0.04, -0.02), (0, -0.05), (-0.04, -0.02)], faces.SWEAT, 0, outline=0.015)
+        drips.append(d_)
+    c.drips = drips; c.drip_y = [p[1] for p in positions]
+    return drips
+
+
+def bake_drips_frame(c, f, start):
+    for i, d_ in enumerate(c.drips):
+        ph = ((f - start) / 20.0 + i * 0.33) % 1.0
+        d_.location = (d_.location[0], c.drip_y[i] - 0.5 * ph, 0.3); d_.keyframe_insert("location", frame=f)

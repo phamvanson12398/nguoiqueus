@@ -1,0 +1,13 @@
+{
+  "kind": "motion",
+  "name": "drop_tumble",
+  "title_vi": "Rơi lọt lỗ (lật nghiêng)",
+  "description_vi": "Vật dựng nghiêng rồi rơi thẳng xuống lỗ, xoay lật. Ngoài khoảng [t0, t0+dur] vật bị giấu dưới đất (z = hide_z).",
+  "params": {"t0": 0, "dur": 22, "x": 0.0, "y": 0.0, "z0": 0.95, "hide_z": -6},
+  "segments": [
+    {"from": "t0", "to": "t0 + dur", "let": {"t": "(f - t0) / FPS"},
+     "location": ["x + 0.02 * sin(f)", "y", "z0 - 0.5 * 9.8 * 1.4 * t * t"],
+     "rotation_euler": ["radians(80) + t * 1.2", 0.0, "radians(45) + t * 2.0"]}
+  ],
+  "default": {"location": ["x", "y", "hide_z"], "rotation_euler": [0, 0, 0]}
+}

@@ -1,0 +1,7 @@
+{
+  "kind": "prop", "dim": "2d", "name": "bill", "title_vi": "Hóa đơn cuộn (2D)",
+  "description_vi": "Cuộn hóa đơn; dải '<prefix>_strip' bung xuống khi scale Y tăng (0.03 = cuộn, 1.9 = mở hết). Dùng track scale để bung. Hai tay ik ở (±0.20, 0.60).",
+  "params": {"prefix": {"type": "string", "default": "bill"}, "total": {"type": "string", "default": "$$$"}},
+  "parts": ["<prefix>_strip"],
+  "tags": ["hand", "2d", "money"]
+}

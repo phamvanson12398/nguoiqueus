@@ -1,0 +1,13 @@
+{
+  "kind": "prop", "dim": "2d", "name": "diagram_round_hole", "title_vi": "Sơ đồ: lỗ tròn",
+  "description_vi": "Sơ đồ 2D: lỗ tròn, nắp tròn, mũi tên đường kính có thể xoay, hai nhãn trên/dưới.",
+  "params": {
+    "prefix": {"type": "string", "default": "dg"},
+    "radius": {"type": "number", "default": 0.9},
+    "cover": {"type": "number", "default": 1.03},
+    "label_top": {"type": "string", "default": "SAME WIDTH"},
+    "label_bottom": {"type": "string", "default": "CAN'T FALL IN"}
+  },
+  "parts": ["<prefix>_rd_cover", "<prefix>_diam_pivot", "<prefix>_l_same", "<prefix>_l_never"],
+  "tags": ["diagram", "geometry"]
+}

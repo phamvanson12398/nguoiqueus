@@ -1,4 +1,7 @@
-"""Materials, sky, sun, GPU ink outlines and the compositor film look (v2 toolkit)."""
+"""Materials, sky, sun, GPU ink outlines and the compositor film look (v2 toolkit).
+
+Every material constructor caches by name: the name is the key, so a set and a prop
+asking for "leaf" share one material (first caller's colour wins)."""
 import math
 import bpy
 from mathutils import Matrix
@@ -26,16 +29,19 @@ def flat(name, rgb):
 
 
 def pbr(name, rgb, rough=0.8, metal=0.0):
+    if name in MATS: return MATS[name]
     m = bpy.data.materials.new(name); m.use_nodes = True
     b = m.node_tree.nodes["Principled BSDF"]
     b.inputs["Base Color"].default_value = (*rgb, 1)
     b.inputs["Roughness"].default_value = rough
     b.inputs["Metallic"].default_value = metal
+    MATS[name] = m
     return m
 
 
 def ramp_mat(name, stops, tex="noise", scale=1.0, coord="Object", bump=0.0, rough=0.9,
              wave_dir='Z', distortion=2.0, detail=4.0, mapping_scale=(1, 1, 1), voronoi=False):
+    if name in MATS: return MATS[name]
     m = bpy.data.materials.new(name); m.use_nodes = True
     nt = m.node_tree; L = nt.links
     b = nt.nodes["Principled BSDF"]
@@ -74,6 +80,7 @@ def ramp_mat(name, stops, tex="noise", scale=1.0, coord="Object", bump=0.0, roug
         bp = nt.nodes.new("ShaderNodeBump"); bp.inputs["Strength"].default_value = bump
         src = t.outputs["Distance"] if voronoi else t.outputs["Fac"]
         L.new(src, bp.inputs["Height"]); L.new(bp.outputs[0], b.inputs["Normal"])
+    MATS[name] = m
     return m
 
 
@@ -83,6 +90,7 @@ def setmat(o, m):
 
 def window_mat(name, wall, glass, scale=(2.2, 1.0)):
     """building facade: brick texture used as a window grid"""
+    if name in MATS: return MATS[name]
     m = bpy.data.materials.new(name); m.use_nodes = True
     nt = m.node_tree; L = nt.links; b = nt.nodes["Principled BSDF"]
     b.inputs["Roughness"].default_value = 0.7
@@ -102,10 +110,12 @@ def window_mat(name, wall, glass, scale=(2.2, 1.0)):
     br.inputs["Mortar Smooth"].default_value = 0.0
     L.new(comb.outputs[0], br.inputs["Vector"])
     L.new(br.outputs["Color"], b.inputs["Base Color"])
+    MATS[name] = m
     return m
 
 
 def iron_mat(name, kind):
+    if name in MATS: return MATS[name]
     m = bpy.data.materials.new(name); m.use_nodes = True
     nt = m.node_tree; L = nt.links; b = nt.nodes["Principled BSDF"]
     b.inputs["Metallic"].default_value = 0.6; b.inputs["Roughness"].default_value = 0.55
@@ -122,6 +132,7 @@ def iron_mat(name, kind):
     L.new(t.outputs["Fac"], cr.inputs[0]); L.new(cr.outputs[0], b.inputs["Base Color"])
     bp = nt.nodes.new("ShaderNodeBump"); bp.inputs["Strength"].default_value = 0.5
     L.new(t.outputs["Fac"], bp.inputs["Height"]); L.new(bp.outputs[0], b.inputs["Normal"])
+    MATS[name] = m
     return m
 
 
