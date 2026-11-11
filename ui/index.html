@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WhyShorts Studio</title>
+<style>
+:root{--bg:#f5f6f8;--panel:#fff;--ink:#1d2129;--muted:#6b7280;--line:#e3e6eb;--accent:#e8590c;--accent2:#1c7ed6;--ok:#2b8a3e;--warn:#e67700;--bad:#c92a2a;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#15171c;--panel:#1e2128;--ink:#e8eaee;--muted:#9aa1ad;--line:#2e333d;--chip:#2a2f38}}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;padding:10px 18px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+header h1{font-size:17px;margin:0;white-space:nowrap}
+header h1 b{color:var(--accent)}
+select,input,textarea,button{font:inherit;color:inherit}
+select,input[type=text],input[type=number],textarea{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 8px}
+textarea{width:100%;resize:vertical;min-height:54px}
+button{border:1px solid var(--line);background:var(--chip);border-radius:7px;padding:6px 12px;cursor:pointer;white-space:nowrap}
+button:hover{filter:brightness(.96)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+button.blue{background:var(--accent2);border-color:var(--accent2);color:#fff}
+button:disabled{opacity:.5;cursor:not-allowed}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{background:none;border:none;border-radius:6px;padding:6px 9px;color:var(--muted)}
+nav button.on{background:var(--chip);color:var(--ink);font-weight:600}
+nav button .n{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--line);color:var(--ink);font-size:11px;line-height:18px;text-align:center;margin-right:4px}
+nav button.done .n{background:var(--ok);color:#fff}
+main{max-width:1180px;margin:0 auto;padding:18px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.panel h2{font-size:15px;margin:0 0 10px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.warnbar{background:#fff4e6;color:#7a3d00;border:1px solid #ffd8a8;padding:8px 12px;border-radius:8px;margin-bottom:12px}
+@media (prefers-color-scheme:dark){.warnbar{background:#3a2a12;color:#ffd8a8;border-color:#7a4a10}}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:var(--chip);border-radius:8px;padding:8px 12px;min-width:120px}
+.stat b{display:block;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:9px;padding:12px;background:var(--panel)}
+.card.sel{outline:2px solid var(--accent)}
+.card h3{font-size:14px;margin:0 0 4px}
+.chip{display:inline-block;background:var(--chip);border-radius:20px;padding:1px 8px;font-size:12px;margin:1px 2px 1px 0}
+.chip.draft{background:#fff3bf;color:#5c4400}
+.score{float:right;font-weight:700;color:var(--accent)}
+.seq{border:1px solid var(--line);border-radius:9px;padding:10px;margin-bottom:10px;background:var(--panel)}
+.seq.dragging{opacity:.4}
+.seq .head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.seq .handle{cursor:grab;color:var(--muted);font-size:18px;user-select:none;touch-action:none;padding:0 4px}
+.seq .fields{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px}
+.seq label{font-size:12px;color:var(--muted);display:block}
+.seq .full{grid-column:1/-1}
+.seq input[type=text]{width:100%}
+.log{background:#0f1115;color:#cfd6e0;font:12px/1.4 ui-monospace,Consolas,monospace;border-radius:8px;padding:10px;max-height:260px;overflow:auto;white-space:pre-wrap}
+.bar{height:14px;background:var(--chip);border-radius:7px;overflow:hidden}
+.bar>div{height:100%;background:var(--accent);width:0;transition:width .4s}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.thumbs figure{margin:0;text-align:center;font-size:12px;color:var(--muted)}
+.thumbs img{width:100%;border-radius:6px;border:1px solid var(--line);cursor:zoom-in;background:#ccc}
+.grid.lib{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.lib img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;background:#ddd;cursor:zoom-in}
+.seg{font-size:13px;padding:3px 0;border-bottom:1px dashed var(--line)}
+.seg b{display:inline-block;width:110px;color:var(--accent2);font-variant-numeric:tabular-nums}
+#zoom{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:20}
+#zoom img{max-height:94vh;max-width:94vw}
+.hidden{display:none!important}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px;opacity:0;transition:opacity .3s;z-index:30}
+.toast.show{opacity:.95}
+small.err{color:var(--bad)}
+@media (max-width:760px){main{padding:10px}.seq .fields,#contentBox .fields{grid-template-columns:1fr!important}.seq .head{flex-wrap:wrap}.seq .rwReq{width:100%!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Why<b>Shorts</b> Studio</h1>
+  <select id="projSel" title="Dự án" style="max-width:260px"></select>
+  <button id="newProj">+ Dự án mới</button>
+  <nav id="tabs">
+    <button data-tab="idea"><span class="n">1</span>Ý tưởng</button>
+    <button data-tab="content"><span class="n">2</span>Content</button>
+    <button data-tab="voice"><span class="n">3</span>Giọng đọc</button>
+    <button data-tab="build"><span class="n">4</span>Duyệt &amp; dựng</button>
+    <button data-tab="render"><span class="n">5</span>Render</button>
+    <button data-tab="library">Thư viện</button>
+  </nav>
+  <span style="flex:1"></span>
+  <span id="usage" class="muted" style="white-space:nowrap" title="Số lần gọi Claude (ghi trong logs/)"></span>
+</header>
+<main>
+  <div id="warn"></div>
+  <div id="jobPanel" class="panel hidden">
+    <div class="row"><h2 id="jobTitle" style="margin:0">Đang chạy…</h2><span id="jobTime" class="muted"></span><span style="flex:1"></span><button id="jobCancel">Hủy</button><button id="jobHide">Ẩn</button></div>
+    <div id="jobBarWrap" class="bar hidden" style="margin:10px 0"><div id="jobBar"></div></div>
+    <div id="jobProg" class="muted"></div>
+    <div id="jobLog" class="log" style="margin-top:8px"></div>
+  </div>
+
+  <!-- 1. IDEAS -->
+  <section id="tab-idea">
+    <div class="panel">
+      <h2>Chủ đề</h2>
+      <div class="row">
+        <input type="text" id="topic" placeholder="Chủ đề hoặc câu hỏi 'Why…' (để trống = Claude tự đào)" style="flex:1;min-width:280px">
+        <button id="btnIdeas" class="primary">Gợi ý ý tưởng</button>
+        <button id="btnFreeTopic" title="Dùng thẳng chủ đề này, không cần gợi ý">Dùng chủ đề này</button>
+      </div>
+      <p class="muted">Claude đào 25-30 ứng viên, chấm 5 tiêu chí, giữ 10 ý từ 8/10 và có tra web kiểm chứng. Mất khoảng 1-4 phút, tính 1 lượt vào gói.</p>
+    </div>
+    <div id="chosenIdea" class="panel hidden"></div>
+    <div id="ideaList" class="grid"></div>
+  </section>
+
+  <!-- 2. CONTENT -->
+  <section id="tab-content" class="hidden">
+    <div class="panel">
+      <h2>Độ dài</h2>
+      <div class="row">
+        <label>Số phút <input type="number" id="minutes" min="0.5" max="10" step="0.5" value="1" style="width:80px"></label>
+        <div class="stats" id="est"></div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button id="btnWrite" class="primary">Viết content</button>
+        <span class="muted">Claude viết lời đọc tiếng Anh, bản dịch Việt và bảng chuỗi máy.</span>
+      </div>
+    </div>
+    <div id="contentBox" class="hidden">
+      <div class="panel">
+        <div class="row"><h2 id="cTitle" style="margin:0;flex:1"></h2><span id="cWords" class="muted"></span>
+          <button id="btnSave" class="blue">Lưu</button>
+          <select id="histSel"><option value="">Lịch sử phiên bản…</option></select>
+          <button id="btnRestore">Khôi phục</button></div>
+        <div class="fields" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <div><label class="muted">Lời đọc (EN) — lời thoại trong "ngoặc kép", [beat] để ngắt</label><textarea id="voEn" rows="9"></textarea></div>
+          <div><label class="muted">Bản dịch (VI)</label><textarea id="voVi" rows="9"></textarea></div>
+        </div>
+        <div id="cSources" class="muted" style="margin-top:6px"></div>
+        <div id="cNeeds" style="margin-top:6px"></div>
+      </div>
+      <div class="row" style="margin-bottom:8px"><h2 style="margin:0;flex:1;font-size:15px">Chuỗi máy <span class="muted" style="font-weight:400">(kéo ☰ để đổi thứ tự)</span></h2><button id="btnAddSeq">+ Thêm chuỗi</button></div>
+      <div id="seqList"></div>
+    </div>
+  </section>
+
+  <!-- 3. VOICE -->
+  <section id="tab-voice" class="hidden">
+    <div class="panel">
+      <h2>Giọng đọc</h2>
+      <p class="muted">Tự làm giọng từ lời đọc tiếng Anh (ElevenLabs…), lưu dạng .wav rồi tải lên. Tool canh từng chữ theo khoảng lặng, sai số khoảng 0,3 s.</p>
+      <div class="row"><input type="file" id="voiceFile" accept=".wav,audio/wav"><button id="btnUpload" class="primary">Tải lên &amp; canh chữ</button><button id="btnRealign">Canh lại</button></div>
+      <audio id="voicePlayer" controls class="hidden" style="width:100%;margin-top:10px"></audio>
+    </div>
+    <div id="alignBox" class="panel hidden"><h2>Thời gian từng câu</h2><div id="alignStats" class="stats" style="margin-bottom:8px"></div><div id="segs"></div></div>
+  </section>
+
+  <!-- 4. BUILD -->
+  <section id="tab-build" class="hidden">
+    <div class="panel">
+      <h2>Duyệt &amp; dựng</h2>
+      <p class="muted">Lần lượt: Claude chuyển content thành <code>story.json</code> (camera v3, theo thời gian từng chữ) → thiết kế đồ còn thiếu trong thư viện (tự render rồi tự xem lại) → kiểm tra → render vài khung xem trước ở 35 %.</p>
+      <div class="row"><button id="btnBuild" class="primary">Duyệt &amp; dựng</button><button id="btnPreview">Chỉ render lại xem trước</button>
+        <label>Khung <input type="text" id="pvFrames" placeholder="vd 50,200,366 (trống = tự chọn)" style="width:220px"></label></div>
+      <div id="storyInfo" class="muted" style="margin-top:8px"></div>
+    </div>
+    <div class="panel" id="previewPanel">
+      <h2>Ảnh xem trước</h2>
+      <div id="previews" class="thumbs"></div>
+      <div class="row" style="margin-top:12px">
+        <input type="text" id="fixText" placeholder="Thấy lỗi gì? vd: khung 200 phụ đề che miệng Gary, nắp cống quá nhỏ…" style="flex:1;min-width:300px">
+        <button id="btnFix">Nhờ Claude sửa</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. RENDER -->
+  <section id="tab-render" class="hidden">
+    <div class="panel">
+      <h2>Render</h2>
+      <div class="stats" id="renderEst"></div>
+      <div class="row" style="margin-top:12px">
+        <label>Độ phân giải <select id="rPct"><option value="100">100 % (1080x1920)</option><option value="50">50 %</option><option value="25">25 % (thử nhanh)</option></select></label>
+        <label>Khung <input type="text" id="rFrames" placeholder="trống = cả video; vd 300-420" style="width:180px"></label>
+        <button id="btnRender" class="primary">Render</button>
+      </div>
+      <p class="muted">Khi chỉ render một đoạn khung, file lưu vào <code>parts/</code> (dùng khi chỉ sửa một chuỗi).</p>
+    </div>
+    <div class="panel"><h2>File đã render</h2><div id="outputs"></div><video id="player" controls class="hidden" style="max-height:70vh;margin-top:10px;border-radius:8px"></video></div>
+  </section>
+
+  <!-- LIBRARY -->
+  <section id="tab-library" class="hidden">
+    <div class="panel">
+      <h2>Thiết kế đồ mới</h2>
+      <div class="row">
+        <select id="dKind"><option value="props">Đạo cụ</option><option value="sets">Bối cảnh</option><option value="chars">Nhân vật</option></select>
+        <select id="dDim"><option value="3d">3D (rơi, lăn, đặt đất)</option><option value="2d">2D (cầm tay, sơ đồ)</option></select>
+        <input type="text" id="dName" placeholder="ten_khong_dau" style="width:170px">
+        <input type="text" id="dBrief" placeholder="Mô tả: hình dáng, màu, dùng trong cảnh nào…" style="flex:1;min-width:260px">
+        <button id="btnDesign" class="primary">Nhờ Claude thiết kế</button>
+      </div>
+    </div>
+    <div id="libList"></div>
+  </section>
+</main>
+<div id="zoom"><img></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const S = {slug: null, state: null, tab: 'idea', job: null, logLen: 0, status: null};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtTime = s => s == null ? '—' : s < 90 ? `${Math.round(s)} giây` : s < 5400 ? `${Math.round(s/60)} phút` : `${(s/3600).toFixed(1)} giờ`;
+function toast(m, ms=2600){const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'), ms);}
+async function api(path, opt={}) {
+  const o = {method: opt.method || (opt.body !== undefined ? 'POST' : 'GET'), headers: {}};
+  if (opt.raw) { o.body = opt.raw; o.headers['Content-Type'] = 'application/octet-stream'; }
+  else if (opt.body !== undefined) { o.body = JSON.stringify(opt.body); o.headers['Content-Type'] = 'application/json'; }
+  const r = await fetch(path, o); const j = await r.json().catch(() => ({error: 'bad response'}));
+  if (!r.ok || j.error) throw new Error(j.error || r.statusText);
+  return j;
+}
+const P = p => `/api/projects/${S.slug}${p}`;
+
+// ---------------- tabs ----------------
+function showTab(t) {
+  S.tab = t; $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  $$('main > section').forEach(s => s.classList.toggle('hidden', s.id !== 'tab-' + t));
+  try { localStorage.setItem('ws_tab', t); } catch (e) {}
+  if (t === 'library') loadLibrary();
+}
+$$('#tabs button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+
+// ---------------- status + projects ----------------
+async function loadStatus() {
+  try {
+    const s = S.status = await api('/api/status');
+    let w = '';
+    if (s.api_key_warning) w += `<div class="warnbar">⚠️ ${esc(s.api_key_warning)}</div>`;
+    if (!s.claude) w += `<div class="warnbar">⚠️ ${esc(s.claude_note)}</div>`;
+    if (!s.blender_found) w += `<div class="warnbar">⚠️ Không thấy Blender ở <code>${esc(s.blender)}</code>. Đặt biến WHYSHORTS_BLENDER trỏ tới blender.exe.</div>`;
+    $('#warn').innerHTML = w;
+    $('#usage').textContent = `Claude: ${s.usage.calls || 0} lượt · ${fmtTime(s.usage.seconds || 0)}`;
+  } catch (e) { $('#warn').innerHTML = `<div class="warnbar">Không kết nối được server: ${esc(e.message)}</div>`; }
+}
+async function loadProjects(select) {
+  const rows = await api('/api/projects');
+  $('#projSel').innerHTML = rows.map(r => `<option value="${esc(r.slug)}">${esc(r.title)}${r.title !== r.slug ? ' · ' + esc(r.slug) : ''}</option>`).join('') || '<option value="">(chưa có dự án)</option>';
+  let want = select || S.slug; try { want = want || localStorage.getItem('ws_proj'); } catch (e) {}
+  if (rows.some(r => r.slug === want)) $('#projSel').value = want;
+  S.slug = $('#projSel').value || null;
+  if (S.slug) await loadProject();
+}
+$('#projSel').onchange = async () => { S.slug = $('#projSel').value; try { localStorage.setItem('ws_proj', S.slug); } catch (e) {} await loadProject(); };
+$('#newProj').onclick = async () => {
+  const t = prompt('Tên dự án (vd: why-pizza-boxes-square):'); if (!t) return;
+  const r = await api('/api/projects', {body: {title: t}}); await loadProjects(r.slug); showTab('idea');
+};
+
+async function loadProject() {
+  if (!S.slug) return;
+  const st = S.state = await api(P(''));
+  // step marks
+  const done = {idea: !!st.idea, content: !!st.content, voice: !!st.words, build: !!st.story, render: st.outputs.length > 0};
+  $$('#tabs button').forEach(b => b.classList.toggle('done', !!done[b.dataset.tab]));
+  renderIdeas(); renderContent(); renderVoice(); renderBuild(); renderRender();
+  if (st.job && st.job.status === 'running' && (!S.job || S.job !== st.job.id)) watchJob(st.job.id, st.job.kind);
+}
+
+// ---------------- jobs ----------------
+let pollT = null;
+function watchJob(id, kind, after) {
+  S.job = id; S.logLen = 0; S.after = after;
+  $('#jobPanel').classList.remove('hidden'); $('#jobLog').textContent = ''; $('#jobTitle').textContent = `Đang chạy: ${kind}`;
+  $('#jobBarWrap').classList.add('hidden'); $('#jobProg').textContent = '';
+  clearTimeout(pollT); poll();
+}
+async function poll() {
+  if (!S.job) return;
+  let j; try { j = await api(`/api/jobs/${S.job}?since=${S.logLen}`); } catch (e) { pollT = setTimeout(poll, 2000); return; }
+  if (j.log.length) { const L = $('#jobLog'); L.textContent += j.log.join('\n') + '\n'; L.scrollTop = L.scrollHeight; }
+  S.logLen = j.log_len; $('#jobTime').textContent = fmtTime(j.elapsed);
+  if (j.progress) {
+    $('#jobBarWrap').classList.remove('hidden'); $('#jobBar').style.width = (100 * j.progress.done / j.progress.total).toFixed(1) + '%';
+    $('#jobProg').textContent = `Khung ${j.progress.done}/${j.progress.total}` + (j.progress.sec_per_frame ? ` · ${j.progress.sec_per_frame} s/khung · còn khoảng ${fmtTime(j.progress.eta)}` : '');
+  }
+  if (j.status === 'running') { pollT = setTimeout(poll, 1200); return; }
+  $('#jobTitle').textContent = {done: '✅ Xong', error: '❌ Lỗi', cancelled: 'Đã hủy'}[j.status] + `: ${j.kind}`;
+  if (j.error) toast('Lỗi: ' + j.error, 6000); else if (j.status === 'done') toast('Xong: ' + j.kind);
+  S.job = null; loadStatus(); await loadProject(); if (S.tab === 'library') loadLibrary();
+  if (S.after && j.status === 'done') S.after(j);
+}
+$('#jobCancel').onclick = () => S.job && api(`/api/jobs/${S.job}/cancel`, {body: {}});
+$('#jobHide').onclick = () => $('#jobPanel').classList.add('hidden');
+async function run(path, body, kind, after) {
+  if (!S.slug && !path.startsWith('/api/library')) return toast('Tạo hoặc chọn dự án trước');
+  try { const j = await api(path, {body}); watchJob(j.id, kind || j.kind, after); }
+  catch (e) { toast(e.message, 5000); }
+}
+
+// ---------------- 1. ideas ----------------
+function renderIdeas() {
+  const st = S.state; const ideas = (st.ideas || {}).ideas || [];
+  const chosen = st.idea;
+  $('#chosenIdea').classList.toggle('hidden', !chosen);
+  if (chosen) $('#chosenIdea').innerHTML = `<h2>Ý tưởng đã chọn</h2><b>${esc(chosen.title)}</b> ${chosen.title_vi ? '— ' + esc(chosen.title_vi) : ''}<div class="muted">${esc(chosen.logline || '')}</div><div class="row" style="margin-top:8px"><button class="primary" onclick="showTab('content')">Tiếp: viết content →</button></div>`;
+  $('#ideaList').innerHTML = ideas.map((x, i) => `<div class="card ${chosen && chosen.title === x.title ? 'sel' : ''}">
+    <span class="score">${x.score}/10</span><h3>${esc(x.title)}</h3><div class="muted">${esc(x.title_vi || '')}</div>
+    <p>${esc(x.logline)}</p>
+    <div><b>Hook:</b> ${esc(x.hook)}</div><div><b>Leo thang:</b> ${esc(x.escalation)}</div><div><b>Twist:</b> ${esc(x.twist)}</div>
+    <div><b>Camera:</b> ${esc(x.camera_axis)}</div><div><b>Cảnh ăn tiền:</b> ${esc(x.money_shot)}</div>
+    <div style="margin:4px 0">${(x.sets || []).map(s => `<span class="chip">${esc(s)}</span>`).join('')}<span class="chip">${esc(x.formula)}</span></div>
+    ${(x.facts || []).length ? `<details><summary class="muted">Nguồn (${x.facts.length})</summary>${x.facts.map(f => `<div class="muted">• ${esc(f.claim)} — ${esc(f.source)}</div>`).join('')}</details>` : ''}
+    <button class="blue" style="margin-top:6px" onclick="pickIdea(${i})">Chọn ý này</button></div>`).join('');
+}
+window.pickIdea = async i => { await api(P('/idea'), {body: {index: i}}); await loadProject(); toast('Đã chọn ý tưởng'); };
+$('#btnIdeas').onclick = () => run(P('/ideas'), {topic: $('#topic').value.trim()}, 'Gợi ý ý tưởng');
+$('#btnFreeTopic').onclick = async () => { const t = $('#topic').value.trim(); if (!t) return toast('Nhập chủ đề trước');
+  await api(P('/idea'), {body: {topic: t}}); await loadProject(); showTab('content'); };
+
+// ---------------- 2. content ----------------
+async function updateEst() {
+  const m = parseFloat($('#minutes').value) || 1;
+  const e = await api(`/api/estimate?minutes=${m}`);
+  $('#est').innerHTML = `<div class="stat"><span class="muted">Lời đọc</span><b>~${e.words} từ</b></div>
+    <div class="stat"><span class="muted">Chuỗi máy</span><b>~${e.sequences}</b>${e.chapters ? `<span class="muted">${e.chapters} chương</span>` : ''}</div>
+    <div class="stat"><span class="muted">Khung hình</span><b>${e.frames}</b></div>
+    <div class="stat"><span class="muted">Render ước tính</span><b>${fmtTime(e.render_seconds)}</b><span class="muted">${S.status ? S.status.sec_per_frame : 1.4} s/khung</span></div>`;
+}
+$('#minutes').oninput = () => { clearTimeout(updateEst._t); updateEst._t = setTimeout(updateEst, 150); };
+$('#minutes').onchange = () => S.slug && api(P('/settings'), {body: {minutes: parseFloat($('#minutes').value)}});
+$('#btnWrite').onclick = () => {
+  if (!S.state.idea) return toast('Chọn ý tưởng hoặc nhập chủ đề ở bước 1');
+  if (S.state.content && !confirm('Viết content mới? Bản hiện tại vẫn được giữ trong lịch sử.')) return;
+  run(P('/content/write'), {minutes: parseFloat($('#minutes').value) || 1}, 'Viết content');
+};
+const SEQ_FIELDS = [['vo_en', 'Lời đọc (EN)', 'full', 'ta'], ['vo_vi', 'Bản dịch (VI)', 'full', 'ta'], ['action', 'Hành động trên màn hình', 'full', 'ta'],
+  ['set', 'Bối cảnh'], ['transition', 'Chuyển sang chuỗi sau'], ['chars', 'Nhân vật (phẩy)', '', 'list'], ['props', 'Đạo cụ (phẩy)', '', 'list'],
+  ['expressions', 'Biểu cảm'], ['camera', 'Đường đi camera'], ['gag', 'Gag', 'full'], ['sfx', 'Tiếng động (phẩy)', '', 'list'],
+  ['fx', 'Hiệu ứng hình (phẩy)', '', 'list'], ['emphasis', 'Chữ nhấn (phẩy)', '', 'list']];
+function seqCard(s, i) {
+  const f = SEQ_FIELDS.map(([k, lab, cls, typ]) => {
+    const v = Array.isArray(s[k]) ? s[k].join(', ') : (s[k] ?? '');
+    const inp = typ === 'ta' ? `<textarea data-k="${k}" rows="2">${esc(v)}</textarea>` :
+      k === 'transition' ? `<select data-k="${k}">${['whip','push','match','cut','none'].map(o => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('')}</select>` :
+      `<input type="text" data-k="${k}" data-list="${typ === 'list' ? 1 : ''}" value="${esc(v)}">`;
+    return `<div class="${cls || ''}"><label>${lab}</label>${inp}</div>`;
+  }).join('');
+  return `<div class="seq" draggable="false" data-i="${i}">
+    <div class="head"><span class="handle" title="Kéo để đổi thứ tự">☰</span><b>Chuỗi ${i + 1}</b>
+      <label class="muted">giây <input type="number" data-k="seconds" step="0.5" value="${s.seconds ?? 6}" style="width:64px"></label>
+      <span style="flex:1"></span>
+      <input type="text" class="rwReq" placeholder="Yêu cầu viết lại đoạn này…" style="width:260px"><button class="rw">Viết lại đoạn này</button>
+      <button class="up" title="Lên">▲</button><button class="down" title="Xuống">▼</button>
+      <button class="del" title="Xóa chuỗi">🗑</button></div>
+    <div class="fields">${f}</div></div>`;
+}
+function renderContent() {
+  const st = S.state; const c = st.content;
+  $('#minutes').value = (st.settings || {}).minutes || 1; updateEst();
+  $('#contentBox').classList.toggle('hidden', !c);
+  $('#histSel').innerHTML = '<option value="">Lịch sử phiên bản…</option>' + st.history.filter(h => h.startsWith('content_')).map(h => `<option>${esc(h)}</option>`).join('');
+  if (!c) return;
+  $('#cTitle').textContent = `${c.title}${c.title_vi ? ' — ' + c.title_vi : ''}`;
+  $('#voEn').value = c.vo_en; $('#voVi').value = c.vo_vi; wordCount();
+  $('#cSources').innerHTML = (c.sources || []).length ? 'Nguồn: ' + c.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.claim.slice(0, 60))}</a>`).join(' · ') : '';
+  $('#cNeeds').innerHTML = (c.library_needs || []).length ? 'Cần thiết kế thêm: ' + c.library_needs.map(n => `<span class="chip draft" title="${esc(n.brief)}">${esc(n.kind)}/${esc(n.name)}</span>`).join('') : '';
+  $('#seqList').innerHTML = c.sequences.map(seqCard).join('');
+  bindSeqs();
+}
+function wordCount() { const n = ($('#voEn').value.match(/[A-Za-z0-9'’]+/g) || []).length; const e = Math.round((parseFloat($('#minutes').value) || 1) * 150);
+  $('#cWords').textContent = `${n} từ (mục tiêu ~${e}) · khoảng ${Math.round(n / 150 * 60)} giây`; }
+$('#voEn').oninput = wordCount;
+function collectContent() {
+  const c = JSON.parse(JSON.stringify(S.state.content));
+  c.vo_en = $('#voEn').value; c.vo_vi = $('#voVi').value;
+  c.sequences = $$('#seqList .seq').map((el, idx) => {
+    const s = {id: idx + 1};
+    el.querySelectorAll('[data-k]').forEach(inp => {
+      let v = inp.value; if (inp.dataset.list) v = v.split(',').map(x => x.trim()).filter(Boolean);
+      if (inp.dataset.k === 'seconds') v = parseFloat(v) || 0;
+      s[inp.dataset.k] = v;
+    });
+    for (const k of ['chars', 'props', 'sfx', 'fx', 'emphasis']) s[k] = s[k] || [];
+    return s;
+  });
+  return c;
+}
+$('#btnSave').onclick = async () => { try { const r = await api(P('/content'), {body: {content: collectContent()}}); toast(`Đã lưu (${r.word_count} từ)`); await loadProject(); } catch (e) { toast(e.message, 6000); } };
+$('#btnRestore').onclick = async () => { const h = $('#histSel').value; if (!h) return; if (!confirm('Khôi phục ' + h + '? Bản hiện tại được lưu vào lịch sử.')) return;
+  await api(P(`/history/${h}/restore`), {body: {}}); await loadProject(); toast('Đã khôi phục'); };
+$('#btnAddSeq').onclick = () => { const c = collectContent(); c.sequences.push({id: c.sequences.length + 1, seconds: 6, vo_en: '', vo_vi: '', set: '', chars: [], props: [], action: '', camera: '', transition: 'cut', expressions: '', gag: '', sfx: [], fx: [], emphasis: []});
+  S.state.content = c; renderContent(); toast('Đã thêm chuỗi (nhớ bấm Lưu)'); };
+function bindSeqs() {
+  $$('#seqList .seq').forEach(el => {
+    el.querySelector('.del').onclick = () => { if (!confirm('Xóa chuỗi này?')) return; const c = collectContent(); c.sequences.splice(+el.dataset.i, 1); S.state.content = c; renderContent(); toast('Đã xóa (nhớ bấm Lưu)'); };
+    el.querySelector('.rw').onclick = async () => {
+      const req = el.querySelector('.rwReq').value.trim(); if (!req) return toast('Nhập yêu cầu viết lại');
+      await api(P('/content'), {body: {content: collectContent()}});           // save edits first
+      run(P('/content/rewrite'), {id: +el.dataset.i + 1, request: req}, `Viết lại chuỗi ${+el.dataset.i + 1}`);
+    };
+    // reorder: drag the ☰ handle (pointer events, works with mouse and touch) or use ▲▼
+    const h = el.querySelector('.handle');
+    h.onpointerdown = e => { e.preventDefault(); S.drag = el; S.dragMoved = false; el.classList.add('dragging'); h.setPointerCapture(e.pointerId); };
+    h.onpointermove = e => {
+      if (S.drag !== el) return;
+      if (e.clientY < 70) window.scrollBy(0, -24); else if (e.clientY > innerHeight - 70) window.scrollBy(0, 24);   // auto-scroll near edges
+      const over = document.elementsFromPoint(e.clientX, e.clientY).map(n => n.closest && n.closest('.seq')).find(n => n && n !== el);
+      if (!over) return;
+      const r = over.getBoundingClientRect(); const before = e.clientY < r.top + r.height / 2;
+      if ((before ? over.previousElementSibling : over.nextElementSibling) === el) return;
+      over.parentNode.insertBefore(el, before ? over : over.nextSibling); S.dragMoved = true;
+    };
+    h.onpointerup = () => { if (S.drag !== el) return; el.classList.remove('dragging'); S.drag = null;
+      if (S.dragMoved) { S.state.content = collectContent(); renderContent(); toast('Đã đổi thứ tự (nhớ bấm Lưu)'); } };
+    const move = d => { const c = collectContent(), i = +el.dataset.i, j = i + d; if (j < 0 || j >= c.sequences.length) return;
+      [c.sequences[i], c.sequences[j]] = [c.sequences[j], c.sequences[i]]; S.state.content = c; renderContent(); toast('Đã đổi thứ tự (nhớ bấm Lưu)'); };
+    el.querySelector('.up').onclick = () => move(-1); el.querySelector('.down').onclick = () => move(1);
+  });
+}
+
+// ---------------- 3. voice ----------------
+function renderVoice() {
+  const st = S.state; const w = st.words;
+  const pl = $('#voicePlayer'); pl.classList.toggle('hidden', !st.has_voice);
+  if (st.has_voice && !pl.src.includes(S.slug)) pl.src = P('/file/voice.wav');
+  $('#alignBox').classList.toggle('hidden', !w);
+  if (!w) return;
+  const est = st.content ? (st.content.vo_en.match(/[A-Za-z0-9'’]+/g) || []).length / 150 * 60 : null;
+  $('#alignStats').innerHTML = `<div class="stat"><span class="muted">Thời lượng giọng</span><b>${w.duration} s</b></div>
+    <div class="stat"><span class="muted">Số khung video</span><b>${w.frames}</b></div><div class="stat"><span class="muted">Số chữ</span><b>${w.word_count}</b></div>
+    ${est ? `<div class="stat"><span class="muted">Ước tính từ content</span><b>${Math.round(est)} s</b></div>` : ''}`;
+  $('#segs').innerHTML = w.segments.map(s => `<div class="seg"><b>${s.start.toFixed(2)}–${s.end.toFixed(2)}</b> ${esc(s.text)}</div>`).join('');
+}
+$('#btnUpload').onclick = async () => {
+  const f = $('#voiceFile').files[0]; if (!f) return toast('Chọn file .wav');
+  if (!S.state.content) return toast('Cần có content trước (lời đọc để canh chữ)');
+  try { const j = await api(P('/voice'), {raw: await f.arrayBuffer()}); $('#voicePlayer').src = ''; watchJob(j.id, 'Canh chữ'); } catch (e) { toast(e.message, 5000); }
+};
+$('#btnRealign').onclick = () => run(P('/align'), {}, 'Canh chữ');
+
+// ---------------- 4. build ----------------
+function renderBuild() {
+  const st = S.state; const s = st.story;
+  $('#storyInfo').innerHTML = s ? `story.json: ${s.frames} khung (${(s.frames / 30).toFixed(1)} s) · camera ${esc(s.camera)} · ${s.sequences} chuỗi · nhân vật: ${s.chars.map(esc).join(', ')}` : 'Chưa có story.json.';
+  $('#previews').innerHTML = st.previews.map(f => `<figure><img loading="lazy" src="${P('/file/preview/' + f)}?t=${Date.now()}" data-f="${esc(f)}"><figcaption>khung ${parseInt(f.slice(2, 6))}</figcaption></figure>`).join('') || '<span class="muted">Chưa có ảnh xem trước.</span>';
+}
+$('#btnBuild').onclick = () => {
+  if (!S.state.words) return toast('Cần tải giọng đọc ở bước 3 trước');
+  run(P('/build'), {}, 'Duyệt & dựng');
+};
+$('#btnPreview').onclick = () => { const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {frames: f}, 'Xem trước'); };
+$('#btnFix').onclick = () => { const t = $('#fixText').value.trim(); if (!t) return toast('Mô tả lỗi trước');
+  const f = (t.match(/khung\s*(\d+)/gi) || []).map(x => parseInt(x.replace(/\D/g, '')));
+  run(P('/fix'), {problem: t, frames: f}, 'Sửa theo ảnh xem trước'); };
+
+// ---------------- 5. render ----------------
+function renderRender() {
+  const st = S.state; const fr = st.story ? st.story.frames : st.estimate.frames;
+  const spf = S.status ? S.status.sec_per_frame : 1.4;
+  $('#renderEst').innerHTML = `<div class="stat"><span class="muted">Số khung</span><b>${fr}</b></div><div class="stat"><span class="muted">Ước tính (100 %)</span><b>${fmtTime(fr * spf)}</b><span class="muted">${spf} s/khung + ~40 s biên dịch shader</span></div>`;
+  $('#outputs').innerHTML = st.outputs.length ? st.outputs.map(o => `<div class="row" style="padding:4px 0"><b>${esc(o.file)}</b><span class="muted">${(o.size / 1e6).toFixed(1)} MB · ${esc(o.time)}</span>
+     <button onclick="play('${esc(o.file)}')">Xem</button><a href="${P('/file/' + o.file)}" download><button>Tải về</button></a><button onclick="openFile('${esc(o.file)}')">Mở bằng trình phát</button></div>`).join('') : '<span class="muted">Chưa có file.</span>';
+}
+window.play = f => { const v = $('#player'); v.src = P('/file/' + f) + '?t=' + Date.now(); v.classList.remove('hidden'); v.play(); };
+window.openFile = async f => { const r = await api(P('/open'), {body: {file: f}}); if (!r.ok) play(f); };
+$('#btnRender').onclick = () => { if (!S.state.story) return toast('Chưa có story.json (bước 4)');
+  run(P('/render'), {pct: parseInt($('#rPct').value), frames: $('#rFrames').value.trim() || null}, 'Render'); };
+
+// ---------------- library ----------------
+async function loadLibrary() {
+  const L = await api('/api/library');
+  const names = {props: 'Đạo cụ', sets: 'Bối cảnh', chars: 'Nhân vật'};
+  $('#libList').innerHTML = ['props', 'sets', 'chars'].map(k => `<div class="panel"><h2>${names[k]} (${L[k].length})</h2><div class="grid lib">${L[k].slice().sort((a, b) => (b.status === 'draft') - (a.status === 'draft')).map(it => `
+    <div class="card"><img src="${it.thumb ? it.thumb + '?t=' + Date.now() : ''}" data-views='${esc(JSON.stringify(it.views))}' title="Bấm để xem các góc">
+      <h3 style="margin-top:6px">${esc(it.title_vi)} ${it.status === 'draft' ? '<span class="chip draft">nháp</span>' : ''}</h3>
+      <div class="muted">${esc(it.kind)}/${esc(it.name)}${it.dim ? ' · ' + it.dim : ''}${it.review && it.review.score ? ' · Claude tự chấm ' + it.review.score + '/10' : ''}</div>
+      <div style="font-size:12.5px;margin:4px 0" title="${esc(it.description_vi || '')}">${esc((it.description_vi || '').slice(0, 140))}${(it.description_vi || '').length > 140 ? '…' : ''}</div>
+      ${it.params ? `<div>${Object.keys(it.params).map(p => `<span class="chip">${esc(p)}</span>`).join('')}</div>` : ''}
+      ${it.status === 'draft' ? `<div class="row" style="margin-top:6px"><button class="blue" onclick="approveItem('${k}/${it.name}')">Duyệt</button>
+        <input type="text" placeholder="Góp ý: to hơn, đổi màu…" style="flex:1;min-width:0" id="fb-${k}-${it.name}"><button onclick="feedback('${k}','${it.name}')">Sửa</button></div>` : ''}
+    </div>`).join('')}</div></div>`).join('');
+  $$('#libList img').forEach(im => im.onclick = () => { const v = JSON.parse(im.dataset.views || '[]'); zoom(v.length ? v : [im.src]); });
+}
+window.approveItem = async it => { await api('/api/library/approve', {body: {item: it}}); toast('Đã duyệt ' + it); loadLibrary(); };
+window.feedback = (k, n) => { const t = $(`#fb-${k}-${n}`).value.trim(); if (!t) return toast('Nhập góp ý');
+  run('/api/library/design', {kind: k, name: n, feedback: t}, `Sửa ${k}/${n}`); };
+$('#btnDesign').onclick = () => { const n = $('#dName').value.trim(), b = $('#dBrief').value.trim();
+  if (!/^[a-z][a-z0-9_]{1,40}$/.test(n)) return toast('Tên: chữ thường không dấu, số, gạch dưới'); if (!b) return toast('Nhập mô tả');
+  run('/api/library/design', {kind: $('#dKind').value, name: n, brief: b, dim: $('#dKind').value === 'props' ? $('#dDim').value : null}, `Thiết kế ${n}`); };
+$('#dKind').onchange = () => $('#dDim').classList.toggle('hidden', $('#dKind').value !== 'props');
+
+// ---------------- zoom ----------------
+let zoomList = [], zoomI = 0;
+function zoom(list) { zoomList = list; zoomI = 0; $('#zoom img').src = list[0]; $('#zoom').style.display = 'flex'; }
+$('#zoom').onclick = e => { if (zoomList.length > 1 && e.target.tagName === 'IMG') { zoomI = (zoomI + 1) % zoomList.length; $('#zoom img').src = zoomList[zoomI]; } else $('#zoom').style.display = 'none'; };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#zoom').style.display = 'none'; });
+$('#previews').onclick = e => { if (e.target.tagName === 'IMG') zoom($$('#previews img').map(i => i.src).slice($$('#previews img').indexOf(e.target)).concat($$('#previews img').map(i => i.src).slice(0, $$('#previews img').indexOf(e.target)))); };
+
+// ---------------- start ----------------
+(async () => {
+  let t = 'idea'; try { t = localStorage.getItem('ws_tab') || t; } catch (e) {}
+  showTab(t); await loadStatus(); await loadProjects(); updateEst();
+  setInterval(loadStatus, 30000);
+})();
+</script>
+</body>
+</html>

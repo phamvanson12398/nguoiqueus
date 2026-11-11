@@ -1,0 +1,33 @@
+{
+  "title": "Why Does Toast Land Butter-Side Down?",
+  "title_vi": "Vì sao bánh mì rơi luôn úp mặt bơ xuống?",
+  "score": 9,
+  "scores": {
+    "curiosity": 2,
+    "visible_answer": 2,
+    "camera_journey": 2,
+    "physical_comedy": 2,
+    "verifiable": 1
+  },
+  "logline": "Gary chế ra đủ trò để lát bánh mì phết bơ rơi ngửa mặt, cho đến khi Joe chỉ ra thủ phạm thật: cái bàn quá thấp.",
+  "hook": "0-2s: khung hình đứng yên với lát bánh mì lơ lửng ngay trên đôi giày mới của Gary, mặt bơ quay xuống, thẻ tên 'GARY — 3 SECONDS BEFORE DISASTER'. Lia nối sang '10 MINUTES EARLIER'.",
+  "escalation": "Lần 1: bánh trượt khỏi bàn, xoay nửa vòng rồi SPLAT úp bơ xuống sàn (thud). Lần 2: Gary phết bơ mặt dưới để 'lừa trọng lực', bánh vẫn xoay nửa vòng, SPLAT úp bơ lên giày (squeak + sad_trombone). Lần 3 lệch: Gary chồng bàn lên thùng, lên ghế, cao 3 m, rồi trèo lên đẩy bánh. Bánh xoay trọn một vòng và đáp NGỬA mặt bơ. Gary ăn mừng thì cái tháp đổ (crash).",
+  "twist": "REPLAY slow-mo cạnh bàn: bánh bắt đầu xoay ngay khi rời mép bàn, và từ độ cao bàn ăn thường (~75 cm) nó chỉ kịp xoay khoảng nửa vòng là chạm đất. Muốn đáp ngửa thì bàn phải cao khoảng 3 m. Tag: lát bánh từ tháp đổ rơi úp bơ lên đầu Gary.",
+  "camera_axis": "Theo phương thẳng đứng: hạ cần bám theo lát bánh từ mép bàn xuống sàn, lặp ba lần; lần ba kéo lùi hé lộ cái tháp 3 m rồi hạ cần theo cú rơi dài nhất.",
+  "sets": [
+    "kitchen (bếp Mỹ: bàn ăn, sàn gạch ô cờ — bối cảnh mới)",
+    "diagram_board (phụ: cung xoay nửa vòng/1 vòng)"
+  ],
+  "money_shot": "Slow-mo lát bánh xoay nửa vòng, có vệt bóng mờ từng pha xoay giống ảnh chụp nhiều lần, SPLAT xuống sàn; ngay sau đó chia đôi màn hình ✗ bàn 75 cm / ✓ tháp 3 m.",
+  "formula": "perfect_plan_fails",
+  "facts": [
+    {
+      "claim": "R.A.J. Matthews (1995, European Journal of Physics 16:172) chỉ ra rằng bánh mì úp mặt bơ chủ yếu vì độ cao bàn so với kích thước lát bánh, không phải vì bơ làm nặng một mặt.",
+      "source": "https://oikofuge.com/matthews-tumbling-toast/"
+    },
+    {
+      "claim": "Matthews nhận giải Ig Nobel Vật lý 1996 cho công trình này; bàn phải cao trên khoảng 3 m (10 ft) thì bánh mới xoay đủ một vòng và đáp ngửa.",
+      "source": "https://wikipedia.com/wiki/Buttered_toast_phenomenon"
+    }
+  ]
+}

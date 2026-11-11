@@ -410,8 +410,22 @@ def main(argv):
             bpy.ops.render.render(write_still=True); print("FRAME", fr, round(time.time() - t1, 1), "s")
     if opt.get("render"):
         if "pct" in opt: sc.render.resolution_percentage = int(opt["pct"])
+        if "samples" in opt: sc.eevee.taa_render_samples = int(opt["samples"])
+        if "frames" in opt:                      # partial render A-B into parts/ (re-render one sequence)
+            a, b = [int(x) for x in opt["frames"].replace("-", ",").split(",")]
+            sc.frame_start, sc.frame_end = max(1, a), min(sc.frame_end, b)
+            base, ext = os.path.splitext(os.path.basename(sc.render.filepath))
+            pdir = os.path.join(B.out, "parts"); os.makedirs(pdir, exist_ok=True)
+            sc.render.filepath = os.path.join(pdir, f"{base}_{sc.frame_start:04d}-{sc.frame_end:04d}{ext}")
+        T0 = time.time()
+
+        def _progress(scene, *_):
+            print(f"RENDER FRAME {scene.frame_current} {scene.frame_start} {scene.frame_end} {time.time() - T0:.1f}", flush=True)
+        bpy.app.handlers.render_write.append(_progress)
+        print(f"RENDER START {sc.frame_start} {sc.frame_end} -> {sc.render.filepath}", flush=True)
         bpy.ops.render.render(animation=True)
-        print("RENDERED ->", sc.render.filepath)
+        bpy.app.handlers.render_write.remove(_progress)
+        print("RENDERED ->", sc.render.filepath, flush=True)
     return 0
 
 

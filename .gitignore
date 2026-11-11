@@ -7,3 +7,4 @@ projects/*/preview/
 _thumbs_tmp/
 logs/
 library/**/_review/
+projects/*/parts/

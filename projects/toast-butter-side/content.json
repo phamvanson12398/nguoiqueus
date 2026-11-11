@@ -1,0 +1,405 @@
+{
+  "title": "Why Does Toast Land Butter-Side Down?",
+  "title_vi": "Vì sao bánh mì rơi luôn úp mặt bơ xuống?",
+  "question": "Why does buttered toast almost always land butter-side down?",
+  "formula": "perfect_plan_fails",
+  "minutes": 1,
+  "vo_en": "Gary has new shoes. [beat] Gary is about to regret everything. [beat] Ten minutes earlier.\nGary butters his toast. Slide... flip... SPLAT. Butter-side down. \"Unlucky,\" says Gary. [beat] \"Is it, though?\"\nPlan two: it's the butter. Less butter! \"Barely any, gravity!\" [beat] Flip. SPLAT. Right on the new shoes.\nPlan three: table, on a crate, on a chair. Ten feet up. \"Push!\" [beat] It flips... and flips... butter-side UP! \"I beat physics!\" [beat] Crash.\nHere's the replay. \"Watch the edge,\" says Joe. Toast doesn't fall flat. The moment it tips over the edge, it starts to spin.\nFrom a normal table, about two and a half feet, it only has time for half a turn. Butter starts up, lands down. Every time.\nIt's not the butter. It's the table. For a full flip, you'd need a table ten feet tall. \"Or... use a plate,\" says Joe. [beat] Splat.",
+  "vo_vi": "Gary có đôi giày mới. [ngắt] Gary sắp hối hận về mọi thứ. [ngắt] Mười phút trước.\nGary phết bơ lên bánh. Trượt... lật... BẸP. Úp mặt bơ. \"Xui thôi,\" Gary nói. [ngắt] \"Thật không đấy?\"\nKế hoạch hai: tại bơ đấy. Bớt bơ! \"Gần như không có bơ luôn, trọng lực ạ!\" [ngắt] Lật. BẸP. Ngay lên đôi giày mới.\nKế hoạch ba: bàn chồng lên thùng, thùng chồng lên ghế. Cao ba mét. \"Đẩy!\" [ngắt] Bánh lật... lật nữa... NGỬA mặt bơ! \"Tôi thắng vật lý rồi!\" [ngắt] Rầm.\nXem lại nhé. \"Nhìn mép bàn,\" Joe nói. Bánh không rơi phẳng. Ngay lúc nghiêng qua mép bàn, nó bắt đầu xoay.\nTừ một cái bàn bình thường, cao chừng 75 phân, nó chỉ kịp xoay nửa vòng. Bơ bắt đầu ở trên, chạm đất thì ở dưới. Lần nào cũng vậy.\nKhông phải tại bơ. Tại cái bàn. Muốn lật trọn một vòng, bàn phải cao ba mét. \"Hoặc... dùng cái đĩa,\" Joe nói. [ngắt] Bẹp.",
+  "word_count": 148,
+  "sequences": [
+    {
+      "id": 1,
+      "seconds": 5.5,
+      "vo_en": "Gary has new shoes. [beat] Gary is about to regret everything. [beat] Ten minutes earlier.",
+      "vo_vi": "Gary có đôi giày mới. [ngắt] Gary sắp hối hận về mọi thứ. [ngắt] Mười phút trước.",
+      "action": "HOOK: hình đứng yên. Lát bánh 3D lơ lửng nghiêng ngay trên đôi giày mới bóng loáng của Gary, mặt bơ quay xuống, có vài giọt bơ treo lơ lửng. Gary há hốc mồm, tay vươn ra. Joe phía sau đang nhai, tỉnh bơ. Hiện thẻ tên 'GARY — 3 SECONDS BEFORE DISASTER'. Ở chữ 'regret' camera punch-in vào đôi giày (lấp lánh). Tới 'Ten minutes earlier' là whip lia ngang, chữ '10 MINUTES EARLIER' trượt vào.",
+      "set": "kitchen",
+      "transition": "none",
+      "chars": [
+        "gary",
+        "joe"
+      ],
+      "props": [
+        "kitchen_table",
+        "toast_slice",
+        "sneakers2d"
+      ],
+      "expressions": "gary: shock (đứng hình); joe: neutral, đang nhai",
+      "camera": "Thấp sát sàn, ngang giày. Dolly-in chậm vào lát bánh và giày (đi theo hé lộ chi tiết), roll +3°. Punch-in 18% vào đôi giày ở 'regret', giữ 1,5 giây rồi nhả. Cuối chuỗi vòng cung 25° sang phải, chuyển thành whip.",
+      "gag": "Freeze-frame + thẻ tên; đôi giày có tia lấp lánh 'ting'; giọt bơ lơ lửng (vật lý hoạt hình)",
+      "sfx": [
+        "scratch",
+        "ding",
+        "whoosh"
+      ],
+      "fx": [
+        "freeze_frame",
+        "name_card",
+        "sparkle",
+        "title_card_10_minutes_earlier"
+      ],
+      "emphasis": [
+        "new shoes",
+        "regret",
+        "earlier"
+      ]
+    },
+    {
+      "id": 2,
+      "seconds": 7.5,
+      "vo_en": "Gary butters his toast. Slide... flip... SPLAT. Butter-side down. \"Unlucky,\" says Gary. [beat] \"Is it, though?\"",
+      "vo_vi": "Gary phết bơ lên bánh. Trượt... lật... BẸP. Úp mặt bơ. \"Xui thôi,\" Gary nói. [ngắt] \"Thật không đấy?\"",
+      "set": "kitchen",
+      "chars": [
+        "gary",
+        "joe"
+      ],
+      "props": [
+        "kitchen_table",
+        "toast2d",
+        "butter_knife2d",
+        "butter_dish",
+        "toast_slice",
+        "butter_splat"
+      ],
+      "action": "Thất bại 1. Gary phết bơ rất điệu bằng dao 2D, vung tay hai cái có overshoot. Khuỷu tay quẹt trúng lát bánh, bánh đổi sang 3D ngay khung rời tay, trượt tới mép bàn, treo nửa nhịp rồi chúc xuống, xoay đúng nửa vòng và BẸP úp bơ xuống sàn gạch ô cờ, vụn bánh bắn lên. Gary nhún vai nói 'Unlucky' (nhép miệng) rồi cúi nhặt bánh lên. GAG BẤT NGỜ ở [beat]: dấu bơ in trên sàn là một khuôn mặt mếu hoàn hảo (hai chấm mắt và cái miệng trề), như sàn nhà đang chê Gary. Gary đứng hình, lát bánh còn treo trên tay. Joe cúi nhìn khuôn mặt mếu, nói 'Is it, though?' (nhép miệng).",
+      "camera": "Bắt đầu ngang ngực Gary ở bàn (nối từ cú whip), tracking ngang sang phải theo lát bánh trượt tới mép bàn, rồi hạ cần bám cú rơi. Rung strength 0,8 dur 10 lúc SPLAT. Đặt POV từ dưới sàn nhìn ngược lên: tay Gary bóc lát bánh lên, lộ ra mặt Gary ngơ ngác (snap zoom 3 khung vào khuôn mặt mếu trên sàn, lần snap 1/3 của video). Cuối chuỗi vòng cung 20° nâng lên cận mặt Joe, hạ điểm nhìn để mặt cao hơn phụ đề. Kết bằng dolly-in nhẹ vào lát bánh trên tay Gary để match sang chuỗi 3.",
+      "transition": "whip",
+      "expressions": "gary: smirk (phết bơ) → shock (SPLAT) → smug_closed ('Unlucky') → shock (thấy mặt mếu); joe: neutral → smirk ('Is it, though?')",
+      "gag": "Bánh treo nửa nhịp ở mép bàn rồi mới rơi; POV từ sàn khi Gary bóc bánh lên: vết bơ trên sàn thành khuôn mặt mếu như đang chê Gary; cận mặt Joe nhướng mày",
+      "sfx": [
+        "swish",
+        "slide_down",
+        "thud",
+        "scratch",
+        "squeak",
+        "pop"
+      ],
+      "fx": [
+        "dust_crumbs",
+        "impact_shake",
+        "butter_splat_decal",
+        "snap_zoom",
+        "pov_floor"
+      ],
+      "emphasis": [
+        "SPLAT",
+        "Butter-side down",
+        "Unlucky",
+        "though"
+      ]
+    },
+    {
+      "id": 3,
+      "seconds": 7.5,
+      "vo_en": "Plan two: it's the butter. Less butter! \"Barely any, gravity!\" [beat] Flip. SPLAT. Right on the new shoes.",
+      "vo_vi": "Kế hoạch hai: tại bơ đấy. Bớt bơ! \"Gần như không có bơ luôn, trọng lực ạ!\" [ngắt] Lật. BẸP. Ngay lên đôi giày mới.",
+      "action": "Thất bại 2 (giống lần 1). Gary cạo gần hết bơ, giơ lát bánh lên soi như thợ kim hoàn, chỉ còn một chấm bơ bé xíu. Gary hét lên trần nhà 'Barely any, gravity!' (nhép miệng). Gary đẩy bánh khỏi mép bàn: lại xoay đúng nửa vòng. Đây là khoảnh khắc hook: khung hình khớp đúng cảnh đứng yên ở đầu video, rồi BẸP úp bơ lên giày mới. Gary nhìn xuống, mặt méo, môi run.",
+      "set": "kitchen",
+      "transition": "match",
+      "chars": [
+        "gary",
+        "joe"
+      ],
+      "props": [
+        "kitchen_table",
+        "toast2d",
+        "butter_knife2d",
+        "toast_slice",
+        "sneakers2d",
+        "butter_splat"
+      ],
+      "expressions": "gary: focus (soi bơ) → angry (hét lên trần) → shock → worried (môi run); joe: smug_closed, đang nhấp cà phê",
+      "camera": "Bắt đầu cận lát bánh Gary đang soi (dolly-in chậm vào chấm bơ), nghiêng lên theo ánh nhìn của Gary lên trần, rồi hạ cần theo lát bánh xuống giày, khớp đúng bố cục hook. Rung strength 0,6 dur 8. Kết bằng cận mặt Gary.",
+      "gag": "Callback hook: cảnh đứng yên giờ mới diễn tiếp; chấm bơ bé xíu; trombone buồn",
+      "sfx": [
+        "swish",
+        "slide_down",
+        "bonk",
+        "squeak",
+        "sad_trombone",
+        "gulp"
+      ],
+      "fx": [
+        "impact_shake",
+        "butter_splat_decal",
+        "sweat_drop"
+      ],
+      "emphasis": [
+        "Less butter",
+        "gravity",
+        "SPLAT",
+        "shoes"
+      ]
+    },
+    {
+      "id": 4,
+      "seconds": 10,
+      "vo_en": "Plan three: table, on a crate, on a chair. Ten feet up. \"Push!\" [beat] It flips... and flips... butter-side UP! \"I beat physics!\" [beat] Crash.",
+      "vo_vi": "Kế hoạch ba: bàn chồng lên thùng, thùng chồng lên ghế. Cao ba mét. \"Đẩy!\" [ngắt] Bánh lật... lật nữa... NGỬA mặt bơ! \"Tôi thắng vật lý rồi!\" [ngắt] Rầm.",
+      "action": "Thất bại 3, lần lệch. Gary bê ghế, thùng gỗ, bàn ăn chồng lên nhau, mỗi món đặt xuống kêu thud. Biển '10 FT' bật lên cạnh tháp. Gary trèo lên đỉnh, tháp lắc lư, đẩy lát bánh khỏi mép bàn ('Push!'). Bánh rơi dài, xoay trọn một vòng, đáp NGỬA mặt bơ, nảy nhẹ một cái. Gary giơ hai tay hét 'I beat physics!'. Tháp nghiêng... rồi đổ RẦM. Một lát bánh thứ hai văng vút lên khỏi khung hình (cài cho tag cuối).",
+      "set": "kitchen",
+      "transition": "cut",
+      "chars": [
+        "gary",
+        "joe"
+      ],
+      "props": [
+        "kitchen_chair",
+        "wooden_crate",
+        "kitchen_table",
+        "toast_slice",
+        "height_sign"
+      ],
+      "expressions": "gary: focus (leo) → worried (tháp lắc) → happy/smirk ('I beat physics') → shock (tháp đổ); joe: shock, lùi một bước",
+      "camera": "Cắt theo hành động (Gary dằn thùng xuống). Kéo lùi hé lộ cái tháp cao 3 m, nâng cần theo Gary leo lên đỉnh. Lúc đẩy bánh: hạ cần dài bám lát bánh đang xoay từ đỉnh tháp xuống sàn. Punch-in 15% vào bánh khi đáp ngửa. Rồi rung lớn strength 1,4 dur 14 khi tháp đổ, roll -5°.",
+      "gag": "Biển '10 FT' trên tháp; cú rơi dài nhất có trọn một vòng xoay; ăn mừng được nửa giây thì tháp sập; lát bánh thứ hai bay mất (gag chạy dọc video)",
+      "sfx": [
+        "thud",
+        "thud",
+        "thud",
+        "step",
+        "boing",
+        "slide_down",
+        "ding",
+        "crash",
+        "zip_out"
+      ],
+      "fx": [
+        "impact_shake",
+        "dust_big",
+        "toast_launch_offscreen"
+      ],
+      "emphasis": [
+        "Ten feet",
+        "Push",
+        "UP",
+        "physics",
+        "Crash"
+      ]
+    },
+    {
+      "id": 5,
+      "seconds": 9,
+      "vo_en": "Here's the replay. \"Watch the edge,\" says Joe. Toast doesn't fall flat. The moment it tips over the edge, it starts to spin.",
+      "vo_vi": "Xem lại nhé. \"Nhìn mép bàn,\" Joe nói. Bánh không rơi phẳng. Ngay lúc nghiêng qua mép bàn, nó bắt đầu xoay.",
+      "action": "Tua ngược (đống đổ nát tự dựng lại, có vạch nhiễu VHS), chữ 'REPLAY' và 'SLOW-MO'. Bàn ăn về lại độ cao thường. Joe cầm que chỉ 2D gõ vào mép bàn ('Watch the edge'). Lát bánh trượt chậm tới mép: một nửa chìa ra ngoài, nửa đó chúc xuống, mép bàn thành trục xoay. Vệt bóng mờ từng pha xoay như ảnh chụp liên tiếp. Gary đầu dán băng cá nhân, ló vào nhìn chăm chú.",
+      "set": "kitchen",
+      "transition": "whip",
+      "chars": [
+        "joe",
+        "gary"
+      ],
+      "props": [
+        "kitchen_table",
+        "toast_slice",
+        "pointer_stick2d"
+      ],
+      "expressions": "joe: focus → smirk; gary: grumpy (dán băng cá nhân) → shock",
+      "camera": "Bắt đầu rộng lúc tua ngược, dolly-in chậm vào mép bàn (theo que chỉ của Joe). Vòng cung 40° quanh mép bàn để thấy rõ trục xoay, hạ cần thật chậm theo lát bánh đang xoay slow-mo, dừng nhịp ở nửa vòng.",
+      "gag": "REPLAY tua ngược, tháp tự dựng lại; slow-mo có vệt bóng mờ; băng cá nhân trên đầu Gary",
+      "sfx": [
+        "scratch",
+        "slide_up",
+        "swish",
+        "ding"
+      ],
+      "fx": [
+        "rewind_vhs",
+        "replay_label",
+        "slowmo_ghost_trail",
+        "punch_in"
+      ],
+      "emphasis": [
+        "replay",
+        "edge",
+        "spin"
+      ]
+    },
+    {
+      "id": 6,
+      "seconds": 10,
+      "vo_en": "From a normal table, about two and a half feet, it only has time for half a turn. Butter starts up, lands down. Every time.",
+      "vo_vi": "Từ một cái bàn bình thường, cao chừng 75 phân, nó chỉ kịp xoay nửa vòng. Bơ bắt đầu ở trên, chạm đất thì ở dưới. Lần nào cũng vậy.",
+      "action": "Lát bánh đang xoay khớp hình sang lát bánh vẽ trên giấy. Chia đôi màn hình: trái là bàn 75 cm, cung xoay nửa vòng, bánh chạm đất mặt bơ xuống, dấu ✗ đỏ đóng bộp. Phải là tháp 3 m, cung xoay trọn vòng, bánh chạm đất mặt bơ lên, dấu ✓ xanh. Bên trái lặp lại 3 lần nhanh, lần nào cũng BẸP ('Every time'). Joe đứng cạnh, gõ que vào từng cung.",
+      "set": "diagram_board",
+      "transition": "match",
+      "chars": [
+        "joe"
+      ],
+      "props": [
+        "diagram_toast_spin"
+      ],
+      "expressions": "joe: focus → smug_closed",
+      "camera": "Lens 45, cách 7,7. Tracking ngang chậm từ nửa trái sang nửa phải theo cung xoay, rồi lùi nhẹ để thấy cả hai nửa, roll +2°. Punch-in 14% vào dấu ✗ ở 'Every time'.",
+      "gag": "Chia đôi màn hình ✓/✗; bánh bên trái lặp lại 3 lần BẸP đều như máy dập",
+      "sfx": [
+        "slide_down",
+        "thud",
+        "thud",
+        "thud",
+        "ding",
+        "pop"
+      ],
+      "fx": [
+        "split_screen",
+        "stamp_x",
+        "stamp_check",
+        "arc_draw"
+      ],
+      "emphasis": [
+        "half a turn",
+        "down",
+        "Every time"
+      ]
+    },
+    {
+      "id": 7,
+      "seconds": 10,
+      "vo_en": "It's not the butter. It's the table. For a full flip, you'd need a table ten feet tall. \"Or... use a plate,\" says Joe. [beat] Splat.",
+      "vo_vi": "Không phải tại bơ. Tại cái bàn. Muốn lật trọn một vòng, bàn phải cao ba mét. \"Hoặc... dùng cái đĩa,\" Joe nói. [ngắt] Bẹp.",
+      "action": "Về lại bếp. Joe đặt hộp bơ sang một bên ('not the butter') rồi vỗ mặt bàn ('the table'). Gary mặt đỏ, bốc hơi, giơ tay đo tưởng tượng một cái bàn 3 m (bong bóng tưởng tượng: cả nhà ăn sáng trên bàn cao chót vót, phải trèo thang). Joe tỉnh bơ chìa ra cái đĩa 2D: 'Or... use a plate.' Gary trợn mắt. [beat] Lát bánh thứ hai văng lên từ lúc tháp đổ giờ mới rơi xuống, xoay nửa vòng, úp bơ BẸP lên đầu Gary. Gary đứng im, bơ chảy xuống mặt; Joe cắn một miếng bánh trên đĩa. Iris-out khép quanh mặt Gary.",
+      "set": "kitchen",
+      "transition": "whip",
+      "chars": [
+        "gary",
+        "joe"
+      ],
+      "props": [
+        "butter_dish",
+        "kitchen_table",
+        "plate2d",
+        "toast_slice",
+        "butter_splat",
+        "sneakers2d"
+      ],
+      "expressions": "joe: neutral → smirk → smug_closed (cắn bánh); gary: angry (bốc hơi) → shock (nhìn lên) → grumpy (bơ chảy trên mặt)",
+      "camera": "Cận ngang ngực, tracking ngang từ hộp bơ sang mặt bàn theo tay Joe. Nâng cần lên khi bong bóng tưởng tượng hiện. Dolly-in vào Gary và Joe; ở [beat] nghiêng nhẹ lên trần theo ánh nhìn của Gary, rồi hạ cần nhanh theo lát bánh rơi xuống đầu. Rung strength 0,7 dur 10. Kết bằng iris-out.",
+      "gag": "Bong bóng tưởng tượng bàn 3 m; callback lát bánh thứ hai; tag úp bơ lên đầu Gary; iris-out",
+      "sfx": [
+        "swish",
+        "bonk",
+        "rumble",
+        "steam",
+        "pop",
+        "scratch",
+        "slide_down",
+        "thud",
+        "sad_trombone"
+      ],
+      "fx": [
+        "thought_bubble",
+        "steam",
+        "impact_shake",
+        "butter_drip",
+        "iris_out"
+      ],
+      "emphasis": [
+        "not the butter",
+        "table",
+        "ten feet",
+        "plate",
+        "Splat"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "claim": "R.A.J. Matthews, 'Tumbling toast, Murphy's Law and the fundamental constants', European Journal of Physics 16(4):172-176, 1995. Lát bánh trượt khỏi bàn khi mặt bơ đang ngửa lên, và chỉ đáp ngửa nếu kịp xoay đủ trong lúc rơi.",
+      "url": "https://en.wikipedia.org/wiki/Buttered_toast_phenomenon"
+    },
+    {
+      "claim": "Matthews nhận giải Ig Nobel Vật lý năm 1996 cho công trình này. Bàn phải cao hơn khoảng 10 ft (3,0 m) thì bánh mới xoay trọn 360° và đáp ngửa mặt bơ.",
+      "url": "https://en.wikipedia.org/wiki/Buttered_toast_phenomenon"
+    },
+    {
+      "claim": "Bánh bắt đầu nghiêng và xoay ở mép bàn. Bàn ăn thường chỉ đủ thời gian cho khoảng nửa vòng, muốn xoay trọn 360° thì bàn phải cao 10 ft.",
+      "url": "https://www.ipm.org/show/amomentofscience/2024-01-17/murphys-breakfast-never-goes-to-plan"
+    },
+    {
+      "claim": "Lực cản không khí lên lớp bơ chỉ đáng kể nếu bánh rơi từ độ cao lớn hơn bàn ăn thường hơn 10 lần, nên lý do chính không phải là bơ.",
+      "url": "https://oikofuge.com/matthews-tumbling-toast/"
+    },
+    {
+      "claim": "Bài báo gốc của Matthews được lưu và chú giải trên Fermat's Library: bánh không xoay đủ trong lúc rơi xuống sàn thì đáp úp mặt bơ.",
+      "url": "https://fermatslibrary.com/s/tumbling-toast-murphy-s-law-and-i-i-the-fundamental-constants"
+    },
+    {
+      "claim": "Bài phổ biến khoa học tóm tắt hiện tượng bánh mì úp mặt bơ và công trình của Matthews.",
+      "url": "https://boingboing.net/2026/07/29/buttered-toast-phenomenon.html"
+    }
+  ],
+  "library_needs": [
+    {
+      "kind": "sets",
+      "name": "kitchen",
+      "brief": "Bếp Mỹ ban ngày: sàn gạch ô cờ đen trắng to ô (khoảng 0,6), tường vàng kem, tủ bếp xanh mint, cửa sổ có nắng chiếu xiên, tủ lạnh, máy nướng bánh trên kệ. Khoảng diễn quanh (0, 4). Bàn ăn KHÔNG nằm trong set (dùng prop kitchen_table để còn chồng tháp). Tham số: origin, màu tường, màu tủ."
+    },
+    {
+      "kind": "props",
+      "name": "kitchen_table",
+      "brief": "Bàn ăn gỗ 3D, mặt bàn cao khoảng 1,07 đơn vị (tương đương 75 cm so với nhân vật cao 2,5), rộng 1,6 × 0,9, 4 chân. Mặt bàn phẳng để bánh trượt, mép bàn rõ. Gốc ở tâm đáy. Có part '{name}_top' và empty '{name}_edge' ở mép +X để làm trục xoay cho bánh."
+    },
+    {
+      "kind": "props",
+      "name": "toast_slice",
+      "brief": "Lát bánh mì nướng 3D: hình bánh mì có vòm trên, khoảng 0,45 × 0,45 × 0,06, ruột vàng nâu, vỏ nâu đậm. Lớp bơ vàng nhạt bóng trên một mặt (tham số butter: full/thin/dot/none). Gốc ở tâm. Rơi và xoay được. Part '{name}_butter'."
+    },
+    {
+      "kind": "props",
+      "name": "toast2d",
+      "brief": "Lát bánh mì 2D để cầm trước ngực, có lớp bơ (full/thin/dot). Đổi sang toast_slice 3D ngay khung bánh rời tay."
+    },
+    {
+      "kind": "props",
+      "name": "butter_knife2d",
+      "brief": "Dao phết bơ 2D cầm tay: lưỡi bạc tròn đầu dính bơ, cán gỗ. Dài khoảng 0,5."
+    },
+    {
+      "kind": "props",
+      "name": "butter_dish",
+      "brief": "Hộp bơ 3D trên bàn: đĩa sứ trắng có thỏi bơ vàng, nắp trong suốt có thể mở. Khoảng 0,35 × 0,22."
+    },
+    {
+      "kind": "props",
+      "name": "butter_splat",
+      "brief": "Vệt bơ bẹp 3D (decal phẳng, viền răng cưa, vàng bóng) đặt dưới lát bánh úp trên sàn, giày hoặc đầu. Scale từ 0 lên 1 trong 4 khung khi chạm."
+    },
+    {
+      "kind": "props",
+      "name": "sneakers2d",
+      "brief": "Đôi giày thể thao mới 2D gắn vào chân nhân vật (Gary): trắng có vạch đỏ, đế dày, có điểm lấp lánh. Tham số buttered: true/false (vệt bơ vàng trên mũi giày). Không dùng logo thương hiệu thật."
+    },
+    {
+      "kind": "props",
+      "name": "wooden_crate",
+      "brief": "Thùng gỗ 3D dạng nan, khoảng 1,0 × 1,0 × 0,9, có nan chéo, viền đậm. Chồng được (gốc ở tâm đáy, empty '{name}_top' ở mặt trên)."
+    },
+    {
+      "kind": "props",
+      "name": "kitchen_chair",
+      "brief": "Ghế bếp gỗ 3D có tựa lưng, mặt ngồi cao khoảng 0,65. Gốc ở tâm đáy, có empty '{name}_top' ở mặt ngồi để chồng thùng lên. Đổ được."
+    },
+    {
+      "kind": "props",
+      "name": "height_sign",
+      "brief": "Biển chỉ độ cao 2D: thước đo dọc kẻ vạch, mũi tên và chữ '10 FT', viền đen, nền vàng. Bật lên (scale có overshoot) cạnh tháp."
+    },
+    {
+      "kind": "props",
+      "name": "pointer_stick2d",
+      "brief": "Que chỉ 2D cầm tay: que gỗ mảnh dài khoảng 0,8, đầu đỏ tròn."
+    },
+    {
+      "kind": "props",
+      "name": "plate2d",
+      "brief": "Đĩa sứ trắng 2D cầm tay, viền xanh, nhìn chéo từ trên xuống (hình elip), đường kính khoảng 0,55. Có thể đặt lát toast2d lên trên."
+    },
+    {
+      "kind": "props",
+      "name": "diagram_toast_spin",
+      "brief": "Sơ đồ 2D gắn lên plane của diagram_board, chia đôi. Trái: bàn thấp có nhãn '75 cm / 2.5 FT', cung mũi tên nửa vòng, 3 pha bánh (mặt bơ màu vàng) kết thúc úp xuống, dấu ✗ đỏ. Phải: tháp cao có nhãn '3 m / 10 FT', cung trọn vòng, bánh đáp ngửa, dấu ✓ xanh. Có các part để animate: '{prefix}_toast_l', '{prefix}_toast_r', '{prefix}_arc_l', '{prefix}_arc_r' (vẽ dần), '{prefix}_x', '{prefix}_check'."
+    }
+  ]
+}

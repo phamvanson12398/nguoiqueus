@@ -113,3 +113,21 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
 - `storycheck.py` (kiểm tra story không cần Blender) dùng chung cho builder và bridge.
 - Thử thật 3 đạo cụ (`traffic_light`, `milk_carton`, `smartphone`), mỗi cái mất 85-200 giây, đều đạt 8/10 khi Claude tự xem lại. Thêm một lần sửa theo góp ý "to hơn, đổi đỏ". Đã đưa cả ba vào `projects/demo-v3`. Cả ba đang ở trạng thái nháp, chờ người dùng duyệt.
 - Chạy bridge trên Windows bằng bất kỳ Python 3.10+ nào, kể cả `python.exe` đi kèm Blender. `WHYSHORTS_BLENDER` mặc định là `C:\Program Files\Blender Foundation\Blender 5.2\blender.exe`.
+
+### Bước 4 — xong (đã thử trong container bằng Playwright)
+- `server.py`:
+  - Chỉ dùng thư viện chuẩn; Windows mở bằng `start_studio.bat` (Python đi kèm Blender), địa chỉ http://127.0.0.1:8765.
+  - Việc nền chạy theo job: log, tiến độ, nút hủy (giết luôn tiến trình con), mỗi dự án chạy một việc nặng một lúc.
+- API `/api/...`:
+  - `status` (cảnh báo API key, có Claude/Blender chưa, số lượt), `estimate`, `projects`.
+  - Theo dự án: `ideas`, `idea`, `content/write`, `content` (lưu kèm lịch sử), `content/rewrite`, `history/<f>/restore`, `voice` (tải wav lên rồi `align.py`), `build` (plan_shots → thiết kế đồ thiếu → kiểm tra → xem trước), `preview`, `fix`, `render` (pct, đoạn khung vào `parts/`, tiến độ từ dòng `RENDER FRAME`, ffprobe), `open`, `file/...`.
+  - Thư viện: `library`, `library/approve`, `library/design`.
+- `ui/index.html`: 5 bước cộng tab thư viện.
+  - Ước tính tức thì: số từ (150 từ/phút), số chuỗi, số khung, thời gian render (1,4 s/khung).
+  - Thẻ chuỗi sửa được mọi trường; thêm, xóa, kéo ☰ (pointer events, có tự cuộn) hoặc bấm ▲▼; nút "Viết lại đoạn này"; lịch sử phiên bản.
+  - Tải giọng đọc lên và xem thời gian từng câu; ảnh xem trước bấm phóng to; ô "Nhờ Claude sửa"; thanh tiến độ render; xem hoặc tải mp4; duyệt hoặc góp ý đồ nháp.
+- `align.py`: thuật toán của `align_vo.py` dạng hàm, kết quả trùng khớp `align_vo.py`.
+- `builder.py --render --frames A-B` render một đoạn vào `parts/`.
+- Đã gọi Claude thật qua trang: `ideas` (201 s, 10 ý), `write_content` 1 phút (195 s, 155 từ, 7 chuỗi), `rewrite_seq` (36 s). Kết quả nằm trong `projects/toast-butter-side`.
+- Chưa chạy qua trang: `build`/`plan_shots`, `fix_from_preview`, thiết kế đồ trên trang (bước 5). Content bánh mì đòi 13 món mới, nên prompt viết content đã thêm luật "tối đa khoảng 5 món mới mỗi phút, ưu tiên dùng lại".
+- `voice.wav` người dùng gửi dài 51,6 s, không khớp `WORDS` của video nắp cống (45 s). Có thể là một bản thu khác.

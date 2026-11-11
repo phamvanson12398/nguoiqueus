@@ -1,0 +1,334 @@
+{
+  "ideas": [
+    {
+      "title": "Why Does Toast Land Butter-Side Down?",
+      "title_vi": "Vì sao bánh mì rơi luôn úp mặt bơ xuống?",
+      "score": 9,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 2,
+        "physical_comedy": 2,
+        "verifiable": 1
+      },
+      "logline": "Gary chế ra đủ trò để lát bánh mì phết bơ rơi ngửa mặt, cho đến khi Joe chỉ ra thủ phạm thật: cái bàn quá thấp.",
+      "hook": "0-2s: khung hình đứng yên với lát bánh mì lơ lửng ngay trên đôi giày mới của Gary, mặt bơ quay xuống, thẻ tên 'GARY — 3 SECONDS BEFORE DISASTER'. Lia nối sang '10 MINUTES EARLIER'.",
+      "escalation": "Lần 1: bánh trượt khỏi bàn, xoay nửa vòng rồi SPLAT úp bơ xuống sàn (thud). Lần 2: Gary phết bơ mặt dưới để 'lừa trọng lực', bánh vẫn xoay nửa vòng, SPLAT úp bơ lên giày (squeak + sad_trombone). Lần 3 lệch: Gary chồng bàn lên thùng, lên ghế, cao 3 m, rồi trèo lên đẩy bánh. Bánh xoay trọn một vòng và đáp NGỬA mặt bơ. Gary ăn mừng thì cái tháp đổ (crash).",
+      "twist": "REPLAY slow-mo cạnh bàn: bánh bắt đầu xoay ngay khi rời mép bàn, và từ độ cao bàn ăn thường (~75 cm) nó chỉ kịp xoay khoảng nửa vòng là chạm đất. Muốn đáp ngửa thì bàn phải cao khoảng 3 m. Tag: lát bánh từ tháp đổ rơi úp bơ lên đầu Gary.",
+      "camera_axis": "Theo phương thẳng đứng: hạ cần bám theo lát bánh từ mép bàn xuống sàn, lặp ba lần; lần ba kéo lùi hé lộ cái tháp 3 m rồi hạ cần theo cú rơi dài nhất.",
+      "sets": [
+        "kitchen (bếp Mỹ: bàn ăn, sàn gạch ô cờ — bối cảnh mới)",
+        "diagram_board (phụ: cung xoay nửa vòng/1 vòng)"
+      ],
+      "money_shot": "Slow-mo lát bánh xoay nửa vòng, có vệt bóng mờ từng pha xoay giống ảnh chụp nhiều lần, SPLAT xuống sàn; ngay sau đó chia đôi màn hình ✗ bàn 75 cm / ✓ tháp 3 m.",
+      "formula": "perfect_plan_fails",
+      "facts": [
+        {
+          "claim": "R.A.J. Matthews (1995, European Journal of Physics 16:172) chỉ ra rằng bánh mì úp mặt bơ chủ yếu vì độ cao bàn so với kích thước lát bánh, không phải vì bơ làm nặng một mặt.",
+          "source": "https://oikofuge.com/matthews-tumbling-toast/"
+        },
+        {
+          "claim": "Matthews nhận giải Ig Nobel Vật lý 1996 cho công trình này; bàn phải cao trên khoảng 3 m (10 ft) thì bánh mới xoay đủ một vòng và đáp ngửa.",
+          "source": "https://wikipedia.com/wiki/Buttered_toast_phenomenon"
+        }
+      ]
+    },
+    {
+      "title": "Why Won't Ketchup Come Out?",
+      "title_vi": "Vì sao tương cà không chịu chảy ra?",
+      "score": 9,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 2,
+        "physical_comedy": 2,
+        "verifiable": 1
+      },
+      "logline": "Gary đánh nhau với chai tương cà thủy tinh không chịu nhả một giọt, còn Joe chỉ cần gõ nhẹ đúng chỗ.",
+      "hook": "0-2s: Joe ngồi bình thản, toàn thân phủ kín tương cà, chỉ hai con mắt chớp chớp, tay vẫn cầm khoai tây chiên. Whip sang '2 MINUTES EARLIER'.",
+      "escalation": "Lần 1: Gary dốc ngược chai, chờ, montage 'DAY 2… DAY 47' (mạng nhện giăng lên tay). Lần 2: lắc như lắc maraca, vẫn không ra (scratch). Lần 3 lệch: Gary đập đáy chai thật mạnh (bonk), cả khối tương cà phụt ra một lần, bay vèo qua bàn và trùm lên Joe (slide_down + splat).",
+      "twist": "Mặt cắt x-ray trong chai: tương cà đứng im như chất rắn vì các chuỗi chất làm đặc đan rối vào nhau. Có đủ lực thì chúng duỗi thẳng, xếp hàng, trượt qua nhau, và tương cà loãng ra ngay lập tức. Joe nghiêng chai 45° rồi gõ nhẹ vào cổ chai, một vệt tương hoàn hảo nằm ngay lên khoai (ding). Tag: Gary bắt chước nhưng lại đập đáy chai, lần này tương cà trùm lên chính anh.",
+      "camera_axis": "Tracking ngang dọc mặt bàn ăn theo đường bay của khối tương cà, từ chai của Gary sang chỗ Joe; mặt cắt x-ray là dolly-in vào thân chai.",
+      "sets": [
+        "kitchen (bàn ăn)",
+        "x-ray insert trong chai (cảnh chèn 2-3 giây)"
+      ],
+      "money_shot": "Slow-mo khối tương cà thoát khỏi chai, bay như sao chổi và trùm Joe; Joe tỉnh bơ chấm khoai vào chính mình.",
+      "formula": "escalation",
+      "facts": [
+        {
+          "claim": "Tương cà là chất lỏng phi Newton có ứng suất chảy: đứng yên như chất rắn khi lực nhỏ, và loãng dần (shear-thinning) khi đã chảy.",
+          "source": "https://www.futurity.org/ketchup-physics-rheology-1321922-2/"
+        },
+        {
+          "claim": "Các polymer làm đặc trong tương cà duỗi ra và xếp thẳng hàng khi chịu lực cắt đủ lớn, nên trượt qua nhau dễ hơn.",
+          "source": "https://www.scientificamerican.com/article/ketchup-is-not-just-a-condiment-it-is-also-a-non-newtonian-fluid/"
+        }
+      ]
+    },
+    {
+      "title": "Why Does Milk Boil Over But Water Doesn't?",
+      "title_vi": "Vì sao sữa sôi trào còn nước thì không?",
+      "score": 9,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 2,
+        "physical_comedy": 2,
+        "verifiable": 1
+      },
+      "logline": "Gary thề sẽ canh nồi sữa không chớp mắt, đọ với nồi nước của Joe, nhưng chỉ quay đi một giây là sữa phun trào.",
+      "hook": "0-2s: cột bọt sữa trắng phun lên tận trần như núi lửa, Gary cầm muôi đứng chết lặng. Lia nối xuống bếp, hiện 'EARLIER'.",
+      "escalation": "Chia đôi màn hình: nồi nước của Joe sủi bình thường. Gary nhìn trừng nồi sữa ('I'm watching you'). Lần 1: Gary liếc đi rồi quay lại ngay, sữa im. Lần 2: liếc đi, quay lại, sữa vẫn im (bồ câu ngoài cửa sổ quay đầu nhìn hai lần). Lần 3 lệch: Gary hắt xì một cái, bọt trào phụt qua nắp, tràn khắp bếp và chảy xuống chân anh (slide_up + crash của nắp nồi).",
+      "twist": "Mặt cắt x-ray: protein (casein) và chất béo bao lấy bọt hơi, và lớp váng trên mặt sữa thành cái nắp nhốt hơi bên dưới, áp suất dâng dần. Nước không có protein nên bọt vỡ ngay trên mặt. Joe chọc thủng lớp váng, bọt xẹp xuống (slide_down). Tag: hộp sữa trên bàn 'đổ mồ hôi'.",
+      "camera_axis": "Hạ cần/nâng cần theo phương thẳng đứng: từ mặt nồi lên trần theo cột bọt, rồi dolly-in sát mặt sữa để chuyển sang x-ray.",
+      "sets": [
+        "kitchen (bếp nấu)",
+        "diagram_board (phụ: bọt có protein và bọt nước)"
+      ],
+      "money_shot": "Bọt sữa nở phồng như bánh soufflé rồi tràn qua miệng nồi và chảy thành thác xuống mặt bếp; dùng lại đạo cụ milk_carton (hộp sữa đứng 'xem' cạnh bếp).",
+      "formula": "showdown",
+      "facts": [
+        {
+          "claim": "Protein trong sữa bám vào bọt hơi và giữ cho bọt bền, nên bọt chồng lên thành lớp xốp thay vì vỡ; nước không có protein hay chất béo nên hơi thoát tự do.",
+          "source": "https://www.techno-science.net/en/news/why-does-milk-always-boil-over-but-water-never-does-25631"
+        },
+        {
+          "claim": "Protein casein tụ lại gần bề mặt khi sữa nóng lên và tạo thành lớp váng góp phần làm sữa trào.",
+          "source": "https://www.cooksillustrated.com/how_tos/5727-preventing-dairy-from-boiling-over"
+        }
+      ]
+    },
+    {
+      "title": "Why Does a Fork Spark in Microwaves?",
+      "title_vi": "Vì sao nĩa tóe lửa trong lò vi sóng?",
+      "score": 8,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 1,
+        "physical_comedy": 2,
+        "verifiable": 1
+      },
+      "logline": "Gary hâm đồ ăn thừa, lần lượt bỏ vào lò cốc, thìa rồi nĩa, và chỉ cái nĩa biến lò thành cơn giông mini.",
+      "hook": "0-2s: cửa lò vi sóng rực ánh chớp xanh tím, tóc Gary dựng đứng, khói bốc khỏi kính. Biển nhỏ góc dưới: 'DON'T TRY THIS AT HOME'. Whip sang 'EARLIER'.",
+      "escalation": "Lần 1: cốc sứ có thìa trơn bên trong, lò quay êm (ding). Lần 2: bát mì có thìa, vẫn êm, Gary tự tin. Lần 3 lệch: đĩa mì có cái nĩa, tia lửa nhảy giữa các răng nĩa, lách tách thành sấm (crash + squeak), Gary nhảy lên nóc tủ lạnh.",
+      "twist": "Mặt cắt x-ray: sóng vi ba đẩy electron trong kim loại chạy tới chạy lui. Ở thìa trơn, điện tích dàn đều. Ở các mũi nhọn của nĩa, điện tích dồn lại, điện trường mạnh tới mức làm không khí bị đánh thủng, và thế là có tia lửa. Joe đưa bàn tay mờ chỉ vào đầu răng nĩa. Tag: Joe đưa Gary chiếc nĩa nhựa, Gary nhìn nó đầy nghi ngờ.",
+      "camera_axis": "Vòng cung 40° quanh lò vi sóng, rồi push vào ô kính tối để vào bên trong lò (POV đồ ăn trên đĩa quay).",
+      "sets": [
+        "kitchen (quầy có lò vi sóng)",
+        "bên trong lò vi sóng (phụ)"
+      ],
+      "money_shot": "POV từ trong lò: đĩa quay chậm, chớp sáng nối giữa các răng nĩa, mặt Gary méo qua lớp kính lưới.",
+      "formula": "escalation",
+      "facts": [
+        {
+          "claim": "Nĩa hấp thụ vi sóng như ăng-ten; electron dồn vào các đầu nhọn tạo điện trường mạnh, làm ion hóa không khí thành tia lửa.",
+          "source": "https://www.npr.org/6429308"
+        },
+        {
+          "claim": "Vật kim loại trơn như thìa ít tóe lửa hơn hẳn so với nĩa, dây buộc xoắn hay giấy bạc nhàu.",
+          "source": "https://www.vpm.org/npr-news/2006-11-03/microwave-antics-dont-stick-a-fork-in-it/"
+        }
+      ]
+    },
+    {
+      "title": "Why Do Microwaves Have a Spinning Plate?",
+      "title_vi": "Vì sao lò vi sóng có đĩa xoay?",
+      "score": 9,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 1,
+        "physical_comedy": 2,
+        "verifiable": 2
+      },
+      "logline": "Joe tháo đĩa xoay ra 'cho lò khỏi mỏi', và vô tình đo được tốc độ ánh sáng bằng một thanh sô-cô-la.",
+      "hook": "0-2s: Gary cắn miếng burrito, nửa nóng bốc hơi, nửa còn đóng băng kêu RẮC (bonk); răng anh dính đá. Lia nối sang 'EARLIER'.",
+      "escalation": "Lần 1: Joe tháo đĩa xoay, quay burrito, ra một khúc nóng, một khúc lạnh, một khúc nóng (sọc vằn). Lần 2: quay thêm 2 phút, vẫn sọc vằn, chỉ có chỗ nóng thì cháy đen. Lần 3 lệch: Joe đặt thanh sô-cô-la dài vào, chỉ chảy vài đốm cách đều nhau. Joe cầm thước đo: 6 cm (ding).",
+      "twist": "Trong lò có sóng dừng: chỗ sóng mạnh thì nóng, chỗ lặng thì lạnh, cách nhau nửa bước sóng. Đĩa xoay kéo đồ ăn đi qua lần lượt các điểm nóng. Callback và tag: 6 cm × 2 × 2,45 GHz ≈ 300.000 km/giây; Joe vừa đo tốc độ ánh sáng bằng kẹo. Gary ăn luôn 'thiết bị thí nghiệm'.",
+      "camera_axis": "Dolly-in qua cửa lò vào trong, tracking ngang dọc thanh sô-cô-la theo từng đốm chảy, kéo lùi ra cho thấy Gary.",
+      "sets": [
+        "kitchen (quầy có lò vi sóng)",
+        "diagram_board (phụ: sóng dừng chồng lên thanh sô-cô-la)"
+      ],
+      "money_shot": "Cây thước trượt dọc thanh sô-cô-la, các đốm chảy hiện lần lượt kèm tiếng 'ding ding ding' đều nhịp; ảnh sóng mờ chồng lên khớp đúng các đốm.",
+      "formula": "dumb_experiment",
+      "facts": [
+        {
+          "claim": "Bỏ đĩa xoay và quay sô-cô-la thì sẽ thấy các điểm chảy nằm ở bụng sóng dừng, cách nhau nửa bước sóng; lò thường chạy ở 2,45 GHz.",
+          "source": "https://www.bu.edu/gk12/loren/lesson_microwave.html"
+        },
+        {
+          "claim": "Lấy khoảng cách giữa các điểm chảy nhân 2 rồi nhân với tần số lò thì ra tốc độ ánh sáng (bước sóng khoảng 12 cm).",
+          "source": "https://www.instructables.com/Finding-the-Speed-of-Light-Using-Chocolate"
+        }
+      ]
+    },
+    {
+      "title": "Why Do Soda Cans Explode in Freezers?",
+      "title_vi": "Vì sao lon nước ngọt nổ trong ngăn đá?",
+      "score": 8,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 2,
+        "physical_comedy": 1,
+        "verifiable": 1
+      },
+      "logline": "Thám tử Joe điều tra 'vụ án' trong ngăn đá: một lon nước ngọt nổ tung, kẻ tình nghi số một là Gary cùng câu 'chỉ 20 phút thôi'.",
+      "hook": "0-2s: mở ngăn đá, bên trong toàn đá vụn màu nâu, một lon nước rách toác, dải băng 'DO NOT CROSS' giăng ngang. Push vào ngăn đá, tối dần, hiện 'THE NIGHT BEFORE'.",
+      "escalation": "Tái hiện ba lần. Lần 1: Gary cho lon vào 'chỉ 20 phút' (freeze-frame + thẻ tên). Lần 2: Gary quên, đi ngủ; montage đồng hồ 1h, 3h. Lần 3 lệch: lon phồng, phồng thêm, rồi BÙM (crash), bắn tung khay đá và hộp cá viên, bồ câu ngoài cửa sổ giật mình. Kẻ tình nghi phụ: khay đá, túi đậu Hà Lan, bị loại từng người (scratch).",
+      "twist": "Mặt cắt x-ray lon: nước đóng băng nở ra khoảng 9%, đồng thời ép khí CO2 ra khỏi dung dịch. Lon được thiết kế vừa khít nên không còn chỗ chứa. Thủ phạm là chính nước, CO2 là đồng phạm. Tag: Joe dán nhãn 'EVIDENCE' lên Gary.",
+      "camera_axis": "Push vào miệng ngăn đá tối (chuyển cảnh); bên trong dolly-in theo dấu vết bắn tung từ lon ra các kệ, vòng cung 30° quanh 'hiện trường'.",
+      "sets": [
+        "kitchen (tủ lạnh, ngăn đá)",
+        "bên trong ngăn đá (phụ)"
+      ],
+      "money_shot": "Slow-mo trong ngăn đá: lon phồng dần như quả bóng rồi xé toạc, mảnh đá nâu bay chậm và lơ lửng một nhịp trước khi rơi.",
+      "formula": "investigation",
+      "facts": [
+        {
+          "claim": "Nước nở khoảng 9% thể tích khi đóng băng, vượt sức chứa của lon.",
+          "source": "https://childrensmuseum.org/blog/why-do-soda-cans-pop-freezer"
+        },
+        {
+          "claim": "Khí CO2 cũng đóng vai trò lớn: khi nước đóng băng, CO2 bị đẩy ra ngoài, làm lon dễ nổ mạnh hơn so với lon chỉ chứa nước.",
+          "source": "https://www.livescience.com/22857-frozen-soda-explosion.html"
+        }
+      ]
+    },
+    {
+      "title": "Why Does the Fridge Light Turn Off?",
+      "title_vi": "Vì sao đèn tủ lạnh tự tắt?",
+      "score": 9,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 2,
+        "physical_comedy": 2,
+        "verifiable": 1
+      },
+      "logline": "Phim tài liệu giả về 'loài đèn tủ lạnh khó bắt': Joe rình bằng mọi cách để thấy đèn tắt.",
+      "hook": "0-2s: tủ lạnh tối om, chỉ thấy hai con mắt của Joe đang run cầm cập, trên mũ có cục băng. Whip sang 'DAY 1'.",
+      "escalation": "Giọng kể kiểu phim động vật hoang dã. Lần 1: Joe mở cửa thật nhanh, đèn vẫn sáng (ding). Lần 2: hé một khe nhỏ nhìn trộm, vẫn sáng. Lần 3 lệch: Joe chui vào trong tủ rình; Gary đi ngang đóng cửa (thud). Màn hình tối đen, chỉ còn mắt Joe và tiếng răng va lập cập. Montage 'DAY 2… DAY 47'.",
+      "twist": "Cửa bật mở, Joe lăn ra cùng đống băng. Camera dolly-in vào khung cửa: một cái nút lò xo nhỏ. Cửa đóng ấn nút xuống thì mạch hở, đèn tắt; cửa mở thì nút bật ra, đèn sáng. Joe lấy ngón tay ấn thử: tắt, nhả: sáng, ấn: tắt (luật số 3). Tag: Gary ấn nút để 'tiết kiệm điện' trong lúc lục tủ trong bóng tối.",
+      "camera_axis": "Hạ cần từ ngoài vào khe cửa tủ, POV từ trong tủ nhìn ra, rồi dolly-in sát nút công tắc trên khung cửa.",
+      "sets": [
+        "kitchen (tủ lạnh lớn)",
+        "bên trong tủ lạnh (phụ)"
+      ],
+      "money_shot": "Cận cảnh nút lò xo trên khung cửa, ngón tay Joe ấn xuống, ánh sáng trong tủ tắt đồng loạt trên mặt mấy hộp đồ ăn; cảnh này dùng lại milk_carton làm 'nhân chứng' trên kệ.",
+      "formula": "mockumentary",
+      "facts": [
+        {
+          "claim": "Đèn tủ lạnh do một công tắc nút lò xo điều khiển: cửa đóng ấn nút xuống làm hở mạch đèn, cửa mở thì nút bật ra và đèn sáng.",
+          "source": "https://engineerfix.com/why-your-refrigerator-light-stays-on-when-the-door-is-closed/"
+        },
+        {
+          "claim": "Nút bị kẹt ở vị trí 'cửa mở' thì đèn sáng liên tục; ấn nút bằng tay là cách kiểm tra đơn giản xem đèn có tắt không.",
+          "source": "https://engineerfix.com/how-to-fix-a-refrigerator-light-switch/"
+        }
+      ]
+    },
+    {
+      "title": "Why Does Popcorn Pop But Corn Doesn't?",
+      "title_vi": "Vì sao bắp rang nổ mà ngô thường thì không?",
+      "score": 8,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 1,
+        "physical_comedy": 2,
+        "verifiable": 1
+      },
+      "logline": "Thế giới nếu hạt ngô không có lớp vỏ áo giáp: Gary rang cả chảo mà chỉ nghe xì xì, cho đến khi cả trăm hạt nổ cùng lúc vào mặt anh.",
+      "hook": "0-2s: hàng trăm bắp rang bắn như pháo hoa khắp bếp, Gary đứng giữa với mặt đầy bắp. Lia nối sang 'EARLIER'.",
+      "escalation": "Chia đôi màn hình ✓/✗. Bên trái: hạt ngô ngọt của Gary đun lên chỉ xì hơi và teo lại như quả nho khô. Lần 1: Gary tăng lửa, vẫn xì. Lần 2: Gary trừng mắt, cúi sát chảo bắp rang của Joe, không có gì xảy ra. Lần 3 lệch: cả chảo nổ cùng lúc (boing ×100 + crash), bắp bắn vào mặt Gary.",
+      "twist": "Mặt cắt x-ray hạt bắp rang: bên trong có khoảng 14% nước. Lớp vỏ cứng không cho hơi thoát, áp suất tăng tới khoảng 135 psi ở khoảng 180°C thì vỏ vỡ, tinh bột phồng lộn trái ra ngoài. Hạt ngô thường vỏ để hơi lọt ra nên chỉ xẹp đi. 'Thế giới không có vỏ' là một rạp chiếu phim buồn thiu không có bắp rang. Tag: một hạt 'ông già' không nổ, nằm cuối chảo, nổ muộn ngay lúc Gary nhìn vào.",
+      "camera_axis": "Dolly-in vào hạt ngô trong chảo, x-ray xuyên vào bên trong, rồi kéo lùi nhanh khi hạt nổ, bám theo bắp bay lên trần.",
+      "sets": [
+        "kitchen (bếp nấu, chảo có nắp)",
+        "x-ray insert trong hạt ngô (cảnh chèn)"
+      ],
+      "money_shot": "Slow-mo một hạt duy nhất: đồng hồ áp suất trong x-ray lên 135 psi, vỏ nứt, tinh bột nở bung ra gấp mấy chục lần, lộn trái ra ngoài.",
+      "formula": "world_without",
+      "facts": [
+        {
+          "claim": "Hơi nước bị nhốt trong hạt bắp tăng áp suất cho tới khi vỏ vỡ, ở khoảng 135 psi (930 kPa) và 180°C.",
+          "source": "https://www.wikipedia.com/wiki/Popcorn"
+        },
+        {
+          "claim": "Hạt bắp rang lý tưởng chứa khoảng 13,5-14% nước; hạt thiếu nước hoặc vỏ nứt (hơi xì ra) thì không nổ.",
+          "source": "https://illinoisscience.org/blog/why-does-popcorn-pop"
+        }
+      ]
+    },
+    {
+      "title": "Why Do Raw Eggs Spin So Weird?",
+      "title_vi": "Vì sao trứng sống quay kỳ cục?",
+      "score": 9,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 1,
+        "physical_comedy": 2,
+        "verifiable": 2
+      },
+      "logline": "Gary và Joe thi quay trứng; trứng của Gary lắc lư, dừng rồi lại tự quay tiếp như bị ma ám.",
+      "hook": "0-2s: quả trứng đứng yên trên bàn bỗng tự xoay lại, Gary hét lên và nhảy lên ghế (squeak). Freeze-frame, thẻ tên: 'GARY — NOT AFRAID OF EGGS'.",
+      "escalation": "Đối đầu trên bàn bếp: trứng luộc của Joe quay êm như con quay. Trứng sống của Gary lắc lư và chậm dần. Lần 1: Gary đặt ngón tay chặn rồi nhả, trứng tự quay lại (scratch). Lần 2: chặn mạnh hơn, nhả ra, lại quay (gulp). Lần 3 lệch: Gary đập bằng chảo cho 'dừng hẳn' (bonk), trứng vỡ SPLAT bắn đầy kính Gary.",
+      "twist": "REPLAY + x-ray: vỏ trứng đã dừng nhưng lòng trứng lỏng bên trong vẫn đang xoáy theo quán tính, và nó kéo vỏ quay tiếp. Trứng luộc đặc nên vỏ và ruột dừng cùng lúc. Tag: Joe chặn trứng luộc, nó dừng ngay; Gary vẫn nhìn quả trứng đầy nghi ngờ.",
+      "camera_axis": "Vòng cung 50° quanh hai quả trứng đang quay trên mặt bàn, hạ cần sát mặt bàn ngang tầm trứng; chuyển x-ray bằng dolly-in.",
+      "sets": [
+        "kitchen (bàn bếp)",
+        "diagram_board (phụ: vỏ dừng, lòng trứng vẫn xoáy)"
+      ],
+      "money_shot": "Mặt cắt x-ray: vỏ trứng đứng yên dưới ngón tay Gary, lòng đỏ bên trong vẫn xoay tít; ngón tay nhấc lên thì vỏ quay theo.",
+      "formula": "showdown",
+      "facts": [
+        {
+          "claim": "Chặn trứng đang quay rồi nhả ra: trứng sống tự quay lại, trứng luộc đứng yên.",
+          "source": "https://indianapublicmedia.org/amomentofscience/the-spin-test/"
+        },
+        {
+          "claim": "Lòng trứng lỏng vẫn chuyển động theo quán tính khi vỏ đã bị chặn, nên đẩy vỏ quay tiếp; trứng sống cũng lắc lư và chậm nhanh hơn khi quay.",
+          "source": "https://www.sciencefriday.com/educational-resources/why-do-hardboiled-eggs-and-raw-eggs-spin-differently/"
+        }
+      ]
+    },
+    {
+      "title": "Why Does Cereal Stick to the Bowl?",
+      "title_vi": "Vì sao ngũ cốc dạt vào thành bát?",
+      "score": 8,
+      "scores": {
+        "curiosity": 2,
+        "visible_answer": 2,
+        "camera_journey": 2,
+        "physical_comedy": 1,
+        "verifiable": 1
+      },
+      "logline": "Gary lập kế hoạch múc miếng ngũ cốc cuối cùng giữa bát, nhưng miếng ngũ cốc cứ trôi tuột về dính vào thành bát.",
+      "hook": "0-2s: Gary cầm bát nghiêng 90° đổ ụp sữa lên đầu mình, miếng ngũ cốc cuối cùng vẫn bám chặt trên thành bát. Lia nối sang 'EARLIER'.",
+      "escalation": "Lần 1: Gary đẩy miếng ngũ cốc ra giữa bát, nó trôi vèo về thành bát (zip_out). Lần 2: đẩy ra lần nữa, nó lại trôi về, còn kéo theo hai miếng khác dính chùm lại (boing). Lần 3 lệch: Gary nghiêng hẳn bát để 'đổ nó vào thìa', sữa trào lên mặt (slide_down), miếng ngũ cốc vẫn không nhúc nhích.",
+      "twist": "Mặt cắt nhìn ngang: sữa leo lên thành bát thành một con dốc cong (mặt khum). Miếng ngũ cốc nổi trên sữa nên 'trôi lên dốc' về phía thành bát. Mỗi miếng cũng làm lõm mặt sữa, và hai chỗ lõm trượt vào nhau nên ngũ cốc dính chùm. Không có lực hút nào cả, chỉ có hình dạng mặt sữa. Joe hé lộ cách giải: rót thêm sữa đầy tràn miệng bát, mặt khum đổi chiều, miếng ngũ cốc trôi ra giữa (ding). Tag: Gary vừa cúi múc thì bị Joe ăn mất.",
+      "camera_axis": "POV thấp ngang mặt sữa, tracking theo miếng ngũ cốc trôi; chuyển sang mặt cắt nhìn ngang bát bằng match cut (vành bát tròn khớp với vành bát trong sơ đồ).",
+      "sets": [
+        "kitchen (bàn ăn sáng)",
+        "diagram_board (phụ: mặt cắt mặt khum)"
+      ],
+      "money_shot": "Mặt cắt ngang bát dạng sơ đồ: miếng ngũ cốc nổi trượt lên con dốc mặt khum và 'click' vào thành bát, hai miếng trượt vào nhau thành chùm.",
+      "formula": "perfect_plan_fails",
+      "facts": [
+        {
+          "claim": "Hiệu ứng 'Cheerios effect' (Vella & Mahadevan, American Journal of Physics 2005) mô tả vật nổi tụ lại hoặc dính vào thành bát do sức căng bề mặt, lực nổi và mặt khum.",
+          "source": "https://en.wikipedia.org/wiki/Cheerios_effect"
+        },
+        {
+          "claim": "Chuyển động của ngũ cốc do hình dạng bề mặt sữa quyết định chứ không phải do lực hút giữa các miếng; miếng ở gần mép trôi lên theo đường cong của mặt khum.",
+          "source": "https://www.livescience.com/9350-cereal-science-floating-objects-stick.html"
+        }
+      ]
+    }
+  ]
+}

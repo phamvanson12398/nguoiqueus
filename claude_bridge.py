@@ -22,7 +22,7 @@ python that has the `bpy` module), WHYSHORTS_MODEL (optional model for every job
 WHYSHORTS_KEEP_API_KEY=1 to pass ANTHROPIC_API_KEY through (otherwise it is removed so the CLI uses
 the Pro/Max subscription).
 """
-import ast, datetime, json, os, re, shutil, subprocess, sys, time
+import ast, datetime, json, os, re, shutil, subprocess, sys, threading, time
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 if ROOT not in sys.path: sys.path.insert(0, ROOT)
@@ -45,15 +45,46 @@ class BridgeError(Exception):
     pass
 
 
+_tls = threading.local()          # server.py sets _tls.hook / _tls.procs per job thread
+
+
 def say(msg):
-    print(msg, flush=True)
+    hook = getattr(_tls, "hook", None)
+    (hook or (lambda m: print(m, flush=True)))(msg)
+
+
+def _popen_run(cmd, timeout, **kw):
+    """subprocess.run that registers the process so a job can be cancelled from server.py"""
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE if kw.get("input") is not None else None,
+                         text=True, encoding="utf-8", errors="replace", cwd=kw.get("cwd"), env=kw.get("env"))
+    procs = getattr(_tls, "procs", None)
+    if procs is not None: procs.append(p)
+    try:
+        out, err = p.communicate(kw.get("input"), timeout=timeout)
+    except subprocess.TimeoutExpired:
+        p.kill(); p.communicate(); raise
+    finally:
+        if procs is not None and p in procs: procs.remove(p)
+    if getattr(_tls, "cancelled", False): raise BridgeError("đã hủy")
+    return subprocess.CompletedProcess(cmd, p.returncode, out, err)
 
 
 # =====================================================================
 #  environment
 # =====================================================================
 def claude_cmd():
-    return os.environ.get("WHYSHORTS_CLAUDE", "claude")
+    """command list for the Claude CLI.  On Windows an npm install gives claude.cmd; running it would pass our
+    JSON arguments through cmd.exe (quotes, <, >, | break), so call node + cli.js directly when possible."""
+    c = os.environ.get("WHYSHORTS_CLAUDE", "claude")
+    path = shutil.which(c) or c
+    if os.name == "nt" and path.lower().endswith((".cmd", ".bat")):
+        base = os.path.dirname(path)
+        for cand in (os.path.join(base, "node_modules", "@anthropic-ai", "claude-code", "cli.js"),
+                     os.path.join(os.environ.get("APPDATA", ""), "npm", "node_modules", "@anthropic-ai", "claude-code", "cli.js")):
+            node = shutil.which("node") or os.path.join(base, "node.exe")
+            if os.path.exists(cand) and node and os.path.exists(node):
+                return [node, cand]
+    return [path]
 
 
 def blender_cmd():
@@ -78,10 +109,10 @@ def cli_help():
     global _help_cache
     if _help_cache is None:
         try:
-            _help_cache = subprocess.run([claude_cmd(), "--help"], capture_output=True, text=True, timeout=60,
+            _help_cache = subprocess.run(claude_cmd() + ["--help"], capture_output=True, text=True, timeout=60,
                                          encoding="utf-8", errors="replace").stdout
         except FileNotFoundError:
-            raise BridgeError(f"Không tìm thấy Claude CLI ('{claude_cmd()}'). Cài Claude Code rồi đăng nhập bằng gói Pro/Max.")
+            raise BridgeError(f"Không tìm thấy Claude CLI ('{' '.join(claude_cmd())}'). Cài Claude Code rồi đăng nhập bằng gói Pro/Max.")
     return _help_cache
 
 
@@ -128,7 +159,7 @@ def _extract_json(text):
 
 def _run(prompt, schema, tools, model, resume, cwd, timeout):
     h = cli_help()
-    cmd = [claude_cmd(), "-p", "--output-format", "json"]
+    cmd = claude_cmd() + ["-p", "--output-format", "json"]
     if resume: cmd += ["--resume", resume]
     style = os.path.join(ROOT, "STYLE.md")
     if "--append-system-prompt-file" in h: cmd += ["--append-system-prompt-file", style]
@@ -143,8 +174,7 @@ def _run(prompt, schema, tools, model, resume, cwd, timeout):
     env = dict(os.environ)
     if env.get("ANTHROPIC_API_KEY") and env.get("WHYSHORTS_KEEP_API_KEY") != "1": env.pop("ANTHROPIC_API_KEY")
     t0 = time.time()
-    p = subprocess.run(cmd, input=prompt, capture_output=True, text=True, cwd=cwd, env=env, timeout=timeout,
-                       encoding="utf-8", errors="replace")
+    p = _popen_run(cmd, timeout, input=prompt, cwd=cwd, env=env)
     secs = round(time.time() - t0, 1)
     try:
         out = json.loads(p.stdout)
@@ -253,7 +283,7 @@ def run_blender(script, args, timeout=1800):
         cmd = [b, os.path.join(ROOT, "tools", "bpy_run.py"), script] + list(args)
     else:
         cmd = [b, "-b", "--factory-startup", "-P", script, "--"] + list(args)
-    p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=ROOT, encoding="utf-8", errors="replace")
+    p = _popen_run(cmd, timeout, cwd=ROOT)
     return p.returncode, (p.stdout or "") + (p.stderr or "")
 
 
@@ -403,6 +433,92 @@ def design_item(kind, name, brief=None, dim=None, feedback=None, model=None):
     return report
 
 
+def check_char_json(cj):
+    """structure check for a character config -> problems"""
+    probs = []
+    mats = cj.get("materials", {})
+    for k, v in mats.items():
+        if not (isinstance(v, list) and len(v) == 3 and all(isinstance(c, (int, float)) and 0 <= c <= 1 for c in v)):
+            probs.append(f"materials.{k}: cần [r, g, b] trong khoảng 0-1")
+    cfg = cj.get("cfg", {})
+    for key, n in (("leg", 3), ("torso", 3), ("arm", 4), ("head", 2)):
+        if not (isinstance(cfg.get(key), list) and len(cfg[key]) == n): probs.append(f"cfg.{key}: cần {n} phần tử")
+    if isinstance(cfg.get("torso"), list) and len(cfg["torso"]) == 3 and cfg["torso"][2] not in mats:
+        probs.append("cfg.torso[2] phải là tên một vật liệu trong materials")
+    faces = cj.get("faces", [])
+    bad = [f for f in faces if f not in storycheck.FACES]
+    if bad: probs.append(f"faces không hợp lệ {bad}; chọn trong {list(storycheck.FACES)}")
+    if len(faces) < 4: probs.append("cần ít nhất 4 biểu cảm (bình thường, vui, nhếch mép/nháy mắt, tức/sốc)")
+    for i, op in enumerate(cj.get("extras", [])):
+        if op.get("op") not in ("shape", "stroke", "disc"): probs.append(f"extras[{i}].op phải là shape/stroke/disc")
+        if op.get("on") not in ("torso", "head"): probs.append(f"extras[{i}].on phải là torso hoặc head")
+        if op.get("mat") and op["mat"] not in mats: probs.append(f"extras[{i}].mat '{op['mat']}' không có trong materials")
+        for k in ("name", "z"):
+            if k not in op: probs.append(f"extras[{i}]: thiếu '{k}'")
+        if op.get("op") in ("shape", "stroke") and "pts" not in op: probs.append(f"extras[{i}]: thiếu 'pts'")
+        if op.get("op") == "stroke" and "w" not in op: probs.append(f"extras[{i}]: thiếu 'w'")
+        if op.get("op") == "disc" and not ("c" in op and "r" in op): probs.append(f"extras[{i}]: disc cần 'c' và 'r'")
+        if isinstance(op.get("pts"), dict) and list(op["pts"])[0] not in ("rrect", "ellipse", "arc", "ring"):
+            probs.append(f"extras[{i}].pts: chỉ dùng rrect/ellipse/arc/ring hoặc danh sách điểm")
+    return probs
+
+
+def _write_char(name, data, brief, status="draft", review=None):
+    d = os.path.join(LIB, "chars", name); os.makedirs(d, exist_ok=True)
+    cj = dict(data["char_json"])
+    cj = {"kind": "char", "name": name, "title_vi": data["title_vi"], "description_vi": data["description_vi"], **cj,
+          "tags": data.get("tags", []), "status": status, "brief_vi": brief, "designed_by": "claude_bridge",
+          "updated": datetime.datetime.now().isoformat(timespec="seconds")}
+    if review: cj["review"] = review
+    json.dump(cj, open(os.path.join(d, "char.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+
+
+def design_char(name, brief=None, feedback=None, model=None):
+    if not re.fullmatch(r"[a-z][a-z0-9_]{1,40}", name): raise BridgeError("tên chỉ gồm chữ thường, số, gạch dưới")
+    p = os.path.join(LIB, "chars", name, "char.json")
+    old = json.load(open(p, encoding="utf-8")) if os.path.exists(p) else None
+    if old and not feedback and old.get("designed_by") != "claude_bridge":
+        raise BridgeError(f"library/chars/{name} đã có; chọn tên khác")
+    brief = brief or (old or {}).get("brief_vi") or name
+    ex = "\n\n".join(f"# ---- library/chars/{n}/char.json ----\n{_read(f'library/chars/{n}/char.json')}" for n in ("joe", "gary"))
+    prompt = (f"Thiết kế nhân vật 2D mới cho WhyShorts, tên '{name}'. Mô tả: {brief}\n"
+              "Theo luật thiết kế nhân vật trong STYLE.md (đầu tròn, thân bo góc, một món đồ nhận diện, màu riêng đậm). "
+              "char_json gồm materials (tên duy nhất có tiền tố tên nhân vật), cfg (leg [hipY, L1, L2], torso [w, h, tên vật liệu], "
+              "arm [shX, shY, L1, L2], head [y, r], tùy chọn eye_y), faces (≥ 4, chọn trong danh sách 10 biểu cảm), extras "
+              "(lệnh vẽ shape/stroke/disc lên torso/head, toạ độ 2D, z để xếp lớp; pts là danh sách điểm hoặc {rrect|ellipse|arc|ring: [...]}). "
+              f"Nhân vật đã có: {', '.join(storycheck.LibIndex().list('chars'))} — phải khác hẳn về màu và món đồ.\n\n{ex}")
+    if old and feedback:
+        prompt += f"\n\n=== char.json hiện tại ===\n{json.dumps(old, ensure_ascii=False)}\nNgười dùng muốn sửa: {feedback}"
+    report = {"item": f"chars/{name}", "rounds": []}; t0 = time.time()
+    data, info = call("design_char", prompt, load_schema("design_char"), project=f"chars/{name}", model=model,
+                      check=lambda x: check_char_json(x["char_json"]))
+    session, cost = info["session"], info["cost_usd"]
+    _write_char(name, data, brief)
+    for rnd in range(MAX_FIX + 1):
+        imgs, err = render_views("chars", name, tag=f"r{rnd + 1}")
+        if err:
+            data2, info2 = call("design_char", f"Dựng nhân vật lỗi trong Blender:\n{err}\nSửa và trả lại JSON đầy đủ.", load_schema("design_char"),
+                                project=f"chars/{name}", model=model, resume=session, check=lambda x: check_char_json(x["char_json"]))
+            cost += info2["cost_usd"]; data = data2; _write_char(name, data, brief); continue
+        report["images"] = [os.path.relpath(x, ROOT) for x in imgs]
+        if rnd == MAX_FIX: break
+        rel = "\n".join(f"- {x}" for x in imgs if os.sep + "_review" + os.sep in x)
+        rv, info3 = call("review", f"Đây là ảnh render nhân vật bạn vừa thiết kế (dáng đứng và từng biểu cảm). Dùng Read để xem:\n{rel}\n"
+                         "Kiểm tra: dễ nhận ra, đúng phong cách, món đồ nhận diện rõ, các phần ghép đúng chỗ, mỗi biểu cảm đọc được. "
+                         "Nếu cần sửa: ok=false, problems, và char_json ĐẦY ĐỦ đã sửa (build_py=null). summary_vi 1-2 câu.",
+                         load_schema("review"), project=f"chars/{name}", model=model, resume=session,
+                         check=lambda x: check_char_json(x["char_json"]) if x.get("char_json") else [])
+        cost += info3["cost_usd"]
+        report["rounds"].append({"score": rv["score"], "ok": rv["ok"], "problems": rv["problems"], "summary_vi": rv["summary_vi"]})
+        say(f"  [review {rnd + 1}] {rv['score']}/10 ok={rv['ok']}: {rv['summary_vi']}")
+        if rv["ok"] or not rv.get("char_json"): break
+        data = dict(data, char_json=rv["char_json"]); _write_char(name, data, brief)
+    final = ([r for r in report["rounds"] if "score" in r] or [{}])[-1]
+    _write_char(name, data, brief, review={"score": final.get("score"), "summary_vi": final.get("summary_vi"), "problems": final.get("problems", [])})
+    report.update(ok="images" in report, seconds=round(time.time() - t0, 1), cost_usd_list_price=round(cost, 3))
+    return report
+
+
 def approve(item):
     kind, name = item.split("/")
     p = os.path.join(LIB, kind, name, "char.json" if kind == "chars" else "meta.json")
@@ -447,7 +563,9 @@ def write_content(slug, idea, minutes=1.0, model=None):
               + (" chia thành chương, mỗi chương 4-7 chuỗi" if minutes > 1.25 else "") + ".\n"
               "Theo STYLE.md: lời đọc, bản dịch Việt, bảng chuỗi máy (mỗi chuỗi: lời đọc của chuỗi, hành động, bối cảnh, đạo cụ, "
               "nhân vật, biểu cảm, gag, tiếng động, hiệu ứng, cách chuyển cảnh, đường đi camera, chữ nhấn). "
-              "Kiểm chứng sự thật bằng web, ghi nguồn. library_needs: đồ chưa có trong thư viện cần thiết kế.\n"
+              "Kiểm chứng sự thật bằng web, ghi nguồn. library_needs: đồ chưa có trong thư viện cần thiết kế. "
+              "Mỗi món mới tốn vài phút và một lượt Claude: ưu tiên dùng lại thư viện (tham số, đổi màu), gộp đồ trang trí vào "
+              "bối cảnh, bỏ đồ phụ không cần cho gag; tối đa khoảng 5 món mới cho 1 phút video.\n"
               f"Thư viện hiện có:\n{_catalog_text()}")
     data, info = call("write_content", prompt, load_schema("content"), project=slug, model=model,
                       check=lambda x: [] if abs(len(x["vo_en"].split()) - words) <= max(25, words * 0.2)
@@ -550,6 +668,9 @@ def main(argv):
             r = design_item(kind, pos[0], pos[1] if len(pos) > 1 else opt.get("brief"), dim=opt.get("dim"),
                             feedback=opt.get("feedback"), model=opt.get("model"))
             print(json.dumps(r, ensure_ascii=False, indent=1))
+        elif job == "design_char":
+            print(json.dumps(design_char(pos[0], pos[1] if len(pos) > 1 else opt.get("brief"), feedback=opt.get("feedback"),
+                                         model=opt.get("model")), ensure_ascii=False, indent=1))
         elif job == "approve": print(json.dumps(approve(pos[0]), ensure_ascii=False, indent=1))
         elif job == "usage": print(json.dumps(usage(), ensure_ascii=False, indent=1))
         elif job == "ideas": print(json.dumps(ideas(opt.get("project", "ideas"), opt.get("topic"), model=opt.get("model")), ensure_ascii=False, indent=1))
