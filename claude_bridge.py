@@ -157,6 +157,23 @@ def _extract_json(text):
     return json.loads(s)
 
 
+def cli_schema(schema):
+    """Schema passed to `claude --json-schema`.  The CLI checks it with Ajv in draft-07 strict mode (no
+    prefixItems) while the API behind it requires valid draft 2020-12 (no array-form items), so no tuple
+    syntax satisfies both: tuples are relaxed to 'each item is one of these schemas'.  The exact tuple
+    shape is still enforced by our own validation (jsonval) and fed back to Claude when wrong."""
+    if isinstance(schema, list): return [cli_schema(x) for x in schema]
+    if not isinstance(schema, dict): return schema
+    out = {k: cli_schema(v) for k, v in schema.items() if k not in ("$schema", "$id")}
+    if "prefixItems" in out:
+        opts = out.pop("prefixItems") + ([out.pop("items")] if "items" in out else [])
+        uniq = []
+        for o in opts:
+            if o not in uniq: uniq.append(o)
+        out["items"] = uniq[0] if len(uniq) == 1 else {"anyOf": uniq}
+    return out
+
+
 def _run(prompt, schema, tools, model, resume, cwd, timeout):
     h = cli_help()
     cmd = claude_cmd() + ["-p", "--output-format", "json"]
@@ -167,7 +184,7 @@ def _run(prompt, schema, tools, model, resume, cwd, timeout):
     if "--tools" in h: cmd += ["--tools", ",".join(tools)]
     if tools: cmd += ["--allowedTools", ",".join(tools)]
     use_schema = "--json-schema" in h
-    if use_schema: cmd += ["--json-schema", json.dumps(schema, ensure_ascii=False)]
+    if use_schema: cmd += ["--json-schema", json.dumps(cli_schema(schema), ensure_ascii=False)]
     else: prompt += "\n\nTrả lời DUY NHẤT một khối ```json theo đúng JSON Schema sau:\n" + json.dumps(schema, ensure_ascii=False)
     model = model or os.environ.get("WHYSHORTS_MODEL")
     if model: cmd += ["--model", model]
