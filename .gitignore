@@ -13,3 +13,5 @@ projects/*/chapters/*/*.mp4
 projects/*/chapters/*/sfx_music.wav
 projects/*/chapters/*/parts/
 projects/*/chapters/concat.txt
+projects/why-manholes-round-long/**/*.wav
+projects/why-manholes-round-long/*.wav
