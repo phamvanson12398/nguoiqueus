@@ -1,0 +1,761 @@
+{
+ "name": "roman_hastatus_312bc",
+ "culture": "roman_republic_312bc",
+ "role": "soldier",
+ "title_vi": "Lính bộ binh dân quân La Mã (hastatus/princeps, ~312 TCN)",
+ "description_vi": "Mũ đồng Montefortino vòm cao như nửa quả trứng, chóp núm trên đỉnh cắm 3 lông vũ thẳng đứng màu phe sẫm, gờ che gáy ngắn hơi loe, hai miếng che má đồng có ba núm nổi. Tunic len đỏ đất (màu phe) cộc tay dài tới gối, thắt lưng da. Giáp ngực đồng vuông nhỏ (pectorale) có 3 vòng nổi, buộc dây da qua vai. Dây đeo chéo xuống kiếm thẳng ngắn bên hông phải. Một ống quyển đồng ở chân trái, dép da buộc dây. Tay trái cầm khiên scutum bầu dục cao màu phe, viền da, gờ dọc spina và núm hạt đậu dọc; tay phải cầm giáo hasta cán gỗ sáng, mũi lá kim loại, có mũi nhọn đuôi.",
+ "silhouette_vi": "mũ tròn cao có chóp cắm chùm lông đứng + khiên BẦU DỤC cao + ô vuông đồng nhỏ giữa ngực + giáo mũi lá vượt quá đầu (khác lính năm 50: không gờ gáy rộng, không khiên chữ nhật, không giáp lá kín thân, không pilum)",
+ "sources": [
+  {
+   "claim": "Giáp ngực đồng vuông khoảng một gang tay, một ống quyển, mũ đồng cắm ba lông vũ tía hoặc đen thẳng đứng cao khoảng 1,5 bộ",
+   "source": "Polybius, Histories 6.23 (thế kỷ 2 TCN; áp lùi về 312 TCN là suy đoán)"
+  },
+  {
+   "claim": "Mũ Montefortino bằng đồng có núm chóp, gờ gáy ngắn, miếng che má ba thùy; hiện vật cuối TK 4–đầu TK 3 TCN",
+   "source": "The Metropolitan Museum of Art, Helmet of the Montefortino type; Worcester Art Museum, Type A Montefortino helmet"
+  },
+  {
+   "claim": "Khiên dài scutum thay khiên tròn clipeus cùng lúc với manipulus",
+   "source": "Livy, Ab Urbe Condita 8.8.3–8"
+  },
+  {
+   "claim": "Trang bị quân La Mã thế kỷ 4 TCN",
+   "source": "Sekunda & Northwood, Early Roman Armies (Osprey MAA 283, 1995)"
+  },
+  {
+   "claim": "Người La Mã để râu trước khi có thợ cạo (~300 TCN)",
+   "source": "Varro, De Re Rustica 2.11.10; Pliny, Naturalis Historia 7.211"
+  }
+ ],
+ "torso": "$team",
+ "hair": "none",
+ "beard": null,
+ "palette": {},
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tunic_skirt",
+   "pts": {
+    "rrect": [
+     0,
+     -0.12,
+     0.84,
+     0.34,
+     0.06
+    ]
+   },
+   "mat": "$team",
+   "z": 0.11,
+   "outline": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "baldric",
+   "pts": [
+    [
+     -0.3,
+     0.78
+    ],
+    [
+     0.37,
+     0.14
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$leather",
+   "z": 0.155
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "strap_shoulderL",
+   "pts": [
+    [
+     -0.11,
+     0.62
+    ],
+    [
+     -0.24,
+     0.82
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$leather",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "strap_shoulderR",
+   "pts": [
+    [
+     0.11,
+     0.62
+    ],
+    [
+     0.24,
+     0.82
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$leather",
+   "z": 0.16
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pectorale",
+   "pts": {
+    "rrect": [
+     0,
+     0.52,
+     0.27,
+     0.27,
+     0.03
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.17,
+   "outline": 0.024
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "pect_ring1",
+   "pts": {
+    "ring": [
+     -0.06,
+     0.575,
+     0.035,
+     0.035,
+     18
+    ]
+   },
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.18
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "pect_ring2",
+   "pts": {
+    "ring": [
+     0.06,
+     0.575,
+     0.035,
+     0.035,
+     18
+    ]
+   },
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.18
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "pect_ring3",
+   "pts": {
+    "ring": [
+     0,
+     0.465,
+     0.035,
+     0.035,
+     18
+    ]
+   },
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.18
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.12,
+     0.86,
+     0.08,
+     0.02
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.18,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "scabbard",
+   "pts": {
+    "rrect": [
+     0.41,
+     -0.02,
+     0.08,
+     0.36,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.19,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "sword_guard",
+   "pts": [
+    [
+     0.36,
+     0.17
+    ],
+    [
+     0.46,
+     0.17
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$metal_dark",
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "sword_grip",
+   "pts": [
+    [
+     0.41,
+     0.17
+    ],
+    [
+     0.41,
+     0.26
+    ]
+   ],
+   "w": 0.032,
+   "mat": "$leather",
+   "z": 0.2
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "sword_pommel",
+   "c": [
+    0.41,
+    0.28
+   ],
+   "r": 0.032,
+   "mat": "$metal_dark",
+   "z": 0.205
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "neckguard",
+   "pts": [
+    [
+     -0.6,
+     0.09
+    ],
+    [
+     0.6,
+     0.09
+    ],
+    [
+     0.55,
+     0.21
+    ],
+    [
+     -0.55,
+     0.21
+    ]
+   ],
+   "mat": "$metal",
+   "z": -0.03,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "plumeL",
+   "pts": {
+    "ellipse": [
+     -0.1,
+     0.93,
+     0.045,
+     0.21,
+     14
+    ]
+   },
+   "mat": "$team_dark",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "plumeR",
+   "pts": {
+    "ellipse": [
+     0.1,
+     0.93,
+     0.045,
+     0.21,
+     14
+    ]
+   },
+   "mat": "$team_dark",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "plumeC",
+   "pts": {
+    "ellipse": [
+     0,
+     0.97,
+     0.05,
+     0.25,
+     14
+    ]
+   },
+   "mat": "$team_dark",
+   "z": 0.072,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "helmet",
+   "pts": {
+    "ellipse": [
+     0,
+     0.18,
+     0.54,
+     0.52,
+     32,
+     0,
+     3.141592653589793
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.08,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "rim",
+   "pts": [
+    [
+     -0.54,
+     0.2
+    ],
+    [
+     0.54,
+     0.2
+    ]
+   ],
+   "w": 0.05,
+   "mat": "$metal_dark",
+   "z": 0.085
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "apex_knob",
+   "c": [
+    0,
+    0.72
+   ],
+   "r": 0.06,
+   "mat": "$metal_dark",
+   "z": 0.09
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekL",
+   "pts": {
+    "rrect": [
+     -0.45,
+     0,
+     0.17,
+     0.38,
+     0.07
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.025
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekL_boss1",
+   "c": [
+    -0.47,
+    0.1
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekL_boss2",
+   "c": [
+    -0.42,
+    -0.04
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekL_boss3",
+   "c": [
+    -0.47,
+    -0.12
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekR",
+   "pts": {
+    "rrect": [
+     0.45,
+     0,
+     0.17,
+     0.38,
+     0.07
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.025
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekR_boss1",
+   "c": [
+    0.47,
+    0.1
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekR_boss2",
+   "c": [
+    0.42,
+    -0.04
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekR_boss3",
+   "c": [
+    0.47,
+    -0.12
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "shape",
+   "on": "handL",
+   "name": "scutum",
+   "pts": {
+    "ellipse": [
+     0.02,
+     0.02,
+     0.3,
+     0.5,
+     36
+    ]
+   },
+   "mat": "$team",
+   "z": 0.05,
+   "outline": 0.035
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "scutum_rim",
+   "pts": {
+    "ring": [
+     0.02,
+     0.02,
+     0.275,
+     0.475,
+     40
+    ]
+   },
+   "w": 0.035,
+   "mat": "$leather",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "spina",
+   "pts": [
+    [
+     0.02,
+     0.47
+    ],
+    [
+     0.02,
+     -0.43
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$team_dark",
+   "z": 0.062
+  },
+  {
+   "op": "shape",
+   "on": "handL",
+   "name": "umbo_bean",
+   "pts": {
+    "ellipse": [
+     0.02,
+     0.02,
+     0.065,
+     0.14,
+     18
+    ]
+   },
+   "mat": "$metal_dark",
+   "z": 0.066,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "hasta_shaft",
+   "pts": [
+    [
+     0,
+     -0.7
+    ],
+    [
+     0,
+     1.72
+    ]
+   ],
+   "w": 0.05,
+   "mat": [
+    0.55,
+    0.32,
+    0.11
+   ],
+   "z": -0.02
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "hasta_socket",
+   "pts": [
+    [
+     0,
+     1.68
+    ],
+    [
+     0,
+     1.8
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$metal_dark",
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "handR",
+   "name": "hasta_head",
+   "pts": [
+    [
+     0,
+     1.76
+    ],
+    [
+     0.095,
+     1.88
+    ],
+    [
+     0.08,
+     2
+    ],
+    [
+     0,
+     2.18
+    ],
+    [
+     -0.08,
+     2
+    ],
+    [
+     -0.095,
+     1.88
+    ]
+   ],
+   "mat": "$metal",
+   "z": -0.02,
+   "outline": 0.022
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "hasta_midrib",
+   "pts": [
+    [
+     0,
+     1.8
+    ],
+    [
+     0,
+     2.1
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": -0.015
+  },
+  {
+   "op": "shape",
+   "on": "handR",
+   "name": "hasta_butt",
+   "pts": [
+    [
+     -0.032,
+     -0.7
+    ],
+    [
+     0.032,
+     -0.7
+    ],
+    [
+     0,
+     -0.82
+    ]
+   ],
+   "mat": "$metal_dark",
+   "z": -0.02,
+   "outline": 0.012
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "greave",
+   "pts": {
+    "rrect": [
+     0,
+     0.22,
+     0.16,
+     0.3,
+     0.06
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.04,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "sandal_strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.022,
+   "mat": "$leather",
+   "z": 0.01
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "sandal_strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.022,
+   "mat": "$leather",
+   "z": 0.01
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "sandal_tie",
+   "pts": [
+    [
+     -0.04,
+     0.06
+    ],
+    [
+     0.04,
+     0.12
+    ],
+    [
+     -0.03,
+     0.17
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  }
+ ],
+ "kind": "outfit",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Lính bộ binh dân quân (hastatus hoặc princeps). MŨ: Montefortino bằng đồng ($metal), vòm tròn cao như nửa quả trứng, đỉnh có chóp/núm nhỏ (đĩa r≈0,06 trên đỉnh, chỗ cắm lông); vành dưới hơi loe thành gờ che gáy NGẮN ở phía sau; hai miếng che má đồng hình ba thùy treo hai bên (không che mắt và miệng). Trên chóp cắm 2–3 lông vũ thẳng đứng màu tía hoặc đen (Polybius), cao khoảng 0,35, có thể dùng $team_dark. hair 'none' dưới mũ; được để râu (beard auto, tỉ lệ cao). THÂN: tunic len cộc tay dài tới gối, màu $team (đỏ đất), thắt lưng da $leather. Trên ngực là giáp đồng VUÔNG NHỎ (pectorale) khoảng 0,26×0,26, rrect bo góc nhỏ, $metal, giữa ngực hơi lệch lên (cy≈0,52); có 3 vòng đồng nổi hoặc viền chấm nổi; bốn dây da $leather chéo qua vai và quanh sườn (stroke mảnh). CHÂN: một ống quyển đồng ở chân trái (footL, nhô lên ống chân), chân phải trần; dép da buộc dây. TAY TRÁI: khiên scutum BẦU DỤC cao ≈0,95, rộng ≈0,55, màu $team, viền da $leather, gờ dọc giữa (spina) chạy từ trên xuống dưới, ở giữa là núm gỗ/kim loại hình hạt đậu dọc ($metal_dark); mặt khiên trơn, không vẽ hình. TAY PHẢI: giáo hasta dài ≈2,3, cán gỗ $leather sáng, mũi lá đồng/sắt $metal_dark, có đầu nhọn đuôi. Kiếm thẳng ngắn đeo bên hông phải bằng dây đeo chéo (không phải gladius hispaniensis). Bóng đen nhận ra nhờ: mũ tròn có chóp cắm lông + khiên bầu dục cao + ô vuông đồng trên ngực.",
+ "created": "2026-11-11T18:00:44",
+ "review": {
+  "score": 8,
+  "summary_vi": "Vòng 2 đạt. Miếng che má giờ đọc rõ là tấm đồng có núm, không còn giống tóc vàng. Mũi giáo hình lá thấy rõ trên đầu. Ngực gọn hơn. Mũ, mặt, đồ cầm đều đúng chỗ, không che mắt hay miệng.",
+  "accuracy_vi": "Đúng La Mã thời Cộng hòa giữa: mũ Montefortino đồng có chóp và 3 lông vũ, giáp ngực vuông nhỏ có 3 vòng nổi, một ống quyển ở chân trái, khiên bầu dục trơn có spina và núm, giáo hasta, kiếm ngắn bên phải, có râu. Không lẫn đồ thời Đế chế. Áp mô tả của Polybius lùi về năm 312 TCN vẫn là suy đoán, đã ghi trong culture.json.",
+  "problems": [
+   "Ở cỡ rất nhỏ, khiên bầu dục bị xoay theo tay nên vẫn hơi giống khiên tròn (chấp nhận được)",
+   "Lông vũ dùng $team_dark (đỏ sẫm theo phe) chứ không phải tía/đen như Polybius tả; brief cho phép"
+  ]
+ }
+}

@@ -222,3 +222,20 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   mũi tên/vùng/quân cờ đúng lúc (`docs/img/longform_step3.jpg`). Còn thiếu: nhân vật, bối cảnh, đạo cụ La Mã → bước 4.
 - Còn để ý: một shot insert nhắm tâm tờ giấy trống (nên nhắm `label_*`); tay vẽ hơi nhòe do motion blur khi chạy nhanh.
 
+### Bước 4 — xong (văn hóa, trang phục, đám đông)
+- `library/cultures/<id>/culture.json` (bảng màu, kiểu tóc/râu, dải màu da, vai → trang phục, nguồn, điểm tranh cãi) và
+  `library/outfits/<id>/outfit.json` (mảnh 2D gắn torso/head/foot/handL/handR, màu theo ô `$team $cloth $metal…`). Tài liệu: `library/OUTFITS.md`.
+- `core/outfits.py`: look (tóc/râu theo văn hóa + seed), đồ cầm tay theo cánh tay, khăn cổ màu riêng cho nhân vật chính (`look.accent`),
+  không vẽ râu hai lần khi trang phục đã có râu, đội hình (block/line/column/wedge/scatter/circle), đám đông bằng collection instance.
+- Builder: `chars` type `person` + faction/role/outfit/look/outfit_changes; `crowds` (vài lính mẫu nhân bản, moves, march, biểu cảm khác nhau).
+  `chars/person` (thân chuẩn), `sets/open_field`. Mẫu tay viết: `roman_empire_50ad` + `roman_legionary_50ad`; `projects/demo-legion`.
+- `tools/lineup.py`: ảnh xếp hàng cạnh Joe + ảnh bóng đen nhỏ. Bridge `design_culture` (tra web, nguồn) và `design_outfit` (xem lineup,
+  chấm sử liệu + bóng đen so với phe khác, sửa tối đa 2 vòng). Server: thiết kế văn hóa trước, rồi trang phục các vai story dùng.
+- Chạy thật: văn hóa Briton (117 s, 6 vai có nguồn Caesar/Tacitus/Pliny), Cộng hòa La Mã 312 TCN, Samnite (81 s); trang phục
+  briton_warrior (6→8/10), roman_surveyor 8, roman_centurion 7, briton_guide 7, appius_claudius 8, roman_hastatus_312bc 8, samnite_soldier 8.
+  Chương 1 La Mã: plan_shots 5 phút → 13 món + 2 trang phục vai → dựng `CAMERA OK` (46 shot, 15,7 cắt/phút). Ảnh: `docs/img/longform_step4.jpg`.
+- Lỗi đã sửa: thiếu tên file văn hóa/trang phục trong Library của builder; khăn bị tóc dài che; ria vẽ hai lần; ria che miệng;
+  kiểm "che mắt" báo nhầm với mũ nửa elip. Story ghi `outcrop.size` dạng [5, 3] trong khi bối cảnh cần một số → sửa tay (vòng tự sửa của build sẽ làm việc này).
+- Còn để ý: dựng chương 1 mất 434 s (6.398 object) → bước 6 tối ưu; nhãn "CENTURION" đè đầu nhân vật; tools/thumbs.py chụp hụt mặt
+  nhân vật thấp (con dê).
+

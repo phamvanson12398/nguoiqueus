@@ -1,0 +1,1040 @@
+{
+ "name": "samnite_soldier_312bc",
+ "culture": "samnite_312bc",
+ "role": "soldier",
+ "title_vi": "Chiến binh Samnite (~312 TCN)",
+ "description_vi": "Tunic ngắn tới giữa đùi màu phe (xanh lam đậm), viền cổ và gấu trắng ngà; giáp ngực ba đĩa đồng xếp tam giác, mỗi đĩa có vòng sẫm và núm giữa, nối bằng đai vai da; thắt lưng đồng rộng có hai móc hình lá ở giữa; mũ đồng kiểu Attic/Montefortino: chỏm tròn, gờ trán, vành gáy nhỏ, miếng che má có ba núm, hai ống cắm hai bên mỗi bên một lông vũ trắng to cao cong ra ngoài, mào ngắn màu phe trên đỉnh; xà cạp đồng ở chân trái (Livy 9.40); khiên tròn lớn màu phe, vành và núm đồng (tay trái); giáo dài mũi lá đồng, cán gỗ (tay phải); dép da.",
+ "silhouette_vi": "hai lông vũ trắng to dựng cao hình chữ V trên mũ + ba đĩa đồng tròn trên ngực + khiên tròn lớn + giáo dài vượt đầu (khác La Mã: mũ gờ gáy rộng/mào ngang, khiên chữ nhật, pilum)",
+ "sources": [
+  {
+   "claim": "Giáp ngực ba đĩa đồng xuất phát từ vùng Apennine trung bộ/Samnium cuối thế kỷ 5 TCN (Alfedena)",
+   "source": "Burns, M. T., 'The Cultural Impact of Bronze Armour in Italy' (UCL, 2005)"
+  },
+  {
+   "claim": "Thắt lưng đồng rộng có móc gắn với chiến binh trưởng thành",
+   "source": "The Metropolitan Museum of Art, 'Bronze belt and clasps', acc. 08.3a"
+  },
+  {
+   "claim": "Mũ Attic, giáp ba đĩa, xà cạp trong bộ giáp Ý",
+   "source": "Museo Archeologico Nazionale di Paestum; Mougins Museum of Classical Art MMoCA840"
+  },
+  {
+   "claim": "Mũ có mào để trông cao hơn; xà cạp chân trái",
+   "source": "Livy, Ab Urbe Condita 9.40"
+  },
+  {
+   "claim": "Mũ Ý thế kỷ 4 TCN có ống cắm lông vũ hai bên và chốt mào giữa; chiến binh Osca vác giáo",
+   "source": "Burns 2005; Connolly, 'Greece and Rome at War' (1981); tranh mộ Andriuolo 12, Paestum"
+  },
+  {
+   "claim": "Màu xanh lam là lựa chọn nhận diện phe, không có sử liệu; khiên tròn là một trong các dạng khiên (khiên thon dưới theo Livy còn tranh cãi)",
+   "source": "culture.json samnite_312bc, mục uncertain_vi"
+  }
+ ],
+ "torso": "$team",
+ "hair": "none",
+ "beard": null,
+ "palette": {},
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "skirt",
+   "pts": {
+    "rrect": [
+     0,
+     -0.08,
+     0.84,
+     0.22,
+     0.05
+    ]
+   },
+   "mat": "$team",
+   "z": 0.11,
+   "outline": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "hem",
+   "pts": [
+    [
+     -0.4,
+     -0.165
+    ],
+    [
+     0.4,
+     -0.165
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$cloth2",
+   "z": 0.115
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "neck_trim",
+   "pts": {
+    "arc": [
+     0,
+     0.82,
+     0.17,
+     0.09,
+     180,
+     360,
+     14
+    ]
+   },
+   "w": 0.04,
+   "mat": "$cloth2",
+   "z": 0.13
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "strapL",
+   "pts": [
+    [
+     -0.3,
+     0.8
+    ],
+    [
+     -0.13,
+     0.58
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$leather",
+   "z": 0.14
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "strapR",
+   "pts": [
+    [
+     0.3,
+     0.8
+    ],
+    [
+     0.13,
+     0.58
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$leather",
+   "z": 0.14
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "strap_sides",
+   "pts": [
+    [
+     -0.4,
+     0.42
+    ],
+    [
+     -0.13,
+     0.58
+    ],
+    [
+     0,
+     0.38
+    ],
+    [
+     0.13,
+     0.58
+    ],
+    [
+     0.4,
+     0.42
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$leather",
+   "z": 0.14
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "discUL",
+   "pts": {
+    "ellipse": [
+     -0.13,
+     0.58,
+     0.12,
+     0.12,
+     28
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.16,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "discUR",
+   "pts": {
+    "ellipse": [
+     0.13,
+     0.58,
+     0.12,
+     0.12,
+     28
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.16,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "discLow",
+   "pts": {
+    "ellipse": [
+     0,
+     0.38,
+     0.12,
+     0.12,
+     28
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.16,
+   "outline": 0.022
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "ringUL",
+   "pts": {
+    "ring": [
+     -0.13,
+     0.58,
+     0.082,
+     0.082,
+     24
+    ]
+   },
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.17
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "ringUR",
+   "pts": {
+    "ring": [
+     0.13,
+     0.58,
+     0.082,
+     0.082,
+     24
+    ]
+   },
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.17
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "ringLow",
+   "pts": {
+    "ring": [
+     0,
+     0.38,
+     0.082,
+     0.082,
+     24
+    ]
+   },
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.17
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "bossUL",
+   "c": [
+    -0.13,
+    0.58
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.175
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "bossUR",
+   "c": [
+    0.13,
+    0.58
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.175
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "bossLow",
+   "c": [
+    0,
+    0.38
+   ],
+   "r": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.175
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.18,
+     0.86,
+     0.14,
+     0.03
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.18,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "hookL",
+   "pts": [
+    [
+     -0.17,
+     0.18
+    ],
+    [
+     -0.12,
+     0.22
+    ],
+    [
+     -0.05,
+     0.205
+    ],
+    [
+     -0.015,
+     0.18
+    ],
+    [
+     -0.05,
+     0.155
+    ],
+    [
+     -0.12,
+     0.14
+    ]
+   ],
+   "mat": "$metal_dark",
+   "z": 0.19,
+   "outline": 0.012
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "hookR",
+   "pts": [
+    [
+     0.17,
+     0.18
+    ],
+    [
+     0.12,
+     0.22
+    ],
+    [
+     0.05,
+     0.205
+    ],
+    [
+     0.015,
+     0.18
+    ],
+    [
+     0.05,
+     0.155
+    ],
+    [
+     0.12,
+     0.14
+    ]
+   ],
+   "mat": "$metal_dark",
+   "z": 0.19,
+   "outline": 0.012
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "belt_rivetL",
+   "c": [
+    -0.34,
+    0.18
+   ],
+   "r": 0.025,
+   "mat": "$metal_dark",
+   "z": 0.19
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "belt_rivetR",
+   "c": [
+    0.34,
+    0.18
+   ],
+   "r": 0.025,
+   "mat": "$metal_dark",
+   "z": 0.19
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "featherL",
+   "pts": [
+    [
+     -0.55,
+     0.42
+    ],
+    [
+     -0.68,
+     0.5
+    ],
+    [
+     -0.8,
+     0.64
+    ],
+    [
+     -0.9,
+     0.8
+    ],
+    [
+     -0.94,
+     0.97
+    ],
+    [
+     -0.88,
+     1.05
+    ],
+    [
+     -0.8,
+     0.94
+    ],
+    [
+     -0.72,
+     0.78
+    ],
+    [
+     -0.63,
+     0.62
+    ],
+    [
+     -0.56,
+     0.5
+    ]
+   ],
+   "mat": "$white",
+   "z": 0.085,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "featherR",
+   "pts": [
+    [
+     0.55,
+     0.42
+    ],
+    [
+     0.68,
+     0.5
+    ],
+    [
+     0.8,
+     0.64
+    ],
+    [
+     0.9,
+     0.8
+    ],
+    [
+     0.94,
+     0.97
+    ],
+    [
+     0.88,
+     1.05
+    ],
+    [
+     0.8,
+     0.94
+    ],
+    [
+     0.72,
+     0.78
+    ],
+    [
+     0.63,
+     0.62
+    ],
+    [
+     0.56,
+     0.5
+    ]
+   ],
+   "mat": "$white",
+   "z": 0.085,
+   "outline": 0.022
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "feather_ribL",
+   "pts": [
+    [
+     -0.58,
+     0.46
+    ],
+    [
+     -0.7,
+     0.62
+    ],
+    [
+     -0.8,
+     0.8
+    ],
+    [
+     -0.87,
+     0.98
+    ]
+   ],
+   "w": 0.014,
+   "mat": [
+    0.6,
+    0.6,
+    0.62
+   ],
+   "z": 0.087
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "feather_ribR",
+   "pts": [
+    [
+     0.58,
+     0.46
+    ],
+    [
+     0.7,
+     0.62
+    ],
+    [
+     0.8,
+     0.8
+    ],
+    [
+     0.87,
+     0.98
+    ]
+   ],
+   "w": 0.014,
+   "mat": [
+    0.6,
+    0.6,
+    0.62
+   ],
+   "z": 0.087
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "plume_tubeL",
+   "pts": [
+    [
+     -0.5,
+     0.22
+    ],
+    [
+     -0.58,
+     0.45
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$metal_dark",
+   "z": 0.09
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "plume_tubeR",
+   "pts": [
+    [
+     0.5,
+     0.22
+    ],
+    [
+     0.58,
+     0.45
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$metal_dark",
+   "z": 0.09
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "neckflare",
+   "pts": {
+    "rrect": [
+     0,
+     0.13,
+     1.12,
+     0.09,
+     0.04
+    ]
+   },
+   "mat": "$metal",
+   "z": -0.03,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "crest",
+   "pts": {
+    "ellipse": [
+     0,
+     0.67,
+     0.2,
+     0.1,
+     22
+    ]
+   },
+   "mat": "$team",
+   "z": 0.075,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "helmet",
+   "pts": {
+    "ellipse": [
+     0,
+     0.2,
+     0.54,
+     0.45,
+     30,
+     0,
+     3.141592653589793
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.08,
+   "outline": 0.03
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "crest_holder",
+   "c": [
+    0,
+    0.63
+   ],
+   "r": 0.045,
+   "mat": "$metal_dark",
+   "z": 0.085
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "brow",
+   "pts": [
+    [
+     -0.53,
+     0.22
+    ],
+    [
+     -0.2,
+     0.2
+    ],
+    [
+     0,
+     0.16
+    ],
+    [
+     0.2,
+     0.2
+    ],
+    [
+     0.53,
+     0.22
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$metal_dark",
+   "z": 0.09
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekL",
+   "pts": {
+    "ellipse": [
+     -0.43,
+     -0.07,
+     0.11,
+     0.24,
+     18
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekR",
+   "pts": {
+    "ellipse": [
+     0.43,
+     -0.07,
+     0.11,
+     0.24,
+     18
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.022
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekL_d1",
+   "c": [
+    -0.46,
+    0.06
+   ],
+   "r": 0.035,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekL_d2",
+   "c": [
+    -0.4,
+    -0.06
+   ],
+   "r": 0.035,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekL_d3",
+   "c": [
+    -0.46,
+    -0.18
+   ],
+   "r": 0.035,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekR_d1",
+   "c": [
+    0.46,
+    0.06
+   ],
+   "r": 0.035,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekR_d2",
+   "c": [
+    0.4,
+    -0.06
+   ],
+   "r": 0.035,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "cheekR_d3",
+   "c": [
+    0.46,
+    -0.18
+   ],
+   "r": 0.035,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "shape",
+   "on": "handL",
+   "name": "shield",
+   "pts": {
+    "ellipse": [
+     0,
+     0.02,
+     0.42,
+     0.42,
+     44
+    ]
+   },
+   "mat": "$team",
+   "z": 0.05,
+   "outline": 0.035
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "shield_rim",
+   "pts": {
+    "ring": [
+     0,
+     0.02,
+     0.39,
+     0.39,
+     44
+    ]
+   },
+   "w": 0.05,
+   "mat": "$metal",
+   "z": 0.055
+  },
+  {
+   "op": "disc",
+   "on": "handL",
+   "name": "shield_boss",
+   "c": [
+    0,
+    0.02
+   ],
+   "r": 0.11,
+   "mat": "$metal",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "shield_boss_ring",
+   "pts": {
+    "ring": [
+     0,
+     0.02,
+     0.11,
+     0.11,
+     24
+    ]
+   },
+   "w": 0.022,
+   "mat": "$metal_dark",
+   "z": 0.065
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "spear_shaft",
+   "pts": [
+    [
+     0,
+     -0.55
+    ],
+    [
+     0,
+     1.75
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$leather",
+   "z": -0.02
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "spear_socket",
+   "pts": [
+    [
+     0,
+     1.7
+    ],
+    [
+     0,
+     1.82
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$metal_dark",
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "handR",
+   "name": "spear_tip",
+   "pts": [
+    [
+     0,
+     1.8
+    ],
+    [
+     0.08,
+     1.93
+    ],
+    [
+     0.045,
+     2.04
+    ],
+    [
+     0,
+     2.15
+    ],
+    [
+     -0.045,
+     2.04
+    ],
+    [
+     -0.08,
+     1.93
+    ]
+   ],
+   "mat": "$metal",
+   "z": -0.02,
+   "outline": 0.016
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "spear_butt",
+   "pts": [
+    [
+     0,
+     -0.55
+    ],
+    [
+     0,
+     -0.63
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$metal_dark",
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "greave",
+   "pts": {
+    "rrect": [
+     0,
+     0.21,
+     0.16,
+     0.3,
+     0.06
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "greave_ridge",
+   "pts": [
+    [
+     0,
+     0.09
+    ],
+    [
+     0,
+     0.33
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.075
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  }
+ ],
+ "kind": "outfit",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Chiến binh Samnite, dáng hiên ngang. Áo nền torso: tunic ngắn tới giữa đùi màu $team (xanh lam đậm), viền gấu và cổ màu $cloth2 (trắng ngà) dày ~0,04. Giáp ngực ba đĩa đồng $metal: ba đĩa tròn r ~0,12 xếp tam giác (hai đĩa trên ở (±0,13; 0,58), một đĩa dưới ở (0; 0,38)), mỗi đĩa có vòng $metal_dark và núm giữa; nối bằng nét đai vai $leather. Thắt lưng đồng rộng (rrect cao ~0,14 ngang y ≈ 0,18, rộng hết thân) màu $metal với hai móc hình lá/ve sầu $metal_dark ở giữa. Mũ đồng kiểu Attic/Montefortino: chỏm tròn $metal, vành gáy nhỏ, miếng che má hình ba đĩa (không che mắt/miệng), viền $metal_dark; hai ống cắm hai bên đầu mỗi bên một lông vũ trắng $white cao ~0,6 hơi cong ra ngoài, và mào giữa ngắn màu $team. hair: none (dưới mũ), cho phép râu. Một chân (footL) có xà cạp đồng $metal tới gối. Tay trái cầm khiên tròn lớn (r ~0,42) hoặc bầu dục, mặt $team, vành $metal, núm khiên đồng; tay phải cầm giáo/lao dài ~2,3, cán $leather, mũi đồng/sắt. Silhouette: hai lông trắng dựng cao + đĩa giáp tròn trên ngực.",
+ "created": "2026-11-11T18:04:04",
+ "review": {
+  "score": 8,
+  "summary_vi": "Đạt. Lông vũ giờ đã ra lông chim (bản rộng, có gân, cong ra ngoài), không còn giống sừng hay dao. Mào xanh đã gắn vào chỏm mũ. Giáo dài hơn, mũi lá đồng vượt lên trên đầu. Ba đĩa giáp, thắt lưng đồng có móc và khiên tròn xanh vành đồng đều rõ. Mắt và miệng không bị che, khiên và giáo đi theo tay.",
+  "accuracy_vi": "Đúng Samnite thế kỷ 4 TCN: giáp ngực ba đĩa, thắt lưng đồng có móc, mũ Attic có ống cắm lông vũ hai bên, xà cạp chân trái (Livy 9.40), giáo. Không lẫn đồ La Mã hay đồ thời kỳ khác. Màu xanh và khiên tròn là lựa chọn để nhận diện phe, đã ghi trong sources.",
+  "problems": [
+   "Mũi giáo nằm sát lông vũ phải nên ở bóng đen nhỏ hai thứ hơi dính nhau. Chấp nhận được",
+   "Khiên che gần hết chân trái, xà cạp chỉ thấy một phần. Đây là chi tiết phụ"
+  ]
+ }
+}

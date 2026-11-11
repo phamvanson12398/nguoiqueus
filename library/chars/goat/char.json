@@ -1,0 +1,652 @@
+{
+ "kind": "char",
+ "name": "goat",
+ "title_vi": "Dê con — dê nâu trắng đeo chuông",
+ "description_vi": "Dê 2D nhìn thẳng, mũm mĩm: thân tròn nâu, bụng trắng, mặt trắng có chỏm lông nâu trên trán, tai cụp hai bên (lòng tai hồng), sừng nhỏ màu ngà cong ra sau, râu dê màu kem. Món đồ nhận diện: vòng cổ xanh ngọc có chuông vàng treo lệch phải. Đuôi ngắn nâu sẫm vểnh bên hông phải. Bốn chân là nét đen, móng nâu đen; hai chân sau đi theo hai chân trước. Cao khoảng 1,1 tới đỉnh sừng. Tính cách: tò mò, tham ăn, cái gì cũng gặm, tỉnh bơ.",
+ "materials": {
+  "goat_brown": [
+   0.3,
+   0.12,
+   0.04
+  ],
+  "goat_brown_d": [
+   0.14,
+   0.05,
+   0.015
+  ],
+  "goat_white": [
+   0.97,
+   0.95,
+   0.9
+  ],
+  "goat_hoof": [
+   0.06,
+   0.04,
+   0.035
+  ],
+  "goat_horn": [
+   0.8,
+   0.68,
+   0.45
+  ],
+  "goat_ear_in": [
+   0.9,
+   0.4,
+   0.4
+  ],
+  "goat_beard": [
+   0.8,
+   0.72,
+   0.58
+  ],
+  "goat_collar": [
+   0,
+   0.42,
+   0.4
+  ],
+  "goat_bell": [
+   0.98,
+   0.7,
+   0.05
+  ]
+ },
+ "cfg": {
+  "leg": [
+   0.27,
+   0.1,
+   0.11
+  ],
+  "torso": [
+   1,
+   0.66,
+   "goat_brown"
+  ],
+  "arm": [
+   0.06,
+   0.44,
+   0.02,
+   0.02
+  ],
+  "head": [
+   0.44,
+   0.3
+  ],
+  "eye_y": 0.03,
+  "shoe": {
+   "mat": "goat_hoof",
+   "rx": 0.07,
+   "ry": 0.045,
+   "dx": 0,
+   "outline": 0.03
+  }
+ },
+ "faces": [
+  "neutral",
+  "happy",
+  "smirk",
+  "shock",
+  "worried",
+  "grumpy"
+ ],
+ "extras": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belly",
+   "pts": {
+    "ellipse": [
+     0,
+     0.17,
+     0.3,
+     0.17,
+     28
+    ]
+   },
+   "mat": "goat_white",
+   "z": 0.15,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tail",
+   "pts": [
+    [
+     0.4,
+     0.22
+    ],
+    [
+     0.52,
+     0.3
+    ],
+    [
+     0.6,
+     0.4
+    ],
+    [
+     0.64,
+     0.37
+    ],
+    [
+     0.6,
+     0.27
+    ],
+    [
+     0.48,
+     0.16
+    ]
+   ],
+   "mat": "goat_brown_d",
+   "z": -0.02,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "bleg_L",
+   "pts": [
+    [
+     -0.16,
+     0.06
+    ],
+    [
+     -0.16,
+     0.34
+    ]
+   ],
+   "w": 0.065,
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "bhoof_L",
+   "pts": {
+    "ellipse": [
+     -0.16,
+     0.06,
+     0.065,
+     0.04,
+     20
+    ]
+   },
+   "mat": "goat_hoof",
+   "z": -0.015,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "bleg_R",
+   "pts": [
+    [
+     0.08,
+     0.06
+    ],
+    [
+     0.08,
+     0.34
+    ]
+   ],
+   "w": 0.065,
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "footR",
+   "name": "bhoof_R",
+   "pts": {
+    "ellipse": [
+     0.08,
+     0.06,
+     0.065,
+     0.04,
+     20
+    ]
+   },
+   "mat": "goat_hoof",
+   "z": -0.015,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "hornL_ol",
+   "pts": [
+    [
+     -0.1,
+     0.22
+    ],
+    [
+     -0.12,
+     0.3
+    ],
+    [
+     -0.17,
+     0.36
+    ],
+    [
+     -0.24,
+     0.38
+    ],
+    [
+     -0.29,
+     0.35
+    ],
+    [
+     -0.31,
+     0.325
+    ]
+   ],
+   "w": 0.1,
+   "z": -0.08
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "hornL",
+   "pts": [
+    [
+     -0.1,
+     0.22
+    ],
+    [
+     -0.12,
+     0.3
+    ],
+    [
+     -0.17,
+     0.36
+    ],
+    [
+     -0.24,
+     0.38
+    ],
+    [
+     -0.285,
+     0.352
+    ]
+   ],
+   "w": 0.06,
+   "z": -0.04,
+   "mat": "goat_horn"
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "hornR_ol",
+   "pts": [
+    [
+     0.1,
+     0.22
+    ],
+    [
+     0.12,
+     0.3
+    ],
+    [
+     0.17,
+     0.36
+    ],
+    [
+     0.24,
+     0.38
+    ],
+    [
+     0.29,
+     0.35
+    ],
+    [
+     0.31,
+     0.325
+    ]
+   ],
+   "w": 0.1,
+   "z": -0.08
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "hornR",
+   "pts": [
+    [
+     0.1,
+     0.22
+    ],
+    [
+     0.12,
+     0.3
+    ],
+    [
+     0.17,
+     0.36
+    ],
+    [
+     0.24,
+     0.38
+    ],
+    [
+     0.285,
+     0.352
+    ]
+   ],
+   "w": 0.06,
+   "z": -0.04,
+   "mat": "goat_horn"
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "earL",
+   "pts": [
+    [
+     -0.22,
+     0.1
+    ],
+    [
+     -0.32,
+     0.12
+    ],
+    [
+     -0.44,
+     0.07
+    ],
+    [
+     -0.5,
+     0
+    ],
+    [
+     -0.45,
+     -0.03
+    ],
+    [
+     -0.33,
+     0
+    ],
+    [
+     -0.22,
+     0.02
+    ]
+   ],
+   "mat": "goat_brown",
+   "z": -0.03,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "earL_in",
+   "pts": [
+    [
+     -0.27,
+     0.07
+    ],
+    [
+     -0.36,
+     0.08
+    ],
+    [
+     -0.45,
+     0.03
+    ],
+    [
+     -0.36,
+     0.03
+    ]
+   ],
+   "mat": "goat_ear_in",
+   "z": -0.025,
+   "outline": 0
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "earR",
+   "pts": [
+    [
+     0.22,
+     0.1
+    ],
+    [
+     0.32,
+     0.12
+    ],
+    [
+     0.44,
+     0.07
+    ],
+    [
+     0.5,
+     0
+    ],
+    [
+     0.45,
+     -0.03
+    ],
+    [
+     0.33,
+     0
+    ],
+    [
+     0.22,
+     0.02
+    ]
+   ],
+   "mat": "goat_brown",
+   "z": -0.03,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "earR_in",
+   "pts": [
+    [
+     0.27,
+     0.07
+    ],
+    [
+     0.36,
+     0.08
+    ],
+    [
+     0.45,
+     0.03
+    ],
+    [
+     0.36,
+     0.03
+    ]
+   ],
+   "mat": "goat_ear_in",
+   "z": -0.025,
+   "outline": 0
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "collar",
+   "pts": {
+    "rrect": [
+     0,
+     -0.31,
+     0.46,
+     0.09,
+     0.045
+    ]
+   },
+   "mat": "goat_collar",
+   "z": -0.02,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "beard",
+   "pts": [
+    [
+     -0.08,
+     -0.22
+    ],
+    [
+     0.08,
+     -0.22
+    ],
+    [
+     0.06,
+     -0.34
+    ],
+    [
+     0.025,
+     -0.44
+    ],
+    [
+     0,
+     -0.48
+    ],
+    [
+     -0.025,
+     -0.44
+    ],
+    [
+     -0.06,
+     -0.34
+    ]
+   ],
+   "mat": "goat_beard",
+   "z": -0.01,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "bell",
+   "pts": {
+    "ellipse": [
+     0.14,
+     -0.39,
+     0.055,
+     0.055,
+     24
+    ]
+   },
+   "mat": "goat_bell",
+   "z": -0.005,
+   "outline": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "bell_slit",
+   "pts": [
+    [
+     0.11,
+     -0.4
+    ],
+    [
+     0.17,
+     -0.4
+    ]
+   ],
+   "w": 0.015,
+   "z": 0
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "bell_dot",
+   "c": [
+    0.14,
+    -0.422
+   ],
+   "r": 0.014,
+   "z": 0
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "forelock",
+   "pts": [
+    [
+     0.247,
+     0.1425
+    ],
+    [
+     0.2015,
+     0.2015
+    ],
+    [
+     0.1425,
+     0.2468
+    ],
+    [
+     0.0738,
+     0.2753
+    ],
+    [
+     0,
+     0.285
+    ],
+    [
+     -0.0738,
+     0.2753
+    ],
+    [
+     -0.1425,
+     0.2468
+    ],
+    [
+     -0.2015,
+     0.2015
+    ],
+    [
+     -0.247,
+     0.1425
+    ],
+    [
+     -0.17,
+     0.19
+    ],
+    [
+     -0.08,
+     0.165
+    ],
+    [
+     0,
+     0.2
+    ],
+    [
+     0.08,
+     0.165
+    ],
+    [
+     0.17,
+     0.19
+    ]
+   ],
+   "mat": "goat_brown",
+   "z": 0.01,
+   "outline": 0
+  }
+ ],
+ "tags": [
+  "animal",
+  "goat",
+  "farm",
+  "sidekick",
+  "quadruped"
+ ],
+ "status": "draft",
+ "brief_vi": "Con dê 2D cùng phong cách nhân vật (thân tròn nâu trắng, viền đen 0,035, 4 chân là nét, sừng nhỏ cong, râu dê, đuôi ngắn), cao ~1,1 tới đỉnh sừng; đi 4 chân được (legs walk_legs), quay đầu trái/phải. faces: neutral, happy (tối thiểu), có chớp mắt. Gốc dưới chân, đứng z = 0.",
+ "designed_by": "claude_bridge",
+ "updated": "2026-11-11T17:59:26",
+ "review": {
+  "score": 7,
+  "summary_vi": "Dê con đọc rõ, đúng phong cách. Sừng ngà, vòng cổ xanh ngọc và chuông vàng hiện rõ. Ảnh biểu cảm vẫn bị camera của tool chụp hụt (z 1,85), nên các biểu cảm mới kiểm qua thumbnail; cần sửa tools/thumbs.py để chụp đúng mặt nhân vật thấp.",
+  "problems": [
+   "Ảnh biểu cảm vòng 2 vẫn chụp sai chỗ: camera trong tools/thumbs.py:147 cố định ở z = 1,85, chỉ thấy chỏm sừng. Lỗi nằm ở tool, không phải char.json; cần nhắm camera vào ch.head.matrix_world.translation. Vì vậy 6 biểu cảm mới chỉ được kiểm qua thumb.png (neutral) và tính toạ độ trong faces.py, chưa xem từng ảnh.",
+   "Phần sửa sừng đã có hiệu quả: sừng màu ngà, viền đen rõ.",
+   "Thumb.png nhìn ổn: đọc ra là dê (sừng cong, tai cụp, chỏm lông nâu, râu kem, đuôi, 4 chân móng đen); vòng cổ xanh ngọc và chuông vàng hiện rõ; màu khác hẳn Joe, Gary và Sam. Nhược điểm nhỏ: đầu chiếm gần hết thân, nhìn hơi giống thú bông. Mắt và miệng dùng bộ biểu cảm chung (thiết kế cho đầu r = 0,5) nên to so với mặt r = 0,3, nhưng vẫn nằm trong mặt."
+  ]
+ }
+}

@@ -145,6 +145,7 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    - việc Claude mới `design_culture`, `design_outfit` (có tra nguồn, ảnh xếp hàng so sánh các phe);
    - lính phụ nhẹ (collection instance), lệnh đội hình (hàng, khối, cột, nêm), trộn ngẫu nhiên màu da, tóc, râu, kiểu mũ trong cùng phe;
    - nhân vật dẫn dắt (POV) giữ màu riêng và khuôn mặt cố định khi đổi trang phục qua các thời kỳ/quốc gia.
+   - **Trạng thái:** xong (CLAUDE.md, "Video dài — Bước 4").
 5. **Âm thanh và hiệu ứng hình cho video dài:**
    - Nhạc nền: `music_bed` hiện tại chỉ là vòng 16 nốt tự tổng hợp (playful/sneaky/tense), nghe 10–20 phút sẽ nhàm và quá "hoạt hình".
      Thêm thư viện `library/music/` gồm file nhạc miễn phí bản quyền người dùng tải về (YouTube Audio Library, Pixabay Music, nhạc CC0/CC-BY
