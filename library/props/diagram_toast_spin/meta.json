@@ -1,0 +1,89 @@
+{
+  "kind": "prop",
+  "name": "diagram_toast_spin",
+  "title_vi": "Sơ đồ lát bánh mì xoay khi rơi khỏi bàn",
+  "description_vi": "Sơ đồ 2D gắn lên part 'plane' của diagram_board. Gốc là empty ở điểm sàn ngay dưới mép bàn; x sang phải, y lên. Có vạch sàn, cái bàn màu nâu ở phía x < 0 (mặt bàn và hai chân, mép bàn tại (0, table_h)), mũi tên chiều cao hai đầu kèm chữ ('30 IN' hoặc '10 FT') bên trái bàn. Lát bánh 0,4 × 0,07 có lớp bơ vàng ở cạnh trên, gốc ở tâm, để story track bay từ (0, table_h + 0,04) xuống chỗ đáp và xoay quanh trục z. Các bóng mờ màu nhạt nằm dọc đường parabol x = land_x·u, y = table_h·(1 − u²), góc −π·turns·u. Cung xoay nét đứt có đầu mũi tên quanh điểm giữa quỹ đạo. Dấu ✗ đỏ hoặc ✓ xanh to ở sàn chỗ đáp. Khi bàn cao (bản 10 FT, table_h 4,04) thì nét, chữ và dấu tự to lên.",
+  "dim": "2d",
+  "params": {
+    "table_h": {
+      "type": "number",
+      "default": 1.2,
+      "desc_vi": "Chiều cao mép bàn (1,2 cho bản '30 IN', 4,04 cho bản '10 FT')"
+    },
+    "turns": {
+      "type": "number",
+      "default": 0.5,
+      "enum": [
+        0.5,
+        1
+      ],
+      "desc_vi": "Số vòng lát bánh xoay khi rơi: 0,5 thì đáp úp mặt bơ, 1 thì đáp ngửa"
+    },
+    "ghosts": {
+      "type": "integer",
+      "default": 4,
+      "desc_vi": "Số bóng mờ dọc quỹ đạo (0 = không có)"
+    },
+    "mark": {
+      "type": "string",
+      "default": "x",
+      "enum": [
+        "x",
+        "check"
+      ],
+      "desc_vi": "Dấu ở chỗ đáp: ✗ đỏ hoặc ✓ xanh"
+    },
+    "height_label": {
+      "type": "string",
+      "default": "30 IN",
+      "desc_vi": "Chữ cạnh mũi tên chiều cao, ví dụ '30 IN' hoặc '10 FT'"
+    },
+    "land_x": {
+      "type": "number",
+      "default": 0,
+      "desc_vi": "Hoành độ chỗ đáp; 0 = tự chọn (0,45 khi turns 0,5; 0,6 khi turns 1)"
+    },
+    "table_color": {
+      "type": "array",
+      "default": [
+        0.42,
+        0.2,
+        0.06
+      ],
+      "desc_vi": "Màu bàn (linear)"
+    },
+    "accent": {
+      "type": "array",
+      "default": [
+        0.03,
+        0.22,
+        0.55
+      ],
+      "desc_vi": "Màu mũi tên chiều cao, chữ và cung xoay"
+    }
+  },
+  "parts": [
+    "toast",
+    "ghosts",
+    "arc",
+    "mark"
+  ],
+  "tags": [
+    "diagram",
+    "2d",
+    "toast",
+    "physics",
+    "explainer",
+    "table"
+  ],
+  "notes_vi": "Tôi chưa dựng thử trong Blender nên chưa có thumbnail. Code chỉ dùng các hàm 2D sẵn có của core (empty, shape, stroke, rrect, arrow2d, label).\n- Thứ tự lớp theo z, từ dưới lên: bàn và sàn (0), bóng mờ (0,02), cung (0,06), dấu (0,12), lát bánh thật (0,16). Nhờ vậy lát bánh luôn nằm trên cùng khi bay.\n- `<id>_toast` là empty đặt ở (0, table_h + 0,04). Story track vị trí tới (land_x, 0,05) và xoay rotation z tới −π·turns. Muốn cuối đường bay khớp với các bóng mờ thì chỗ đáp phải dùng đúng land_x: 0,45 khi turns 0,5, hoặc 0,6 khi turns 1.\n- Bóng mờ không có điểm u = 0 và u = 1, vì hai vị trí đó là chỗ của lát bánh thật.\n- Khi table_h > 1,2, hệ số k tăng dần tới 1,6 (ở 4,04). Nét, chữ, cung và dấu to lên theo k, còn lát bánh giữ nguyên 0,4 × 0,07 như mô tả. Nếu bản 10 FT nhìn lát bánh quá nhỏ trên điện thoại thì nên phóng to bằng scale của part toast và ghosts trong story.\n- Chữ chiều cao nằm ngang, đặt bên trái mũi tên ở x ≈ −1,1. Chữ dài như '10 FT' kéo tới khoảng x = −2, vẫn nằm trong bảng.\n- Cung xoay quét 180° khi turns 0,5 và khoảng 320° khi turns 1. Chiều quay theo kim đồng hồ, khớp với góc âm.",
+  "status": "draft",
+  "brief_vi": "Sơ đồ 2D gắn lên part 'plane' của diagram_board (x sang phải, y lên, z hướng camera). Gốc là empty ở điểm sàn ngay dưới mép bàn. Vạch sàn ngang dài khoảng 1,6 ở y = 0. Bàn vẽ dạng khối nâu ở phía x < 0 (rộng khoảng 0,9), mép bàn tại (0, table_h). Mũi tên chiều cao kèm chữ height_label ('30 IN' hoặc '10 FT') ở bên trái bàn. Tham số: table_h (mặc định 1,2), turns (0,5 hoặc 1), ghosts (số bóng mờ), mark ('x' hoặc 'check'). Các part con: '<id>_toast' là silhouette lát bánh 0,4 × 0,07, mặt bơ tô vàng ở cạnh trên; gốc ở tâm, sẽ được track bay từ (0, table_h + 0.04) tới (0.45..0.6, 0.05) và xoay quanh trục z. '<id>_ghosts' gồm N bóng mờ lát bánh dọc đường parabol x = 0,45u (với turns 1 thì 0,6u), y = table_h·(1 − u²), góc −π·turns·u. '<id>_arc' là cung xoay nét đứt. '<id>_mark' là dấu ✗ đỏ hoặc ✓ xanh to ở sàn chỗ đáp. Bản 10 FT cao tới 4,04 nên giữ nét to, đơn giản. parts: toast, ghosts, arc, mark",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T04:48:44",
+  "review": {
+    "score": 8,
+    "summary_vi": "Ở bản 30 IN, sơ đồ bánh mì rơi khỏi bàn đã nhìn là hiểu ngay: bàn nâu, mũi tên \"30 IN\" xanh, bánh xoay kèm bóng mờ và cung nét đứt, dấu ✗ giờ đã đỏ rõ. Đầu mũi tên của cung còn sát đỉnh dấu ✗ một chút nhưng không còn đâm vào. Bản 10 FT và dấu ✓ chưa được render nên chưa kiểm tra.",
+    "problems": []
+  }
+}
