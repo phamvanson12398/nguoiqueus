@@ -277,7 +277,7 @@ class Builder:
     def subject_pos(self, subj, f, where):
         """ground point of a shot subject at frame f: [x,y,z], a character id, '<set id>.<anchor>' or an object name"""
         if isinstance(subj, (list, tuple)): return tuple(self.env.const(subj, where))
-        if subj in self.anchors: return tuple(self.anchors[subj])
+        if subj in self.anchors: return tuple((list(self.anchors[subj]) + [0.0, 0.0, 0.0])[:3])
         if subj in self.chars or bpy.data.objects.get(subj) is not None:    # animated already: evaluate the scene at f
             ctx.sc.frame_set(f)
             o = self.chars[subj].root if subj in self.chars else bpy.data.objects[subj]
@@ -287,7 +287,6 @@ class Builder:
                 b = cs.get("blocking")
                 v = self.value_at(b.get("segments", []), b.get("default"), f, "location", where) if b else None
                 return v or tuple(self.env.const(cs.get("loc", [0, 0, 0]), where))
-        if subj in self.anchors: return tuple(self.anchors[subj])
         for tr in self.st.get("tracks", []):
             if tr.get("target") == subj and "use" not in tr:
                 v = self.value_at(tr.get("segments", []), tr.get("default"), f, "location", where)
@@ -326,7 +325,9 @@ class Builder:
 
         # sets, each followed by its props (creation order is part of the result)
         for s in st.get("sets", []):
-            res = self.lib.set(s["type"], s.get("params", {}))
+            sp = s.get("params", {})
+            if st.get("factions"): sp = dict(sp, _factions=st["factions"])    # maps/boards colour items by faction
+            res = self.lib.set(s["type"], sp)
             parts = res.get("parts", {})
             self.noline_roots += res.get("noline", [])
             for k, v in res.get("anchors", {}).items(): self.anchors[f"{s.get('id', s['type'])}.{k}"] = v

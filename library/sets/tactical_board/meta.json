@@ -1,0 +1,74 @@
+{
+ "kind": "set",
+ "name": "tactical_board",
+ "title_vi": "Bàn chiến thuật (sa bàn)",
+ "status": "approved",
+ "description_vi": "Sa bàn trên bàn gỗ: nền cỏ/cát/đất/tuyết, đồi, sông, rừng, đường, tường; khối quân 3D màu theo phe (có thể chia ô thành đội hình hàng/khối) có cờ hiệu, trượt theo khung; mũi tên vẽ dần trên mặt đất; nhãn chữ. Nhìn từ trên (type board) hoặc chéo (height high).",
+ "space": "origin mặc định [900, 0, 0]; tọa độ bàn x phải, y lên (bắc), kích thước size [16, 9]",
+ "params": {
+  "origin": {
+   "default": [
+    900.0,
+    0.0,
+    0.0
+   ]
+  },
+  "size": {
+   "default": [
+    16.0,
+    9.0
+   ]
+  },
+  "ground": {
+   "default": "grass",
+   "desc_vi": "grass|sand|earth|snow"
+  },
+  "grid": {
+   "default": false
+  },
+  "hills": {
+   "default": [],
+   "desc_vi": "[{at:[x,y], r, h, stretch, label?}]"
+  },
+  "rivers": {
+   "default": [],
+   "desc_vi": "[{path:[[x,y],...], width}]"
+  },
+  "forests": {
+   "default": [],
+   "desc_vi": "[{at, r, n}]"
+  },
+  "roads": {
+   "default": [],
+   "desc_vi": "[{path, width}]"
+  },
+  "walls": {
+   "default": [],
+   "desc_vi": "[{path, h, t}] tường/hào"
+  },
+  "units": {
+   "default": [],
+   "desc_vi": "[{id, at:[x,y], faction|color, size:[rộng, sâu], rows, cols (đội hình), rot (độ), h, label, from?, moves:[[khung,[x,y]],...]}]"
+  },
+  "arrows": {
+   "default": [],
+   "desc_vi": "[{path:[[x,y],...], faction|color, from, to, width}]"
+  },
+  "labels": {
+   "default": [],
+   "desc_vi": "[{text, at, size, rot, from?}]"
+  }
+ },
+ "anchors": {
+  "center": "tâm bàn",
+  "unit_<id>": "vị trí đầu của khối quân",
+  "arrow<i>_start/_end": "mũi tên"
+ },
+ "parts": "<id quân> = empty của khối quân (đã có moves; có thể thêm tracks)",
+ "tags": [
+  "board",
+  "tactics",
+  "longform",
+  "3d"
+ ]
+}

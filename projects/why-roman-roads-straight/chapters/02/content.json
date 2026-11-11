@@ -1,0 +1,531 @@
+{
+ "title": "Why Were Roman Roads So Straight?",
+ "title_vi": "Vì sao đường La Mã thẳng tắp?",
+ "question": "Why were Roman roads so straight?",
+ "formula": "đối đầu + điều tra: mở giữa cao trào (đường lao thẳng vào đầm lầy) → let's go back → giả thuyết hiển nhiên (quân đội, tốc độ) → lỗ hổng (đắt, dốc thì không thẳng) → twist: cây groma chỉ ngắm được đường thẳng + quyền lực của La Mã → gọi lại tiêu đề, gag con dê kết thúc",
+ "minutes": 5,
+ "format": "long",
+ "factions": [
+  {
+   "id": "roman_empire_britain",
+   "culture": "roman_empire_50ad",
+   "note_vi": "Marcus (trắc địa viên/agrimensor): áo tunic len màu kem nhạt, áo choàng nâu đỏ, dây lưng da, không giáp, cầm groma. Bách phu trưởng: tunic đỏ, giáp lá (lorica segmentata) xám thép, mũ đồng có mào ngang đỏ (dấu hiệu bách phu trưởng), gậy nho (vitis), khiên chữ nhật cong đỏ có họa tiết vàng. Lính lê dương: như bách phu trưởng nhưng mào không có, cầm xẻng/cuốc, cọc ngắm đỏ trắng. Chương 1 (chuỗi 1, 4, 5) và chương 2 (chuỗi 6-9)."
+  },
+  {
+   "id": "britons",
+   "culture": "iron_age_britons_50ad",
+   "note_vi": "Bran (người dẫn đường bản địa, tỉnh bơ, thông minh): quần len (braccae) kẻ ô xanh lá–nâu, áo choàng kẻ ô ghim bằng trâm đồng tròn, vòng cổ torc vàng, tóc dài buộc, ria, gậy gỗ; dắt một con dê nâu trắng. Vẽ tôn trọng, ngang hàng, không man rợ hóa; dân làng có nhà tròn mái tranh xa xa. Chuỗi 1, 4, 5, 7, 8, 9."
+  },
+  {
+   "id": "roman_republic",
+   "culture": "roman_republic_312bc",
+   "note_vi": "Appius Claudius: toga trắng viền tía (quan chức), tóc bạc, nét nghiêm. Lính Cộng hòa: mũ đồng Montefortino có chóp, giáp ngực đồng vuông nhỏ, tunic đỏ đất, khiên bầu dục (scutum) cao, giáo. Chỉ chuỗi 3 (và đoạn đầu chuỗi 4)."
+  },
+  {
+   "id": "samnites",
+   "culture": "samnite_312bc",
+   "note_vi": "Chiến binh Samnite: giáp ngực ba đĩa đồng (triple-disc cuirass), thắt lưng đồng rộng, mũ đồng có hai lông vũ cao, áo màu xanh đậm/trắng, khiên tròn hoặc bầu dục, giáo; đứng trên núi Apennine. Phân biệt với La Mã bằng màu xanh và lông vũ. Vẽ hiên ngang, không xấu hơn La Mã. Chỉ chuỗi 3."
+  }
+ ],
+ "sources": [
+  {
+   "claim": "Via Appia begun in 312 BC by censor Appius Claudius Caecus as a military road toward Capua during the Samnite Wars; nearly straight to Tarracina",
+   "url": "https://www.britannica.com/topic/Appian-Way"
+  },
+  {
+   "claim": "Via Appia ran an uninterrupted straight stretch of about 56 miles between Rome and Terracina; ~200,000+ miles of Roman roads overall",
+   "url": "https://www.nationalgeographic.com/history/world-history-magazine/article/200000-miles-roman-roads-provided-framework-empire"
+  },
+  {
+   "claim": "Via Appia: first section to Capua, crossed the Pontine Marshes; named after Appius Claudius",
+   "url": "https://en.wikipedia.org/wiki/Appian_Way"
+  },
+  {
+   "claim": "Roman road network ~80,000 km (about 50,000 miles) stone-paved, out of a much larger total",
+   "url": "https://www.britannica.com/technology/Roman-road-system"
+  },
+  {
+   "claim": "Fosse Way, Lincoln to Axminster (~200 miles), deviates less than about 6 miles (10 km) from a straight line; surveyors likely worked from high ground with sighting markers",
+   "url": "https://www.fig.net/resources/proceedings/fig_proceedings/fig2009/papers/hs01/hs01_hucker_3471.pdf"
+  },
+  {
+   "claim": "Groma: cross on a pole with four plumb lines used by Roman surveyors (agrimensores) to sight straight lines and right angles",
+   "url": "https://en.wikipedia.org/wiki/Groma_(surveying)"
+  },
+  {
+   "claim": "Surveyors used markers/beacons on hilltops and adjusted them until aligned; roads are straight segments changing direction at high points",
+   "url": "https://historic-uk.com/HistoryUK/HistoryofEngland/Roman-Roads-in-England"
+  },
+  {
+   "claim": "Vegetius (De Re Militari, Book 1) prescribes marching 20 Roman miles in five summer hours at military pace",
+   "url": "https://en.wikipedia.org/wiki/De_re_militari"
+  },
+  {
+   "claim": "Watling Street route largely followed by the modern A5",
+   "url": "https://en.wikipedia.org/wiki/Watling_Street"
+  },
+  {
+   "claim": "Roman roads used switchbacks/zigzags on steep slopes rather than going straight",
+   "url": "https://www.todayifoundout.com/?p=55621"
+  }
+ ],
+ "library_needs": [
+  {
+   "kind": "sets",
+   "name": "roman_countryside",
+   "brief": "Vùng quê cổ đại 3D có tham số: region 'britain' (đồi xanh thấp, đầm lầy sương mù, rừng sồi, nhà tròn mái tranh xa) hoặc 'italy' (đồi khô vàng, cây thông dù, núi Apennine phía xa). Tham số: swamp (bool, đầm bùn có mép nước), beacons (số đỉnh đồi thẳng hàng có chỗ đặt lửa hiệu), road_done (đường La Mã chạy thẳng qua chỗ đầm cũ), steep_slope (một sườn dốc có đường zíc zắc), night (bảng màu đêm). Anchor: road_end, swamp_center, hill_1..hill_n, slope. Khoảng diễn quanh (0, 4), mở phía -Y."
+  },
+  {
+   "kind": "sets",
+   "name": "map_parchment",
+   "brief": "Bản đồ giấy da lớn nằm trên bàn gỗ, camera nhìn thẳng xuống. Lớp bản đồ chọn bằng tham số: 'empire' (châu Âu–Địa Trung Hải), 'italy' (Rome, Samnium, Capua, Terracina), 'britain' (Lincoln, Devon, Watling Street). Mỗi tuyến đường là nét mực đỏ vẽ dần được (part theo tên tuyến, animate bằng tỷ lệ vẽ), chấm thành phố + nhãn chữ to, núi vẽ kiểu mực. Có lớp phủ đường hiện đại xám (A5) bật/tắt. Không logo."
+  },
+  {
+   "kind": "props",
+   "name": "groma",
+   "brief": "Groma: cọc gỗ cao ~2,2 có tay đòn, thập tự gỗ ở đỉnh, 4 dây dọi với quả dọi đồng. Bản 3D đứng trên đất (dây dọi đung đưa nhẹ) và bản 2D cầm tay (tham số dim). Gốc ở chân cọc."
+  },
+  {
+   "kind": "props",
+   "name": "ranging_pole",
+   "brief": "Cọc ngắm cao ~2,6, sọc đỏ trắng, đầu nhọn; 3D để cắm/lún bùn (tham số sink 0..1) và 2D cầm tay. Gốc ở mũi nhọn."
+  },
+  {
+   "kind": "props",
+   "name": "roman_road",
+   "brief": "Đoạn đường La Mã 3D: mặt đá lát đa giác xám, gờ đá hai bên, mương thoát nước, nền hơi gù. Tham số length, width (~4), segments (danh sách điểm để bẻ góc nhẹ), zigzag (cho dốc), cutaway (mặt cắt các lớp: đá lát, sỏi, cát, đá nền). Gốc ở đầu đường."
+  },
+  {
+   "kind": "props",
+   "name": "beacon_fire",
+   "brief": "Đống lửa hiệu trên đỉnh đồi: củi chất hình nón, lửa emission cam hoạt hình, cột khói xám cao có thể bật dần (tham số lit, smoke_height). Gốc ở tâm đáy."
+  },
+  {
+   "kind": "props",
+   "name": "milestone",
+   "brief": "Cột mốc đá La Mã hình trụ cao ~1,6, chữ khắc 'VIA APPIA' (chữ có thể đổi), mép mòn. 3D."
+  },
+  {
+   "kind": "props",
+   "name": "diagram_sightline",
+   "brief": "Sơ đồ 2D gắn lên diagram_board, các chế độ: 'groma' (thập tự + 4 dây dọi + mũi tên GRAVITY), 'poles' (ba cọc chồng khít nhìn từ POV và nhìn ngang), 'segments' (mặt cắt địa hình, đường gồm đoạn thẳng bẻ góc ở đỉnh đồi), 'curve_vs_straight' (✓/✗ chia đôi), 'zigzag' (sườn dốc, đường thẳng ✗, zíc zắc ✓), 'cost' (vòng quanh đồi vs xuyên đồi kèm đồng hồ chi phí). Các nét vẽ dần."
+  },
+  {
+   "kind": "chars",
+   "name": "marcus",
+   "brief": "Trắc địa viên La Mã trẻ (agrimensor), khoảng năm 50: tunic len kem, áo choàng nâu đỏ, dây lưng da, dép caligae, tóc đen ngắn. Món nhận diện: cây bút sáp/bảng sáp đeo hông. Tính chăm chú, bướng, tự tin. Biểu cảm: neutral, focus, smug_closed, worried, shock, happy."
+  },
+  {
+   "kind": "chars",
+   "name": "centurion",
+   "brief": "Bách phu trưởng La Mã năm 50: tunic đỏ, giáp lá lorica segmentata, mũ đồng có mào ngang đỏ, gậy nho. Nóng nảy (mặt đỏ, bốc hơi). Biểu cảm: neutral, angry, shock, smirk, grumpy. Dùng được làm bản lính lê dương (legionary) bằng cách bỏ mào, đổi gậy thành xẻng/cọc."
+  },
+  {
+   "kind": "chars",
+   "name": "bran",
+   "brief": "Người dẫn đường Briton thời đồ sắt: quần len kẻ ô xanh–nâu, áo choàng kẻ ô ghim trâm đồng tròn, vòng cổ torc vàng, tóc dài buộc, ria, gậy gỗ. Tỉnh bơ, thông minh, vẽ tôn trọng ngang hàng. Biểu cảm: neutral, grumpy, smirk, happy, shock."
+  },
+  {
+   "kind": "chars",
+   "name": "goat",
+   "brief": "Con dê nâu trắng 2D cùng phong cách (thân tròn, viền đen, chân nét), có sừng nhỏ và râu; đi 4 chân, quay đầu nhìn trái/phải được. Biểu cảm: neutral, happy, chewing."
+  },
+  {
+   "kind": "chars",
+   "name": "appius_claudius",
+   "brief": "Appius Claudius (312 TCN): toga trắng viền tía, tóc bạc ngắn, mặt nghiêm, nhân vật tuổi trung niên. Biểu cảm: neutral, focus, smirk."
+  },
+  {
+   "kind": "chars",
+   "name": "samnite_warrior",
+   "brief": "Chiến binh Samnite thế kỷ 4 TCN: giáp ngực ba đĩa đồng, thắt lưng đồng rộng, mũ đồng hai lông vũ cao, áo xanh đậm, khiên, giáo. Hiên ngang, không biếm họa. Kèm bản lính Cộng hòa La Mã (mũ Montefortino, giáp ngực đồng vuông, khiên bầu dục) như một biến thể trang phục (legionary_republic)."
+  }
+ ],
+ "chapter": {
+  "n": 2,
+  "title": "The Stick That Sees Straight",
+  "of": 2,
+  "start_sec": 172.0,
+  "frames": 5008,
+  "previous": {
+   "n": 1,
+   "title": "The Road Into the Swamp"
+  },
+  "next": null
+ },
+ "chapters": [
+  {
+   "n": 1,
+   "title": "The Road Into the Swamp",
+   "title_vi": "Con đường lao vào đầm lầy",
+   "summary_vi": "Mở giữa cao trào ở Britannia: Marcus cho đường đi thẳng qua đầm lầy. Quay lại 312 TCN: Via Appia ra đời trong chiến tranh với người Samnite. Giả thuyết tốc độ hành quân, rồi lỗ hổng: làm thẳng rất đắt, dốc thì không thẳng. Cú treo: khói trên các đỉnh đồi và 'cây gậy'."
+  },
+  {
+   "n": 2,
+   "title": "The Stick That Sees Straight",
+   "title_vi": "Cây gậy chỉ thấy đường thẳng",
+   "summary_vi": "Groma và cọc ngắm hoạt động thế nào; ngắm từ đỉnh đồi này sang đỉnh đồi kia bằng lửa/khói; Fosse Way. Giải thích chính: thẳng là dễ đo nhất + quyền lực La Mã; dốc thì zíc zắc. Mở rộng: đường A5 ngày nay. Kết: con dê đi thẳng, gọi lại tiêu đề."
+  }
+ ],
+ "sequences": [
+  {
+   "id": 6,
+   "chapter": 2,
+   "seconds": 34,
+   "vo_en": "Meet the groma. It's a pole with a wooden cross on top, and four weights hanging from strings. That's it. No lenses. No compass. No GPS. The strings hang straight down because of gravity. So when Marcus lines up two strings with his eye, he gets a perfectly straight line of sight. An assistant walks ahead with a tall pole. \"Left. Left. Stop!\" Plant it. Then another pole, further on. When all the poles line up, they hide each other. You see just one pole. That's how you know the line is straight. Here's the catch. This tool is brilliant at exactly one thing. Straight lines.",
+   "vo_vi": "Xin giới thiệu: groma. Một cây cọc có thập tự gỗ trên đỉnh, bốn quả dọi treo trên dây. Hết. Không thấu kính. Không la bàn. Không GPS. Dây dọi treo thẳng đứng nhờ trọng lực. Nên khi Marcus ngắm cho hai sợi dây trùng nhau, anh có một đường ngắm thẳng tuyệt đối. Người phụ tá đi lên trước cầm cọc cao. \"Trái. Trái. Dừng!\" Cắm xuống. Rồi một cọc nữa xa hơn. Khi mọi cọc thẳng hàng, chúng che lấp nhau. Bạn chỉ thấy một cây cọc. Đó là cách biết đường đã thẳng. Mấu chốt là: dụng cụ này giỏi đúng một việc. Đường thẳng.",
+   "set": "roman_countryside (region: britain) + diagram_board",
+   "chars": [
+    "marcus",
+    "legionary"
+   ],
+   "props": [
+    "groma",
+    "ranging_pole",
+    "diagram_sightline"
+   ],
+   "action": "Thẻ chương. Cận groma từ chân lên đỉnh. Sơ đồ groma: thập tự, 4 quả dọi, mũi tên trọng lực; ba ô gạch chéo 'lens/compass/GPS'. POV qua hai dây dọi: phụ tá xa xa cầm cọc đỏ trắng xê dịch theo tiếng gọi. Cắm cọc 'thịch'. Thêm cọc xa hơn. Từ POV các cọc trùng nhau thành một. Marcus mãn nguyện.",
+   "camera": "Thẻ chương + fade → cận vật groma nâng cần từ chân lên đỉnh → sơ đồ đẩy vào → POV qua dây dọi, trôi nhẹ → trung phụ tá dịch cọc (tracking ngang) → toàn cảnh hàng cọc, kéo lùi → POV cọc trùng nhau → cận Marcus → sơ đồ một đường thẳng.",
+   "transition": "fade",
+   "expressions": "Marcus: focus → smug_closed; legionary (phụ tá): worried → happy",
+   "gag": "'Left. Left. Stop!' — phụ tá bước trái quá đà, lùi lại, rồi lần ba vừa khít (luật số 3). Ba ô 'No lenses / No compass / No GPS' bị gạch chéo lần lượt.",
+   "sfx": [
+    "slide_up",
+    "scratch",
+    "scratch",
+    "scratch",
+    "step",
+    "step",
+    "thud",
+    "ding"
+   ],
+   "fx": [
+    "chapter_card",
+    "stamp_x"
+   ],
+   "emphasis": [
+    "groma",
+    "That's it",
+    "GPS",
+    "gravity",
+    "straight",
+    "Stop",
+    "one pole",
+    "Straight lines"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Thẻ chương mở chương 2, nền cảnh đồi mờ.",
+     "card_text": "CHAPTER 2 — THE STICK THAT SEES STRAIGHT"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cận vật groma: camera nâng cần từ chân cọc lên thập tự, dây dọi đung đưa."
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Sơ đồ groma: thập tự, 4 quả dọi, mũi tên 'GRAVITY' chỉ xuống; ba ô 'LENS / COMPASS / GPS' bị đóng dấu ✗ lần lượt."
+    },
+    {
+     "type": "pov",
+     "what_vi": "POV qua hai sợi dây dọi trùng nhau: xa xa phụ tá cầm cọc đỏ trắng."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Phụ tá xê dịch theo tiếng gọi 'Left. Left. Stop!' — quá đà, lùi lại, rồi đứng khít; tracking ngang."
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cọc cắm xuống đất 'thịch', bụi bật lên."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Toàn cảnh: thêm cọc thứ hai, thứ ba xa dần trên đồng; camera kéo lùi."
+    },
+    {
+     "type": "pov",
+     "what_vi": "POV qua groma: ba cọc chồng khít nhau, chỉ còn thấy một cọc; 'ding'."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Marcus nhắm mắt mãn nguyện; camera đẩy nhẹ ở câu 'Straight lines'."
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "chapter": 2,
+   "seconds": 39,
+   "vo_en": "Now scale it up. To link two forts many miles apart, surveyors couldn't see one from the other. So, historians think, they worked from high ground. A fire or a pole on one hilltop. Another on the next. Smoke by day, flames by night. Then they filled in the gaps, pole by pole. The result is not one perfect line. It's a chain of straight segments, and each one bends a little at a hilltop. Look at the Fosse Way in Britain. It runs about two hundred miles, from Lincoln down to Devon. And yet it never strays more than about six miles from a single straight line. Not bad for sticks, string, and smoke. Bran's goat, meanwhile, has walked three miles and gotten nowhere.",
+   "vo_vi": "Giờ phóng to lên. Để nối hai đồn cách nhau nhiều dặm, người trắc địa không nhìn thấy đồn này từ đồn kia. Nên, các sử gia cho rằng, họ làm việc từ chỗ cao. Một đống lửa hay cây cọc trên một đỉnh đồi. Một cái nữa trên đồi kế. Ban ngày khói, ban đêm lửa. Rồi họ lấp chỗ trống, từng cọc một. Kết quả không phải một đường thẳng hoàn hảo, mà là chuỗi đoạn thẳng, mỗi đoạn bẻ góc nhẹ ở một đỉnh đồi. Nhìn Fosse Way ở Britannia: dài khoảng hai trăm dặm, từ Lincoln xuống Devon, vậy mà không bao giờ lệch quá khoảng sáu dặm khỏi một đường thẳng duy nhất. Không tệ cho gậy, dây và khói. Trong khi đó, con dê của Bran đã đi ba dặm mà chẳng tới đâu.",
+   "set": "map_parchment + roman_countryside (region: britain, night: true) + diagram_board",
+   "chars": [
+    "legionary",
+    "marcus",
+    "bran",
+    "goat"
+   ],
+   "props": [
+    "beacon_fire",
+    "ranging_pole",
+    "diagram_sightline"
+   ],
+   "action": "Bản đồ: hai đồn cách xa, đồi ở giữa che tầm nhìn. Cảnh đêm: chuỗi lửa hiệu bừng lên trên các đỉnh đồi nối tiếp. Lính châm lửa. Sơ đồ: đường đi gồm các đoạn thẳng, bẻ góc nhẹ ở mỗi đỉnh đồi. Bản đồ Britannia: Fosse Way vẽ từ Lincoln xuống Axminster (Devon), một đường thẳng mờ chồng lên để so. Con dê đi vòng tròn quanh một bụi cây, Bran nhìn tỉnh bơ.",
+   "camera": "Bản đồ nhìn thẳng xuống, đẩy vào → toàn cảnh đêm lia ngang theo chuỗi lửa (cú dài) → cận lính châm lửa → sơ đồ trượt dọc chuỗi đoạn → bản đồ vẽ Fosse Way, camera bám nét → thẻ số → toàn cảnh dê đi vòng → cận Bran.",
+   "transition": "cut",
+   "expressions": "Marcus: focus; Bran: neutral (tỉnh bơ); goat: happy",
+   "gag": "Con dê đi vòng tròn quanh một bụi cây; vệt đường của nó hiện lên thành một xoắn ốc trên mặt đất, nhãn '3 MILES'.",
+   "sfx": [
+    "slide_up",
+    "ding",
+    "step",
+    "boing"
+   ],
+   "fx": [
+    "fire",
+    "smoke_columns",
+    "night_grade",
+    "ink_draw_lines"
+   ],
+   "emphasis": [
+    "high ground",
+    "Smoke",
+    "flames",
+    "segments",
+    "bends",
+    "Fosse Way",
+    "two hundred",
+    "six miles",
+    "nowhere"
+   ],
+   "shots": [
+    {
+     "type": "map",
+     "what_vi": "Bản đồ: hai biểu tượng đồn cách xa, các đồi ở giữa; đường ngắm bị đồi chặn (✗); camera đẩy vào."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Cảnh đêm: chuỗi lửa hiệu bừng lên lần lượt trên các đỉnh đồi thẳng hàng; camera lia ngang theo (cú dài)."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Lính lê dương châm đuốc vào đống củi, lửa bùng sáng mặt."
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Mặt cắt địa hình: các đoạn thẳng nối đỉnh đồi, mỗi đỉnh bẻ góc nhẹ, mũi tên nhỏ chỉ góc; camera trượt dọc."
+    },
+    {
+     "type": "map",
+     "what_vi": "Bản đồ Britannia: Fosse Way vẽ dần từ Lincoln xuống Devon, đường thẳng nét đứt chồng lên để so.",
+     "card_text": "FOSSE WAY · LINCOLN → DEVON"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình chữ con số, bản đồ mờ phía sau.",
+     "card_text": "~200 MILES — never more than ~6 miles off a straight line"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cận vật: cọc, dây dọi, cột khói đặt cạnh nhau như 'bộ đồ nghề'."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Con dê đi vòng tròn quanh bụi cây, vệt chân thành xoắn ốc, nhãn '3 MILES'."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Bran nhìn con dê, mặt tỉnh bơ, chớp mắt chậm."
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "chapter": 2,
+   "seconds": 39,
+   "vo_en": "So here's the real answer. Roman roads were straight because straight was the easiest thing to survey. With a groma and poles, a straight line is simple and almost impossible to get wrong. A smooth curve? That takes far more measuring, and good maps they mostly didn't have. Then add power. Rome had soldiers to do the digging, and it rarely asked conquered locals for permission. Bogs got filled with timber and stone. Back at the swamp, the soldiers start sinking logs into the mud. Rivers got bridges. And when a hill was truly too steep for carts and mules, the surveyors gave up on straight and zigzagged up the slope. Straight wasn't a religion. It was the default setting of the tool. So Bran was half right.",
+   "vo_vi": "Vậy đây là câu trả lời thật: đường La Mã thẳng vì đường thẳng là thứ dễ đo đạc nhất. Với groma và cọc, đường thẳng vừa đơn giản vừa gần như không thể sai. Một đường cong mượt? Cần đo nhiều hơn hẳn, và cần bản đồ tốt mà họ hầu như không có. Rồi thêm quyền lực: Rome có lính để đào, và hiếm khi xin phép dân bị chinh phục. Đầm lầy được lấp bằng gỗ và đá. Trở lại đầm lầy, lính bắt đầu đóng gỗ xuống bùn. Sông thì có cầu. Còn khi đồi quá dốc cho xe và la, người trắc địa bỏ đường thẳng và đi zíc zắc lên dốc. Đường thẳng không phải tôn giáo. Nó là chế độ mặc định của dụng cụ. Vậy Bran đúng một nửa.",
+   "set": "diagram_board + roman_countryside (region: britain, swamp: true)",
+   "chars": [
+    "marcus",
+    "legionary",
+    "centurion",
+    "bran",
+    "goat"
+   ],
+   "props": [
+    "groma",
+    "ranging_pole",
+    "roman_road",
+    "diagram_sightline"
+   ],
+   "action": "Thẻ sự thật. Chia đôi màn hình: bên trái Marcus ngắm 3 cọc → đường thẳng ✓; bên phải anh cố cắm cọc theo đường cong, cọc lệch lung tung, giấy tính toán dài lê thê ✗. Lính đào đất, xẻ đồi. Ở đầm lầy, lính đóng bó gỗ xuống bùn 'thịch thịch', rải đá lên. Cầu gỗ bắc qua sông. Đồi dốc: xe la trượt lùi, rồi đường zíc zắc xuất hiện. Bran mỉm cười.",
+   "camera": "Thẻ sự thật → sơ đồ chia đôi ✓/✗ trượt ngang → trung Marcus → toàn cảnh lính đào, tracking → toàn cảnh đầm lầy, hạ cần theo bó gỗ → cận vật cầu → sơ đồ zíc zắc vẽ dần → trung xe la lên dốc → cận Bran đẩy chậm.",
+   "transition": "cut",
+   "expressions": "Marcus: focus → shock (đường cong) → happy; centurion: grumpy → smirk; Bran: smirk",
+   "gag": "Bên ✗: giấy tính đường cong dài lê thê rơi xuống chân Marcus (phóng đại). Xe la trượt lùi trên dốc thẳng — 'sad trombone' — rồi đường zíc zắc.",
+   "sfx": [
+    "ding",
+    "sad_trombone",
+    "thud",
+    "thud",
+    "thud",
+    "step",
+    "slide_down",
+    "ding"
+   ],
+   "fx": [
+    "split_screen",
+    "mud_splash",
+    "dust",
+    "ink_draw_lines"
+   ],
+   "emphasis": [
+    "real answer",
+    "easiest",
+    "survey",
+    "curve",
+    "power",
+    "permission",
+    "zigzagged",
+    "default",
+    "half right"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Màn hình chữ sự thật then chốt, cảnh hàng cọc mờ.",
+     "card_text": "STRAIGHT = EASIEST TO SURVEY"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Chia đôi: trái 3 cọc thẳng hàng ✓; phải cọc cắm theo đường cong lệch lung tung, cuộn giấy tính toán dài rơi xuống ✗; trượt ngang."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Marcus thở phào ôm groma, phía sau hàng cọc thẳng."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Lính lê dương đào đất, xẻ đồi bằng cuốc xẻng; camera tracking ngang."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Đầm lầy: lính đóng bó gỗ xuống bùn 'thịch thịch', rải đá; camera hạ cần theo bó gỗ."
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cầu gỗ–đá bắc qua dòng sông nhỏ, đường đi thẳng lên cầu."
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Sườn đồi dốc mặt cắt: đường thẳng đỏ bị gạch ✗, đường zíc zắc vẽ dần ✓."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Xe la trượt lùi trên dốc thẳng, rồi chuyển sang leo đường zíc zắc; camera nâng cần."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Bran mỉm cười 'half right', camera đẩy chậm, hạ thấp."
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "chapter": 2,
+   "seconds": 38,
+   "vo_en": "And those lines outlived the empire. In Britain, modern roads still run on top of Roman routes, like Watling Street, now under long stretches of the A5. Drive them today and you'll feel it: the road just refuses to turn. Meanwhile, back at the swamp, the new road is finished. Marcus walks it, proud. The centurion marches by, dry for once. And Bran's goat? It stops at the edge of the stone. Looks left at its winding old path. Looks right at the road. [beat] And trots straight down the middle. So why were Roman roads so straight? Because a stick and some string could only see straight. And Rome was stubborn enough to build whatever the stick saw.",
+   "vo_vi": "Và những đường kẻ ấy sống lâu hơn cả đế chế. Ở Anh, đường hiện đại vẫn chạy trên tuyến La Mã, như Watling Street, nay nằm dưới nhiều đoạn dài của đường A5. Lái xe trên đó bạn sẽ thấy: con đường nhất quyết không chịu rẽ. Trong khi đó, ở đầm lầy, con đường mới đã xong. Marcus bước trên đó, tự hào. Viên bách phu trưởng hành quân ngang qua, lần này khô ráo. Còn con dê của Bran? Nó dừng ở mép đá. Nhìn trái, về lối mòn quanh co cũ. Nhìn phải, về con đường. Rồi lon ton đi thẳng giữa đường. Vậy vì sao đường La Mã thẳng đến thế? Vì một cây gậy và vài sợi dây chỉ nhìn thấy đường thẳng. Và Rome đủ bướng để xây bất cứ thứ gì cây gậy nhìn thấy.",
+   "set": "map_parchment + roman_countryside (region: britain, swamp: false, road_done: true)",
+   "chars": [
+    "marcus",
+    "centurion",
+    "legionary",
+    "bran",
+    "goat"
+   ],
+   "props": [
+    "roman_road",
+    "groma"
+   ],
+   "action": "Bản đồ Anh hiện đại (không logo): đường A5 màu xám chồng khít lên Watling Street màu đỏ. Match cut về đầm lầy cũ, nay là con đường lát đá thẳng tắp. Marcus bước tự hào; bách phu trưởng hành quân qua, giơ đôi dép khô. Con dê dừng ở mép đá, nhìn trái, nhìn phải (double take), rồi lon ton đi thẳng giữa đường. Thẻ câu hỏi gọi lại tiêu đề. Kéo lùi toàn cảnh, groma đứng ở đầu đường, mờ về đen.",
+   "camera": "Bản đồ nhìn thẳng xuống, kéo lùi → match cut sang toàn cảnh con đường (cùng vị trí màn hình) → trung Marcus tracking cùng hướng → trung bách phu trưởng → cận vật móng dê ở mép đá → cận dê quay trái/phải → toàn cảnh dê đi giữa đường, camera bám sau → thẻ câu hỏi → kéo lùi cao lộ đường thẳng tới chân trời, fade.",
+   "transition": "match",
+   "expressions": "Marcus: happy → smug_closed; centurion: smirk; Bran: smirk; goat: neutral → happy",
+   "gag": "Kết gag chạy dọc: con dê quay đầu nhìn hai lần (double take) rồi chọn đường thẳng. Bách phu trưởng giơ dép khô khoe.",
+   "sfx": [
+    "slide_up",
+    "step",
+    "step",
+    "scratch",
+    "squeak",
+    "boing",
+    "ding"
+   ],
+   "fx": [
+    "ink_draw_lines",
+    "fade_black"
+   ],
+   "emphasis": [
+    "outlived",
+    "A5",
+    "refuses to turn",
+    "dry",
+    "left",
+    "right",
+    "straight",
+    "stick",
+    "stubborn"
+   ],
+   "shots": [
+    {
+     "type": "map",
+     "what_vi": "Bản đồ Anh: Watling Street đỏ vẽ dần, đường A5 xám hiện đè lên khít; camera kéo lùi.",
+     "card_text": "WATLING STREET → today's A5"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Match cut: đường thẳng trên bản đồ thành con đường lát đá thẳng tắp xuyên qua chỗ đầm lầy cũ; nắng lên."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Marcus bước trên đường, ngực ưỡn tự hào; tracking cùng hướng trái → phải."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Bách phu trưởng hành quân qua, giơ đôi dép khô ráo, nhếch mép."
+    },
+    {
+     "type": "insert",
+     "what_vi": "Móng dê dừng ở mép đá lát; bên cạnh lối mòn đất ngoằn ngoèo."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Con dê nhìn trái về lối mòn, nhìn phải về con đường (double take, 'squeak'); [beat]."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Con dê lon ton đi thẳng giữa đường, camera bám sau thấp; Bran lắc đầu cười."
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình chữ câu hỏi gọi lại tiêu đề, cảnh con đường mờ phía sau.",
+     "card_text": "WHY WERE ROMAN ROADS SO STRAIGHT?"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Cận groma ở đầu đường, dây dọi đung đưa: 'a stick and some string'."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Kéo lùi và nâng cần cao: con đường thẳng tới chân trời, đoàn quân nhỏ dần; mờ về đen."
+    }
+   ]
+  }
+ ],
+ "vo_en": "Meet the groma. It's a pole with a wooden cross on top, and four weights hanging from strings. That's it. No lenses. No compass. No GPS. The strings hang straight down because of gravity. So when Marcus lines up two strings with his eye, he gets a perfectly straight line of sight. An assistant walks ahead with a tall pole. \"Left. Left. Stop!\" Plant it. Then another pole, further on. When all the poles line up, they hide each other. You see just one pole. That's how you know the line is straight. Here's the catch. This tool is brilliant at exactly one thing. Straight lines. Now scale it up. To link two forts many miles apart, surveyors couldn't see one from the other. So, historians think, they worked from high ground. A fire or a pole on one hilltop. Another on the next. Smoke by day, flames by night. Then they filled in the gaps, pole by pole. The result is not one perfect line. It's a chain of straight segments, and each one bends a little at a hilltop. Look at the Fosse Way in Britain. It runs about two hundred miles, from Lincoln down to Devon. And yet it never strays more than about six miles from a single straight line. Not bad for sticks, string, and smoke. Bran's goat, meanwhile, has walked three miles and gotten nowhere. So here's the real answer. Roman roads were straight because straight was the easiest thing to survey. With a groma and poles, a straight line is simple and almost impossible to get wrong. A smooth curve? That takes far more measuring, and good maps they mostly didn't have. Then add power. Rome had soldiers to do the digging, and it rarely asked conquered locals for permission. Bogs got filled with timber and stone. Back at the swamp, the soldiers start sinking logs into the mud. Rivers got bridges. And when a hill was truly too steep for carts and mules, the surveyors gave up on straight and zigzagged up the slope. Straight wasn't a religion. It was the default setting of the tool. So Bran was half right. And those lines outlived the empire. In Britain, modern roads still run on top of Roman routes, like Watling Street, now under long stretches of the A5. Drive them today and you'll feel it: the road just refuses to turn. Meanwhile, back at the swamp, the new road is finished. Marcus walks it, proud. The centurion marches by, dry for once. And Bran's goat? It stops at the edge of the stone. Looks left at its winding old path. Looks right at the road. [beat] And trots straight down the middle. So why were Roman roads so straight? Because a stick and some string could only see straight. And Rome was stubborn enough to build whatever the stick saw.",
+ "vo_vi": "Xin giới thiệu: groma. Một cây cọc có thập tự gỗ trên đỉnh, bốn quả dọi treo trên dây. Hết. Không thấu kính. Không la bàn. Không GPS. Dây dọi treo thẳng đứng nhờ trọng lực. Nên khi Marcus ngắm cho hai sợi dây trùng nhau, anh có một đường ngắm thẳng tuyệt đối. Người phụ tá đi lên trước cầm cọc cao. \"Trái. Trái. Dừng!\" Cắm xuống. Rồi một cọc nữa xa hơn. Khi mọi cọc thẳng hàng, chúng che lấp nhau. Bạn chỉ thấy một cây cọc. Đó là cách biết đường đã thẳng. Mấu chốt là: dụng cụ này giỏi đúng một việc. Đường thẳng. Giờ phóng to lên. Để nối hai đồn cách nhau nhiều dặm, người trắc địa không nhìn thấy đồn này từ đồn kia. Nên, các sử gia cho rằng, họ làm việc từ chỗ cao. Một đống lửa hay cây cọc trên một đỉnh đồi. Một cái nữa trên đồi kế. Ban ngày khói, ban đêm lửa. Rồi họ lấp chỗ trống, từng cọc một. Kết quả không phải một đường thẳng hoàn hảo, mà là chuỗi đoạn thẳng, mỗi đoạn bẻ góc nhẹ ở một đỉnh đồi. Nhìn Fosse Way ở Britannia: dài khoảng hai trăm dặm, từ Lincoln xuống Devon, vậy mà không bao giờ lệch quá khoảng sáu dặm khỏi một đường thẳng duy nhất. Không tệ cho gậy, dây và khói. Trong khi đó, con dê của Bran đã đi ba dặm mà chẳng tới đâu. Vậy đây là câu trả lời thật: đường La Mã thẳng vì đường thẳng là thứ dễ đo đạc nhất. Với groma và cọc, đường thẳng vừa đơn giản vừa gần như không thể sai. Một đường cong mượt? Cần đo nhiều hơn hẳn, và cần bản đồ tốt mà họ hầu như không có. Rồi thêm quyền lực: Rome có lính để đào, và hiếm khi xin phép dân bị chinh phục. Đầm lầy được lấp bằng gỗ và đá. Trở lại đầm lầy, lính bắt đầu đóng gỗ xuống bùn. Sông thì có cầu. Còn khi đồi quá dốc cho xe và la, người trắc địa bỏ đường thẳng và đi zíc zắc lên dốc. Đường thẳng không phải tôn giáo. Nó là chế độ mặc định của dụng cụ. Vậy Bran đúng một nửa. Và những đường kẻ ấy sống lâu hơn cả đế chế. Ở Anh, đường hiện đại vẫn chạy trên tuyến La Mã, như Watling Street, nay nằm dưới nhiều đoạn dài của đường A5. Lái xe trên đó bạn sẽ thấy: con đường nhất quyết không chịu rẽ. Trong khi đó, ở đầm lầy, con đường mới đã xong. Marcus bước trên đó, tự hào. Viên bách phu trưởng hành quân ngang qua, lần này khô ráo. Còn con dê của Bran? Nó dừng ở mép đá. Nhìn trái, về lối mòn quanh co cũ. Nhìn phải, về con đường. Rồi lon ton đi thẳng giữa đường. Vậy vì sao đường La Mã thẳng đến thế? Vì một cây gậy và vài sợi dây chỉ nhìn thấy đường thẳng. Và Rome đủ bướng để xây bất cứ thứ gì cây gậy nhìn thấy.",
+ "word_count": 478
+}

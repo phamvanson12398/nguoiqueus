@@ -1,0 +1,40 @@
+{
+ "meta": {"title": "Board + paper diagram demo (16:9)", "slug": "demo-board", "fps": 30, "frames": 330, "seed": 4, "aspect": "16:9", "output": "demo_board.mp4", "samples": 24},
+ "factions": [
+  {"id": "rome", "culture": "roman_republic_340bc", "color": [0.70, 0.06, 0.04], "label": "ROME"},
+  {"id": "latins", "culture": "latin_league_340bc", "color": [0.05, 0.25, 0.60], "label": "LATIN LEAGUE"}
+ ],
+ "sets": [
+  {"id": "board", "type": "tactical_board", "params": {
+    "ground": "grass",
+    "hills": [{"at": [-5.5, 2.8], "r": 1.6, "h": 0.45}, {"at": [5.8, 3.0], "r": 1.3, "h": 0.35, "label": "MT VESUVIUS"}],
+    "rivers": [{"path": [[-8, -3.6], [-3, -2.8], [1, -3.4], [5, -2.6], [8, -3.0]], "width": 0.4}],
+    "forests": [{"at": [6.0, -1.2], "r": 1.1, "n": 11}],
+    "units": [
+      {"id": "hastati", "faction": "rome", "at": [-2.5, -1.0], "size": [3.0, 0.6], "rows": 2, "cols": 8, "label": "HASTATI",
+       "moves": [[20, [-2.5, -1.0]], [80, [-2.5, 0.2]]]},
+      {"id": "principes", "faction": "rome", "at": [-2.5, -2.0], "size": [3.0, 0.6], "rows": 2, "cols": 8, "label": "PRINCIPES"},
+      {"id": "latin_line", "faction": "latins", "at": [-2.5, 1.6], "size": [3.6, 0.7], "rows": 2, "cols": 9, "rot": 0, "label": "LATIN LINE",
+       "moves": [[60, [-2.5, 1.6]], [120, [-2.5, 0.9]]]}],
+    "arrows": [{"faction": "rome", "path": [[-2.5, -0.6], [-2.4, 0.6]], "from": 25, "to": 70, "width": 0.26},
+               {"faction": "latins", "path": [[-0.2, 2.2], [1.2, 1.2], [0.6, -0.2]], "from": 90, "to": 140, "width": 0.22}],
+    "labels": [{"text": "340 BC - MOUNT VESUVIUS", "at": [0, 4.0], "size": 0.4, "from": 5}]
+  }},
+  {"id": "paper", "type": "paper_diagram", "params": {
+    "paper": "grid",
+    "strokes": [{"path": [[-5, -2], [-1, -2], [-1, 2], [-5, 2], [-5, -2]], "smooth": false, "from": 190, "to": 225},
+                {"path": [[-5, -2], [-1, 2]], "color": "red", "from": 228, "to": 245, "width": 0.09}],
+    "circles": [{"at": [3.2, 0], "r": 2.0, "from": 250, "to": 285, "color": "blue"}],
+    "fills": [{"poly": [[-5, -2], [-1, -2], [-1, 2], [-5, 2]], "color": [0.98, 0.8, 0.2], "opacity": 0.35, "from": 200}],
+    "labels": [{"text": "1.4 x", "at": [-2.4, -0.3], "color": "red", "from": 248, "rot": 45},
+               {"text": "same width every way", "at": [3.2, -2.6], "color": "blue", "from": 292}]
+  }}
+ ],
+ "camera": {"rig": "long", "dof": {"fstop": 5.6}, "shots": [
+  {"a": 1, "b": 100, "type": "board", "frame": {"subject": "board.center", "size": 9.5, "move": "push_in", "amount": 0.6}},
+  {"a": 101, "b": 180, "type": "board", "fstop": 2.8, "frame": {"subject": "board.unit_hastati", "size": 3.0, "height": "high", "angle": -20, "move": "orbit_left"}},
+  {"a": 181, "b": 330, "type": "board", "frame": {"subject": "paper.center", "size": 8.8, "move": "drift"}}
+ ]},
+ "words": [[0.2, "The"], [0.4, "two"], [0.6, "armies"], [1.0, "meet"], [1.3, "below"], [1.6, "Vesuvius."], [6.3, "A"], [6.4, "square"], [6.9, "fits"], [7.2, "through"], [7.5, "its"], [7.7, "own"], [8.0, "hole."]],
+ "sound": {"music": {"mood": "tense", "gain": 0.14}}
+}

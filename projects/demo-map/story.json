@@ -1,0 +1,400 @@
+{
+ "meta": {
+  "title": "Map demo (parchment, 16:9)",
+  "slug": "demo-map",
+  "fps": 30,
+  "frames": 300,
+  "seed": 5,
+  "aspect": "16:9",
+  "output": "demo_map.mp4",
+  "samples": 24
+ },
+ "factions": [
+  {
+   "id": "rome",
+   "culture": "roman_republic_312bc",
+   "color": [
+    0.62,
+    0.06,
+    0.04
+   ],
+   "label": "ROME"
+  },
+  {
+   "id": "samnites",
+   "culture": "samnite_312bc",
+   "color": [
+    0.1,
+    0.3,
+    0.55
+   ],
+   "label": "SAMNITES"
+  }
+ ],
+ "sets": [
+  {
+   "id": "map",
+   "type": "parchment_map",
+   "params": {
+    "bounds": [
+     9.0,
+     39.0,
+     18.5,
+     44.5
+    ],
+    "title": "ITALIA · 312 BC",
+    "cities": [
+     {
+      "name": "Roma",
+      "at": [
+       12.48,
+       41.89
+      ],
+      "size": 3
+     },
+     {
+      "name": "Capua",
+      "at": [
+       14.25,
+       41.08
+      ],
+      "from": 60
+     },
+     {
+      "name": "Tarracina",
+      "at": [
+       13.25,
+       41.29
+      ],
+      "from": 40,
+      "label_offset": [
+       -1,
+       -1
+      ]
+     },
+     {
+      "name": "Neapolis",
+      "at": [
+       14.25,
+       40.85
+      ],
+      "label_offset": [
+       1,
+       -1
+      ]
+     },
+     {
+      "name": "Beneventum",
+      "at": [
+       14.78,
+       41.13
+      ],
+      "from": 150
+     }
+    ],
+    "regions": [
+     {
+      "name": "Samnium",
+      "faction": "samnites",
+      "from": 140,
+      "poly": [
+       [
+        13.9,
+        41.9
+       ],
+       [
+        14.6,
+        42.1
+       ],
+       [
+        15.3,
+        41.7
+       ],
+       [
+        15.6,
+        41.2
+       ],
+       [
+        15.1,
+        40.8
+       ],
+       [
+        14.5,
+        41.0
+       ],
+       [
+        14.0,
+        41.4
+       ]
+      ]
+     },
+     {
+      "name": "Latium",
+      "faction": "rome",
+      "from": 10,
+      "poly": [
+       [
+        11.9,
+        42.4
+       ],
+       [
+        12.9,
+        42.3
+       ],
+       [
+        13.7,
+        41.8
+       ],
+       [
+        13.6,
+        41.25
+       ],
+       [
+        12.9,
+        41.35
+       ],
+       [
+        12.2,
+        41.7
+       ]
+      ]
+     }
+    ],
+    "arrows": [
+     {
+      "faction": "rome",
+      "path": [
+       [
+        12.5,
+        41.85
+       ],
+       [
+        12.9,
+        41.55
+       ],
+       [
+        13.25,
+        41.3
+       ],
+       [
+        13.8,
+        41.2
+       ],
+       [
+        14.2,
+        41.1
+       ]
+      ],
+      "from": 40,
+      "to": 110
+     },
+     {
+      "faction": "samnites",
+      "path": [
+       [
+        15.0,
+        41.5
+       ],
+       [
+        14.7,
+        41.3
+       ],
+       [
+        14.4,
+        41.15
+       ]
+      ],
+      "from": 170,
+      "to": 215,
+      "width": 0.11
+     }
+    ],
+    "units": [
+     {
+      "id": "legion",
+      "faction": "rome",
+      "at": [
+       12.5,
+       41.85
+      ],
+      "label": "LEGIO",
+      "moves": [
+       [
+        40,
+        [
+         12.5,
+         41.85
+        ]
+       ],
+       [
+        110,
+        [
+         14.1,
+         41.12
+        ]
+       ]
+      ]
+     }
+    ],
+    "mountains": [
+     {
+      "line": [
+       [
+        13.2,
+        42.6
+       ],
+       [
+        13.9,
+        42.2
+       ],
+       [
+        14.6,
+        41.8
+       ],
+       [
+        15.2,
+        41.3
+       ],
+       [
+        15.8,
+        40.7
+       ],
+       [
+        16.2,
+        40.1
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "text": "MARE TYRRHENUM",
+      "at": [
+       11.6,
+       40.4
+      ],
+      "kind": "sea",
+      "rot": -20
+     },
+     {
+      "text": "MARE ADRIATICUM",
+      "at": [
+       16.3,
+       42.9
+      ],
+      "kind": "sea",
+      "rot": -32
+     }
+    ]
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "dof": {
+   "fstop": 5.6
+  },
+  "shots": [
+   {
+    "a": 1,
+    "b": 120,
+    "type": "map",
+    "frame": {
+     "subject": "map.city_tarracina",
+     "size": 7,
+     "move": "push_in",
+     "amount": 0.8
+    }
+   },
+   {
+    "a": 121,
+    "b": 230,
+    "type": "map",
+    "fstop": 3.5,
+    "frame": {
+     "subject": "map.city_capua",
+     "size": 3.4,
+     "move": "pan_right",
+     "angle": 8
+    }
+   },
+   {
+    "a": 231,
+    "b": 300,
+    "type": "map",
+    "frame": {
+     "subject": "map.center",
+     "size": 8.5,
+     "move": "pull_out",
+     "height": "high",
+     "angle": 0
+    }
+   }
+  ]
+ },
+ "words": [
+  [
+   0.2,
+   "In"
+  ],
+  [
+   0.4,
+   "312"
+  ],
+  [
+   0.9,
+   "BC,"
+  ],
+  [
+   1.4,
+   "Rome"
+  ],
+  [
+   1.8,
+   "builds"
+  ],
+  [
+   2.1,
+   "a"
+  ],
+  [
+   2.2,
+   "road"
+  ],
+  [
+   2.6,
+   "south."
+  ],
+  [
+   5.0,
+   "Straight"
+  ],
+  [
+   5.6,
+   "into"
+  ],
+  [
+   5.8,
+   "Samnite"
+  ],
+  [
+   6.3,
+   "country."
+  ]
+ ],
+ "cards": [
+  {
+   "style": "fade",
+   "from": 1,
+   "to": 15,
+   "in": 0,
+   "out": 15
+  }
+ ],
+ "sound": {
+  "music": {
+   "mood": "tense",
+   "gain": 0.14
+  }
+ }
+}

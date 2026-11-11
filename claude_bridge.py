@@ -587,6 +587,8 @@ LONG_CONTENT_RULES = """
   (12-16 cắt/phút theo `seconds`), mỗi cú có `type` chọn theo câu lời đọc tương ứng, `what_vi`, và `card_text` khi là màn hình chữ/bản đồ/nhãn.
 - Màn hình chữ ở mốc quan trọng khoảng 1 cái mỗi 45-90 giây (shot type card có card_text), đổi kiểu: năm, con số, câu hỏi, trích dẫn, tên, địa danh.
 - vo_en tổng phải đúng bằng các vo_en của chuỗi nối lại theo thứ tự.
+- Bản đồ (bờ biển thật), sa bàn chiến thuật và giấy sơ đồ tay vẽ đã có sẵn (parchment_map, tactical_board, paper_diagram): dùng chúng cho
+  shot map/board/diagram, KHÔNG đưa bản đồ/sa bàn/sơ đồ vào library_needs.
 """ + "{RULES}"
 
 
@@ -712,7 +714,9 @@ dùng rig "long" với shots (shot ngắn được).
   quote/name/place/fact) trùng thời gian shot đó; map/diagram/board/label → thẻ label/title hoặc chữ trên bối cảnh. pos x,y trong -1..1
   theo khung 16:9; phụ đề ở y ≈ -0,8, tránh đặt thẻ nhỏ ở đó.
 - Âm thanh: không có whoosh ở mỗi cắt; nhạc liên tục (mood theo chương), tiếng động thưa và đúng hành động.
-- Các bối cảnh đặt xa nhau (gốc tọa độ, x = 300, x = 500 …); map/board/diagram dùng bảng sơ đồ ở x = 500 nếu chưa có bối cảnh riêng.
+- Các bối cảnh đặt xa nhau (gốc tọa độ, x = 300, x = 500 …). Shot map/board/diagram dùng bối cảnh dữ liệu có sẵn: parchment_map (bờ biển
+  thật theo kinh/vĩ độ), tactical_board (sa bàn, khối quân theo phe), paper_diagram (tay vẽ lên giấy) — xem LONGFORM_RULES mục 6;
+  không đưa bản đồ/sa bàn/sơ đồ mới vào missing. Có phe thì khai báo `factions` (id, culture, color, label) ở đầu story.
 """
 
 

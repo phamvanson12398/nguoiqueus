@@ -1,0 +1,62 @@
+{
+ "kind": "set",
+ "name": "paper_diagram",
+ "title_vi": "Giấy sơ đồ + tay vẽ",
+ "status": "approved",
+ "description_vi": "Tờ giấy (ô vuông, kẻ dòng, trắng, blueprint) trên bàn gỗ, nhìn từ trên. Bàn tay hoạt hình cầm bút chì vẽ dần các nét, vòng tròn, mũi tên; vùng tô màu hiện mờ; chữ viết tay bật lên. Dùng cho cảnh giải thích cơ chế.",
+ "space": "origin mặc định [1100, 0, 0]; tọa độ tờ giấy x phải, y lên, size [14, 8]",
+ "params": {
+  "origin": {
+   "default": [
+    1100.0,
+    0.0,
+    0.0
+   ]
+  },
+  "size": {
+   "default": [
+    14.0,
+    8.0
+   ]
+  },
+  "paper": {
+   "default": "grid",
+   "desc_vi": "grid|lined|blank|blueprint"
+  },
+  "strokes": {
+   "default": [],
+   "desc_vi": "[{path:[[x,y],...], from, to, color: ink|red|blue|green|orange|white|[r,g,b], width 0.07, smooth true}]"
+  },
+  "circles": {
+   "default": [],
+   "desc_vi": "[{at, r, from, to, color, width}]"
+  },
+  "arrows": {
+   "default": [],
+   "desc_vi": "[{path, from, to, color, width}]"
+  },
+  "fills": {
+   "default": [],
+   "desc_vi": "[{poly, color, opacity, from}]"
+  },
+  "labels": {
+   "default": [],
+   "desc_vi": "[{text, at, size 0.42, color, rot, from}] chữ viết tay"
+  },
+  "hand": {
+   "default": true,
+   "desc_vi": "tay + bút chạy theo nét đang vẽ"
+  }
+ },
+ "anchors": {
+  "center": "tâm tờ giấy",
+  "label_<chữ>": "vị trí nhãn"
+ },
+ "camera_vi": "frame {subject: '<id>.center', type board (nhìn từ trên), size ~ 8.5 cả tờ, 3-4 cận một phần}",
+ "tags": [
+  "diagram",
+  "paper",
+  "longform",
+  "2d"
+ ]
+}

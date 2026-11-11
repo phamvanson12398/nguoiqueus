@@ -78,6 +78,22 @@ Màn hình chữ ở mốc quan trọng (`cards`, style `screen`, nền tối tr
 Dài 45–90 khung; cú máy bên dưới vẫn trôi (thường type `card` hoặc một cảnh mờ fstop thấp). Thẻ `title`/`label`/dấu ✗✓ vẫn dùng cho nhãn
 nhỏ. Mở chương bằng `chapter` + `fade`; kết video bằng `fade` có `hold`.
 
-## 6. Nhiều quốc gia, phe, thời kỳ
+## 6. Bản đồ, bàn chiến thuật, giấy sơ đồ (bối cảnh có sẵn, chỉ cần dữ liệu)
+Ba bối cảnh dựng từ dữ liệu trong `sets[].params`, không cần thiết kế đồ mới. Mỗi cái đặt ở một `origin` riêng, xa các bối cảnh khác;
+cần nhiều bản đồ trong một chương thì thêm nhiều set với `id` và `origin` khác nhau (700, 760, 820…). Màu theo `faction` (khai báo
+`factions` ở đầu story với `color`).
+- **`parchment_map`** (shot type `map`): `bounds` = [kinh tây, vĩ nam, kinh đông, vĩ bắc] — bờ biển, hồ, sông là dữ liệu thật, chỉ cần chọn khung
+  vừa 16:9 (bề ngang ≈ 1,78 × bề cao × cos(vĩ độ)). Thêm `cities` (`at` = [lon, lat]), `regions` (đa giác lon/lat, hiện dần từ `from`),
+  `arrows` (đường hành quân vẽ dần `from`→`to`, 30-70 khung), `units` (quân cờ có `moves`), `mountains`, `labels` (biển: kind sea), `title`.
+  Tọa độ phải đúng địa lý (sai vài chục km không sao). Camera: `frame` với subject `"<id>.city_<tên>"`, `"<id>.arrow0_mid"`, `"<id>.center"`,
+  `size` = chiều cao vùng muốn thấy (đơn vị bản đồ; cả bản đồ cao ≈ 9), `move` push_in/pan/drift; mũi tên đang vẽ thì đẩy máy theo nó.
+- **`tactical_board`** (shot type `board`): sa bàn tọa độ x phải, y lên (bắc), 16 × 9. `units` = khối quân theo phe, `rows`/`cols` thành
+  đội hình, `moves` = [[khung, [x, y]], …] để tiến/lùi/đánh bọc sườn; `arrows`, `hills`, `rivers`, `forests`, `roads`, `walls`, `labels`.
+  Nhìn từ trên để giải thích chiến thuật; `height: "high"` + `orbit_*` cho cảnh kịch tính.
+- **`paper_diagram`** (type `board` nhìn từ trên, hoặc `diagram`): tay vẽ lên giấy — `strokes`, `circles`, `arrows` (vẽ dần `from`→`to`, mỗi nét
+  15-40 khung, nối tiếp nhau theo lời đọc), `fills` (tô vùng), `labels` (chữ viết tay bật lên). Dùng cho "here's how it works".
+- Thời điểm `from`/`to` lấy theo chữ trong `words` (khung = giây × 30 + 1), để nét vẽ, mũi tên, vùng hiện đúng lúc lời nói tới.
+
+## 7. Nhiều quốc gia, phe, thời kỳ
 - Liệt kê trong `factions` (content) với văn hóa + thời kỳ, trang phục, màu, vũ khí đúng sử liệu; nói rõ chương nào có phe nào.
 - Hai phe giống nhau phải phân biệt được bằng màu, khiên, cờ. Không biếm họa sắc tộc; phe "địch" không bị vẽ xấu hơn.

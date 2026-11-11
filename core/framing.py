@@ -45,7 +45,8 @@ def frame_keys(fr, type_, a, b, subject_pos, aspect=16 / 9):
     H = float(fr.get("size", H)); lens = float(fr.get("lens", lens))
     sx, sy, sz = subject_pos
     if t == "insert" and "size" not in fr: H = 0.9
-    look = [sx, sy, sz + (look_h if t != "insert" else 0.0) + float(fr.get("look_dz", 0.0))]
+    flat_top = type_ in ("board", "map") or fr.get("type") in ("board", "map")        # maps/boards lie on the table
+    look = [sx, sy, sz + (look_h if t != "insert" and not flat_top else 0.0) + float(fr.get("look_dz", 0.0))]
     d = H * lens / SENSOR_H                                   # distance that shows H units of height
     ang = math.radians(float(fr.get("angle", 0.0)))
     height = fr.get("height", {"insert": "high"}.get(t, "top" if type_ in ("board", "map") else "eye"))
@@ -56,7 +57,8 @@ def frame_keys(fr, type_, a, b, subject_pos, aspect=16 / 9):
     look = [look[0] - right[0] * fx * W / 2, look[1] - right[1] * fx * W / 2, look[2] - fy * H / 2]
     if height == "top":
         look[2] = sz + float(fr.get("look_dz", 0.0))
-        cam = [look[0], look[1] - 0.02 * d, look[2] + d]        # straight down, a hair off vertical so 'up' is +Y
+        tilt = math.radians(10)                                  # nearly straight down; 10 deg keeps 'up' = +Y (no random roll)
+        cam = [look[0] + math.sin(ang) * d * math.sin(tilt), look[1] - math.cos(ang) * d * math.sin(tilt), look[2] + d * math.cos(tilt)]
     else:
         elev = {"eye": -0.04, "low": -0.20, "high": 0.38}.get(height, -0.04)   # slightly low by default (STYLE)
         horiz = d * math.cos(elev)
@@ -70,6 +72,26 @@ def frame_keys(fr, type_, a, b, subject_pos, aspect=16 / 9):
 
     def add(v, u, s): return [v[i] + u[i] * s for i in range(3)]
     lens0 = lens1 = lens
+    if height == "top":
+        # seen from above every move is a slide of camera AND look (no yaw), a push along the view, or a slow roll
+        if move in ("push_in", "pull_out", "crane_down", "crane_up"):
+            sgn = 1 if move in ("push_in", "crane_down") else -1
+            c0 = add(cam, fwd, -0.07 * d * k * sgn); c1 = add(cam, fwd, 0.07 * d * k * sgn)
+        elif move in ("orbit_left", "orbit_right"):
+            r0 = roll - 3 * k if move == "orbit_left" else roll + 3 * k
+            r1 = roll + 3 * k if move == "orbit_left" else roll - 3 * k
+            r = lambda v: [round(x, 4) for x in v]
+            return [(a, r(cam), r(look), round(lens, 2), r0), (b, r(cam), r(look), round(lens, 2), r1)]
+        elif move == "static_drift":
+            c0 = add(cam, fwd, -0.015 * d); c1 = add(cam, fwd, 0.015 * d)
+        else:
+            sx_ = {"pan_left": -1, "truck_left": -1, "pan_right": 1, "truck_right": 1}.get(move, 0.4)
+            s_ = sx_ * 0.12 * W * k; up = (0.0, 1.0, 0.0) if move == "drift" else (0.0, 0.0, 0.0)
+            c0 = add(add(cam, side, -s_ / 2), up, -0.02 * H * k); c1 = add(add(cam, side, s_ / 2), up, 0.02 * H * k)
+            l0 = add(add(look, side, -s_ / 2), up, -0.02 * H * k); l1 = add(add(look, side, s_ / 2), up, 0.02 * H * k)
+            if move == "drift": c0 = add(c0, fwd, -0.03 * d * k); c1 = add(c1, fwd, 0.03 * d * k)
+        r = lambda v: [round(x, 4) for x in v]
+        return [(a, r(c0), r(l0), round(lens, 2), roll), (b, r(c1), r(l1), round(lens, 2), roll)]
     if move == "push_in": c0 = add(cam, fwd, -0.07 * d * k); c1 = add(cam, fwd, 0.07 * d * k)
     elif move == "pull_out": c0 = add(cam, fwd, 0.07 * d * k); c1 = add(cam, fwd, -0.07 * d * k)
     elif move in ("pan_left", "pan_right"):

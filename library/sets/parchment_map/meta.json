@@ -1,0 +1,84 @@
+{
+ "kind": "set",
+ "name": "parchment_map",
+ "title_vi": "Bản đồ giấy da (bờ biển thật)",
+ "status": "approved",
+ "description_vi": "Bản đồ giấy da nằm trên bàn gỗ tối, nhìn từ trên (shot type 'map'). Bờ biển, hồ, sông THẬT (Natural Earth) cho bất kỳ khung kinh độ/vĩ độ nào. Vẽ thêm theo story: thành phố, vùng lãnh thổ tô màu hiện dần, mũi tên hành quân tự vẽ dần, quân cờ di chuyển, núi, tên biển/vùng, khung tiêu đề, la bàn. Màu lấy từ factions của story.",
+ "space": "origin mặc định [700, 0, 0]; bản đồ rộng `width` (16) đơn vị, cao theo tỉ lệ khung kinh/vĩ độ",
+ "params": {
+  "origin": {
+   "default": [
+    700.0,
+    0.0,
+    0.0
+   ]
+  },
+  "bounds": {
+   "default": [
+    6.0,
+    36.5,
+    19.5,
+    47.2
+   ],
+   "desc_vi": "[kinh độ tây, vĩ độ nam, kinh độ đông, vĩ độ bắc] (độ, đông và bắc là dương). Tỉ lệ ~16:9 sau khi nhân cos(vĩ độ) để vừa khung hình"
+  },
+  "width": {
+   "default": 16.0
+  },
+  "style": {
+   "default": "parchment",
+   "desc_vi": "parchment | modern"
+  },
+  "rivers": {
+   "default": true,
+   "desc_vi": "true = mọi sông; [\"Tiber\", ...] = chỉ các sông có tên đó; false"
+  },
+  "lakes": {
+   "default": true
+  },
+  "cities": {
+   "default": [],
+   "desc_vi": "[{name, at:[lon,lat], size:1|2|3 (3 = thủ đô, sao đỏ), from?, to?, label_offset:[dx,dy]}]"
+  },
+  "regions": {
+   "default": [],
+   "desc_vi": "[{name, poly:[[lon,lat],...], faction|color, opacity 0.45, from?, to?, label?, size?}] vùng tô màu, hiện dần từ 'from'"
+  },
+  "arrows": {
+   "default": [],
+   "desc_vi": "[{path:[[lon,lat],...], faction|color, from, to, width (mặc định W/110)}] mũi tên vẽ dần từ from tới to"
+  },
+  "units": {
+   "default": [],
+   "desc_vi": "[{id, at:[lon,lat], faction|color, label, from?, moves:[[khung,[lon,lat]],...]}] quân cờ (ký hiệu bộ binh) di chuyển"
+  },
+  "mountains": {
+   "default": [],
+   "desc_vi": "[{at:[lon,lat]} | {line:[[lon,lat],...]}, size?] ký hiệu núi"
+  },
+  "labels": {
+   "default": [],
+   "desc_vi": "[{text, at:[lon,lat], kind: sea|region|title, size?, rot? (độ), from?}]"
+  },
+  "title": {
+   "default": null,
+   "desc_vi": "chữ trong khung tiêu đề góc trái trên, vd 'ITALIA · 312 BC'"
+  },
+  "compass": {
+   "default": true
+  }
+ },
+ "anchors": {
+  "center": "tâm bản đồ",
+  "city_<tên>": "thành phố (tên viết thường, dấu cách → _)",
+  "region_<tên>": "tâm vùng",
+  "arrow<i>_start/_mid/_end": "điểm của mũi tên thứ i",
+  "unit_<id>": "vị trí đầu của quân cờ"
+ },
+ "camera_vi": "frame {subject: '<id set>.city_roma', size: chiều cao khung (đơn vị bản đồ, cả bản đồ ~ width*9/16), move: push_in|pan_*|drift}; type map → nhìn từ trên (height top), 'high' = nhìn chéo thấy bàn",
+ "tags": [
+  "map",
+  "longform",
+  "2d"
+ ]
+}

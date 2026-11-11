@@ -1,0 +1,565 @@
+{
+ "title": "Why Were Roman Roads So Straight?",
+ "title_vi": "Vì sao đường La Mã thẳng tắp?",
+ "question": "Why were Roman roads so straight?",
+ "formula": "đối đầu + điều tra: mở giữa cao trào (đường lao thẳng vào đầm lầy) → let's go back → giả thuyết hiển nhiên (quân đội, tốc độ) → lỗ hổng (đắt, dốc thì không thẳng) → twist: cây groma chỉ ngắm được đường thẳng + quyền lực của La Mã → gọi lại tiêu đề, gag con dê kết thúc",
+ "minutes": 5,
+ "format": "long",
+ "factions": [
+  {
+   "id": "roman_empire_britain",
+   "culture": "roman_empire_50ad",
+   "note_vi": "Marcus (trắc địa viên/agrimensor): áo tunic len màu kem nhạt, áo choàng nâu đỏ, dây lưng da, không giáp, cầm groma. Bách phu trưởng: tunic đỏ, giáp lá (lorica segmentata) xám thép, mũ đồng có mào ngang đỏ (dấu hiệu bách phu trưởng), gậy nho (vitis), khiên chữ nhật cong đỏ có họa tiết vàng. Lính lê dương: như bách phu trưởng nhưng mào không có, cầm xẻng/cuốc, cọc ngắm đỏ trắng. Chương 1 (chuỗi 1, 4, 5) và chương 2 (chuỗi 6-9)."
+  },
+  {
+   "id": "britons",
+   "culture": "iron_age_britons_50ad",
+   "note_vi": "Bran (người dẫn đường bản địa, tỉnh bơ, thông minh): quần len (braccae) kẻ ô xanh lá–nâu, áo choàng kẻ ô ghim bằng trâm đồng tròn, vòng cổ torc vàng, tóc dài buộc, ria, gậy gỗ; dắt một con dê nâu trắng. Vẽ tôn trọng, ngang hàng, không man rợ hóa; dân làng có nhà tròn mái tranh xa xa. Chuỗi 1, 4, 5, 7, 8, 9."
+  },
+  {
+   "id": "roman_republic",
+   "culture": "roman_republic_312bc",
+   "note_vi": "Appius Claudius: toga trắng viền tía (quan chức), tóc bạc, nét nghiêm. Lính Cộng hòa: mũ đồng Montefortino có chóp, giáp ngực đồng vuông nhỏ, tunic đỏ đất, khiên bầu dục (scutum) cao, giáo. Chỉ chuỗi 3 (và đoạn đầu chuỗi 4)."
+  },
+  {
+   "id": "samnites",
+   "culture": "samnite_312bc",
+   "note_vi": "Chiến binh Samnite: giáp ngực ba đĩa đồng (triple-disc cuirass), thắt lưng đồng rộng, mũ đồng có hai lông vũ cao, áo màu xanh đậm/trắng, khiên tròn hoặc bầu dục, giáo; đứng trên núi Apennine. Phân biệt với La Mã bằng màu xanh và lông vũ. Vẽ hiên ngang, không xấu hơn La Mã. Chỉ chuỗi 3."
+  }
+ ],
+ "sources": [
+  {
+   "claim": "Via Appia begun in 312 BC by censor Appius Claudius Caecus as a military road toward Capua during the Samnite Wars; nearly straight to Tarracina",
+   "url": "https://www.britannica.com/topic/Appian-Way"
+  },
+  {
+   "claim": "Via Appia ran an uninterrupted straight stretch of about 56 miles between Rome and Terracina; ~200,000+ miles of Roman roads overall",
+   "url": "https://www.nationalgeographic.com/history/world-history-magazine/article/200000-miles-roman-roads-provided-framework-empire"
+  },
+  {
+   "claim": "Via Appia: first section to Capua, crossed the Pontine Marshes; named after Appius Claudius",
+   "url": "https://en.wikipedia.org/wiki/Appian_Way"
+  },
+  {
+   "claim": "Roman road network ~80,000 km (about 50,000 miles) stone-paved, out of a much larger total",
+   "url": "https://www.britannica.com/technology/Roman-road-system"
+  },
+  {
+   "claim": "Fosse Way, Lincoln to Axminster (~200 miles), deviates less than about 6 miles (10 km) from a straight line; surveyors likely worked from high ground with sighting markers",
+   "url": "https://www.fig.net/resources/proceedings/fig_proceedings/fig2009/papers/hs01/hs01_hucker_3471.pdf"
+  },
+  {
+   "claim": "Groma: cross on a pole with four plumb lines used by Roman surveyors (agrimensores) to sight straight lines and right angles",
+   "url": "https://en.wikipedia.org/wiki/Groma_(surveying)"
+  },
+  {
+   "claim": "Surveyors used markers/beacons on hilltops and adjusted them until aligned; roads are straight segments changing direction at high points",
+   "url": "https://historic-uk.com/HistoryUK/HistoryofEngland/Roman-Roads-in-England"
+  },
+  {
+   "claim": "Vegetius (De Re Militari, Book 1) prescribes marching 20 Roman miles in five summer hours at military pace",
+   "url": "https://en.wikipedia.org/wiki/De_re_militari"
+  },
+  {
+   "claim": "Watling Street route largely followed by the modern A5",
+   "url": "https://en.wikipedia.org/wiki/Watling_Street"
+  },
+  {
+   "claim": "Roman roads used switchbacks/zigzags on steep slopes rather than going straight",
+   "url": "https://www.todayifoundout.com/?p=55621"
+  }
+ ],
+ "library_needs": [
+  {
+   "kind": "sets",
+   "name": "roman_countryside",
+   "brief": "Vùng quê cổ đại 3D có tham số: region 'britain' (đồi xanh thấp, đầm lầy sương mù, rừng sồi, nhà tròn mái tranh xa) hoặc 'italy' (đồi khô vàng, cây thông dù, núi Apennine phía xa). Tham số: swamp (bool, đầm bùn có mép nước), beacons (số đỉnh đồi thẳng hàng có chỗ đặt lửa hiệu), road_done (đường La Mã chạy thẳng qua chỗ đầm cũ), steep_slope (một sườn dốc có đường zíc zắc), night (bảng màu đêm). Anchor: road_end, swamp_center, hill_1..hill_n, slope. Khoảng diễn quanh (0, 4), mở phía -Y."
+  },
+  {
+   "kind": "sets",
+   "name": "map_parchment",
+   "brief": "Bản đồ giấy da lớn nằm trên bàn gỗ, camera nhìn thẳng xuống. Lớp bản đồ chọn bằng tham số: 'empire' (châu Âu–Địa Trung Hải), 'italy' (Rome, Samnium, Capua, Terracina), 'britain' (Lincoln, Devon, Watling Street). Mỗi tuyến đường là nét mực đỏ vẽ dần được (part theo tên tuyến, animate bằng tỷ lệ vẽ), chấm thành phố + nhãn chữ to, núi vẽ kiểu mực. Có lớp phủ đường hiện đại xám (A5) bật/tắt. Không logo."
+  },
+  {
+   "kind": "props",
+   "name": "groma",
+   "brief": "Groma: cọc gỗ cao ~2,2 có tay đòn, thập tự gỗ ở đỉnh, 4 dây dọi với quả dọi đồng. Bản 3D đứng trên đất (dây dọi đung đưa nhẹ) và bản 2D cầm tay (tham số dim). Gốc ở chân cọc."
+  },
+  {
+   "kind": "props",
+   "name": "ranging_pole",
+   "brief": "Cọc ngắm cao ~2,6, sọc đỏ trắng, đầu nhọn; 3D để cắm/lún bùn (tham số sink 0..1) và 2D cầm tay. Gốc ở mũi nhọn."
+  },
+  {
+   "kind": "props",
+   "name": "roman_road",
+   "brief": "Đoạn đường La Mã 3D: mặt đá lát đa giác xám, gờ đá hai bên, mương thoát nước, nền hơi gù. Tham số length, width (~4), segments (danh sách điểm để bẻ góc nhẹ), zigzag (cho dốc), cutaway (mặt cắt các lớp: đá lát, sỏi, cát, đá nền). Gốc ở đầu đường."
+  },
+  {
+   "kind": "props",
+   "name": "beacon_fire",
+   "brief": "Đống lửa hiệu trên đỉnh đồi: củi chất hình nón, lửa emission cam hoạt hình, cột khói xám cao có thể bật dần (tham số lit, smoke_height). Gốc ở tâm đáy."
+  },
+  {
+   "kind": "props",
+   "name": "milestone",
+   "brief": "Cột mốc đá La Mã hình trụ cao ~1,6, chữ khắc 'VIA APPIA' (chữ có thể đổi), mép mòn. 3D."
+  },
+  {
+   "kind": "props",
+   "name": "diagram_sightline",
+   "brief": "Sơ đồ 2D gắn lên diagram_board, các chế độ: 'groma' (thập tự + 4 dây dọi + mũi tên GRAVITY), 'poles' (ba cọc chồng khít nhìn từ POV và nhìn ngang), 'segments' (mặt cắt địa hình, đường gồm đoạn thẳng bẻ góc ở đỉnh đồi), 'curve_vs_straight' (✓/✗ chia đôi), 'zigzag' (sườn dốc, đường thẳng ✗, zíc zắc ✓), 'cost' (vòng quanh đồi vs xuyên đồi kèm đồng hồ chi phí). Các nét vẽ dần."
+  },
+  {
+   "kind": "chars",
+   "name": "marcus",
+   "brief": "Trắc địa viên La Mã trẻ (agrimensor), khoảng năm 50: tunic len kem, áo choàng nâu đỏ, dây lưng da, dép caligae, tóc đen ngắn. Món nhận diện: cây bút sáp/bảng sáp đeo hông. Tính chăm chú, bướng, tự tin. Biểu cảm: neutral, focus, smug_closed, worried, shock, happy."
+  },
+  {
+   "kind": "chars",
+   "name": "centurion",
+   "brief": "Bách phu trưởng La Mã năm 50: tunic đỏ, giáp lá lorica segmentata, mũ đồng có mào ngang đỏ, gậy nho. Nóng nảy (mặt đỏ, bốc hơi). Biểu cảm: neutral, angry, shock, smirk, grumpy. Dùng được làm bản lính lê dương (legionary) bằng cách bỏ mào, đổi gậy thành xẻng/cọc."
+  },
+  {
+   "kind": "chars",
+   "name": "bran",
+   "brief": "Người dẫn đường Briton thời đồ sắt: quần len kẻ ô xanh–nâu, áo choàng kẻ ô ghim trâm đồng tròn, vòng cổ torc vàng, tóc dài buộc, ria, gậy gỗ. Tỉnh bơ, thông minh, vẽ tôn trọng ngang hàng. Biểu cảm: neutral, grumpy, smirk, happy, shock."
+  },
+  {
+   "kind": "chars",
+   "name": "goat",
+   "brief": "Con dê nâu trắng 2D cùng phong cách (thân tròn, viền đen, chân nét), có sừng nhỏ và râu; đi 4 chân, quay đầu nhìn trái/phải được. Biểu cảm: neutral, happy, chewing."
+  },
+  {
+   "kind": "chars",
+   "name": "appius_claudius",
+   "brief": "Appius Claudius (312 TCN): toga trắng viền tía, tóc bạc ngắn, mặt nghiêm, nhân vật tuổi trung niên. Biểu cảm: neutral, focus, smirk."
+  },
+  {
+   "kind": "chars",
+   "name": "samnite_warrior",
+   "brief": "Chiến binh Samnite thế kỷ 4 TCN: giáp ngực ba đĩa đồng, thắt lưng đồng rộng, mũ đồng hai lông vũ cao, áo xanh đậm, khiên, giáo. Hiên ngang, không biếm họa. Kèm bản lính Cộng hòa La Mã (mũ Montefortino, giáp ngực đồng vuông, khiên bầu dục) như một biến thể trang phục (legionary_republic)."
+  }
+ ],
+ "chapter": {
+  "n": 1,
+  "title": "The Road Into the Swamp",
+  "of": 2,
+  "start_sec": 0.0,
+  "frames": 5160,
+  "previous": null,
+  "next": {
+   "n": 2,
+   "title": "The Stick That Sees Straight"
+  }
+ },
+ "chapters": [
+  {
+   "n": 1,
+   "title": "The Road Into the Swamp",
+   "title_vi": "Con đường lao vào đầm lầy",
+   "summary_vi": "Mở giữa cao trào ở Britannia: Marcus cho đường đi thẳng qua đầm lầy. Quay lại 312 TCN: Via Appia ra đời trong chiến tranh với người Samnite. Giả thuyết tốc độ hành quân, rồi lỗ hổng: làm thẳng rất đắt, dốc thì không thẳng. Cú treo: khói trên các đỉnh đồi và 'cây gậy'."
+  },
+  {
+   "n": 2,
+   "title": "The Stick That Sees Straight",
+   "title_vi": "Cây gậy chỉ thấy đường thẳng",
+   "summary_vi": "Groma và cọc ngắm hoạt động thế nào; ngắm từ đỉnh đồi này sang đỉnh đồi kia bằng lửa/khói; Fosse Way. Giải thích chính: thẳng là dễ đo nhất + quyền lực La Mã; dốc thì zíc zắc. Mở rộng: đường A5 ngày nay. Kết: con dê đi thẳng, gọi lại tiêu đề."
+  }
+ ],
+ "sequences": [
+  {
+   "id": 1,
+   "chapter": 1,
+   "seconds": 26,
+   "vo_en": "Britain. The edge of the Roman world. A young surveyor named Marcus squints through a strange wooden cross. Behind him, a column of soldiers is waiting. In front of him, a swamp. [beat] \"Straight through,\" says Marcus. The centurion turns purple. \"Through the SWAMP?\" A local guide named Bran leans on his staff. His goat is already taking the long way around. Marcus doesn't blink. The line says straight, so the road goes straight. [beat] But something is wrong here. Why would anyone march a road straight into a swamp?",
+   "vo_vi": "Britannia. Rìa của thế giới La Mã. Một chàng trắc địa trẻ tên Marcus nheo mắt qua một cây thập tự gỗ kỳ lạ. Sau lưng anh, một đoàn lính đang chờ. Trước mặt anh, một đầm lầy. \"Đi thẳng qua,\" Marcus nói. Viên bách phu trưởng tím mặt. \"Qua cái ĐẦM LẦY?\" Người dẫn đường bản địa tên Bran tựa vào gậy. Con dê của anh đã đi đường vòng từ lâu. Marcus không chớp mắt. Đường ngắm bảo thẳng, thì đường đi thẳng. Nhưng có gì đó sai sai. Ai lại cho một con đường lao thẳng vào đầm lầy?",
+   "set": "roman_countryside (region: britain, swamp: true)",
+   "chars": [
+    "marcus",
+    "centurion",
+    "bran",
+    "goat",
+    "legionary"
+   ],
+   "props": [
+    "groma",
+    "ranging_pole",
+    "roman_road"
+   ],
+   "action": "Sáng sương mù. Đoạn đường La Mã mới dừng ở mép đầm lầy; hàng cọc ngắm đỏ trắng cắm thẳng tắp vào giữa bùn. Marcus đứng sau groma ngắm. Đoàn lính xếp hàng phía sau. Bách phu trưởng đỏ tím mặt, bốc hơi. Bran tựa gậy bên cạnh, con dê lững thững đi vòng theo lối mòn quanh co ra khỏi khung hình. Cọc cuối cùng lún dần xuống bùn.",
+   "camera": "Toàn cảnh đẩy chậm dọc hàng cọc → cận Marcus sau groma → trung bách phu trưởng (đẩy nhẹ khi hét) → trung Bran, lia theo con dê → cận cọc lún bùn, hạ cần.",
+   "transition": "fade",
+   "expressions": "Marcus: focus → smug_closed; centurion: shock → angry (steam); Bran: neutral (tỉnh bơ); goat: chewing",
+   "gag": "Con dê lặng lẽ đi đường vòng ngay khi Marcus nói 'thẳng' (gag chạy dọc video). Cọc cuối lún 'glup' xuống bùn.",
+   "sfx": [
+    "step",
+    "rumble",
+    "squeak",
+    "slide_down",
+    "gulp"
+   ],
+   "fx": [
+    "steam",
+    "mist",
+    "mud_bubbles"
+   ],
+   "emphasis": [
+    "swamp",
+    "Straight",
+    "SWAMP",
+    "straight",
+    "wrong"
+   ],
+   "shots": [
+    {
+     "type": "wide",
+     "what_vi": "Toàn cảnh đồi xanh Britannia trong sương, đoạn đường lát đá dừng ở mép đầm, hàng cọc đỏ trắng chạy thẳng vào bùn; camera đẩy chậm dọc hàng cọc."
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình chữ kiểu địa danh, cảnh đầm lầy mờ phía sau.",
+     "card_text": "BRITANNIA — around AD 50"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Cận Marcus nheo một mắt sau dây dọi của groma, camera trôi ngang nhẹ."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Bách phu trưởng quay phắt lại, mặt tím, bốc hơi: \"Through the SWAMP?\" — punch-in."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Bran tựa gậy tỉnh bơ; con dê sau lưng anh quay đi theo lối mòn vòng vèo; lia trái theo dê."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Marcus không chớp mắt, gật đầu chắc nịch; đoàn lính lờ mờ phía sau (DOF)."
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cận cọc ngắm cuối lún dần xuống bùn, bong bóng nổi; camera hạ cần theo cọc."
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "chapter": 1,
+   "seconds": 29,
+   "vo_en": "To answer that, let's go back. Way back. [beat] Here's the question. Why were Roman roads so straight? Look at a map of the empire at its peak. Roads run from Britain to Syria, from Spain to the Black Sea. About eighty thousand kilometers of them were paved with stone. That's enough to wrap around the Earth twice. And on the map, many of them look like they were drawn with a ruler. Most ancient paths wander. They follow rivers, dodge hills, and go around the farmer who won't sell. Roman roads just… don't.",
+   "vo_vi": "Để trả lời, hãy quay lại. Quay lại thật xa. Câu hỏi là: vì sao đường La Mã lại thẳng đến thế? Nhìn bản đồ đế chế lúc cực thịnh. Đường chạy từ Britannia tới Syria, từ Tây Ban Nha tới Biển Đen. Khoảng tám mươi nghìn km được lát đá. Đủ quấn quanh Trái Đất hai vòng. Và trên bản đồ, nhiều con đường trông như kẻ bằng thước. Đường cổ thường uốn lượn: theo sông, tránh đồi, vòng qua ông nông dân không chịu bán đất. Đường La Mã thì… không.",
+   "set": "map_parchment (+ diagram_board cho cảnh so sánh)",
+   "chars": [
+    "goat"
+   ],
+   "props": [
+    "roman_road"
+   ],
+   "action": "Whip từ bùn sang bản đồ giấy da nhìn từ trên. Câu hỏi hiện to. Mạng đường đỏ vẽ dần từ Rome tỏa ra khắp châu Âu, Bắc Phi, Trung Đông. Một sợi đường quấn quanh quả địa cầu nhỏ hai vòng. Một cây thước khổng lồ trượt vào kẻ thêm một đường. Sơ đồ so sánh: lối mòn cổ ngoằn ngoèo (vòng qua sông, đồi, nông dân khoanh tay) vs đường La Mã thẳng; con dê đi trên lối ngoằn ngoèo.",
+   "camera": "Whip vào bản đồ, nhìn thẳng xuống, kéo lùi khi mạng đường vẽ ra → sơ đồ quả địa cầu xoay → bản đồ đẩy vào cây thước → sơ đồ so sánh trượt ngang.",
+   "transition": "whip",
+   "expressions": "nông dân trong sơ đồ: grumpy; goat: neutral",
+   "gag": "Cây thước khổng lồ trượt vào bản đồ kẻ đường 'xoẹt'; ông nông dân khoanh tay chặn đường cổ.",
+   "sfx": [
+    "zip_out",
+    "slide_up",
+    "ding",
+    "scratch"
+   ],
+   "fx": [
+    "ink_draw_lines"
+   ],
+   "emphasis": [
+    "back",
+    "straight",
+    "eighty thousand",
+    "twice",
+    "ruler",
+    "don't"
+   ],
+   "shots": [
+    {
+     "type": "map",
+     "what_vi": "Whip vào bản đồ giấy da, chữ 'LET'S GO BACK' mờ; camera nhìn thẳng xuống, trôi chậm."
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình chữ câu hỏi, nền bản đồ mờ.",
+     "card_text": "WHY WERE ROMAN ROADS SO STRAIGHT?"
+    },
+    {
+     "type": "map",
+     "what_vi": "Mạng đường đỏ vẽ dần từ Rome ra Britannia, Syria, Tây Ban Nha, Biển Đen; camera kéo lùi lộ toàn đế chế (cú dài).",
+     "card_text": "ROMAN EMPIRE, 2nd century AD"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Sợi đường đỏ quấn quanh quả địa cầu nhỏ đúng hai vòng, nhãn số.",
+     "card_text": "~80,000 km PAVED"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cây thước gỗ khổng lồ trượt vào bản đồ, kẻ một đường thẳng 'xoẹt'."
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Lối mòn cổ ngoằn ngoèo vòng qua sông, đồi, ông nông dân khoanh tay; con dê đi trên đó; camera trượt ngang."
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Bên cạnh, đường La Mã thẳng băng xuyên qua tất cả; dấu ✓ nhỏ; dừng một nhịp tỉnh bơ."
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "chapter": 1,
+   "seconds": 34,
+   "vo_en": "It starts in 312 BC. Rome is a regional power in central Italy, stuck in a long, ugly war with the Samnites, tough mountain people to the south. Rome's problem is distance. Its troops need to reach the fighting fast. So a censor named Appius Claudius orders a road. Not a trail. A road. A real engineered highway, heading south toward Capua. It's called the Via Appia. He even names it after himself. And it does something bold. From Rome to the coastal town of Terracina, it runs almost dead straight for about fifty-six miles. Hills? Cut through. Marshes? Built across. Rome just discovered its favorite weapon.",
+   "vo_vi": "Mọi chuyện bắt đầu năm 312 TCN. Rome là thế lực vùng ở miền trung nước Ý, sa lầy trong cuộc chiến dài và khốc liệt với người Samnite, dân miền núi phía nam. Vấn đề của Rome là khoảng cách. Quân phải tới chiến trường thật nhanh. Vì thế quan giám sát Appius Claudius ra lệnh làm một con đường. Không phải đường mòn. Một con đường thật sự, được thiết kế, chạy về phía nam tới Capua. Nó tên là Via Appia. Ông còn đặt tên theo chính mình. Và nó làm một điều táo bạo: từ Rome tới thị trấn ven biển Terracina, nó chạy gần như thẳng tắp khoảng năm mươi sáu dặm. Đồi? Xẻ qua. Đầm lầy? Đắp qua. Rome vừa tìm ra vũ khí ưa thích của mình.",
+   "set": "roman_countryside (region: italy) + map_parchment",
+   "chars": [
+    "appius_claudius",
+    "legionary_republic",
+    "samnite_warrior"
+   ],
+   "props": [
+    "roman_road",
+    "milestone"
+   ],
+   "action": "Thẻ năm. Bản đồ Ý: Rome, vùng Samnium trên núi, Capua. Chiến binh Samnite đứng trên vách núi Apennine; lính Cộng hòa lội bùn trên lối mòn, chậm chạp. Appius Claudius trong toga trắng viền tía chỉ tay xuống bản đồ. Thợ đẽo chữ VIA APPIA lên cột mốc đá. Đường đỏ vẽ thẳng từ Rome tới Terracina. Montage: xẻ đồi, đắp đường qua đầm Pontine. Appius cười đắc ý.",
+   "camera": "Thẻ năm trên cảnh đồi Ý mờ → bản đồ đẩy vào Samnium → toàn cảnh núi, hạ cần → trung lính lội bùn, tracking ngang → cận Appius đẩy vào → cận vật cột mốc → bản đồ vẽ đường thẳng, camera bám đầu mũi tên → toàn cảnh montage xẻ đồi → cận Appius.",
+   "transition": "whip",
+   "expressions": "Appius: focus → smirk; lính Cộng hòa: worried (mệt); Samnite: focus (hiên ngang)",
+   "gag": "Lính La Mã lội bùn ngập gối, một chiếc dép bị bùn hút mất 'phụp'. Chữ khắc VIA APPIA — thợ khắc ngước nhìn Appius, Appius gật đầu không ngượng.",
+   "sfx": [
+    "slide_down",
+    "bonk",
+    "thud",
+    "crash",
+    "ding",
+    "step"
+   ],
+   "fx": [
+    "dust",
+    "mud_splash",
+    "ink_draw_lines"
+   ],
+   "emphasis": [
+    "312 BC",
+    "Samnites",
+    "distance",
+    "Via Appia",
+    "himself",
+    "fifty-six miles",
+    "Cut through",
+    "weapon"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Màn hình chữ năm, nền đồi Latium mờ.",
+     "card_text": "THE YEAR IS 312 BC — Rome vs. the Samnites"
+    },
+    {
+     "type": "map",
+     "what_vi": "Bản đồ Ý: chấm Rome, vùng núi Samnium tô xanh, mũi tên quân La Mã ngoằn ngoèo; camera đẩy vào phía nam.",
+     "card_text": "ROME · SAMNIUM · CAPUA"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Chiến binh Samnite (mũ lông vũ, giáp ba đĩa) đứng trên vách núi Apennine; camera hạ cần."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Lính Cộng hòa (mũ Montefortino) lội bùn ngập gối, một dép bị hút mất; tracking ngang."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Appius Claudius, toga viền tía, đập tay xuống bàn bản đồ; nhãn tên nhỏ.",
+     "card_text": "APPIUS CLAUDIUS — censor"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Đục khắc chữ VIA APPIA lên cột mốc đá, bụi đá bay."
+    },
+    {
+     "type": "map",
+     "what_vi": "Đường đỏ vẽ gần như thẳng từ Rome tới Terracina, camera bám đầu nét vẽ (cú dài).",
+     "card_text": "ROME → TERRACINA: ~56 MILES, ALMOST STRAIGHT"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Montage: lính xẻ đồi, đá đổ 'rầm'; rồi đắp nền đường qua đầm lầy Pontine; camera trôi ngang."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Appius nhếch mép đắc ý, phía sau con đường thẳng tắp tới chân trời."
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "chapter": 1,
+   "seconds": 33,
+   "vo_en": "So the obvious answer is speed. A straight line is the shortest path between two points. And a Roman legion on a good road could move fast. One Roman military manual says recruits should march about twenty Roman miles in five summer hours. Meanwhile, Bran's people use old trackways that curve around every hill and bog. Shorter road, faster army, quicker conquest. Case closed? [beat] Not quite. Here's the problem. Building straight is expensive. Going around a hill is cheap. Cutting through it takes months of digging. And on the steepest hills, Roman roads didn't go straight at all. So if speed was everything… why weren't they straight everywhere?",
+   "vo_vi": "Vậy câu trả lời hiển nhiên là tốc độ. Đường thẳng là đường ngắn nhất giữa hai điểm. Quân đoàn La Mã trên đường tốt di chuyển rất nhanh. Một sách quân sự La Mã nói tân binh phải đi khoảng hai mươi dặm La Mã trong năm giờ mùa hè. Trong khi đó, người của Bran dùng những lối mòn cổ uốn quanh từng ngọn đồi, từng vũng lầy. Đường ngắn hơn, quân nhanh hơn, chinh phục sớm hơn. Hết chuyện? Chưa đâu. Vấn đề là: làm đường thẳng rất tốn kém. Đi vòng quanh đồi thì rẻ. Xẻ xuyên qua đồi mất hàng tháng đào bới. Và ở những ngọn đồi dốc nhất, đường La Mã hoàn toàn không thẳng. Vậy nếu tốc độ là tất cả… sao chúng không thẳng ở mọi nơi?",
+   "set": "roman_countryside (region: britain) + diagram_board",
+   "chars": [
+    "legionary",
+    "centurion",
+    "bran",
+    "goat",
+    "marcus"
+   ],
+   "props": [
+    "roman_road",
+    "diagram_sightline"
+   ],
+   "action": "Đoàn lê dương hành quân nhịp nhàng trên đường thẳng. Bàn chiến thuật nhìn từ trên: quân cờ La Mã chạy thẳng, quân cờ của Bran (và con dê) đi lối mòn quanh co — La Mã tới trước. Bách phu trưởng phủi tay đắc thắng. Kim đĩa nhạc rít: đóng băng khung hình. Sơ đồ: đường vòng quanh đồi có đồng hồ chi phí nhỏ; đường xuyên đồi làm đồng hồ quay vù vù tới đỏ. Cảnh đồi dốc: đường La Mã zíc zắc. Marcus gãi đầu.",
+   "camera": "Toàn cảnh tracking cùng đoàn quân → sơ đồ đường thẳng giữa 2 điểm, đẩy vào → thẻ số → bàn chiến thuật nhìn thẳng xuống, quân cờ trượt → cận bách phu trưởng → freeze → sơ đồ chi phí trượt ngang → toàn cảnh đồi dốc nâng cần → cận Marcus đẩy chậm.",
+   "transition": "cut",
+   "expressions": "centurion: smirk → shock; Bran: neutral; Marcus: worried",
+   "gag": "'Case closed?' — bách phu trưởng đóng sập cuốn sổ, kim đĩa nhạc rít, freeze-frame. Đồng hồ chi phí quay vù vù tới khi bật lò xo.",
+   "sfx": [
+    "step",
+    "boing",
+    "scratch",
+    "cash",
+    "sad_trombone",
+    "gulp"
+   ],
+   "fx": [
+    "dust",
+    "freeze_frame",
+    "cost_meter"
+   ],
+   "emphasis": [
+    "speed",
+    "shortest",
+    "twenty",
+    "five",
+    "Case closed",
+    "expensive",
+    "cheap",
+    "steepest",
+    "everywhere"
+   ],
+   "shots": [
+    {
+     "type": "wide",
+     "what_vi": "Đoàn lê dương hành quân đều bước trên đường thẳng tắp; camera tracking ngang cùng hướng (trái → phải)."
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Hai chấm A–B, nét thẳng vẽ nối, nhãn 'SHORTEST'; camera đẩy vào."
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình chữ con số, cảnh hành quân mờ phía sau.",
+     "card_text": "~20 ROMAN MILES IN 5 HOURS — Roman training standard"
+    },
+    {
+     "type": "board",
+     "what_vi": "Bàn chiến thuật từ trên: quân cờ đỏ La Mã chạy thẳng, quân cờ Bran + dê đi lối mòn ngoằn ngoèo; La Mã tới trước."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Bách phu trưởng đắc thắng đóng sập cuốn sổ 'Case closed?' → freeze-frame."
+    },
+    {
+     "type": "diagram",
+     "what_vi": "So sánh: đường vòng quanh đồi (đồng hồ chi phí xanh, thấp) vs xẻ xuyên đồi (đồng hồ quay tới đỏ, bật lò xo); trượt ngang."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Sườn đồi dốc thật: đường La Mã zíc zắc lên dốc; camera nâng cần lộ cả sườn."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Marcus gãi đầu bối rối, camera đẩy chậm; câu hỏi treo lơ lửng."
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "chapter": 1,
+   "seconds": 26,
+   "vo_en": "Back in Britain, the centurion is still yelling. \"My men are not swimming to work!\" Bran points to a hilltop far away. A thin line of smoke rises from it. Then another, on the next hill. And another. Bran frowns. He's seen Romans do this before. Lighting fires. Planting poles. Staring through that wooden cross for hours. He thinks it's some kind of religion. [beat] He's half right. Because the real reason Roman roads are straight isn't just the army. It's that stick.",
+   "vo_vi": "Trở lại Britannia, viên bách phu trưởng vẫn đang gào. \"Lính của ta không bơi đi làm!\" Bran chỉ về một đỉnh đồi xa. Một sợi khói mảnh bốc lên. Rồi thêm một sợi trên đồi kế. Rồi thêm nữa. Bran nhíu mày. Anh từng thấy người La Mã làm vậy: đốt lửa, cắm cọc, nhìn chằm chằm qua cây thập tự gỗ hàng giờ. Anh nghĩ đó là một kiểu tôn giáo. Anh đúng một nửa. Vì lý do thật sự khiến đường La Mã thẳng không chỉ là quân đội. Mà là cây gậy kia.",
+   "set": "roman_countryside (region: britain, swamp: true, beacons: 3)",
+   "chars": [
+    "centurion",
+    "bran",
+    "marcus",
+    "goat"
+   ],
+   "props": [
+    "groma",
+    "beacon_fire",
+    "ranging_pole"
+   ],
+   "action": "Bách phu trưởng vẫn gào bên mép đầm. Bran giơ tay chỉ xa: trên đỉnh đồi một sợi khói bốc lên, rồi đồi kế, đồi kế nữa — thẳng hàng. Bran nhíu mày. Bong bóng tưởng tượng: những người La Mã quỳ lạy cây groma như bàn thờ, Marcus đội vòng hoa. Bong bóng vỡ. Camera đẩy vào cây groma đứng một mình trong sương. Mờ về đen kết chương.",
+   "camera": "Trung bách phu trưởng → toàn cảnh qua vai Bran, lia theo ngón tay tới khói → lia ngang qua 3 đồi → cận Bran → bong bóng → cận vật groma đẩy chậm, fade.",
+   "transition": "whip",
+   "expressions": "centurion: angry; Bran: neutral → grumpy (nhíu mày) → smirk; Marcus: focus",
+   "gag": "Bong bóng tưởng tượng 'tôn giáo groma' (La Mã quỳ lạy cây gậy); 'He's half right' — bong bóng vỡ 'pop'.",
+   "sfx": [
+    "rumble",
+    "ding",
+    "ding",
+    "ding",
+    "squeak",
+    "slide_up"
+   ],
+   "fx": [
+    "steam",
+    "smoke_columns",
+    "thought_bubble",
+    "fade_black"
+   ],
+   "emphasis": [
+    "swimming",
+    "smoke",
+    "another",
+    "religion",
+    "half right",
+    "stick"
+   ],
+   "shots": [
+    {
+     "type": "medium",
+     "what_vi": "Bách phu trưởng bốc hơi, vung gậy nho: \"My men are not swimming to work!\""
+    },
+    {
+     "type": "wide",
+     "what_vi": "Qua vai Bran, tay chỉ xa; trên đỉnh đồi một cột khói mảnh bốc lên; camera trôi theo hướng chỉ."
+    },
+    {
+     "type": "wide",
+     "what_vi": "Lia ngang: cột khói thứ hai, thứ ba trên các đồi kế tiếp, thẳng hàng (mỗi cột kèm 'ding')."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Bran nhíu mày nghi ngờ, camera hạ thấp, đẩy nhẹ."
+    },
+    {
+     "type": "medium",
+     "what_vi": "Bong bóng tưởng tượng: lính La Mã quỳ lạy cây groma, Marcus đội vòng nguyệt quế; bong bóng vỡ 'pop'."
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Bran nhếch mép: 'He's half right'."
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cây groma đứng một mình trong sương, dây dọi đung đưa; camera đẩy chậm vào, mờ về đen."
+    }
+   ]
+  }
+ ],
+ "vo_en": "Britain. The edge of the Roman world. A young surveyor named Marcus squints through a strange wooden cross. Behind him, a column of soldiers is waiting. In front of him, a swamp. [beat] \"Straight through,\" says Marcus. The centurion turns purple. \"Through the SWAMP?\" A local guide named Bran leans on his staff. His goat is already taking the long way around. Marcus doesn't blink. The line says straight, so the road goes straight. [beat] But something is wrong here. Why would anyone march a road straight into a swamp? To answer that, let's go back. Way back. [beat] Here's the question. Why were Roman roads so straight? Look at a map of the empire at its peak. Roads run from Britain to Syria, from Spain to the Black Sea. About eighty thousand kilometers of them were paved with stone. That's enough to wrap around the Earth twice. And on the map, many of them look like they were drawn with a ruler. Most ancient paths wander. They follow rivers, dodge hills, and go around the farmer who won't sell. Roman roads just… don't. It starts in 312 BC. Rome is a regional power in central Italy, stuck in a long, ugly war with the Samnites, tough mountain people to the south. Rome's problem is distance. Its troops need to reach the fighting fast. So a censor named Appius Claudius orders a road. Not a trail. A road. A real engineered highway, heading south toward Capua. It's called the Via Appia. He even names it after himself. And it does something bold. From Rome to the coastal town of Terracina, it runs almost dead straight for about fifty-six miles. Hills? Cut through. Marshes? Built across. Rome just discovered its favorite weapon. So the obvious answer is speed. A straight line is the shortest path between two points. And a Roman legion on a good road could move fast. One Roman military manual says recruits should march about twenty Roman miles in five summer hours. Meanwhile, Bran's people use old trackways that curve around every hill and bog. Shorter road, faster army, quicker conquest. Case closed? [beat] Not quite. Here's the problem. Building straight is expensive. Going around a hill is cheap. Cutting through it takes months of digging. And on the steepest hills, Roman roads didn't go straight at all. So if speed was everything… why weren't they straight everywhere? Back in Britain, the centurion is still yelling. \"My men are not swimming to work!\" Bran points to a hilltop far away. A thin line of smoke rises from it. Then another, on the next hill. And another. Bran frowns. He's seen Romans do this before. Lighting fires. Planting poles. Staring through that wooden cross for hours. He thinks it's some kind of religion. [beat] He's half right. Because the real reason Roman roads are straight isn't just the army. It's that stick.",
+ "vo_vi": "Britannia. Rìa của thế giới La Mã. Một chàng trắc địa trẻ tên Marcus nheo mắt qua một cây thập tự gỗ kỳ lạ. Sau lưng anh, một đoàn lính đang chờ. Trước mặt anh, một đầm lầy. \"Đi thẳng qua,\" Marcus nói. Viên bách phu trưởng tím mặt. \"Qua cái ĐẦM LẦY?\" Người dẫn đường bản địa tên Bran tựa vào gậy. Con dê của anh đã đi đường vòng từ lâu. Marcus không chớp mắt. Đường ngắm bảo thẳng, thì đường đi thẳng. Nhưng có gì đó sai sai. Ai lại cho một con đường lao thẳng vào đầm lầy? Để trả lời, hãy quay lại. Quay lại thật xa. Câu hỏi là: vì sao đường La Mã lại thẳng đến thế? Nhìn bản đồ đế chế lúc cực thịnh. Đường chạy từ Britannia tới Syria, từ Tây Ban Nha tới Biển Đen. Khoảng tám mươi nghìn km được lát đá. Đủ quấn quanh Trái Đất hai vòng. Và trên bản đồ, nhiều con đường trông như kẻ bằng thước. Đường cổ thường uốn lượn: theo sông, tránh đồi, vòng qua ông nông dân không chịu bán đất. Đường La Mã thì… không. Mọi chuyện bắt đầu năm 312 TCN. Rome là thế lực vùng ở miền trung nước Ý, sa lầy trong cuộc chiến dài và khốc liệt với người Samnite, dân miền núi phía nam. Vấn đề của Rome là khoảng cách. Quân phải tới chiến trường thật nhanh. Vì thế quan giám sát Appius Claudius ra lệnh làm một con đường. Không phải đường mòn. Một con đường thật sự, được thiết kế, chạy về phía nam tới Capua. Nó tên là Via Appia. Ông còn đặt tên theo chính mình. Và nó làm một điều táo bạo: từ Rome tới thị trấn ven biển Terracina, nó chạy gần như thẳng tắp khoảng năm mươi sáu dặm. Đồi? Xẻ qua. Đầm lầy? Đắp qua. Rome vừa tìm ra vũ khí ưa thích của mình. Vậy câu trả lời hiển nhiên là tốc độ. Đường thẳng là đường ngắn nhất giữa hai điểm. Quân đoàn La Mã trên đường tốt di chuyển rất nhanh. Một sách quân sự La Mã nói tân binh phải đi khoảng hai mươi dặm La Mã trong năm giờ mùa hè. Trong khi đó, người của Bran dùng những lối mòn cổ uốn quanh từng ngọn đồi, từng vũng lầy. Đường ngắn hơn, quân nhanh hơn, chinh phục sớm hơn. Hết chuyện? Chưa đâu. Vấn đề là: làm đường thẳng rất tốn kém. Đi vòng quanh đồi thì rẻ. Xẻ xuyên qua đồi mất hàng tháng đào bới. Và ở những ngọn đồi dốc nhất, đường La Mã hoàn toàn không thẳng. Vậy nếu tốc độ là tất cả… sao chúng không thẳng ở mọi nơi? Trở lại Britannia, viên bách phu trưởng vẫn đang gào. \"Lính của ta không bơi đi làm!\" Bran chỉ về một đỉnh đồi xa. Một sợi khói mảnh bốc lên. Rồi thêm một sợi trên đồi kế. Rồi thêm nữa. Bran nhíu mày. Anh từng thấy người La Mã làm vậy: đốt lửa, cắm cọc, nhìn chằm chằm qua cây thập tự gỗ hàng giờ. Anh nghĩ đó là một kiểu tôn giáo. Anh đúng một nửa. Vì lý do thật sự khiến đường La Mã thẳng không chỉ là quân đội. Mà là cây gậy kia.",
+ "word_count": 483
+}

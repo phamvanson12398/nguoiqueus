@@ -51,8 +51,11 @@ class LibIndex:
                 m = self.meta(kind, n)
                 d = {"name": n, "title_vi": m.get("title_vi", ""), "description_vi": m.get("description_vi", "")}
                 if kind != "chars":
-                    d["params"] = {k: v.get("default") for k, v in m.get("params", {}).items()}
+                    d["params"] = {k: ({"default": v.get("default"), "desc_vi": v["desc_vi"]} if v.get("desc_vi") else v.get("default"))
+                                   for k, v in m.get("params", {}).items()}
                     if m.get("parts"): d["parts"] = m["parts"]
+                    for extra in ("anchors", "space", "camera_vi"):
+                        if m.get(extra): d[extra] = m[extra]
                     if m.get("dim"): d["dim"] = m["dim"]
                 else:
                     d["faces"] = m.get("faces", [])
