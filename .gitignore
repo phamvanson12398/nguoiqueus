@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+_verify/
+projects/*/sfx_music.wav
+projects/*/*.mp4
+projects/*/preview/
