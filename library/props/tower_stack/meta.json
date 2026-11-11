@@ -1,0 +1,82 @@
+{
+  "kind": "prop",
+  "name": "tower_stack",
+  "title_vi": "Tháp thùng gỗ + ghế bếp (chồng lên bàn ăn)",
+  "description_vi": "Bộ hai đạo cụ 3D để chồng lên dining_table thành tháp: thùng gỗ ván ngang 1,2 × 1,2 × 1,0 (cột góc đậm, nắp và đáy ba tấm ván, khe tối giữa các ván) và ghế bếp có tựa lưng (khung sơn đỏ, mặt ngồi và thanh tựa bằng gỗ mật ong), rộng 0,6, sâu 0,6, cao 1,8. Gốc là empty ở tâm đáy bàn (mặt sàn). Hai part `<id>_crate` và `<id>_chair` là con trực tiếp của gốc, mỗi part có gốc ở tâm khối nên lắc hoặc lật nghiêng 90° quanh trục Y đều quay quanh tâm. Mặc định: thùng ở (0, 0, base_height + 0,5) = (0, 0, 1,57), ghế ở (0,2, −0,35, base_height + 1,9) = 2,97. Mặt ngồi phẳng, mép −X thẳng, tựa lưng ở phía +Y nên vùng phía trước mép −X trống cho lát bánh ở thế giới (0,42; 3,62; 3,0).",
+  "dim": "3d",
+  "params": {
+    "base_height": {
+      "type": "number",
+      "default": 1.07,
+      "desc_vi": "Độ cao mặt bàn bên dưới. Thùng đặt ở z = base_height + 0,5, ghế ở z = base_height + 1,9"
+    },
+    "chair_offset": {
+      "type": "array",
+      "default": [
+        0.2,
+        -0.35
+      ],
+      "desc_vi": "Độ lệch (x, y) của ghế so với tâm thùng khi ở vị trí nghỉ"
+    },
+    "crate_color": {
+      "type": "array",
+      "default": [
+        0.78,
+        0.5,
+        0.2
+      ],
+      "desc_vi": "Màu ván thùng (gỗ thông). Cột góc tự sẫm hơn, lõi gần đen"
+    },
+    "chair_color": {
+      "type": "array",
+      "default": [
+        0.72,
+        0.1,
+        0.05
+      ],
+      "desc_vi": "Màu sơn khung ghế: chân, trụ tựa, thanh giằng"
+    },
+    "seat_color": {
+      "type": "array",
+      "default": [
+        0.62,
+        0.32,
+        0.1
+      ],
+      "desc_vi": "Màu gỗ mặt ngồi và các thanh tựa lưng"
+    },
+    "grain": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Bật vân gỗ (noise kéo dài) cho ván thùng và mặt ghế"
+    }
+  },
+  "parts": [
+    "crate",
+    "chair"
+  ],
+  "tags": [
+    "3d",
+    "furniture",
+    "kitchen",
+    "wood",
+    "crate",
+    "chair",
+    "stack",
+    "tower",
+    "physics-gag"
+  ],
+  "notes_vi": "Mình viết xong build.py nhưng chưa dựng thử trong Blender, chưa có thumbnail. Kích thước dưới đây là tính tay, cần chạy `tools/thumbs.py` để xem ảnh.\n\n**Các phần:**\n- `<id>_crate` là mesh ván, có hai con: `_crate_posts` (cột góc) và `_crate_core` (lõi tối lộ ra ở khe ván).\n- `<id>_chair` là mesh mặt ngồi, có hai con: `_chair_frame` (chân, trụ, giằng, sơn đỏ) và `_chair_back` (thanh tựa gỗ).\n- Ẩn/hiện chạy đệ quy nên bật/tắt part là tắt luôn các con.\n\n**Kích thước:**\n- Thùng: đáy ở z = −0,5 so với tâm, nắp ở +0,5. Đặt ở 1,57 thì đáy chạm mặt bàn 1,07, nắp ở 2,07.\n- Ghế: chân ở −0,9, đỉnh tựa ở +0,9. Đặt ở 2,97 thì chân chạm nắp thùng 2,07.\n- Lát bánh ở thế giới (0,42; 3,62; 3,0) rơi vào tọa độ cục bộ của ghế (−0,28; −0,23), sát mép −X (−0,30) và phía trước. Tựa lưng ở +Y nên không che chỗ này.\n\n**Đổ sập nằm nghiêng 90° quanh Y:** gốc ở tâm khối, nên khi nằm trên sàn:\n- thùng có z tâm = 0,6, vì cạnh 1,2 thành chiều cao;\n- ghế có z tâm ≈ 0,3, tức nửa bề rộng.\n\nNếu đổi `base_height` thì cả hai vị trí nghỉ tự nâng theo.",
+  "status": "draft",
+  "brief_vi": "Thùng gỗ và ghế bếp 3D để chồng lên dining_table thành tháp. Gốc tower là empty đặt tại tâm đáy bàn (0.5, 4.2, 0). Part '<id>_crate': thùng gỗ ván ngang 1,2 × 1,2 × 1,0, gốc ở TÂM khối; vị trí nghỉ cục bộ (0, 0, 1.57), tức đặt trên mặt bàn cao 1,07. Part '<id>_chair': ghế bếp gỗ có tựa, rộng 0,6, sâu 0,6, mặt ngồi cao 0,9, tựa lưng cao thêm 0,9 (tổng 1,8), gốc ở TÂM khối (z = 0,9 so với chân ghế); vị trí nghỉ cục bộ (0.2, -0.35, 2.97), tức đặt trên thùng. Mặt ngồi phải đủ chỗ cho lát bánh ở mép -X tại thế giới (0.42, 3.62, 3.0). Hai part là con trực tiếp của gốc để track riêng (kéo trên sàn, thả rơi chồng lên, lắc, đổ sập nằm nghiêng 90° quanh trục Y). Tham số base_height (mặc định 1,07). parts: crate, chair",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T04:46:07",
+  "review": {
+    "score": 8,
+    "summary_vi": "Thùng gỗ ván ngang và ghế bếp khung đỏ nhìn là nhận ra ngay, đặt chồng khít: chân ghế chạm nắp thùng, không lơ lửng, không xuyên nhau, có viền mực. Thùng thấp hơn Joe một chút, cả tháp cao ngang tầm vừa phải, và mặt ngồi còn trống phía trước mép −X để đặt lát bánh.",
+    "problems": [
+      "Ảnh top: nắp thùng hơi ngả xanh xám vì ánh trời chiếu từ trên. Đây là do ánh sáng, không phải lỗi vật liệu nên không sửa.",
+      "Ảnh xem trước không có bàn. Hai part đặt sẵn ở vị trí nghỉ cao trên mặt bàn (1,07) đúng như mô tả; thumbs canh theo khung bao nên trông như thùng đứng trên đất. Khi ghép với dining_table vẫn đúng."
+    ]
+  }
+}
