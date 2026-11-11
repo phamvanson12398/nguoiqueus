@@ -132,7 +132,7 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
 - Chưa chạy qua trang: `build`/`plan_shots`, `fix_from_preview`, thiết kế đồ trên trang (bước 5). Content bánh mì đòi 13 món mới, nên prompt viết content đã thêm luật "tối đa khoảng 5 món mới mỗi phút, ưu tiên dùng lại".
 - `voice.wav` người dùng gửi dài 51,6 s, không khớp `WORDS` của video nắp cống (45 s). Có thể là một bản thu khác.
 
-### Bước 5 — đang làm (video "Why Does Toast Land Butter-Side Down?", `projects/toast-butter-side`)
+### Bước 5 — xong phần chạy thử trong container, chờ người dùng render bản đầy đủ (video "Why Does Toast Land Butter-Side Down?", `projects/toast-butter-side`)
 - Đầu vào của người dùng: content 1,5 phút (222 từ, 10 chuỗi) và giọng OmniVoice 64,4 s, ra 1.966 khung.
 - Chạy "Duyệt & dựng" qua server: `plan_shots` mất 12 phút (story có 10 seq camera v3, 32 thẻ, 10 track) → thiết kế 7 món
   (`sets/kitchen`, `props/{dining_table,toast,toast2d,tower_stack,diagram_toast_spin}`, `chars/gary_sneakers`; mỗi món 2–5 phút,
@@ -151,4 +151,5 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
   9. Vòng tự sửa của build (lỗi Blender hoặc cam_report → Claude vá story); bỏ qua đồ đã có trong thư viện; prompt xem lại
      cho bối cảnh không đòi `scale.png`; log điểm "?/10".
 - Đã thử: "Nhờ Claude sửa" (khung 886, 42 s), góp ý thư viện (toast, gary_sneakers) qua `/api/library/design`.
-- Render: container chỉ có CPU (khoảng 10 s/khung ở 25 %), nên chỉ render đoạn 1–300 ở 25 %; cả video ở 100 % render trên máy người dùng.
+- Render: container chỉ có CPU, nên đã render đoạn 1–300 ở 25 % (46 phút, 9,2 s/khung): 300 khung + AAC, khoảng −20 dB, đỉnh −5,9 dB; thẻ, phụ đề, whip, bong bóng đều đúng. Cả video ở 100 % render trên máy người dùng (khoảng 1.966 × 1,4 s ≈ 46 phút).
+- Còn để ý: chữ phụ đề đôi khi trùng với nhãn thẻ ("BRAND-NEW SHOES"); plan_shots nên tránh thẻ trùng chữ với phụ đề.
