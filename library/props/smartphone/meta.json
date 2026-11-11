@@ -1,0 +1,95 @@
+{
+  "kind": "prop",
+  "name": "smartphone",
+  "title_vi": "Điện thoại thông minh (2D, cầm tay)",
+  "description_vi": "Điện thoại 2D để nhân vật cầm trước ngực. Thân đen bo góc, viền mực dày. Màn hình xanh nhạt phát sáng, có 3 kiểu nội dung: trống (blank), lưới ô ứng dụng nhiều màu kèm thanh dock (apps), hoặc khung chat với thanh tiêu đề, ảnh đại diện và 3 bong bóng tin nhắn xen kẽ (chat). Camera trước là chấm tròn ở cạnh trên. Có thể bật chấm đỏ thông báo hình '!' cho gag điện thoại reo, hoặc tắt màn hình (đen). Kích thước 0,34 × 0,62, gốc ở tâm.",
+  "dim": "2d",
+  "params": {
+    "body_color": {
+      "type": "rgb",
+      "default": [
+        0.02,
+        0.02,
+        0.025
+      ],
+      "desc_vi": "Màu vỏ (linear). Mặc định đen."
+    },
+    "screen_color": {
+      "type": "rgb",
+      "default": [
+        0.55,
+        0.85,
+        0.98
+      ],
+      "desc_vi": "Màu màn hình khi bật (xanh nhạt sáng)."
+    },
+    "content": {
+      "type": "string",
+      "default": "apps",
+      "enum": [
+        "blank",
+        "apps",
+        "chat"
+      ],
+      "desc_vi": "Nội dung màn hình: trống / lưới ô ứng dụng / khung chat."
+    },
+    "screen_on": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "false = màn hình tắt (đen bóng), không vẽ nội dung."
+    },
+    "accent": {
+      "type": "rgb",
+      "default": [
+        0.05,
+        0.6,
+        0.25
+      ],
+      "desc_vi": "Màu nhấn: bong bóng chat của mình và thanh tiêu đề chat."
+    },
+    "notify": {
+      "type": "bool",
+      "default": false,
+      "desc_vi": "Hiện chấm đỏ thông báo có dấu '!' ở góc trên phải (part _badge, có thể bật/tắt bằng visibility)."
+    },
+    "size": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Hệ số phóng to/thu nhỏ cả điện thoại (1,0 = cao 0,62)."
+    },
+    "prefix": {
+      "type": "string",
+      "default": "",
+      "desc_vi": "Tiền tố tên object con; để trống thì dùng tên gốc (name)."
+    }
+  },
+  "parts": [
+    "{name}_body",
+    "{name}_screen",
+    "{name}_camera",
+    "{name}_content",
+    "{name}_badge"
+  ],
+  "tags": [
+    "2d",
+    "handheld",
+    "phone",
+    "smartphone",
+    "screen",
+    "chat",
+    "apps",
+    "technology"
+  ],
+  "notes_vi": "- Vật liệu được lưu đệm theo tên. Vì vậy tên vật liệu có kèm mã hex của màu (ví dụ `smartphone_body_050506`), để mỗi màu vỏ/màn hình tùy chỉnh có vật liệu riêng, không ghi đè nhau.\n- Thứ tự lớp z: thân 0 → màn hình 0,02 → nội dung 0,04-0,06 → chấm thông báo 0,08. Chữ '!' dùng `label` nên nằm ở z 0,2, luôn ở trên cùng.\n- Các phần có thể animate: `{name}_content` (empty gom mọi thứ trên màn hình, bật/tắt bằng visibility để giả cảnh mở máy) và `{name}_badge` (gag điện thoại reo: bật bằng visibility hoặc track scale nảy). `vis_track` ẩn/hiện cả cây con nên dùng được trực tiếp. Nếu `notify=false`, badge vẫn được tạo nhưng ẩn sẵn, story vẫn bật lên được.\n- Muốn đổi nội dung giữa video (apps → chat), đặt hai đạo cụ smartphone chồng nhau cùng vị trí, rồi bật/tắt visibility của từng cái.\n- `size` đặt scale cho object gốc, nên track scale trong story sẽ ghi đè giá trị này.\n- Mặc định cao 0,62, rộng 0,34. Cầm ở khoảng (0, 0,42) trong hệ tọa độ thân, màn hình quay về phía camera.\n- Chưa render thumbnail. Cần chạy `tools/thumbs.py` để kiểm tra kích thước chữ '!' và độ dày viền ở 35%.",
+  "status": "draft",
+  "brief_vi": "Điện thoại thông minh cầm tay (2D): thân bo góc đen, màn hình sáng màu xanh nhạt có vài ô ứng dụng hoặc nội dung đơn giản, camera nhỏ ở trên. Tham số: màu vỏ, màu màn hình, nội dung màn hình (blank/apps/chat). Nhân vật cầm trước ngực để xem.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T02:52:18",
+  "review": {
+    "score": 8,
+    "summary_vi": "Ở ảnh scale.png, Joe cầm điện thoại trước ngực và nhận ra ngay: thân đen bo góc, màn hình xanh nhạt có lưới ứng dụng nhiều màu, dock và chấm camera. Tỉ lệ hơi phóng đại, đúng phong cách hoạt hình. Ảnh thumb.png và front.png bị đóng khung quá xa, điện thoại chỉ là một chấm nhỏ. Đây là lỗi của tools/thumbs.py, không phải của build.py.",
+    "problems": [
+      "Lỗi của tool, không phải build.py: thumb.png và front.png đóng khung sai, điện thoại chỉ là một chấm nhỏ ở mép trên. Có thể tools/thumbs.py tính khung bao gồm cả object badge đang ẩn hoặc empty gốc, hoặc tính khung 2D như đồ 3D. Nên sửa tools/thumbs.py để chỉ tính object đang hiện cho đạo cụ 2D."
+    ]
+  }
+}

@@ -21,6 +21,8 @@ for _m in [m for m in sys.modules if m == "core" or m.startswith("core.") or m.s
 import core
 from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer
 from core.expr import Env, ExprError
+import storycheck
+from storycheck import LibIndex
 
 LIB_DIR = os.path.join(ROOT, "library")
 ANIM_PROPS = ("location", "rotation_euler", "scale")
@@ -34,23 +36,11 @@ class StoryError(Exception):
 # =====================================================================
 #  library
 # =====================================================================
-class Library:
+class Library(LibIndex):
+    """library/ index (storycheck.LibIndex) + loading and running build.py files"""
+
     def __init__(self, root=LIB_DIR):
-        self.root = root; self._mods = {}; self._json = {}
-
-    def path(self, kind, name, fname):
-        return os.path.join(self.root, kind, name, fname)
-
-    def exists(self, kind, name):
-        if kind == "motions": return os.path.exists(os.path.join(self.root, "motions", name + ".json"))
-        if kind == "chars": return os.path.exists(self.path("chars", name, "char.json"))
-        return os.path.exists(self.path(kind, name, "build.py"))
-
-    def list(self, kind):
-        d = os.path.join(self.root, kind)
-        if not os.path.isdir(d): return []
-        if kind == "motions": return sorted(f[:-5] for f in os.listdir(d) if f.endswith(".json"))
-        return sorted(n for n in os.listdir(d) if self.exists(kind, n))
+        super().__init__(root); self._mods = {}
 
     def module(self, kind, name):
         key = (kind, name)
@@ -60,6 +50,7 @@ class Library:
                 raise StoryError(f"library {kind}/{name} not found (have: {', '.join(self.list(kind))})")
             spec = importlib.util.spec_from_file_location(f"whylib_{kind}_{name}", p)
             mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+            sys.modules[spec.name] = mod
             self._mods[key] = mod
         return self._mods[key]
 
@@ -80,49 +71,10 @@ class Library:
         return self.module("sets", type_).build(params, self) or {}
 
 
-# =====================================================================
-#  validation (structure + library references; expressions are checked when compiled)
-# =====================================================================
 def check_story(st, lib):
-    errs = []
-    def need(obj, key, where, typ=None):
-        if key not in obj: errs.append(f"{where}: missing '{key}'"); return None
-        if typ and not isinstance(obj[key], typ): errs.append(f"{where}.{key}: expected {typ.__name__ if isinstance(typ, type) else typ}"); return None
-        return obj[key]
-    meta = need(st, "meta", "story", dict) or {}
-    need(meta, "frames", "meta", int); need(meta, "fps", "meta", int)
-    ids = set()
-    def new_id(i, where):
-        if i in ids: errs.append(f"{where}: duplicate id '{i}'")
-        ids.add(i)
-    for k, s in enumerate(st.get("sets", [])):
-        w = f"sets[{k}]"
-        if need(s, "type", w, str) and not lib.exists("sets", s["type"]): errs.append(f"{w}: unknown set '{s['type']}' (have {lib.list('sets')})")
-        for j, p in enumerate(s.get("props", [])):
-            ww = f"{w}.props[{j}]"
-            if need(p, "type", ww, str) and not lib.exists("props", p["type"]): errs.append(f"{ww}: unknown prop '{p['type']}' (have {lib.list('props')})")
-            if need(p, "id", ww, str): new_id(p["id"], ww)
-    for k, c in enumerate(st.get("chars", [])):
-        w = f"chars[{k}]"
-        if need(c, "type", w, str) and not lib.exists("chars", c["type"]): errs.append(f"{w}: unknown character '{c['type']}' (have {lib.list('chars')})")
-        if need(c, "id", w, str): new_id(c["id"], w)
-        for j, p in enumerate(c.get("props", [])):
-            ww = f"{w}.props[{j}]"
-            if need(p, "type", ww, str) and not lib.exists("props", p["type"]): errs.append(f"{ww}: unknown prop '{p['type']}'")
-            if need(p, "id", ww, str): new_id(p["id"], ww)
-        for j, e in enumerate(c.get("expressions", [])):
-            if e[1] not in faces.KINDS: errs.append(f"{w}.expressions[{j}]: unknown face '{e[1]}' (have {list(faces.KINDS)})")
-        for j, r in enumerate(c.get("reacts", [])):
-            if r[1] not in ("hop", "flinch", "shiver", "proud"): errs.append(f"{w}.reacts[{j}]: unknown reaction '{r[1]}'")
-    for k, t in enumerate(st.get("tracks", [])):
-        w = f"tracks[{k}]"
-        need(t, "target", w, str)
-        if "use" in t and not lib.exists("motions", t["use"]): errs.append(f"{w}: unknown motion '{t['use']}' (have {lib.list('motions')})")
-    cam = need(st, "camera", "story", dict) or {}
-    if cam.get("rig", "shots_v2") not in ("shots_v2", "v3"): errs.append("camera.rig must be 'shots_v2' or 'v3'")
-    names = set(sfx.SFX)
-    for k, e in enumerate(st.get("sound", {}).get("events", [])):
-        if e[1] not in names: errs.append(f"sound.events[{k}]: unknown sfx '{e[1]}' (have {sorted(names)})")
+    errs = storycheck.check_story(st, lib)
+    assert set(storycheck.SFX_NAMES) == set(sfx.SFX), "storycheck.SFX_NAMES out of date"
+    assert set(storycheck.FACES) == set(faces.KINDS), "storycheck.FACES out of date"
     return errs
 
 

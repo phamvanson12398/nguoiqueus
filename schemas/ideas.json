@@ -1,0 +1,128 @@
+{
+ "type": "object",
+ "properties": {
+  "ideas": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "title": {
+      "type": "string",
+      "description": "English 'Why…' title, max 8 words"
+     },
+     "title_vi": {
+      "type": "string"
+     },
+     "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+     },
+     "scores": {
+      "type": "object",
+      "properties": {
+       "curiosity": {
+        "type": "integer"
+       },
+       "visible_answer": {
+        "type": "integer"
+       },
+       "camera_journey": {
+        "type": "integer"
+       },
+       "physical_comedy": {
+        "type": "integer"
+       },
+       "verifiable": {
+        "type": "integer"
+       }
+      },
+      "required": [
+       "curiosity",
+       "visible_answer",
+       "camera_journey",
+       "physical_comedy",
+       "verifiable"
+      ],
+      "additionalProperties": false
+     },
+     "logline": {
+      "type": "string"
+     },
+     "hook": {
+      "type": "string"
+     },
+     "escalation": {
+      "type": "string"
+     },
+     "twist": {
+      "type": "string"
+     },
+     "camera_axis": {
+      "type": "string"
+     },
+     "sets": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "money_shot": {
+      "type": "string"
+     },
+     "formula": {
+      "enum": [
+       "escalation",
+       "perfect_plan_fails",
+       "showdown",
+       "dumb_experiment",
+       "world_without",
+       "investigation",
+       "mockumentary"
+      ]
+     },
+     "facts": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "claim": {
+         "type": "string"
+        },
+        "source": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "claim",
+        "source"
+       ],
+       "additionalProperties": false
+      }
+     }
+    },
+    "required": [
+     "title",
+     "title_vi",
+     "score",
+     "scores",
+     "logline",
+     "hook",
+     "escalation",
+     "twist",
+     "camera_axis",
+     "sets",
+     "money_shot",
+     "formula",
+     "facts"
+    ],
+    "additionalProperties": false
+   },
+   "minItems": 1
+  }
+ },
+ "required": [
+  "ideas"
+ ],
+ "additionalProperties": false
+}

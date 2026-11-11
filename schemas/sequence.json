@@ -1,0 +1,113 @@
+{
+ "type": "object",
+ "properties": {
+  "sequence": {
+   "type": "object",
+   "properties": {
+    "id": {
+     "type": "integer"
+    },
+    "seconds": {
+     "type": "number"
+    },
+    "vo_en": {
+     "type": "string"
+    },
+    "vo_vi": {
+     "type": "string"
+    },
+    "set": {
+     "type": "string"
+    },
+    "chars": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "props": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "action": {
+     "type": "string",
+     "description": "what happens on screen (Vietnamese)"
+    },
+    "camera": {
+     "type": "string",
+     "description": "camera path inside this sequence"
+    },
+    "transition": {
+     "enum": [
+      "whip",
+      "push",
+      "match",
+      "cut",
+      "none"
+     ]
+    },
+    "expressions": {
+     "type": "string"
+    },
+    "gag": {
+     "type": "string"
+    },
+    "sfx": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "fx": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "emphasis": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "id",
+    "seconds",
+    "vo_en",
+    "vo_vi",
+    "set",
+    "chars",
+    "props",
+    "action",
+    "camera",
+    "transition",
+    "expressions",
+    "gag",
+    "sfx",
+    "fx",
+    "emphasis"
+   ],
+   "additionalProperties": false
+  },
+  "vo_en": {
+   "type": "string",
+   "description": "full narration after the change"
+  },
+  "vo_vi": {
+   "type": "string"
+  },
+  "note_vi": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "sequence",
+  "vo_en",
+  "vo_vi",
+  "note_vi"
+ ],
+ "additionalProperties": false
+}

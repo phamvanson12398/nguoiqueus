@@ -1,0 +1,71 @@
+{
+ "type": "object",
+ "properties": {
+  "title_vi": {
+   "type": "string"
+  },
+  "description_vi": {
+   "type": "string"
+  },
+  "dim": {
+   "enum": [
+    "2d",
+    "3d"
+   ]
+  },
+  "params": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "properties": {
+     "type": {
+      "type": "string"
+     },
+     "default": {},
+     "desc_vi": {
+      "type": "string"
+     },
+     "enum": {
+      "type": "array",
+      "items": {}
+     }
+    },
+    "required": [
+     "type",
+     "default"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "parts": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "tags": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "build_py": {
+   "type": "string",
+   "description": "complete build.py source"
+  },
+  "notes_vi": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "title_vi",
+  "description_vi",
+  "dim",
+  "params",
+  "parts",
+  "tags",
+  "build_py",
+  "notes_vi"
+ ],
+ "additionalProperties": false
+}

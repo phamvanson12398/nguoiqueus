@@ -5,3 +5,5 @@ projects/*/sfx_music.wav
 projects/*/*.mp4
 projects/*/preview/
 _thumbs_tmp/
+logs/
+library/**/_review/

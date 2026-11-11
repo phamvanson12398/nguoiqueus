@@ -1,0 +1,58 @@
+{
+ "type": "object",
+ "properties": {
+  "title_vi": {
+   "type": "string"
+  },
+  "description_vi": {
+   "type": "string"
+  },
+  "tags": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "char_json": {
+   "type": "object",
+   "description": "materials, cfg, faces, extras (same format as library/chars/*/char.json)",
+   "properties": {
+    "materials": {
+     "type": "object"
+    },
+    "cfg": {
+     "type": "object"
+    },
+    "faces": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "extras": {
+     "type": "array",
+     "items": {
+      "type": "object"
+     }
+    }
+   },
+   "required": [
+    "materials",
+    "cfg",
+    "faces",
+    "extras"
+   ]
+  },
+  "notes_vi": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "title_vi",
+  "description_vi",
+  "tags",
+  "char_json",
+  "notes_vi"
+ ],
+ "additionalProperties": false
+}

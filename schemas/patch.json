@@ -1,0 +1,39 @@
+{
+ "type": "object",
+ "properties": {
+  "changes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "op": {
+      "enum": [
+       "set",
+       "delete",
+       "insert"
+      ]
+     },
+     "path": {
+      "type": "string",
+      "description": "JSON pointer into story.json, e.g. /chars/0/pose/segments/2/armL"
+     },
+     "value": {}
+    },
+    "required": [
+     "op",
+     "path"
+    ],
+    "additionalProperties": false
+   },
+   "minItems": 1
+  },
+  "explain_vi": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "changes",
+  "explain_vi"
+ ],
+ "additionalProperties": false
+}

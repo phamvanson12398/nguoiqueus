@@ -1,0 +1,119 @@
+"""story.json checks that need no Blender: JSON Schema + library references + names.
+Used by builder.py (before building) and claude_bridge.py (to validate plan_shots output)."""
+import json, os
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
+FACES = ("neutral", "happy", "smirk", "wink", "angry", "shock", "worried", "grumpy", "focus", "smug_closed")
+REACTS = ("hop", "flinch", "shiver", "proud")
+SFX_NAMES = ("whoosh", "swish", "pop", "tick", "boing", "thud", "bonk", "step", "slide_up", "slide_down", "steam", "rumble",
+             "ding", "squeak", "zip_out", "crash", "scratch", "horn", "chug", "sad_trombone", "gulp", "cash")
+
+
+class LibIndex:
+    """read-only view of library/ (no Blender needed)"""
+
+    def __init__(self, root=os.path.join(ROOT, "library")):
+        self.root = root; self._json = {}
+
+    def path(self, kind, name, fname):
+        return os.path.join(self.root, kind, name, fname)
+
+    def exists(self, kind, name):
+        if kind == "motions": return os.path.exists(os.path.join(self.root, "motions", name + ".json"))
+        if kind == "chars": return os.path.exists(self.path("chars", name, "char.json"))
+        return os.path.exists(self.path(kind, name, "build.py"))
+
+    def list(self, kind):
+        d = os.path.join(self.root, kind)
+        if not os.path.isdir(d): return []
+        if kind == "motions": return sorted(f[:-5] for f in os.listdir(d) if f.endswith(".json"))
+        return sorted(n for n in os.listdir(d) if self.exists(kind, n))
+
+    def json(self, kind, name):
+        key = (kind, name)
+        if key not in self._json:
+            p = os.path.join(self.root, "motions", name + ".json") if kind == "motions" else self.path(kind, name, "char.json")
+            if not os.path.exists(p):
+                raise KeyError(f"library {kind}/{name} not found (have: {', '.join(self.list(kind))})")
+            self._json[key] = json.load(open(p, encoding="utf-8"))
+        return self._json[key]
+
+    def meta(self, kind, name):
+        p = self.path(kind, name, "char.json" if kind == "chars" else "meta.json")
+        return json.load(open(p, encoding="utf-8")) if os.path.exists(p) else {}
+
+    def catalog(self):
+        """compact listing for prompts: kind -> [{name, title, description, params}]"""
+        out = {}
+        for kind in ("sets", "props", "chars"):
+            items = []
+            for n in self.list(kind):
+                m = self.meta(kind, n)
+                d = {"name": n, "title_vi": m.get("title_vi", ""), "description_vi": m.get("description_vi", "")}
+                if kind != "chars":
+                    d["params"] = {k: v.get("default") for k, v in m.get("params", {}).items()}
+                    if m.get("parts"): d["parts"] = m["parts"]
+                    if m.get("dim"): d["dim"] = m["dim"]
+                else:
+                    d["faces"] = m.get("faces", [])
+                if m.get("status") == "draft": d["status"] = "draft"
+                items.append(d)
+            out[kind] = items
+        out["motions"] = [{"name": n, "params": self.json("motions", n).get("params", {}),
+                           "description_vi": self.json("motions", n).get("description_vi", "")} for n in self.list("motions")]
+        return out
+
+
+def check_story(st, lib=None, pending=()):
+    """-> list of error strings.  pending = {(kind, name)} items that will be designed (allowed as references)."""
+    lib = lib or LibIndex()
+    from jsonval import validate
+    schema = json.load(open(os.path.join(ROOT, "story.schema.json"), encoding="utf-8"))
+    errs = validate(st, schema)
+    if errs: return errs
+    pend = set(pending)
+
+    def known(kind, name): return lib.exists(kind, name) or (kind, name) in pend
+    ids = set()
+
+    def new_id(i, where):
+        if i in ids: errs.append(f"{where}: duplicate id '{i}'")
+        ids.add(i)
+    for k, s in enumerate(st.get("sets", [])):
+        w = f"sets[{k}]"
+        if not known("sets", s["type"]): errs.append(f"{w}: unknown set '{s['type']}' (have {lib.list('sets')})")
+        for j, p in enumerate(s.get("props", [])):
+            if not known("props", p["type"]): errs.append(f"{w}.props[{j}]: unknown prop '{p['type']}' (have {lib.list('props')})")
+            new_id(p["id"], f"{w}.props[{j}]")
+    for k, c in enumerate(st.get("chars", [])):
+        w = f"chars[{k}]"
+        if not known("chars", c["type"]): errs.append(f"{w}: unknown character '{c['type']}' (have {lib.list('chars')})")
+        new_id(c["id"], w)
+        faces = c.get("faces")
+        if faces is None and lib.exists("chars", c["type"]): faces = lib.json("chars", c["type"]).get("faces")
+        for j, p in enumerate(c.get("props", [])):
+            if not known("props", p["type"]): errs.append(f"{w}.props[{j}]: unknown prop '{p['type']}'")
+            new_id(p["id"], f"{w}.props[{j}]")
+        for j, e in enumerate(c.get("expressions", [])):
+            if faces and e[1] not in faces: errs.append(f"{w}.expressions[{j}]: face '{e[1]}' is not built for this character (faces: {faces})")
+    for k, t in enumerate(st.get("tracks", [])):
+        if "use" in t and not lib.exists("motions", t["use"]): errs.append(f"tracks[{k}]: unknown motion '{t['use']}' (have {lib.list('motions')})")
+    ch_ids = {c["id"] for c in st.get("chars", [])}
+    for g in st.get("sound", {}).get("auto", {}).get("gesture_chars", []):
+        if g not in ch_ids: errs.append(f"sound.auto.gesture_chars: no character '{g}'")
+    N = st["meta"]["frames"]
+    cam = st["camera"]
+    spans = [(s["a"], s["b"]) for s in (cam.get("shots") or cam.get("seqs") or [])]
+    if spans:
+        spans.sort()
+        if spans[0][0] != 1: errs.append(f"camera: first shot/sequence must start at frame 1 (starts at {spans[0][0]})")
+        for (a0, b0), (a1, b1) in zip(spans, spans[1:]):
+            if a1 != b0 + 1: errs.append(f"camera: gap or overlap between {a0}-{b0} and {a1}-{b1}")
+        if spans[-1][1] != N: errs.append(f"camera: last shot/sequence ends at {spans[-1][1]}, video has {N} frames")
+    return errs
+
+
+if __name__ == "__main__":
+    import sys
+    e = check_story(json.load(open(sys.argv[1], encoding="utf-8")))
+    print("STORY OK" if not e else "STORY ERRORS:\n  " + "\n  ".join(e)); sys.exit(1 if e else 0)

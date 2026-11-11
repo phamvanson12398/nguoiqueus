@@ -1,0 +1,111 @@
+{
+ "type": "object",
+ "properties": {
+  "title_vi": {
+   "type": "string"
+  },
+  "description_vi": {
+   "type": "string"
+  },
+  "params": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "properties": {
+     "type": {
+      "type": "string"
+     },
+     "default": {},
+     "desc_vi": {
+      "type": "string"
+     },
+     "enum": {
+      "type": "array",
+      "items": {}
+     }
+    },
+    "required": [
+     "type",
+     "default"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "parts": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "tags": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "build_py": {
+   "type": "string",
+   "description": "complete build.py source"
+  },
+  "notes_vi": {
+   "type": "string"
+  },
+  "space": {
+   "type": "string",
+   "description": "where the acting area is, camera tips"
+  },
+  "anchors": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string"
+   }
+  },
+  "views": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "pos": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+     },
+     "look": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+     },
+     "lens": {
+      "type": "number"
+     }
+    },
+    "required": [
+     "pos",
+     "look",
+     "lens"
+    ],
+    "additionalProperties": false
+   },
+   "minItems": 1
+  }
+ },
+ "required": [
+  "title_vi",
+  "description_vi",
+  "params",
+  "parts",
+  "tags",
+  "build_py",
+  "notes_vi",
+  "space",
+  "anchors",
+  "views"
+ ],
+ "additionalProperties": false
+}

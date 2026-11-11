@@ -1,0 +1,92 @@
+{
+  "kind": "prop",
+  "name": "traffic_light",
+  "title_vi": "Đèn giao thông kiểu Mỹ (trên cột)",
+  "description_vi": "Đèn giao thông 3D kiểu Mỹ: cột kim loại xám có đế và chóp, hộp đèn màu vàng đậm bo góc, 3 đèn đỏ-vàng-xanh xếp dọc, mỗi đèn có mái che hình vòng cung. Tham số state chọn đèn đang sáng (đèn sáng là emission mạnh, đèn tắt là màu tối mờ). Mỗi đèn có sẵn hai lớp: đĩa tắt `<name>_<màu>` và đĩa sáng `<name>_<màu>_on` đặt sát phía trước; chỉ đĩa sáng của state hiện tại được hiện. Gag \"đèn đổi màu\" chỉ cần bật/tắt visibility của các đĩa `_on`. Mặt đèn quay về -Y (hướng camera mặc định). Gốc ở tâm đáy cột, cao khoảng 3,9 đơn vị (khoảng 1,5 lần nhân vật).",
+  "dim": "3d",
+  "params": {
+    "state": {
+      "type": "string",
+      "default": "red",
+      "enum": [
+        "red",
+        "yellow",
+        "green",
+        "off"
+      ],
+      "desc_vi": "Đèn đang sáng; 'off' = tắt hết"
+    },
+    "pole_height": {
+      "type": "number",
+      "default": 2.6,
+      "desc_vi": "Chiều cao cột tới đáy hộp đèn"
+    },
+    "pole_radius": {
+      "type": "number",
+      "default": 0.07,
+      "desc_vi": "Bán kính cột"
+    },
+    "box_color": {
+      "type": "array",
+      "default": [
+        0.95,
+        0.62,
+        0.02
+      ],
+      "desc_vi": "Màu hộp đèn (linear), mặc định vàng đậm"
+    },
+    "pole_color": {
+      "type": "array",
+      "default": [
+        0.32,
+        0.34,
+        0.37
+      ],
+      "desc_vi": "Màu cột kim loại"
+    },
+    "glow": {
+      "type": "number",
+      "default": 4,
+      "desc_vi": "Cường độ phát sáng của đèn đang bật"
+    },
+    "visors": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có mái che trên mỗi đèn hay không"
+    }
+  },
+  "parts": [
+    "traffic_light_pole",
+    "traffic_light_base",
+    "traffic_light_box",
+    "traffic_light_red",
+    "traffic_light_yellow",
+    "traffic_light_green",
+    "traffic_light_red_on",
+    "traffic_light_yellow_on",
+    "traffic_light_green_on",
+    "traffic_light_visor_red",
+    "traffic_light_visor_yellow",
+    "traffic_light_visor_green"
+  ],
+  "tags": [
+    "phố",
+    "giao thông",
+    "đèn",
+    "trang trí",
+    "3d",
+    "đổi màu"
+  ],
+  "notes_vi": "Mình đã viết xong build.py nhưng **chưa chạy thử trong Blender và chưa render thumbnail**. Cần chạy `tools/thumbs.py` để kiểm tra, nhất là hướng mái che (dùng extrude và xoay X +90°) và việc ẩn các đĩa `_on`.\n\nBố cục:\n- Cột cao 2,6 đơn vị, hộp đèn cao 1,26, cả cụm cao khoảng 3,9 (khoảng 1,5 lần nhân vật).\n- Mặt đèn quay về -Y. Muốn đèn nhìn sang hướng khác thì xoay object gốc quanh Z trong story.\n\nCách đổi màu đèn:\n- Tham số `state` dùng cho đèn đứng yên (`red`/`yellow`/`green`/`off`).\n- Với gag \"đèn đổi màu\", story bật/tắt visibility các part `<id>_red_on`, `<id>_yellow_on`, `<id>_green_on`. Không cần đổi vật liệu.\n- Đĩa `_on` nằm trước đĩa tắt 1 cm và hơi nhỏ hơn, nên viền mực vẫn bám theo đĩa tắt.\n- Các đĩa `_on` đang bị ẩn bằng `hide_render` và `hide_viewport`. Builder cần animate đúng hai thuộc tính này, hoặc story đặt lại visibility ngay ở khung đầu.\n\nVật liệu:\n- Vật liệu của hộp và cột có hậu tố theo màu (ví dụ `traffic_light_body_95_62_2`), nên nhiều đèn khác màu trong cùng cảnh không đụng nhau. Vật liệu đèn sáng có hậu tố theo `glow`.\n- Đèn sáng có emission mạnh 4.0. Nếu compositor có bloom/glare thì đèn sẽ tỏa sáng; nếu thấy cháy sáng quá thì giảm `glow` xuống 2-3.\n\nCó thêm part phụ `_collar` và `_cap` (khớp nối, chóp hộp), không liệt kê trong parts vì ít khi cần animate.",
+  "status": "draft",
+  "brief_vi": "Đèn giao thông kiểu Mỹ trên cột: cột kim loại, hộp đèn màu vàng đậm có 3 đèn đỏ-vàng-xanh với mái che nhỏ trên mỗi đèn. Tham số state = red/yellow/green chọn đèn đang sáng (đèn sáng phát sáng, đèn tắt tối màu). Dùng làm đồ trang trí phố và trong gag 'đèn đổi màu'.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T02:50:04",
+  "review": {
+    "score": 8,
+    "summary_vi": "Đèn giao thông nhận ra ngay: cột kim loại, hộp vàng đậm viền mực rõ, đèn đỏ đang sáng nổi bật, đèn vàng và xanh tắt tối màu, mái che đặt đúng chỗ. Cả cụm cao khoảng 1,5 lần Joe, đế đứng đúng trên mặt đất, nên đủ tốt để đưa vào thư viện.",
+    "problems": [
+      "Nhỏ, không cần sửa: mái che đèn đỏ hơi nhô lên quá nóc hộp ở góc nhìn chính diện. Đèn vàng tắt có màu ô-liu, vẫn phân biệt được với đèn đỏ đang sáng."
+    ]
+  }
+}

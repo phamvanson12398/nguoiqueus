@@ -1,0 +1,86 @@
+{
+  "kind": "prop",
+  "name": "milk_carton",
+  "title_vi": "Hộp sữa giấy half-gallon (mái nhọn)",
+  "description_vi": "Hộp sữa giấy kiểu Mỹ dạng 3D, đã phóng to khoảng 1,5 lần (thân 0,4 × 0,4, cao tổng khoảng 0,87 m) để dễ nhìn khi đứng cạnh nhân vật cao 2,5. Thân trắng, mái tam giác có gờ dán trên đỉnh. Dải màu quanh thân và chữ nhãn lớn ở mặt trước (-Y) mặc định là màu đỏ. Có thể mở vòi rót ở đầu hồi +X và bật dòng sữa chảy ra. Hộp rơi, nằm nghiêng và đổ sữa được. Gốc tọa độ ở tâm đáy.",
+  "dim": "3d",
+  "params": {
+    "band_color": {
+      "type": "rgb",
+      "default": [
+        0.85,
+        0.06,
+        0.05
+      ],
+      "desc_vi": "Màu dải quanh thân (linear, nên dùng màu đậm). Mặc định là đỏ."
+    },
+    "label": {
+      "type": "string",
+      "default": "MILK",
+      "desc_vi": "Chữ nhãn ở mặt trước. Chữ dài sẽ tự thu nhỏ để không tràn khỏi mặt hộp."
+    },
+    "label_color": {
+      "type": "rgb|null",
+      "default": null,
+      "desc_vi": "Màu chữ nhãn. Để null thì chữ dùng cùng màu với dải."
+    },
+    "roof_color": {
+      "type": "rgb|null",
+      "default": null,
+      "desc_vi": "Màu mái và gờ dán. Để null thì dùng màu trắng giống thân."
+    },
+    "spout": {
+      "type": "string",
+      "default": "closed",
+      "enum": [
+        "closed",
+        "open"
+      ],
+      "desc_vi": "Vòi rót ở đầu hồi +X: đóng hoặc mở."
+    },
+    "pour": {
+      "type": "bool",
+      "default": false,
+      "desc_vi": "Bật dòng sữa chảy ra từ vòi (khi bật, vòi tự mở). Muốn nhìn đúng thì xoay gốc quanh trục Y khoảng +90 đến +110°."
+    },
+    "pour_length": {
+      "type": "number",
+      "default": 1.2,
+      "desc_vi": "Chiều dài dòng sữa (m)."
+    },
+    "scale": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Hệ số phóng to thêm cho cả hộp, tính trên kích thước đã to hơn."
+    }
+  },
+  "parts": [
+    "{name}_body",
+    "{name}_band",
+    "{name}_label",
+    "{name}_roof",
+    "{name}_fin",
+    "{name}_spout",
+    "{name}_stream"
+  ],
+  "tags": [
+    "milk",
+    "carton",
+    "kitchen",
+    "food",
+    "drink",
+    "3d",
+    "fall",
+    "pour"
+  ],
+  "notes_vi": "Mình chỉ đổi hai chỗ theo yêu cầu, chưa render để xem lại.\n\n1. **To hơn khoảng 1,5 lần:** thêm hằng số K = 1,5 và nhân với mọi kích thước, kể cả độ bo, vị trí và cỡ chữ. Nhờ vậy tỉ lệ mái, gờ, dải và chữ giữ nguyên như bản cũ. Thân hộp giờ rộng 0,405, cao 0,60; tính cả mái và gờ thì hộp cao khoảng 0,87, tức khoảng ngang đầu gối nhân vật.\n   - Mặc định của `pour_length` cũng tăng từ 0,8 lên 1,2 để dòng sữa cân với hộp mới.\n   - Tham số `scale` vẫn còn: nó phóng to thêm, tính trên kích thước mới này.\n2. **Dải màu và chữ đổi sang đỏ:** mặc định của `band_color` giờ là (0.85, 0.06, 0.05). Chữ vẫn lấy theo màu dải khi `label_color` để null, nên chữ cũng đỏ.\n\nNhững phần còn lại giữ nguyên: dựng hình, tên vật liệu, cách chữ được bỏ qua khi vẽ viền (fake user), vòi rót, dòng sữa và tên các phần con.\n\nLưu ý: vật liệu màu dải và chữ được đặt tên theo màu (`milk_carton_band_85_6_5`), nên không đụng vật liệu xanh cũ. Khi đặt hộp cạnh nhân vật, hai thứ to hơn trước nên cần kiểm tra lại khoảng cách. Nên chạy lại `tools/thumbs.py` để có ảnh thumbnail mới.",
+  "status": "draft",
+  "brief_vi": "Hộp sữa giấy kiểu Mỹ (half-gallon) có mái nhọn hình tam giác và gờ dán trên đỉnh, thân trắng, dải màu quanh thân, chữ MILK lớn ở mặt trước. Tham số: màu dải (mặc định xanh dương), chữ nhãn. Dùng trong video 'Why milk cartons have a pointy top': có thể rơi, nằm nghiêng, đổ sữa.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T02:56:28",
+  "review": {
+    "score": 8,
+    "summary_vi": "Mình đã xem cả 5 ảnh. Hộp sữa nhìn là nhận ra ngay: thân trắng, dải đỏ, chữ MILK đỏ to ở mặt trước, mái tam giác và gờ dán trên đỉnh ghép đúng chỗ, đáy chạm đất. Cạnh Joe, hộp giờ cao khoảng tới đầu gối, đủ dễ thấy trên màn hình điện thoại nên mình giữ nguyên, không sửa thêm.",
+    "problems": []
+  }
+}

@@ -94,3 +94,22 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
 - Core thêm: lưu đệm vật liệu theo tên, `geo.arrow2d/label/points`, `fx.add_steam/add_drips`.
 - Trên Windows: chạy `tools\verify_story.bat`.
 - Thứ tự trong `sets`/`props`/`chars` là thứ tự tạo vật thể: đổi thứ tự sẽ đổi dãy nhà ngẫu nhiên và tên lưới (render vẫn đúng, chỉ không còn giống hệt bản cũ).
+
+### Bước 3 — xong (đã chạy thật Claude CLI trong container)
+- `STYLE.md` (luật phong cách rút gọn từ skill, gắn vào mỗi lần gọi bằng `--append-system-prompt-file`), `library/AUTHORING.md` (API viết đồ thư viện).
+- `claude_bridge.py`:
+  - Các việc: `ideas`, `write_content`, `rewrite_seq`, `plan_shots`, `design_prop`, `design_set`, `fix_from_preview`; thêm `approve` và `usage`. `design_char` mới có schema, chưa có hàm.
+  - Mỗi lần gọi: `claude -p --output-format json --json-schema` (nếu CLI không hỗ trợ thì tự tách khối ```json), `--tools`/`--allowedTools` theo từng việc, prompt gửi qua stdin.
+  - Kết quả kiểm bằng `schemas/*.json` (`jsonval.py`, chỉ dùng thư viện chuẩn) cộng kiểm tra riêng; có lỗi thì gửi lại cùng phiên (`--resume`), tối đa 2 lần.
+  - Ghi `logs/claude_calls.jsonl` và `logs/calls/*.json`.
+  - Có biến `ANTHROPIC_API_KEY` thì cảnh báo và bỏ biến đó (giữ lại nếu đặt `WHYSHORTS_KEEP_API_KEY=1`).
+  - `design_*`:
+    1. Claude viết `build.py`.
+    2. Quét an toàn AST (chỉ cho import math/random/bpy/bmesh/mathutils/core; `bpy.ops` chỉ primitive/shade; không file, os, eval…).
+    3. Dựng trong Blender (`tools/thumbs.py --views --tag rN`: ảnh thumb, front, side, top, iso_back, scale cạnh Joe).
+    4. Dựng lỗi thì gửi traceback cho Claude sửa; Claude dùng Read xem ảnh và chấm điểm, sửa tối đa 2 vòng.
+    5. Ghi `meta.json` với `status: draft` cùng nhận xét. `--feedback` để người dùng yêu cầu sửa; `approve` để duyệt.
+- Core thêm khối cơ bản: `rbox`, `cone`, `torus`, `lathe`, `extrude`, `text3d`, `group3d`/`attach`, `import_glb`, `keep_hidden`.
+- `storycheck.py` (kiểm tra story không cần Blender) dùng chung cho builder và bridge.
+- Thử thật 3 đạo cụ (`traffic_light`, `milk_carton`, `smartphone`), mỗi cái mất 85-200 giây, đều đạt 8/10 khi Claude tự xem lại. Thêm một lần sửa theo góp ý "to hơn, đổi đỏ". Đã đưa cả ba vào `projects/demo-v3`. Cả ba đang ở trạng thái nháp, chờ người dùng duyệt.
+- Chạy bridge trên Windows bằng bất kỳ Python 3.10+ nào, kể cả `python.exe` đi kèm Blender. `WHYSHORTS_BLENDER` mặc định là `C:\Program Files\Blender Foundation\Blender 5.2\blender.exe`.

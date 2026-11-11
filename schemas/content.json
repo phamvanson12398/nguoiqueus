@@ -1,0 +1,185 @@
+{
+ "type": "object",
+ "properties": {
+  "title": {
+   "type": "string"
+  },
+  "title_vi": {
+   "type": "string"
+  },
+  "question": {
+   "type": "string"
+  },
+  "formula": {
+   "type": "string"
+  },
+  "minutes": {
+   "type": "number"
+  },
+  "vo_en": {
+   "type": "string",
+   "description": "full English narration, quotes for character lines, [beat] for pauses"
+  },
+  "vo_vi": {
+   "type": "string"
+  },
+  "word_count": {
+   "type": "integer"
+  },
+  "sequences": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "integer"
+     },
+     "seconds": {
+      "type": "number"
+     },
+     "vo_en": {
+      "type": "string"
+     },
+     "vo_vi": {
+      "type": "string"
+     },
+     "set": {
+      "type": "string"
+     },
+     "chars": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "props": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "action": {
+      "type": "string",
+      "description": "what happens on screen (Vietnamese)"
+     },
+     "camera": {
+      "type": "string",
+      "description": "camera path inside this sequence"
+     },
+     "transition": {
+      "enum": [
+       "whip",
+       "push",
+       "match",
+       "cut",
+       "none"
+      ]
+     },
+     "expressions": {
+      "type": "string"
+     },
+     "gag": {
+      "type": "string"
+     },
+     "sfx": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "fx": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "emphasis": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    },
+    "required": [
+     "id",
+     "seconds",
+     "vo_en",
+     "vo_vi",
+     "set",
+     "chars",
+     "props",
+     "action",
+     "camera",
+     "transition",
+     "expressions",
+     "gag",
+     "sfx",
+     "fx",
+     "emphasis"
+    ],
+    "additionalProperties": false
+   },
+   "minItems": 1
+  },
+  "sources": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "claim": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "claim",
+     "url"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "library_needs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "kind": {
+      "enum": [
+       "sets",
+       "props",
+       "chars"
+      ]
+     },
+     "name": {
+      "type": "string"
+     },
+     "brief": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "kind",
+     "name",
+     "brief"
+    ],
+    "additionalProperties": false
+   }
+  }
+ },
+ "required": [
+  "title",
+  "title_vi",
+  "question",
+  "formula",
+  "minutes",
+  "vo_en",
+  "vo_vi",
+  "word_count",
+  "sequences",
+  "sources",
+  "library_needs"
+ ],
+ "additionalProperties": false
+}

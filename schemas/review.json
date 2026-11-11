@@ -1,0 +1,43 @@
+{
+ "type": "object",
+ "properties": {
+  "ok": {
+   "type": "boolean",
+   "description": "true if it is good enough to show the user"
+  },
+  "score": {
+   "type": "integer",
+   "minimum": 1,
+   "maximum": 10
+  },
+  "problems": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "build_py": {
+   "type": [
+    "string",
+    "null"
+   ],
+   "description": "complete corrected build.py, or null when ok"
+  },
+  "char_json": {
+   "type": [
+    "object",
+    "null"
+   ]
+  },
+  "summary_vi": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "ok",
+  "score",
+  "problems",
+  "summary_vi"
+ ],
+ "additionalProperties": false
+}
