@@ -1,8 +1,8 @@
 {
   "kind": "prop",
   "name": "toast",
-  "title_vi": "Lát bánh mì phết bơ (toast)",
-  "description_vi": "Lát bánh mì sandwich 3D phóng to, khoảng 0,47 × 0,45 × 0,06. Viền vỏ màu nâu, mặt ruột vàng nhạt, nóc phồng tròn kiểu bánh gối. Lớp bơ vàng bóng dày 0,015, mép gợn sóng, có thêm một cục bơ nhỏ; bơ phết ở mặt trên, mặt dưới hoặc cả hai mặt (tham số butter). Ở chế độ thường, gốc nằm ở tâm khối bánh để lật quanh trục Y. Đặt splat: true thì được trạng thái bánh đã rơi úp mặt bơ: vỏ ngửa lên, bánh hơi bẹp, bơ loang gợn sóng ra quanh viền trên sàn kèm vài giọt bắn và cục bơ bẹp lòi ra một bên. Ở chế độ này gốc nằm ở mặt sàn (z = 0).",
+  "title_vi": "Lát bánh mì phết bơ (3D)",
+  "description_vi": "Lát bánh mì sandwich 3D phóng to, khoảng 0,45 × 0,45 × 0,06. Vỏ nâu, ruột màu vàng ấm, nóc hơi phồng. Lớp bơ vàng tươi dày khoảng 0,015, mép gợn sóng, kèm một cục bơ nhỏ. Có thể phết mặt trên, mặt dưới, cả hai mặt hoặc không phết. Gốc ở tâm khối để lật quanh trục Y. Khi splat=true: lát bánh đã đáp úp mặt bơ xuống, vỏ ngửa lên, hơi ép dẹt; vũng bơ gợn sóng loang quanh viền, có vài giọt bơ bắn ra và cục bơ bẹp ló ra một bên. Lúc này gốc ở mặt sàn (z = 0).",
   "dim": "3d",
   "params": {
     "butter": {
@@ -14,54 +14,54 @@
         "both",
         "none"
       ],
-      "desc_vi": "Mặt có phết bơ: top = trên, bottom = dưới, both = cả hai, none = bánh trơn"
+      "desc_vi": "Mặt có phết bơ"
     },
     "splat": {
       "type": "boolean",
       "default": false,
-      "desc_vi": "true: bánh đã đáp úp mặt bơ xuống sàn, hơi bẹp, bơ loang quanh viền; gốc ở mặt sàn"
+      "desc_vi": "Lát bánh đã rơi úp mặt bơ xuống sàn, bơ loang ra quanh viền (gốc ở mặt sàn)"
     },
     "pat": {
       "type": "boolean",
       "default": true,
-      "desc_vi": "Có cục bơ nhỏ nằm trên lớp bơ (chế độ splat thì cục bơ bẹp lòi ra cạnh bánh)"
+      "desc_vi": "Có cục bơ nhỏ"
     },
     "squash": {
       "type": "number",
       "default": 0.75,
-      "desc_vi": "Độ dẹt theo chiều dày khi splat (1 = không ép)"
+      "desc_vi": "Mức ép dẹt khi splat (0,3-1)"
     },
     "crust_color": {
-      "type": "array",
+      "type": "color",
       "default": [
         0.42,
         0.17,
         0.04
       ],
-      "desc_vi": "Màu vỏ bánh (linear)"
+      "desc_vi": "Màu vỏ bánh"
     },
     "crumb_color": {
-      "type": "array",
+      "type": "color",
       "default": [
         0.95,
-        0.76,
-        0.38
+        0.62,
+        0.25
       ],
-      "desc_vi": "Màu ruột bánh (linear)"
+      "desc_vi": "Màu ruột bánh (phải là màu ấm, đậm để ánh trời không nhuộm xanh)"
     },
     "butter_color": {
-      "type": "array",
+      "type": "color",
       "default": [
-        0.98,
-        0.72,
-        0.08
+        1,
+        0.75,
+        0.1
       ],
-      "desc_vi": "Màu bơ (linear, nên đậm cho tươi)"
+      "desc_vi": "Màu bơ (màu phẳng, luôn vàng tươi)"
     },
     "scale": {
       "type": "number",
       "default": 1,
-      "desc_vi": "Hệ số phóng to cả lát bánh"
+      "desc_vi": "Phóng to/thu nhỏ cả món"
     }
   },
   "parts": [
@@ -74,22 +74,20 @@
     "bread",
     "butter",
     "kitchen",
-    "falls",
+    "fall",
     "flip",
-    "3d"
+    "splat"
   ],
-  "notes_vi": "Mình chưa dựng thử trong Blender và chưa render ảnh nào: chỉ mới viết code và đối chiếu với `core/geo.py`. Hãy để bước dựng thumbnail tự động kiểm tra, nhất là viền mực của lớp bơ mỏng (0,015).\n\n- **Lật bánh:** chế độ thường lấy gốc ở tâm khối bánh, mặt bơ 'top' hướng +Z. Muốn lật thì xoay gốc (hoặc phần `<id>_bread` cùng `<id>_butter`) quanh trục Y 180°. Nóc phồng nằm về phía +Y.\n- **Splat:** khi splat: true, gốc ở mặt sàn. Lát bánh nằm vỏ ngửa lên, bị ép dẹt theo `squash`. Vũng bơ gợn sóng rộng khoảng 0,58 lòi ra quanh viền bánh, thêm 5 giọt bơ bắn và cục bơ bẹp lòi ra một bên. Ở chế độ này tham số butter chỉ có nghĩa là 'none' (không có bơ) hoặc có bơ.\n- **Các phần con:**\n  - `<id>_bread` là mesh vỏ; mặt ruột `<id>_bread_crumb` là con của nó nên đi theo.\n  - `<id>_butter` là một empty gom các lớp `_butter_top`/`_butter_bottom`/`_butter_puddle`, `_butter_pat` và `_butter_drop*`. Bật hoặc tắt hiện cả nhóm bơ bằng một track.\n- **Cách làm ruột bánh:** mặt ruột là một khối đùn thụt vào 3,2 cm, nhô ra 3 mm mỗi mặt. Nhờ vậy viền vỏ nâu hiện thành vòng quanh, không cần gán nhiều vật liệu cho một mesh.\n- **Tên vật liệu:** gắn mã màu (`toast_crust_<rgb>`…) nên đổi màu không đụng bản khác.\n- **Hướng dùng gợi ý:** cảnh \"bánh lật giữa không trung\" dùng một bản thường; cảnh đáp đất thì đổi sang một bản `splat: true` ngay tại khung va chạm (ẩn/hiện bằng visibility).",
+  "notes_vi": "Tôi chỉ đổi màu, hình khối và tham số giữ nguyên. Bản này chưa dựng lại trong Blender, nên chưa có ảnh render để kiểm tra màu.\n- Ruột bánh: mặc định đổi sang (0.95, 0.62, 0.25), roughness từ 0.9 xuống 0.7.\n- Bơ: dùng flat() (màu phẳng phát sáng, ánh trời không nhuộm được), mặc định (1.0, 0.75, 0.1). Lớp bơ, cục bơ, vũng bơ và các giọt bơ đều dùng vật liệu này.\n- Tên vật liệu đổi thành toast_crumb_w_* và toast_butter_flat_*. Vật liệu được lưu đệm theo tên, nên nếu để tên cũ thì cảnh đang mở có thể vẫn lấy bản cũ (pbr, màu cũ).\n- Vì bơ là màu phẳng nên không còn bóng loáng thật; viền mực tự động vẫn giữ hình khối rõ ràng.\n- Vỏ bánh giữ nguyên màu nâu đậm.",
   "status": "draft",
   "brief_vi": "Lát bánh mì 3D phóng to, khoảng 0,45 × 0,45 × 0,06: vỏ nâu, ruột vàng nhạt, nóc hơi phồng kiểu bánh sandwich. Tham số butter: 'top' | 'bottom' | 'both' (lớp bơ vàng bóng dày khoảng 0,015, mép bơ gợn sóng, có thêm một cục bơ nhỏ). Gốc ở tâm khối để xoay lật quanh trục Y. Khi splat: true, dựng lát bánh đã đáp úp mặt bơ (vỏ ngửa lên), hơi ép dẹt; vệt bơ vàng loang ra quanh viền trên sàn; gốc ở mặt sàn (z = 0). Tên con: <id>_bread, <id>_butter. parts: bread, butter",
   "designed_by": "claude_bridge",
-  "updated": "2026-11-11T04:41:37",
+  "updated": "2026-11-11T04:58:39",
   "review": {
-    "score": 5,
-    "summary_vi": "Bản sửa trước chưa ăn thua: ruột bánh vẫn xám, bơ vẫn xanh ô liu và mép vẫn có gai đen. Mình đoán do viền mực gặp các mặt lõm của mép gợn sóng, nên bản này chia mặt trên và mặt dưới thành tam giác quạt từ tâm. Bản này chưa render lại nên chưa biết đã hết lỗi chưa.",
+    "score": 8,
+    "summary_vi": "Màu đã đúng: ruột bánh nâu vàng ấm, bơ vàng tươi, vỏ nâu đậm, nhìn qua là nhận ra lát bánh mì phết bơ. Hình khối, tham số và tỉ lệ cạnh Joe giữ nguyên. Chỉ còn vài nét gai mực nhỏ khi nhìn chéo từ sau lưng, tôi để lại chưa sửa.",
     "problems": [
-      "Hai lỗi của vòng trước vẫn còn: ruột bánh vẫn xám, bơ phết vẫn xanh ô liu, mặt trên lấm tấm hạt, và quanh mép vẫn có gai đen. Như vậy pháp tuyến không phải nguyên nhân.",
-      "Nguyên nhân có thể là: viền mực SOLIDIFY dựng lớp vỏ từ các mặt n-gon lõm (mép gợn sóng, nóc phồng). Khi lớp vỏ bị chia tam giác sai, các tam giác đen dài thò ra thành gai và che lên mặt trên, làm màu bị trộn đen và có hạt. Cục bơ (rbox, chỉ có mặt tứ giác) không bị lỗi này.",
-      "Bản sửa chia mặt nắp thành hình quạt tam giác từ tâm (bmesh.ops.poke) để bỏ n-gon lõm. Bản này chưa render lại nên chưa biết đã hết lỗi chưa."
+      "Ở ảnh iso_back (nhìn chéo từ sau lưng) còn vài nét mực đen như gai ở mép bơ và góc vai bánh. Nhìn từ trên và từ trước không thấy, nên tôi để lại."
     ]
   }
 }

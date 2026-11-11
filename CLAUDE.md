@@ -131,3 +131,24 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
 - Đã gọi Claude thật qua trang: `ideas` (201 s, 10 ý), `write_content` 1 phút (195 s, 155 từ, 7 chuỗi), `rewrite_seq` (36 s). Kết quả nằm trong `projects/toast-butter-side`.
 - Chưa chạy qua trang: `build`/`plan_shots`, `fix_from_preview`, thiết kế đồ trên trang (bước 5). Content bánh mì đòi 13 món mới, nên prompt viết content đã thêm luật "tối đa khoảng 5 món mới mỗi phút, ưu tiên dùng lại".
 - `voice.wav` người dùng gửi dài 51,6 s, không khớp `WORDS` của video nắp cống (45 s). Có thể là một bản thu khác.
+
+### Bước 5 — đang làm (video "Why Does Toast Land Butter-Side Down?", `projects/toast-butter-side`)
+- Đầu vào của người dùng: content 1,5 phút (222 từ, 10 chuỗi) và giọng OmniVoice 64,4 s, ra 1.966 khung.
+- Chạy "Duyệt & dựng" qua server: `plan_shots` mất 12 phút (story có 10 seq camera v3, 32 thẻ, 10 track) → thiết kế 7 món
+  (`sets/kitchen`, `props/{dining_table,toast,toast2d,tower_stack,diagram_toast_spin}`, `chars/gary_sneakers`; mỗi món 2–5 phút,
+  đều 8/10 trừ toast 5/10) → dựng `CAMERA OK` ngay lần đầu, 1.599 object. Tổng cộng 36 phút.
+- Lỗi gặp và đã sửa:
+  1. Nút tải giọng gửi GET kèm dữ liệu → đổi sang POST. Thêm `wavfix.py` (wav float/24-bit/extensible → PCM 16-bit).
+  2. `[beat]` không được phần mềm giọng hiểu → tab Giọng đọc xuất bản cho TTS (`...` / xuống dòng / SSML / bỏ).
+  3. Claude CLI kiểm schema bằng Ajv draft-07 (không nhận `prefixItems`), còn API đòi draft 2020-12 → `cli_schema()` nới tuple
+     thành `anyOf`; jsonval vẫn kiểm chặt.
+  4. Content cần thẻ chữ trên màn hình → `core/cards.py` + `cards` trong story (title, label, stamp_x/check, bubble, iris).
+  5. `size` của thẻ bị hiểu là hệ số nhân (1.3 → chữ khổng lồ) → tài liệu + schema 0,03–0,3 + tự nhận ra hệ số + tự xuống dòng/co cho vừa khung.
+  6. Giày không đổi được (Gary sneaker vẽ trên thân) → `cfg.shoe` + extras `on: footL/footR`; gộp `chars.char_cfg/draw_extras`.
+  7. Ánh trời xanh nhuộm mặt ngửa (ruột bánh xám xanh, bơ ô liu); Claude tự đoán sai là lỗi lưới, sửa 2 vòng không hết →
+     ghi vào AUTHORING.md, gửi góp ý đúng hướng thì vòng 2 đạt 8/10.
+  8. Bộ tách chữ cắt "brand-new" thành 2 chữ → giữ từ có gạch nối.
+  9. Vòng tự sửa của build (lỗi Blender hoặc cam_report → Claude vá story); bỏ qua đồ đã có trong thư viện; prompt xem lại
+     cho bối cảnh không đòi `scale.png`; log điểm "?/10".
+- Đã thử: "Nhờ Claude sửa" (khung 886, 42 s), góp ý thư viện (toast, gary_sneakers) qua `/api/library/design`.
+- Render: container chỉ có CPU (khoảng 10 s/khung ở 25 %), nên chỉ render đoạn 1–300 ở 25 %; cả video ở 100 % render trên máy người dùng.

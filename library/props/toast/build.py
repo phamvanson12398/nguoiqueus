@@ -1,13 +1,17 @@
 """3D oversized slice of sandwich bread (toast) with a glossy butter layer.
 
 Normal mode: the slice lies flat in XY (thickness along Z), origin at the CENTRE of the slab so a story
-can flip it around the Y axis.  Brown crust ring, pale-yellow crumb faces, domed "sandwich loaf" top
+can flip it around the Y axis.  Brown crust ring, warm crumb faces, domed "sandwich loaf" top
 edge (toward +Y).  Butter on 'top' (+Z), 'bottom' (-Z), 'both' or 'none': wavy-edged 0.015 layer plus
 a small butter pat.
 
 splat=True: the slice has landed butter-side DOWN (crust/crumb face up), slightly squashed, a wavy
 butter puddle oozes out around its rim on the floor, a few droplets, and the squashed pat peeks out on
 one side.  Origin at the floor (z = 0).
+
+Colour note: up-facing faces get the blue sky tint and sit under the crust's ink-hull shell (which
+still shadows them), so even a warm PBR crumb rendered grey-green.  Crumb and butter therefore use
+flat() emission: crumb a warm tan, butter bright yellow.  The crust stays PBR (its sides read fine).
 
 Parts: <name>_bread (crumb faces <name>_bread_crumb are its child), <name>_butter (empty holding the
 butter layers <name>_butter_top / _butter_bottom / _butter_puddle, pat <name>_butter_pat, droplets).
@@ -19,12 +23,12 @@ import random
 import bpy
 import bmesh
 from core import ctx
-from core.look import pbr
+from core.look import pbr, flat
 from core.geo import rbox, sphere, group3d, attach, arc
 
 DEFAULTS = dict(butter="top", splat=False, pat=True, squash=0.75,
-                crust_color=[0.42, 0.17, 0.04], crumb_color=[0.98, 0.74, 0.32],
-                butter_color=[0.98, 0.62, 0.03], scale=1.0)
+                crust_color=[0.42, 0.17, 0.04], crumb_color=[0.88, 0.56, 0.22],
+                butter_color=[1.0, 0.75, 0.1], scale=1.0)
 
 W = 0.45        # slice width (x)
 L = 0.45        # slice height (y), bottom edge to top of dome
@@ -104,8 +108,10 @@ def build(params, lib):
 
     crust_rgb = tuple(p["crust_color"]); crumb_rgb = tuple(p["crumb_color"]); butter_rgb = tuple(p["butter_color"])
     m_crust = pbr(f"toast_crust_{_tag(crust_rgb)}", crust_rgb, rough=0.85)
-    m_crumb = pbr(f"toast_crumb_{_tag(crumb_rgb)}", crumb_rgb, rough=0.9)
-    m_butter = pbr(f"toast_butter_{_tag(butter_rgb)}", butter_rgb, rough=0.2)
+    # flat emission crumb: not greyed by the sky tint or the ink-hull shadow over the face
+    m_crumb = flat(f"toast_crumb_flat_{_tag(crumb_rgb)}", crumb_rgb)
+    # flat emission butter: never tinted olive by the sky, always bright yellow
+    m_butter = flat(f"toast_butter_flat_{_tag(butter_rgb)}", butter_rgb)
 
     root = group3d(name)
 

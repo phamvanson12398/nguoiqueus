@@ -46,11 +46,18 @@ def build_card(root, i, c):
         print(f"WARN card {i}: size {size} looks like a multiplier, using {round(default * size, 3)}")
         size = default * size
     body_ = c.get("text", "")
-    if style in ("title", "label", "bubble") and body_:     # shrink to fit the frame width (9:16)
+    if style in ("title", "label", "bubble") and body_:     # fit the frame width (9:16): wrap to 2 lines, then shrink
         extra = {"title": 1.2, "label": 0.2, "bubble": 2.2}[style]
+        maxw = 1.9 * HALF_W
+        if _text_width(body_, size) + size * extra > maxw and "\n" not in body_ and " " in body_:
+            words = body_.split(" "); best = None
+            for k in range(1, len(words)):
+                a, b = " ".join(words[:k]), " ".join(words[k:])
+                if best is None or max(len(a), len(b)) < max(len(x) for x in best): best = (a, b)
+            body_ = "\n".join(best); c["text"] = body_
         need = _text_width(body_, size) + size * extra
-        if need > 1.9 * HALF_W: size *= 1.9 * HALF_W / need
-    rgb = tuple(c.get("color") or DEFAULT_COLOR[style]); body = c.get("text", "")
+        if need > maxw: size *= maxw / need
+    rgb = tuple(c.get("color") or DEFAULT_COLOR[style]); body = c.get("text", "")   # (may have been wrapped above)
     x, y = c.get("pos") or ((0, 0.55) if style == "title" else (0, -0.6) if style == "iris" else (0, 0))
     h = empty(f"card{i}", root, (x * HALF_W, y * HALF_H, -0.02 - 0.0005 * i))
     h.rotation_euler = (0, 0, math.radians(c.get("rot", 0)))
