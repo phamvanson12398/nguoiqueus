@@ -1,0 +1,171 @@
+{
+  "kind": "prop",
+  "name": "sewer_cutaway",
+  "title_vi": "Mặt cắt x-ray giếng và ống cống dưới phố",
+  "description_vi": "Lát cắt đất 3D (rộng 9, dày 1, sâu 5,5), mặt cắt quay về -Y. Trên cùng là lớp nhựa đường xám đậm có lỗ tròn và nắp cống gang nằm khít. Giếng bê tông cắt đôi, lòng tối, có bậc thang thép, đi xuống tới nóc ống cống tròn (tâm z -3,2, lòng r 1,2, vành bê tông dày 0,15). Lòng ống tối, đáy có nước xanh xám. 8 mũi tên lực đất màu cam viền đen chĩa vào vành ống, nằm sát trước mặt cắt, gom dưới một empty có gốc tại tâm ống để story cho bật ra bằng scale. Gốc tọa độ là tâm mặt đường ngay trên trục giếng (z=0).",
+  "dim": "3d",
+  "params": {
+    "width": {
+      "type": "number",
+      "default": 9,
+      "desc_vi": "Chiều rộng khối đất (trục X)"
+    },
+    "depth": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Độ dày lát cắt (trục Y, từ -depth/2 đến +depth/2)"
+    },
+    "soil_depth": {
+      "type": "number",
+      "default": 5.5,
+      "desc_vi": "Độ sâu khối đất tính từ mặt đường"
+    },
+    "road_t": {
+      "type": "number",
+      "default": 0.25,
+      "desc_vi": "Độ dày lớp nhựa đường"
+    },
+    "hole_r": {
+      "type": "number",
+      "default": 0.45,
+      "desc_vi": "Bán kính lỗ cống, nắp và lòng giếng"
+    },
+    "shaft_wall": {
+      "type": "number",
+      "default": 0.12,
+      "desc_vi": "Độ dày vách giếng bê tông"
+    },
+    "rungs": {
+      "type": "integer",
+      "default": 4,
+      "desc_vi": "Số bậc thang thép trong giếng"
+    },
+    "tube_z": {
+      "type": "number",
+      "default": -3.2,
+      "desc_vi": "Cao độ tâm ống cống"
+    },
+    "tube_r": {
+      "type": "number",
+      "default": 1.2,
+      "desc_vi": "Bán kính trong của ống"
+    },
+    "tube_wall": {
+      "type": "number",
+      "default": 0.15,
+      "desc_vi": "Độ dày vành bê tông"
+    },
+    "water_h": {
+      "type": "number",
+      "default": 0.35,
+      "desc_vi": "Độ cao lớp nước ở đáy ống (0 = không có nước)"
+    },
+    "pebbles": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có mấy viên sỏi tròn to trong đất"
+    },
+    "n_arrows": {
+      "type": "integer",
+      "default": 8,
+      "desc_vi": "Số mũi tên lực đất"
+    },
+    "arrow_len": {
+      "type": "number",
+      "default": 0.9,
+      "desc_vi": "Chiều dài mỗi mũi tên"
+    },
+    "arrow_gap": {
+      "type": "number",
+      "default": 0.06,
+      "desc_vi": "Khoảng hở giữa đầu mũi tên và vành ống"
+    },
+    "arrow_offset_deg": {
+      "type": "number",
+      "default": 22.5,
+      "desc_vi": "Góc xoay bộ mũi tên (22,5 để tránh trục giếng)"
+    },
+    "arrow_y": {
+      "type": "number",
+      "default": -0.55,
+      "desc_vi": "Vị trí Y của mặt trước mũi tên (trước mặt cắt)"
+    },
+    "soil_color": {
+      "type": "array",
+      "default": [
+        0.42,
+        0.17,
+        0.04
+      ],
+      "desc_vi": "Màu đất (linear)"
+    },
+    "road_color": {
+      "type": "array",
+      "default": [
+        0.07,
+        0.07,
+        0.08
+      ],
+      "desc_vi": "Màu nhựa đường"
+    },
+    "concrete_color": {
+      "type": "array",
+      "default": [
+        0.55,
+        0.55,
+        0.56
+      ],
+      "desc_vi": "Màu bê tông"
+    },
+    "water_color": {
+      "type": "array",
+      "default": [
+        0.16,
+        0.3,
+        0.32
+      ],
+      "desc_vi": "Màu nước"
+    },
+    "arrow_color": {
+      "type": "array",
+      "default": [
+        0.98,
+        0.3,
+        0.02
+      ],
+      "desc_vi": "Màu mũi tên lực"
+    }
+  },
+  "parts": [
+    "soil",
+    "road",
+    "shaft",
+    "tube",
+    "lid",
+    "arrows"
+  ],
+  "tags": [
+    "sewer",
+    "manhole",
+    "cutaway",
+    "x-ray",
+    "underground",
+    "pipe",
+    "diagram",
+    "3d"
+  ],
+  "notes_vi": "Tôi viết theo API thật trong core (đã đọc `core/geo.py`, `core/look.py` và bộ quét an toàn của bridge). Tôi chưa dựng thử trong Blender; bridge sẽ render ảnh xem lại.\n- Mặt cắt đất, nhựa đường, vành ống, nước, nền tối và mũi tên đều vẽ bằng hình 2D trong mặt phẳng (x, z) rồi đùn theo trục Y bằng curve, sau đó đổi sang mesh (dùng `_curve_to_mesh` của core) nên tự có viền mực. Đất có khe cho giếng nối thẳng vào vòng tròn ngoài của ống; vành ống hở phía trên đúng bằng lòng giếng.\n- Giếng là nửa ống phía sau (y ≥ 0) dựng bằng bmesh: mặt cắt và mặt ngoài màu bê tông, lòng trong màu tối. Bậc thang thép là con của `<id>_shaft`; sỏi là con của `<id>_soil`; nước và nền tối trong ống là con của `<id>_tube`.\n- `<id>_arrows` là empty đặt tại (0, 0, tube_z), tức tâm ống. 8 mũi tên cam (emission, không bị ánh trời nhuộm) có thêm một bản đen to hơn 0,045 phía sau để viền rõ. Mặt trước nằm ở y ≈ -0,58, ngay trước mặt cắt. Bộ mũi tên lệch 22,5° nên không mũi nào đè lên trục giếng.\n- Nắp gang r 0,445, dày 0,08, mặt trên ngang mặt đường. Từ camera gần như ngang (z -1,7), nắp hiện thành một dải gang lấp kín khe hở của lớp nhựa đường.\n- Cần để ý: phần đầu dưới của vách giếng thò khoảng 0,1 vào lòng ống ở phía sau, nhưng nằm trên nền tối nên gần như không thấy.",
+  "status": "draft",
+  "brief_vi": "Mặt cắt x-ray 3D dưới mặt phố (đặt ở x=200, dựng riêng, nhìn từ -Y, camera ở (200, -9, -1.7) lens 32). Gốc tọa độ = tâm mặt đường ngay trên trục giếng, z=0. Khối đất cắt đôi: rộng x -4.5..4.5, dày y -0.5..0.5 (mặt cắt quay về -Y), sâu z -5.5..0; màu nâu đất bão hòa, vài viên sỏi tròn to. Trên cùng lớp nhựa đường xám đậm dày 0.25 có lỗ tròn r 0.45 và nắp cống tròn gang nằm khít. Giếng đứng (trụ cắt đôi, lòng tối, có vài bậc thang kim loại) từ mặt đường xuống nóc ống. Ống cống tròn nhìn mặt cắt (hình tròn) tâm ở z -3.2, bán kính trong 1.2, vành bê tông xám dày 0.15, lòng tối có lớp nước xanh xám ở đáy. 8 mũi tên lực đất màu cam đậm (0.98, 0.30, 0.02), viền đen, đặt hướng tâm quanh ống, đầu mũi tên chĩa vào vành ống, nằm sát trước mặt cắt (y ≈ -0.55); gom chung dưới một empty để story pop bằng scale. Hình khối to, rõ, ít chi tiết vụn. parts: soil, road, shaft, tube, lid, arrows (tên object: <id>_soil, <id>_road, <id>_shaft, <id>_tube, <id>_lid, <id>_arrows; <id>_arrows có gốc tại tâm ống để scale quanh tâm ống).",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T12:29:20",
+  "review": {
+    "score": 8,
+    "summary_vi": "Nhìn từ phía trước (góc camera của story), mặt cắt đọc rõ ngay: đất nâu có sỏi, giếng tối có bậc thang, ống tròn có vành bê tông, đáy có nước, 8 mũi tên cam viền đen chĩa vào ống, kích thước hợp với Joe. Vài điểm nhỏ chỉ lộ ra ở góc nhìn từ trên (mặt đường ngả xanh, khe quanh nắp) và không ảnh hưởng tới cảnh quay nên không sửa.",
+    "problems": [
+      "Mặt trên lớp nhựa đường bị ánh trời nhuộm xanh navy (thấy ở top/iso). Camera của story ở z -1,7, thấp hơn mặt đường, nên không thấy mặt này; không cần sửa.",
+      "Ảnh iso_back chỉ thấy lớp mặt đường vì khối đất nằm dưới z=0, bị sàn của phòng chụp che. Đây là chủ ý: gốc ở mặt đường theo mô tả, đạo cụ đặt riêng ở x=200, không có sàn.",
+      "Ở ảnh top có khe hở nhỏ hình tam giác giữa mép lỗ thẳng của nhựa đường và nắp tròn. Từ góc -Y gần ngang thì không thấy."
+    ]
+  }
+}

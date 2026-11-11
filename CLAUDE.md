@@ -164,3 +164,28 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
 - Thêm `tools/splice.py` + nút "Ghép vào video đầy đủ" ở tab Render (cần ffmpeg): thay khung A-B bằng `parts/*_AAAA-BBBB.mp4`, giữ
   tiếng gốc, bản cũ lưu `*_before.mp4`. Đã thử khung 50-79, khung 1-30 và qua server với đoạn render thật.
 - `README.md`: hướng dẫn nhanh cho người dùng.
+
+## Video dài 16:9 (kế hoạch ở `docs/LONGFORM.md`)
+Phân tích kênh mẫu, kế hoạch 8 bước, thiết kế nhiều quốc gia/phe với trang phục theo văn hóa (mục 3b), nhạc, tiếng động và hiệu ứng hình (bước 5).
+Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round, demo-v3, toast-butter-side đều giống hệt).
+
+### Bước 1 — xong (khổ 16:9, chương, camera video dài)
+- `meta.aspect` "16:9" → 1920x1080; `ctx.frame_half()` cho thẻ/phụ đề. Khổ 9:16 dùng nguyên hằng số cũ.
+- Camera rig `long` (`camera.solve_long`, `long_report`): danh sách shot cắt thẳng, mỗi shot camera trôi; báo cắt/phút, shot ngắn/dài, shot đứng yên.
+- Độ sâu trường ảnh `camera.dof` (v3 và long): phụ đề/thẻ chuyển sang cảnh "Overlay" (camera sinh đôi không DOF), compositor Alpha Over → vẫn nét (`core/overlay.py`).
+- Phụ đề `captions.style`: pop (Shorts), bottom (16:9), off. Thẻ mới `fade`, `chapter`.
+- `longform.py`: `split` cắt giọng + chữ vào `chapters/NN/` (mỗi chương là một dự án con), `status`, `concat` (ffmpeg -c copy).
+- `align.py`: tìm theo dải khi kịch bản dài (> 3000 cặp dấu câu × khoảng lặng): 1.865 từ trong 8 s; 568 từ ra kết quả giống hệt cách tìm đầy đủ (0,8 s thay vì 141 s).
+- Bridge: `write_content_long` (schema `content_long`: chapters, shots, factions), `PLAN_RULES_LONG`; `rewrite_seq` giữ chapter/shots.
+- Server/UI: chọn khổ video, ước tính số chương/cú máy, thẻ chuỗi có chương + cú máy, dựng/xem trước/sửa theo chương, render lần lượt + ghép.
+- `story.json` nhận `factions`, `chars[].faction/role` (chưa dùng khi dựng; bước 4).
+- Mẫu: `projects/demo-long` (tay viết). Trên Windows: `tools\verify_long.bat`.
+- Chạy thử thật qua server (`projects/why-manholes-round-long`, 3 phút, 2 chương; giọng espeak-ng chỉ để thử, không đưa lên git):
+  write_content 202 s (568 từ, 6 nhịp, 48 cú máy dự kiến) → canh chữ + chia chương → Duyệt & dựng 33 phút: chương 1 có 30 shot,
+  16,2 cắt/phút; chương 2 có 31 shot, 15,1 cắt/phút, thiết kế thêm `props/sewer_cutaway` (8/10); cả hai `CAMERA OK` ngay lần đầu.
+  Ảnh: `docs/img/longform_step1.jpg`. Render + ghép thử 2 chương × 45 khung (dự án tạm, đã xóa); bấm Render lại thì bỏ qua chương đã có.
+- Lỗi đã sửa khi chạy thử: phụ đề 16:9 bị nhân hệ số ống kính hai lần (mất ở lens ≠ 27); hai dòng phụ đề không bao giờ chồng nhau;
+  tên hàm `target` trùng biến trong server; khung các chương trên trang bị bó hẹp.
+- Còn để ý: Claude đặt máy cận mặt quá sát (cắt đầu) → đã thêm công thức khoảng cách theo lens vào `PLAN_RULES_LONG`, cần thử lại ở bước 2.
+  Container: 16:9 ở 25 % khoảng 20 s/khung (DOF + lớp phủ chỉ thêm ~7 %); đo trên máy người dùng bằng `verify_long.bat`.
+

@@ -689,7 +689,12 @@ Luật riêng cho VIDEO DÀI (story này là MỘT CHƯƠNG). Luật camera v3/s
   (wide/medium/closeup/insert/board/map/diagram/interior/card/pov) và 2-3 keys; camera LUÔN trôi chậm trong shot (đẩy, lia, trượt ngang,
   hạ/nâng cần) — đứng yên sẽ bị long_report báo lỗi. Cắt thẳng là chính; `trans` chỉ khi cần whip. Tránh cắt giữa một chữ.
 - Độ sâu trường ảnh: camera.dof = {"fstop": 2.8}; cận mặt/cận vật đặt shot.fstop 1.8-2.2; toàn cảnh 4-5.6. Look point = chủ thể.
-- Ống kính khổ ngang: toàn cảnh 24-32, trung 35-45, cận 50-70.
+- Ống kính và khoảng cách khổ ngang (cảm biến 36 mm theo bề ngang → khung cao = khoảng_cách × 20,25 / lens). Nhân vật cao 2,5,
+  tâm mặt ở z ≈ 2,0, đỉnh đầu z ≈ 2,6:
+  - cận mặt (đầu + vai, khung cao ~1,5): khoảng cách ≈ 0,075 × lens (lens 50 → 3,7), look vào z ≈ 1,9-2,0, camera z ≈ 1,8-2,1;
+  - trung (từ thắt lưng, khung cao ~2,2): ≈ 0,11 × lens (lens 40 → 4,4), look z ≈ 1,6;
+  - toàn thân (khung cao ~3,4): ≈ 0,17 × lens (lens 32 → 5,4), look z ≈ 1,2; toàn cảnh: ≥ 0,3 × lens.
+  Gần hơn mức này sẽ cắt mất đầu. Cận vật (insert) tính theo kích thước vật.
 - Phụ đề: captions.style "bottom" (mặc định của 16:9); không dùng highlight/impact kiểu Shorts.
 - Thẻ: chương mở bằng {"style":"chapter","sub":"CHAPTER n","text": tiêu đề IN HOA, from 1, to ~75} kèm {"style":"fade","from":1,"to":20,"in":0,"out":20}
   (mờ từ đen); chương cuối kết bằng {"style":"fade", "hold": true} trong 30 khung cuối. Màn hình chữ ở mốc quan trọng: thẻ title (năm, tên trận,

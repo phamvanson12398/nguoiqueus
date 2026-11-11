@@ -105,7 +105,7 @@ def is_long(slug):
     return (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("format") == "long"
 
 
-def target(slug, chapter):
+def sub_target(slug, chapter):
     """a long project's chapter is planned/built/rendered as the sub-project <slug>/chapters/NN"""
     return longform.chapter_slug(slug, int(chapter)) if chapter else slug
 
@@ -544,13 +544,13 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(start_job("build", slug, job_build, slug, b.get("design", True), b.get("preview", True),
                                                 [int(x) for x in b.get("chapters", [])] or None).to_json())
             if act == ["preview"]:
-                b = self.jbody(); t = target(slug, b.get("chapter")); frames = b.get("frames") or default_preview_frames(t)
+                b = self.jbody(); t = sub_target(slug, b.get("chapter")); frames = b.get("frames") or default_preview_frames(t)
                 return self.send_json(start_job("preview", slug, job_preview, t, [int(f) for f in frames], int(b.get("pct", 35))).to_json())
             if act == ["fix"]:
-                b = self.jbody(); t = target(slug, b.get("chapter"))
+                b = self.jbody(); t = sub_target(slug, b.get("chapter"))
                 return self.send_json(start_job("fix", slug, job_fix, t, b["problem"], [int(f) for f in b.get("frames", [])]).to_json())
             if act == ["render"]:
-                b = self.jbody(); t = target(slug, b.get("chapter"))
+                b = self.jbody(); t = sub_target(slug, b.get("chapter"))
                 return self.send_json(start_job("render", slug, job_render, t, b.get("pct", 100), b.get("frames"), b.get("samples")).to_json())
             if act == ["concat"]:
                 return self.send_json(start_job("concat", slug, lambda job, s: {"file": os.path.basename(longform.concat(s, log=job.say))}, slug).to_json())

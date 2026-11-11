@@ -17,6 +17,13 @@ Bấm đúp `start_studio.bat` rồi mở http://127.0.0.1:8765 nếu trình duy
 4. **Duyệt & dựng**: chờ Claude dựng cảnh và thiết kế đồ còn thiếu → xem ảnh → "Nhờ Claude sửa" nếu thấy lỗi.
 5. **Render**: 100 % → Render (khoảng 1,4 giây/khung) → xem hoặc tải mp4.
 
+### Video dài YouTube 16:9
+Bấm "+ Dự án mới" rồi chọn **OK = video dài** (hoặc đổi "Khổ video" ở bước 2). Các bước giống hệt Shorts, khác ở chỗ:
+- Content chia **chương**; mỗi nhịp kể có danh sách cú máy (cận, toàn, bản đồ, sơ đồ, màn hình chữ…) sửa được.
+- Tải giọng lên thì tool tự cắt giọng theo chương (`chapters/01`, `02`…).
+- "Duyệt & dựng" dựng lần lượt từng chương; mỗi chương có ảnh xem trước, nút dựng lại và ô "Nhờ Claude sửa" chọn chương.
+- Render lần lượt các chương chưa có video rồi ghép thành `out.mp4` (cần ffmpeg). Bị ngắt giữa chừng thì bấm Render lại để làm tiếp.
+
 Tab **Thư viện**: duyệt đồ Claude vừa thiết kế, gõ góp ý ("to hơn", "đổi màu"), hoặc nhờ thiết kế đồ mới.
 
 ## Cập nhật

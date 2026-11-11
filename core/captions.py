@@ -110,13 +110,18 @@ def build_subtitles(WORDS, lens_by_frame, y=-0.80, size=0.034, ref_lens=28.0, ma
     hw, hh = ctx.frame_half()
     font = bpy.data.fonts.load(ctx.FONT_PATH, check_existing=True) if ctx.FONT_PATH else None
     root = empty("captions", ctx.cam, (0, y * hh, -1.0))
-    for f in range(1, N + 1):
+    for f in range(1, N + 1):                 # at depth lens/28 the frame is always 2*hh tall: only the depth follows the lens
         k_ = lens_by_frame[f] / ref_lens
-        root.location = (0, y * hh * k_, -1.0 * k_); root.keyframe_insert("location", frame=f)
+        root.location = (0, y * hh, -1.0 * k_); root.keyframe_insert("location", frame=f)
     white = flat("sub_white", (0.97, 0.97, 0.95))
-    for i, (t0, t1, txt) in enumerate(phrase_lines(WORDS)):
+    spans = []
+    for t0, t1, txt in phrase_lines(WORDS):
         a = int(t0 * FPS) + 1; b = min(int(t1 * FPS), a + int(max_hold * FPS)) if t1 else a + 45
-        b = max(b, a + 12)
+        spans.append([a, max(b, a + 12), txt])
+    for k in range(len(spans) - 1):                       # never two lines at once: a line ends before the next starts
+        spans[k][1] = min(spans[k][1], spans[k + 1][0] - 1)
+    for i, (a, b, txt) in enumerate(spans):
+        if b < a: continue
         holder = empty(f"sub{i}", root)
         for layer, (m, off, z) in enumerate(((geo.INK, size * 0.09, -0.002), (white, 0.0, 0.0))):
             cu = bpy.data.curves.new(f"sub{i}_{layer}", 'FONT'); cu.body = txt
