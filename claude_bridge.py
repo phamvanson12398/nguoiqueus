@@ -576,8 +576,8 @@ def ideas(slug, topic=None, count=10, model=None):
     return data
 
 
-def write_content(slug, idea, minutes=1.0, model=None):
-    words = int(round(minutes * 150))
+def write_content(slug, idea, minutes=1.0, model=None, wpm=190):
+    words = int(round(minutes * wpm))
     n_seq = max(4, min(7, int(round(minutes * 6)))) if minutes <= 1.25 else int(round(minutes * 5.5))
     prompt = (f"Viết content cho ý tưởng sau (JSON):\n{json.dumps(idea, ensure_ascii=False)}\n\n"
               f"Độ dài: {minutes} phút ≈ {words} từ lời đọc tiếng Anh (±10 %), khoảng {n_seq} chuỗi máy"

@@ -335,7 +335,8 @@ $('#btnFreeTopic').onclick = async () => { const t = $('#topic').value.trim(); i
 // ---------------- 2. content ----------------
 async function updateEst() {
   const m = parseFloat($('#minutes').value) || 1;
-  const e = await api(`/api/estimate?minutes=${m}`);
+  const w = S.state && S.state.settings && S.state.settings.wpm_measured;
+  const e = await api(`/api/estimate?minutes=${m}` + (w ? `&wpm=${w}` : ''));
   $('#est').innerHTML = `<div class="stat"><span class="muted">Lời đọc</span><b>~${e.words} từ</b></div>
     <div class="stat"><span class="muted">Chuỗi máy</span><b>~${e.sequences}</b>${e.chapters ? `<span class="muted">${e.chapters} chương</span>` : ''}</div>
     <div class="stat"><span class="muted">Khung hình</span><b>${e.frames}</b></div>
@@ -382,8 +383,9 @@ function renderContent() {
   $('#seqList').innerHTML = c.sequences.map(seqCard).join('');
   bindSeqs();
 }
-function wordCount() { const n = ($('#voEn').value.match(/[A-Za-z0-9'’]+/g) || []).length; const e = Math.round((parseFloat($('#minutes').value) || 1) * 150);
-  $('#cWords').textContent = `${n} từ (mục tiêu ~${e}) · khoảng ${Math.round(n / 150 * 60)} giây`; }
+const wpmNow = () => (S.state && S.state.settings && S.state.settings.wpm_measured) || (S.status && S.status.wpm) || 190;
+function wordCount() { const n = ($('#voEn').value.match(/[A-Za-z0-9'’]+/g) || []).length; const e = Math.round((parseFloat($('#minutes').value) || 1) * wpmNow());
+  $('#cWords').textContent = `${n} từ (mục tiêu ~${e}) · khoảng ${Math.round(n / wpmNow() * 60)} giây`; }
 $('#voEn').oninput = wordCount;
 
 // ---------------- narration for the TTS software ([beat] -> something the voice engine understands) ----------------
@@ -471,7 +473,7 @@ function renderVoice() {
   if (st.has_voice && !pl.src.includes(S.slug)) pl.src = P('/file/voice.wav');
   $('#alignBox').classList.toggle('hidden', !w);
   if (!w) return;
-  const est = st.content ? (st.content.vo_en.match(/[A-Za-z0-9'’]+/g) || []).length / 150 * 60 : null;
+  const est = st.content ? (st.content.vo_en.match(/[A-Za-z0-9'’]+/g) || []).length / wpmNow() * 60 : null;
   $('#alignStats').innerHTML = `<div class="stat"><span class="muted">Thời lượng giọng</span><b>${w.duration} s</b></div>
     <div class="stat"><span class="muted">Số khung video</span><b>${w.frames}</b></div><div class="stat"><span class="muted">Số chữ</span><b>${w.word_count}</b></div>
     ${est ? `<div class="stat"><span class="muted">Ước tính từ content</span><b>${Math.round(est)} s</b></div>` : ''}`;

@@ -18,7 +18,7 @@ import storycheck
 
 PROJECTS = os.path.join(ROOT, "projects")
 UI = os.path.join(ROOT, "ui")
-WPM = 150                       # AI voice words per minute
+WPM = 190                       # AI voice words/minute: measured 198 (reference channel) and 201 (user's OmniVoice); 150 was too slow
 SEC_PER_FRAME = 1.4             # measured render speed on the user's GPU (toolkit v2)
 FPS = 30
 
@@ -100,13 +100,14 @@ def jload(path, default=None):
     except (FileNotFoundError, json.JSONDecodeError): return default
 
 
-def estimate(minutes):
-    """numbers shown next to the minutes box"""
-    words = int(round(minutes * WPM))
+def estimate(minutes, wpm=None):
+    """numbers shown next to the minutes box (wpm: measured from the project's voice when known)"""
+    wpm = wpm or WPM
+    words = int(round(minutes * wpm))
     seqs = max(4, min(7, int(round(minutes * 6)))) if minutes <= 1.25 else int(round(minutes * 5.5))
     frames = int(round(minutes * 60 * FPS))
     return {"minutes": minutes, "words": words, "sequences": seqs, "chapters": 0 if minutes <= 1.25 else max(2, round(seqs / 5.5)),
-            "frames": frames, "render_seconds": round(frames * SEC_PER_FRAME)}
+            "frames": frames, "render_seconds": round(frames * SEC_PER_FRAME), "wpm": wpm}
 
 
 def project_state(slug):
@@ -129,7 +130,7 @@ def project_state(slug):
                       "time": datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(d, f))).isoformat(timespec="seconds")} for f in outs]
     hist = os.path.join(d, "history")
     st["history"] = sorted((f for f in os.listdir(hist) if f.endswith(".json")), reverse=True) if os.path.isdir(hist) else []
-    st["estimate"] = estimate((st["settings"] or {}).get("minutes", 1.0))
+    st["estimate"] = estimate((st["settings"] or {}).get("minutes", 1.0), (st["settings"] or {}).get("wpm_measured"))
     cur = BUSY.get(slug); st["job"] = JOBS[cur].to_json(10 ** 9) if cur and cur in JOBS else None
     return st
 
@@ -153,8 +154,10 @@ def job_write(job, slug, minutes):
     idea = jload(os.path.join(pdir(slug), "idea.json"))
     if not idea: raise ValueError("chưa chọn ý tưởng (hoặc nhập chủ đề tự do)")
     e = estimate(minutes)
-    job.say(f"Claude đang viết content {minutes} phút (~{e['words']} từ, ~{e['sequences']} chuỗi)…")
-    data = bridge.write_content(slug, idea, minutes)
+    wpm = (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("wpm_measured") or WPM
+    e = estimate(minutes, wpm)
+    job.say(f"Claude đang viết content {minutes} phút (~{e['words']} từ ở {wpm} từ/phút, ~{e['sequences']} chuỗi)…")
+    data = bridge.write_content(slug, idea, minutes, wpm=wpm)
     job.say(f"Xong: {data['word_count']} từ, {len(data['sequences'])} chuỗi.")
     return {"words": data["word_count"]}
 
@@ -173,9 +176,11 @@ def job_align(job, slug):
     job.say("Đang canh từng chữ theo voice.wav…")
     r = align.align(os.path.join(d, "voice.wav"), content["vo_en"])
     json.dump(r, open(os.path.join(d, "words.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    wpm = round(r["word_count"] / max(1.0, r["duration"] - 0.5) * 60)
+    save_settings(slug, wpm_measured=wpm)             # later estimates for this project use the real voice speed
     est = len(content["vo_en"].split()) / WPM * 60
     job.say(f"Giọng đọc {r['duration']} s ({r['frames']} khung), {r['word_count']} chữ, {len(r['segments'])} cụm. "
-            f"Ước tính từ content: {est:.0f} s.")
+            f"Ước tính từ content: {est:.0f} s. Tốc độ giọng đo được: {wpm} từ/phút.")
     return {"duration": r["duration"], "frames": r["frames"]}
 
 
@@ -397,7 +402,7 @@ class Handler(BaseHTTPRequestHandler):
         if api == ["status"]:
             return self.send_json(self.status())
         if api == ["estimate"]:
-            return self.send_json(estimate(float(q.get("minutes", ["1"])[0])))
+            return self.send_json(estimate(float(q.get("minutes", ["1"])[0]), float(q["wpm"][0]) if q.get("wpm") else None))
         if api == ["usage"]:
             return self.send_json(bridge.usage())
         if api[:1] == ["jobs"] and len(api) >= 2:

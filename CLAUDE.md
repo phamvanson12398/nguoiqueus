@@ -38,7 +38,7 @@ whyshorts/
 
 ### 1. Trang điều khiển (localhost, mở trong trình duyệt)
 - Nhập chủ đề hoặc bấm "Gợi ý ý tưởng" (Claude trả 10 ý tưởng theo mục 1 của skill, người dùng chọn).
-- **Chọn số phút** (ô số, bước 0,5). Hiện ngay: số từ lời đọc dự kiến (~150 từ/phút giọng AI), số chuỗi máy, **thời gian render ước tính** (~1,4 giây/khung × 30 khung/giây).
+- **Chọn số phút** (ô số, bước 0,5). Hiện ngay: số từ lời đọc dự kiến (~190 từ/phút giọng AI; đo thật 198–201, tự hiệu chỉnh theo giọng đã tải lên), số chuỗi máy, **thời gian render ước tính** (~1,4 giây/khung × 30 khung/giây).
 - Nút "Viết content" → Claude viết lời đọc tiếng Anh, bản dịch Việt, bảng chuỗi máy.
 - **Sửa content**: mỗi chuỗi là một thẻ có ô sửa lời đọc, hành động, bối cảnh, đạo cụ, nhân vật, biểu cảm, gag, tiếng động, kiểu chuyển cảnh. Thêm/xóa/kéo đổi thứ tự chuỗi. Nút "Viết lại đoạn này" (gửi Claude chỉ chuỗi đó + ngữ cảnh + yêu cầu của người dùng). Lưu lịch sử phiên bản.
 - Ô tải `voice.wav` (người dùng tự làm giọng) → chạy `align_vo.py` → hiện thời gian từng câu.
@@ -123,7 +123,7 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
   - Theo dự án: `ideas`, `idea`, `content/write`, `content` (lưu kèm lịch sử), `content/rewrite`, `history/<f>/restore`, `voice` (tải wav lên rồi `align.py`), `build` (plan_shots → thiết kế đồ thiếu → kiểm tra → xem trước), `preview`, `fix`, `render` (pct, đoạn khung vào `parts/`, tiến độ từ dòng `RENDER FRAME`, ffprobe), `open`, `file/...`.
   - Thư viện: `library`, `library/approve`, `library/design`.
 - `ui/index.html`: 5 bước cộng tab thư viện.
-  - Ước tính tức thì: số từ (150 từ/phút), số chuỗi, số khung, thời gian render (1,4 s/khung).
+  - Ước tính tức thì: số từ (190 từ/phút, sau khi tải giọng thì dùng tốc độ đo được), số chuỗi, số khung, thời gian render (1,4 s/khung).
   - Thẻ chuỗi sửa được mọi trường; thêm, xóa, kéo ☰ (pointer events, có tự cuộn) hoặc bấm ▲▼; nút "Viết lại đoạn này"; lịch sử phiên bản.
   - Tải giọng đọc lên và xem thời gian từng câu; ảnh xem trước bấm phóng to; ô "Nhờ Claude sửa"; thanh tiến độ render; xem hoặc tải mp4; duyệt hoặc góp ý đồ nháp.
 - `align.py`: thuật toán của `align_vo.py` dạng hàm, kết quả trùng khớp `align_vo.py`.

@@ -67,7 +67,43 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
 - **Âm thanh:**
   - −14,2 LUFS (chuẩn YouTube), dải động 3,1 LU (nén mạnh).
   - Nhạc nền chạy liên tục thấp hơn giọng khoảng 13 dB; gần như không có khoảng lặng (6 lần ngắt ≥ 0,25 s trong 9,4 phút).
-- **Chưa đo:** lời đọc (tốc độ, cấu trúc, giọng hài). Cần bản chép lời.
+
+**Kịch bản (từ bản chép lời người dùng gửi; mốc giờ ước theo tỉ lệ âm tiết, sai số vài giây)**
+- **1.866 từ / 9:24 = 198 từ/phút.** Câu trung bình 11,6 từ; 16 câu rất ngắn (≤ 4 từ) để nhấn; 6 câu hỏi tu từ.
+- **Ngôi thứ hai, thì hiện tại:** "You've broken through the Roman front line…", 101 lần "you/your". Người xem là cậu lính Latin.
+  Không có người dẫn xuất hiện trên hình.
+- **Cấu trúc** (mốc ≈ thời gian):
+
+  | Mốc | Nhịp |
+  |---|---|
+  | 0:00 | Mở ngay giữa cao trào: "bạn vừa chọc thủng tuyến La Mã… nhưng có gì đó sai", gieo bí ẩn "something is waiting" |
+  | 0:23 | "Let's go back to this morning and follow you through the whole battle, one line at a time" (lời hứa của video) |
+  | 0:28–1:30 | Bối cảnh: bạn là ai, vì sao có chiến tranh, địa điểm (Vesuvius), chi tiết lạ (hai quân giống hệt nhau), gieo điềm xấu của tướng ("sẽ quan trọng với bạn") |
+  | 1:30 | "From above": cấu trúc 15 khối có khe |
+  | 1:50 | Giao chiến bằng cảm giác thân thể (lao cắm vào khiên, tê tay, tiếng ồn) |
+  | 2:38 | "From above": tuyến trẻ rút qua khe |
+  | 2:49 | **Twist 1**: tuyến sung sức thay vào ("như đánh thắng rồi đối thủ gọi anh trai to con vào") |
+  | 3:34 | **Twist 2**: tướng hiến mạng cho thần chết |
+  | 4:44 | Bí ẩn: những ông già quỳ yên cả ngày ("ai bắt được người ta ngồi yên như thế?") |
+  | 5:05 | Bẫy: phe bạn tung tuyến cuối |
+  | 6:04 | **Cao trào**: Triarii đứng dậy ("một đạo quân mọc lên từ đất", trích sử gia) |
+  | 6:49 | Thua: chạy, 3/4 quân chết |
+  | 7:09 (76 %) | **Giải thích**: "So what actually happened to you today?" (khối + khe, sức bền), câu nói "Đến lượt Triarii", mấu chốt là biết chờ (chi tiết: tướng xử con trai vì rời hàng) |
+  | 8:10 | Hậu quả lịch sử |
+  | 8:34 | Mở rộng: đánh phalanx Macedonia 150 năm sau (đổi bảng màu) |
+  | 9:18 | Câu chốt gọi lại tiêu đề: "The front line was never the war. It was the bait." |
+
+- **Nhịp:** cứ khoảng 45–70 s có một cú mới (điềm báo, cấu trúc, twist, bí ẩn, bẫy, cao trào). Phần giải thích để tới 3/4 video,
+  sau khi người xem đã "sống" qua sự kiện. Chi tiết sử liệu được trích ("A Roman historian wrote…", "A Greek historian…").
+- **Lời gắn với hình theo luật:**
+  - "From above…" thì cắt sang bàn chiến thuật (cả 3 lần đều khớp);
+  - địa lý (Rome, Latin towns, Vesuvius) thì bản đồ giấy da;
+  - cơ chế trừu tượng thì sơ đồ giấy kẻ;
+  - cảm giác thân thể và cảm xúc thì cận mặt, cận vật;
+  - đổi thời kỳ thì đổi bảng màu.
+- **Bài học cho tool:**
+  - đổi tốc độ đọc mặc định từ 150 lên 190 từ/phút (giọng OmniVoice của người dùng đo được 201–203); đã sửa, và tool tự hiệu chỉnh theo giọng đã tải lên;
+  - `align.py` không chạy nổi kịch bản dài (quá 10 phút với 1.866 từ), cần canh theo đoạn.
 
 ## 2. So với tool hiện tại
 | Cần cho video dài | Tool hiện có | Thiếu |
@@ -93,7 +129,9 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    - `cam_report` kiểu mới: kiểm tra nhịp cắt, không cảnh nào đứng yên, cảnh dài xen cảnh ngắn.
    - Bật độ sâu trường ảnh (không còn phụ đề to sát ống kính); phụ đề nhỏ phía dưới hoặc tắt.
    - Video thử: 2–3 phút, 2 chương.
-2. **Bộ kiểu cảnh** cho `plan_shots` dài: toàn cảnh, trung, cận mặt, cận vật, bàn chiến thuật, bản đồ, sơ đồ, nội cảnh, thẻ chữ mốc
+2. **Mẫu kịch bản + bộ kiểu cảnh** cho `write_content`/`plan_shots` dài: kịch bản ngôi "you" hiện tại (tùy chọn), mở giữa cao trào
+   + "let's go back", gieo bí ẩn sớm, cú mới mỗi 45–70 s, giải thích ở khoảng 75 %, mở rộng + câu chốt gọi lại tiêu đề; luật gắn lời với kiểu cảnh
+   như mục 1. Kiểu cảnh: toàn cảnh, trung, cận mặt, cận vật, bàn chiến thuật, bản đồ, sơ đồ, nội cảnh, thẻ chữ mốc
    (năm, tên trận, con số; người dùng muốn có "màn hình chữ" ở mốc quan trọng). Claude chọn kiểu theo nội dung từng câu.
 3. **Bàn chiến thuật + bản đồ giấy da**:
    - bối cảnh `tactical_board` (nền đất có vân, khối đơn vị theo màu phe, mũi tên vẽ dần, bụi mù);

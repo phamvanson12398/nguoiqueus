@@ -21,7 +21,7 @@ Bản rút gọn của skill `blender-why-shorts` v3. Định dạng dữ liệu
 - Không sao chép câu chuyện hay nhân vật của kênh khác.
 
 ## Lời đọc
-- Tiếng Anh, giọng kể chuyện Mỹ, khoảng 150 từ/phút (giọng AI). Câu ngắn, có punchline, twist, câu chốt hài.
+- Tiếng Anh, giọng kể chuyện Mỹ, khoảng 190 từ/phút (giọng AI; đo thật: 198–201). Câu ngắn, có punchline, twist, câu chốt hài.
 - Lời thoại nhân vật đặt trong ngoặc kép (để nhép miệng). `[beat]` = ngắt 0,5-1 giây cho gag hình.
 - Kèm bản dịch tiếng Việt và bảng chuỗi máy.
 
