@@ -334,7 +334,7 @@
           58,
           56
         ],
-        "title": "IMPERIUM ROMANUM · 2nd CENTURY AD",
+        "title": "IMPERIUM ROMANUM",
         "rivers": false,
         "cities": [
           {
@@ -655,7 +655,7 @@
           {
             "name": "Samnium",
             "faction": "samnites",
-            "from": 2086,
+            "from": 2060,
             "poly": [
               [
                 13.9,
@@ -1884,7 +1884,7 @@
         "b": 130,
         "type": "card",
         "fstop": 1.8,
-        "note": "place card BRITANNIA over blurred swamp mist",
+        "note": "place screen BRITANNIA over blurred swamp mist",
         "frame": {
           "subject": [
             8,
@@ -1984,7 +1984,7 @@
         "b": 679,
         "type": "full",
         "fstop": 2.8,
-        "note": "goat takes the long way around the swamp",
+        "note": "goat takes the long way around the swamp (pan with it, screen left->right)",
         "frame": {
           "subject": "goat",
           "size": 4.5,
@@ -2081,40 +2081,28 @@
         "b": 1635,
         "type": "insert",
         "fstop": 4,
-        "note": "a straight line ruled across the paper",
+        "note": "wavy lines, then a ruler-straight red line; frame the whole sheet so the wavy strokes at y +-3 are in shot",
         "frame": {
           "subject": "pruler.center",
-          "size": 4.5,
+          "size": 7.2,
           "height": "top",
-          "move": "truck_right"
+          "move": "push_in",
+          "amount": 0.7
         }
       },
       {
         "a": 1636,
-        "b": 1827,
-        "type": "diagram",
-        "fstop": 5.6,
-        "note": "ancient path wanders: river, hill, farmer",
-        "frame": {
-          "subject": "pwander.center",
-          "size": 5,
-          "x": 0.8,
-          "height": "top",
-          "move": "truck_right"
-        }
-      },
-      {
-        "a": 1828,
         "b": 1884,
         "type": "diagram",
         "fstop": 5.6,
-        "note": "Roman roads just... don't (straight red line)",
+        "note": "long slide left->right: ancient path wanders (river, hill, farmer) ... Roman roads just don't (straight red line on the right half)",
         "frame": {
           "subject": "pwander.center",
-          "size": 5.4,
-          "x": -0.75,
+          "size": 5.2,
+          "x": 0.75,
           "height": "top",
-          "move": "push_in"
+          "move": "truck_right",
+          "amount": 1.6
         }
       },
       {
@@ -2166,7 +2154,7 @@
         "b": 2308,
         "type": "medium",
         "fstop": 2.8,
-        "note": "Republican soldiers wade knee-deep, a sandal is sucked off",
+        "note": "Republican soldiers wade knee-deep, one flinches as the mud grabs him",
         "frame": {
           "subject": "rep2",
           "angle": 10,
@@ -2353,7 +2341,7 @@
         "b": 3865,
         "type": "closeup",
         "fstop": 2,
-        "note": "\"Case closed?\" clap, freeze, record scratch",
+        "note": "\"Case closed?\" clap, freeze (pose held), record scratch on 'Not quite'",
         "frame": {
           "subject": "centurion",
           "angle": -20,
@@ -2606,9 +2594,24 @@
   "chars": [
     {
       "id": "marcus",
-      "type": "marcus",
+      "type": "person",
       "faction": "roman_empire_britain",
-      "role": "surveyor",
+      "outfit": "roman_surveyor_50ad",
+      "look": {
+        "hair": "short",
+        "hair_color": [
+          0.05,
+          0.03,
+          0.02
+        ],
+        "beard": "none",
+        "accent": [
+          0.55,
+          0.12,
+          0.05
+        ],
+        "seed": 3
+      },
       "loc": [
         -1.3,
         3.4,
@@ -2723,9 +2726,20 @@
     },
     {
       "id": "centurion",
-      "type": "centurion",
+      "type": "person",
       "faction": "roman_empire_britain",
       "role": "officer",
+      "outfit": "roman_centurion_50ad",
+      "look": {
+        "hair": "short",
+        "beard": "none",
+        "accent": [
+          0.8,
+          0.06,
+          0.04
+        ],
+        "seed": 7
+      },
       "loc": [
         -3,
         3,
@@ -2801,9 +2815,9 @@
         [
           432,
           [
-            0.96,
-            0.7,
-            0.52
+            0.98,
+            0.98,
+            0.97
           ]
         ],
         [
@@ -2825,17 +2839,17 @@
         [
           660,
           [
-            0.96,
-            0.7,
-            0.52
+            0.98,
+            0.98,
+            0.97
           ]
         ],
         [
           4276,
           [
-            0.96,
-            0.7,
-            0.52
+            0.98,
+            0.98,
+            0.97
           ]
         ],
         [
@@ -2857,9 +2871,9 @@
         [
           4460,
           [
-            0.96,
-            0.7,
-            0.52
+            0.98,
+            0.98,
+            0.97
           ]
         ]
       ],
@@ -2972,9 +2986,12 @@
     },
     {
       "id": "leg1",
-      "type": "legionary",
+      "type": "person",
       "faction": "roman_empire_britain",
       "role": "soldier",
+      "look": {
+        "seed": 21
+      },
       "loc": [
         -5,
         4.4,
@@ -3031,9 +3048,12 @@
     },
     {
       "id": "leg2",
-      "type": "legionary",
+      "type": "person",
       "faction": "roman_empire_britain",
       "role": "soldier",
+      "look": {
+        "seed": 22
+      },
       "loc": [
         -6.4,
         4.6,
@@ -3090,9 +3110,12 @@
     },
     {
       "id": "leg3",
-      "type": "legionary",
+      "type": "person",
       "faction": "roman_empire_britain",
       "role": "soldier",
+      "look": {
+        "seed": 23
+      },
       "loc": [
         -7.8,
         4.4,
@@ -3149,9 +3172,24 @@
     },
     {
       "id": "bran",
-      "type": "bran",
+      "type": "person",
       "faction": "britons",
-      "role": "guide",
+      "outfit": "briton_guide_50ad",
+      "look": {
+        "hair": "tied",
+        "hair_color": [
+          0.35,
+          0.12,
+          0.04
+        ],
+        "beard": "mustache",
+        "accent": [
+          0.08,
+          0.4,
+          0.12
+        ],
+        "seed": 5
+      },
       "loc": [
         0.9,
         1.8,
@@ -3219,7 +3257,6 @@
       "id": "goat",
       "type": "goat",
       "faction": "britons",
-      "role": "animal",
       "loc": [
         1.9,
         2.6,
@@ -3287,9 +3324,24 @@
     },
     {
       "id": "appius",
-      "type": "appius_claudius",
+      "type": "person",
       "faction": "roman_republic",
-      "role": "censor",
+      "outfit": "appius_claudius_312bc",
+      "look": {
+        "hair": "short",
+        "hair_color": [
+          0.72,
+          0.72,
+          0.7
+        ],
+        "beard": "none",
+        "accent": [
+          0.4,
+          0.04,
+          0.35
+        ],
+        "seed": 9
+      },
       "loc": [
         301.6,
         0.6,
@@ -3353,9 +3405,12 @@
     },
     {
       "id": "rep1",
-      "type": "legionary_republic",
+      "type": "person",
       "faction": "roman_republic",
       "role": "soldier",
+      "look": {
+        "seed": 31
+      },
       "loc": [
         286,
         9.4,
@@ -3424,9 +3479,12 @@
     },
     {
       "id": "rep2",
-      "type": "legionary_republic",
+      "type": "person",
       "faction": "roman_republic",
       "role": "soldier",
+      "look": {
+        "seed": 32
+      },
       "loc": [
         287.6,
         10.2,
@@ -3509,9 +3567,12 @@
     },
     {
       "id": "rep3",
-      "type": "legionary_republic",
+      "type": "person",
       "faction": "roman_republic",
       "role": "soldier",
+      "look": {
+        "seed": 33
+      },
       "loc": [
         289.4,
         9.6,
@@ -3580,9 +3641,12 @@
     },
     {
       "id": "samnite1",
-      "type": "samnite_warrior",
+      "type": "person",
       "faction": "samnites",
-      "role": "warrior",
+      "role": "soldier",
+      "look": {
+        "seed": 41
+      },
       "loc": [
         307.4,
         14,
@@ -3620,9 +3684,12 @@
     },
     {
       "id": "samnite2",
-      "type": "samnite_warrior",
+      "type": "person",
       "faction": "samnites",
-      "role": "warrior",
+      "role": "soldier",
+      "look": {
+        "seed": 42
+      },
       "loc": [
         309.2,
         14.5,
@@ -3657,6 +3724,71 @@
           ]
         }
       }
+    }
+  ],
+  "crowds": [
+    {
+      "id": "column",
+      "type": "person",
+      "faction": "roman_empire_britain",
+      "role": "soldier",
+      "count": 18,
+      "formation": "block",
+      "cols": 9,
+      "spacing": [
+        1,
+        0.9
+      ],
+      "at": [
+        -14,
+        5.2,
+        0
+      ],
+      "rot": 0,
+      "variants": 3,
+      "faces": [
+        "neutral",
+        "worried"
+      ],
+      "seed": 4,
+      "jitter": 0.08,
+      "moves": [
+        [
+          3079,
+          [
+            -14,
+            5.2
+          ]
+        ],
+        [
+          3080,
+          [
+            -40,
+            5.2
+          ]
+        ],
+        [
+          3530,
+          [
+            -18.4,
+            5.2
+          ]
+        ],
+        [
+          3531,
+          [
+            -14,
+            5.2
+          ]
+        ]
+      ],
+      "march": [
+        [
+          3080,
+          3530
+        ]
+      ],
+      "note": "the waiting column behind Marcus (seq 1, 5) and the marching legion (seq 4); 9 across the road axis X, 2 rows deep"
     }
   ],
   "visibility": {
@@ -5763,6 +5895,16 @@
       "to": 1153
     },
     {
+      "style": "label",
+      "text": "ROMAN EMPIRE, 2nd CENTURY AD",
+      "from": 1160,
+      "to": 1225,
+      "pos": [
+        0,
+        0.7
+      ]
+    },
+    {
       "style": "stamp_check",
       "from": 1868,
       "to": 1884,
@@ -5780,6 +5922,16 @@
       "caption": "Rome vs. the Samnites",
       "from": 1887,
       "to": 1963
+    },
+    {
+      "style": "label",
+      "text": "ROME · SAMNIUM · CAPUA",
+      "from": 2066,
+      "to": 2112,
+      "pos": [
+        0.3,
+        0.7
+      ]
     },
     {
       "style": "label",
@@ -5803,6 +5955,14 @@
       "size": 0.05
     },
     {
+      "style": "screen",
+      "variant": "number",
+      "text": "~20 ROMAN MILES IN 5 HOURS",
+      "caption": "Roman training standard (Vegetius)",
+      "from": 3380,
+      "to": 3512
+    },
+    {
       "style": "stamp_x",
       "from": 3797,
       "to": 3850,
@@ -5811,14 +5971,6 @@
         0.3
       ],
       "size": 0.16
-    },
-    {
-      "style": "screen",
-      "variant": "number",
-      "text": "~20 ROMAN MILES IN 5 HOURS",
-      "caption": "Roman training standard (Vegetius)",
-      "from": 3380,
-      "to": 3512
     },
     {
       "style": "bubble",
@@ -6114,6 +6266,6 @@
     ]
   },
   "notes": {
-    "vi": "Chương 1/2 (172 s, 47 shot ≈ 16 cắt/phút). Bản đồ/sa bàn/sơ đồ dùng parchment_map (empire, itmap), tactical_board (board), paper_diagram (pglobe, pruler, pwander, pshort, pcost) thay cho map_parchment/diagram_sightline trong content. Xấp xỉ: freeze-frame 'Case closed' = tư thế vỗ tay giữ nguyên + camera trôi + dấu ✗; montage xẻ đồi = một cú toàn cảnh có bụi/crash/thud; cây thước = nét kẻ thẳng của tay vẽ trên giấy; bong bóng tôn giáo = thẻ bubble; bong bóng bùn bỏ qua. Màu mặt tím của bách phu trưởng dùng skin_keys với da gốc (0.96, 0.70, 0.52). Tay chỉ/vẫy dùng 'ik' vì mảng 'ang' khớp cả hai nhánh oneOf của schema."
+    "vi": "Chương 1/2 (172 s, 46 shot ≈ 16 cắt/phút). Dựa trên bản plan_shots trước (cùng words), sửa: (1) người dùng thân 'person' + faction + outfit/role thay cho nhân vật riêng (marcus, centurion, legionary, bran, appius, lính Cộng hòa, Samnite); (2) thêm crowd 'column' 18 lính lê dương đứng chờ sau Marcus và hành quân ở chuỗi 4; (3) shot pruler (1526) nới khung 7,2 để thấy cả hai nét cong + nét thẳng (trước đây nhắm vào vùng giấy trống); (4) gộp 2 shot pwander thành một cú trượt dài 8,3 s; (5) thêm thẻ label cho 'ROMAN EMPIRE, 2nd CENTURY AD' và 'ROME · SAMNIUM · CAPUA' để mọi card_text đều lên màn hình. Xấp xỉ: freeze-frame 'Case closed' = tư thế vỗ tay giữ nguyên + camera trôi + dấu ✗; montage xẻ đồi = một cú toàn cảnh có bụi/crash/thud; cây thước = nét kẻ thẳng của tay vẽ; bong bóng tôn giáo = thẻ bubble; bong bóng bùn và chiếc dép bị hút bỏ qua (chỉ còn flinch + slide_down). Mặt tím của bách phu trưởng dùng skin_keys từ màu mặt trắng mặc định. Con dê không có mặt 'chewing' nên dùng neutral → happy."
   }
 }

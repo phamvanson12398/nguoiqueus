@@ -1,0 +1,179 @@
+{
+ "name": "iron_age_britons_50ad",
+ "title_vi": "Người Briton thời đồ sắt muộn, miền nam Britannia (khoảng năm 43-60)",
+ "years": [
+  -50,
+  61
+ ],
+ "region": "Miền nam và miền đông Britannia (nay là nước Anh): các bộ tộc Catuvellauni, Trinovantes, Iceni, Durotriges, Atrebates; đảo Mona (Anglesey) ở xứ Wales",
+ "description_vi": "Các bộ tộc Briton thời đồ sắt muộn không phải một nhà nước thống nhất mà là nhiều bộ tộc có vua hoặc nữ hoàng riêng, có tộc thân La Mã (Atrebates, Iceni trước năm 60), có tộc chống La Mã (Catuvellauni của Caratacus, Durotriges). Dân sống trong nhà tròn mái tranh, nhiều nơi có thành đất trên đồi (hillfort) với nhiều lớp hào và lũy. Các trung tâm lớn ở đông nam (Camulodunon, Verlamion) là những khu đất rộng bao bằng hào đất. Quần áo bằng len dệt: tunic dài tới gối có tay, quần dài (bracae), áo choàng vuông cài trâm (fibula) ở vai. Vải thường dệt sọc hoặc kẻ ô từ hai màu trở lên, nhuộm bằng thực vật: chàm woad (xanh), weld (vàng), rễ cây họ cà phê như madder hoặc bedstraw (đỏ); xanh lá do nhuộm chồng woad lên weld. Người giàu đeo vòng cổ torc bằng vàng hoặc electrum. Chiến binh phần lớn không mặc giáp: cầm khiên gỗ dài hình bầu dục có gờ giữa và núm khiên, giáo, kiếm sắt dài trong bao đồng trang trí. Giáp xích và mũ chỉ giới thượng lưu mới có. Quý tộc chiến đấu trên xe ngựa hai bánh nhẹ, xuống xe khi đánh bộ. Theo Caesar, đàn ông để tóc dài, cạo râu cằm nhưng để ria mép, và bôi thân bằng chất màu xanh (vitrum). Hoa văn La Tène uốn lượn (xoắn, triskele, đầu chim) xuất hiện trên khiên, bao kiếm, đồ đồng và tiền xu.",
+ "sources": [
+  {
+   "claim": "Caesar: người Briton bôi thân bằng vitrum cho màu xanh, để tóc dài, cạo hết trừ đầu và môi trên (ria mép)",
+   "source": "Julius Caesar, De Bello Gallico 5.14 (bản dịch Perseus/Perseids: fgh.perseids.org, Caesar Gallic War 5.7-5.15)"
+  },
+  {
+   "claim": "Cách đánh bằng xe ngựa: chạy quanh phóng giáo, rồi nhảy xuống đánh bộ, người đánh xe chờ ở gần",
+   "source": "Caesar, De Bello Gallico 4.33 và 5.15-16"
+  },
+  {
+   "claim": "Gần như không còn quần áo thời đồ sắt. Bằng chứng đến từ mảnh vải ngập nước và dấu in trên đất sét hoặc gỉ sắt. Vải dệt trên khung dọc có quả nặng; vải được tả là kẻ ô ít nhất hai màu (sợi nhuộm trước khi dệt)",
+   "source": "British Museum / Teaching History 100, 'Clothes tools' (teachinghistory100.org)"
+  },
+  {
+   "claim": "Boudica (Iceni, năm 60-61): tóc vàng hoặc hung (xanthos) rất dài, vòng cổ vàng lớn (torc), tunic nhiều màu, áo choàng dày cài trâm",
+   "source": "Cassius Dio, Roman History 62.2 (tài liệu của Warwick Classics Network, warwick.ac.uk/fac/arts/classics/warwickclassicsnetwork/romancoventry/resources/boudica)"
+  },
+  {
+   "claim": "Torc vàng hoặc electrum là dấu hiệu địa vị. Kho Snettisham (Norfolk, vùng Iceni) chiếm khoảng 80% số torc đồ sắt đã biết ở Anh; Great Torc làm khoảng năm 75 TCN",
+   "source": "British Museum, Great Torc from Snettisham (Room 50); Archaeology.org, 'A Change in Fashion' (2026); Current Archaeology, 'The Snettisham Treasure'"
+  },
+  {
+   "claim": "Khiên Battersea (bằng đồng, khoảng 350-50 TCN) và mũ có sừng Waterloo (khoảng 150-50 TCN) vớt ở sông Thames đều là đồ nghi lễ hoặc diễu hành, vật cúng thần; không phải trang bị chiến đấu thường ngày",
+   "source": "British Museum, Room 50; World History Encyclopedia, 'Celtic Bronze Shields' và 'Waterloo Helmet'"
+  },
+  {
+   "claim": "Năm 60, quân La Mã đánh đảo Mona: các druid giơ tay nguyền rủa, phụ nữ mặc đồ đen như Furies, tóc rối, cầm đuốc",
+   "source": "Tacitus, Annals 14.29-30 (bản Thayer, penelope.uchicago.edu)"
+  },
+  {
+   "claim": "Nhà tròn: cột gỗ chôn đất, vách phên tre trát đất sét (wattle and daub), mái tranh sậy hoặc rơm hình nón dốc, không có ống khói",
+   "source": "Butser Ancient Farm, phục dựng thực nghiệm (butserancientfarm.co.uk; nhà Little Woodbury, Glastonbury M74)"
+  },
+  {
+   "claim": "Tiền vàng của Cunobelinus (vua Catuvellauni, mất khoảng năm 40) đúc chữ CAMV (Camulodunon), một mặt là ngựa, mặt kia là bông lúa",
+   "source": "British Museum collection; de Jersey, Celtic Coinage in Britain (1996)"
+  },
+  {
+   "claim": "Năm 43-47, Legio II Augusta dưới quyền Vespasian chiếm hơn 20 'oppida' của người Durotriges (thường gắn với Maiden Castle, Hod Hill)",
+   "source": "Suetonius, Vespasian 4; Wheeler, Maiden Castle (1943); Sharples, English Heritage Book of Maiden Castle (1991)"
+  }
+ ],
+ "uncertain_vi": "1) Sơn xanh woad: chữ 'vitrum' của Caesar chỉ được hiểu là woad từ rất muộn; cũng có thể là hình xăm hoặc chất khác. Không xác ướp đầm lầy nào ở Anh có dấu woad. Nên vẽ hoa văn xanh tiết chế trên mặt hoặc tay chiến binh, đừng phủ kín người. 2) Vải kẻ ô: có bằng chứng vải sọc và ô hai màu (Hallstatt/Dürrnberg ở lục địa, ô Vindolanda khoảng năm 100), nhưng 'tartan của bộ tộc' là chuyện thời hiện đại. Chỉ dùng ô đơn giản 2 màu. 3) Tóc vôi dựng ngược, quần bracae và áo choàng sọc do Diodorus Siculus tả người Gaul; áp sang người Briton là suy diễn. 4) Mũ sừng Waterloo và khiên Battersea là đồ nghi lễ, có trước năm 43 cả trăm năm; không dùng cho lính thường. 5) Druid: không có hình ảnh đương thời. Áo choàng trắng lấy từ Pliny (Natural History 16.95, lễ cắt tầm gửi ở Gaul), khác cảnh đồ đen của Tacitus; trang phục druid là phỏng đoán. 6) Thuyết 'nghĩa địa chiến tranh' ở Maiden Castle của Wheeler đã bị xem lại; xác các trận đánh ít hơn ông nghĩ. 7) Người Briton không có cờ hay quốc kỳ; dấu hiệu nhận diện trong video (ngựa, lợn rừng, kèn carnyx) là lựa chọn tạo hình dựa trên hiện vật, không phải 'cờ' thật. Kèn carnyx tìm thấy ở Deskford (Scotland) và Tintignac (Gaul), chưa thấy ở miền nam Anh. 8) Xe ngựa chiến: Caesar tả xe ở năm 55-54 TCN; Tacitus còn nhắc xe ở năm 60-61 và năm 83, nhưng thời điểm xe biến mất khỏi chiến trận còn bàn cãi.",
+ "palette": {
+  "cloth": [
+   0.05,
+   0.2,
+   0.62
+  ],
+  "cloth2": [
+   0.78,
+   0.52,
+   0.08
+  ],
+  "metal": [
+   0.78,
+   0.46,
+   0.12
+  ],
+  "metal_dark": [
+   0.2,
+   0.2,
+   0.23
+  ],
+  "leather": [
+   0.3,
+   0.16,
+   0.06
+  ],
+  "trim": [
+   0.98,
+   0.74,
+   0.1
+  ]
+ },
+ "hair_styles": [
+  "long",
+  "tied",
+  "braids",
+  "curly"
+ ],
+ "hair_colors": [
+  [
+   0.62,
+   0.24,
+   0.05
+  ],
+  [
+   0.78,
+   0.5,
+   0.15
+  ],
+  [
+   0.35,
+   0.16,
+   0.05
+  ],
+  [
+   0.17,
+   0.09,
+   0.04
+  ],
+  [
+   0.08,
+   0.05,
+   0.03
+  ],
+  [
+   0.88,
+   0.68,
+   0.3
+  ]
+ ],
+ "beard_prob": 0.75,
+ "beard_styles": [
+  "mustache",
+  "full"
+ ],
+ "skin_tones": [
+  [
+   0.96,
+   0.8,
+   0.68
+  ],
+  [
+   0.92,
+   0.72,
+   0.58
+  ],
+  [
+   0.86,
+   0.64,
+   0.5
+  ],
+  [
+   0.78,
+   0.56,
+   0.42
+  ]
+ ],
+ "roles": {
+  "soldier": "briton_warrior_50ad",
+  "officer": "briton_chieftain_50ad",
+  "noble": "briton_queen_50ad",
+  "commoner": "briton_farmer_50ad",
+  "priest": "briton_druid_50ad",
+  "charioteer": "briton_charioteer_50ad"
+ },
+ "role_briefs_vi": {
+  "briton_warrior_50ad": "Chiến binh bộ tộc (đa số không có giáp). Thân: tunic len có tay, dài quá hông (torso $team, hoặc $cloth với 2-3 sọc ô ngang $cloth2 rộng 0,06 trên thân), thắt dây lưng da $leather ở y≈0,3. Không mặc giáp, không đội mũ (hair: auto, tóc dài hoặc buộc sau gáy). Râu: chủ yếu ria mép rủ dài qua khóe miệng (beard mustache), không che miệng. Mặt hoặc cánh tay vẽ 1-2 đường xoắn xanh woad mảnh ($cloth, stroke w 0,02), không phủ kín. Tay trái cầm khiên gỗ dài hình bầu dục, hơi thắt eo (cao ~0,95, rộng ~0,5), màu $team, gờ dọc giữa (spina, stroke $leather), núm khiên tròn bằng đồng $metal ở giữa, mép viền $metal_dark. Có thể vẽ một hoa văn xoắn triskele đơn giản $trim. Tay phải cầm giáo gỗ dài ~2,2 với mũi sắt hình lá $metal_dark. Kiếm sắt dài treo hông phải trong bao đồng $metal (cỡ 0,6 x 0,07). Quần bracae dài $cloth2 hoặc để chân trần với giày da mềm $leather. Bóng đen dễ nhận: tóc dài không mũ, ria rủ, khiên dài bầu dục có núm tròn, khác hẳn khiên chữ nhật cong của La Mã.",
+  "briton_chieftain_50ad": "Thủ lĩnh chiến binh hoặc quý tộc cưỡi xe (kiểu Caratacus). Tunic dài kẻ ô hai màu ($team nền, ô $cloth2) dưới áo giáp xích ngắn tay tới hông: vẽ thành một rrect $metal_dark phủ thân (0, 0,45, 0,8, 0,55), chấm nhỏ thưa $metal để gợi mắt xích; giáp xích là đồ hiếm và quý (mộ Folly Lane, St Albans, khoảng năm 55). Cổ đeo torc vàng to $trim: cung tròn dày w 0,06 quanh cổ, hai đầu núm tròn ở trước ngực. Áo choàng vuông $cloth sau lưng (z −0,05) cài trâm đồng tròn $metal trên vai phải. Tóc dài buộc, ria mép dài (có thể râu ngắn). Không mũ, hoặc một mũ đồng tròn thấp đơn giản (hiếm); tuyệt đối không mũ sừng. Tay phải cầm kiếm sắt dài ~0,8 có chuôi hình người hoặc chuôi đồng $metal; tay trái cầm khiên bầu dục $team viền đồng, núm đồng to trang trí La Tène $trim. Bóng đen: torc vàng sáng ở cổ, áo choàng, khiên to hơn chiến binh.",
+  "briton_queen_50ad": "Nữ hoàng hoặc nữ quý tộc (theo mô tả Boudica của Cassius Dio). Tunic dài tới gối nhiều màu kẻ ô lớn ($team nền, ô $cloth2 và $trim, 2-3 sọc mỗi chiều) thắt lưng. Áo choàng dày $cloth phủ vai, cài một trâm đồng lớn $metal ở ngực. Torc vàng lớn $trim (cung tròn w 0,07, hai đầu núm to). Tóc rất dài, màu hung hoặc vàng (hair: long, có thể đặt màu tóc riêng), xõa tới thắt lưng (tóc sau thân z −0,05). Tay phải cầm giáo ngắn ~1,8 mũi lá sắt. Có thể thêm vòng tay vàng. Không vương miện, không giáp. Bóng đen: tóc dài xõa, áo choàng, torc vàng.",
+  "briton_farmer_50ad": "Dân thường hoặc nông dân. Tunic len thô màu tự nhiên dài tới gối (torso $cloth2 hoặc nâu len chưa nhuộm [0,42; 0,3; 0,16]), có thể có một sọc màu ở gấu, dây lưng da $leather. Áo choàng ngắn len thô màu nâu xám cài trâm sắt đơn giản $metal_dark. Chân trần hoặc giày da mềm $leather. Tóc dài hoặc buộc; đàn ông có ria hoặc râu. Không torc vàng (dân thường có thể đeo vòng tay đồng nhỏ). Đồ cầm: liềm sắt, cuốc hoặc xẻng gỗ, thúng lúa mì spelt, hoặc gậy chăn cừu. Bóng đen: áo đơn giản màu đất, không vũ khí.",
+  "briton_druid_50ad": "Druid (thầy tế, thẩm phán, người giữ tri thức). Không có hình ảnh đương thời; trang phục là phỏng đoán, ghi chú điều này trong outfit.json. Áo dài trùm tới chân màu trắng ngà [0,85; 0,82; 0,72] (theo Pliny, lễ cắt tầm gửi) hoặc đen [0,06; 0,05; 0,05] (cảnh đảo Mona năm 60 của Tacitus; chọn theo cảnh). Áo choàng có mũ trùm hạ sau lưng. Tóc dài, râu dài full. Có thể đeo torc nhỏ $trim. Tay phải cầm gậy gỗ cao ~1,9 hoặc giơ hai tay lên trời khi nguyền rủa (động tác theo Tacitus). Có thể cầm một liềm nhỏ màu vàng (Pliny) khi cắt tầm gửi. Không vẽ vương miện lá, không đá Stonehenge (Stonehenge cổ hơn 2.000 năm, không phải đền druid). Bóng đen: áo dài trùm chân, râu dài, gậy cao.",
+  "briton_charioteer_50ad": "Người đánh xe ngựa chiến (chở thủ lĩnh, chờ ở gần trận khi chủ xuống đánh bộ, theo Caesar). Tunic ngắn tay $team hoặc $cloth, có thể sọc ô; quần bracae $cloth2 bó; dây lưng da. Không giáp, không khiên to (có thể mang khiên nhỏ sau lưng). Tóc buộc sau gáy cho gọn, ria mép. Hai tay cầm dây cương da $leather (stroke w 0,02 kéo về phía trước) và một roi ngắn. Đứng trên xe hai bánh nhẹ: bánh xe nan gỗ, vành sắt, thành xe hình cung hai bên bằng phên đan; ngựa nhỏ cỡ ngựa pony (đạo cụ 3D hoặc 2D riêng, không nằm trong outfit). Bóng đen: tư thế nghiêng người kéo cương, áo ngắn gọn."
+ },
+ "emblem_vi": "Người Briton không có cờ hay quốc kỳ. Dấu hiệu tạo hình dựa trên hiện vật: (1) con ngựa cách điệu kiểu tiền vàng Cunobelinus hoặc White Horse ở Uffington, vẽ vàng trên nền xanh woad; (2) hoa văn xoắn triskele và đường cong La Tène vẽ đồng trên khiên bầu dục; (3) lợn rừng (biểu tượng phổ biến trên mũ và kèn), dùng cho đầu kèn carnyx. Màu nhận diện trong video: xanh woad, kẻ ô vàng, đồng và vàng, tương phản với đỏ của La Mã.",
+ "architecture_vi": "Nhà tròn đường kính 6-15 m: vách phên trát đất sét trắng xám, cửa thấp có mái hiên quay về hướng đông, mái tranh sậy hoặc rơm hình nón dốc khoảng 45°, không ống khói, khói thoát qua mái. Nhóm nhà trong khu rào gỗ, có kho lúa đặt trên 4 cột, hố chứa lúa, khung dệt dọc, chuồng gia súc. Thành đất trên đồi (Maiden Castle, Hod Hill): nhiều vòng lũy đất và hào sâu, phủ cỏ xanh, cổng ngoằn ngoèo có tường gỗ, trên đỉnh lũy có hàng rào cọc. Oppida đông nam (Camulodunon) là vùng đất rộng bao bằng các đê đất dài. Không có đường lát đá, không có công trình đá xây; đường chỉ là lối mòn đất (tương phản với đường La Mã thẳng tắp, lát đá). Đền thờ là khu rừng thiêng hoặc đền vuông nhỏ bằng gỗ; dâng vũ khí xuống sông và đầm lầy.",
+ "map_color": [
+  0.08,
+  0.48,
+  0.14
+ ],
+ "music_vi": "Kèn carnyx bằng đồng dựng đứng có đầu lợn rừng (tiếng rền khàn), trống da, tiếng hô xung trận và tiếng vỗ khiên, đàn lyre nhỏ cho cảnh làng; nhịp chậm, âm u, khác với kèn cornu và trống quân của La Mã.",
+ "kind": "culture",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Người Briton thời đồ sắt muộn ở miền nam Britannia khoảng năm 43-60 (thời La Mã xâm lược): chiến binh, thủ lĩnh, dân thường; dùng trong video về đường La Mã.",
+ "created": "2026-11-11T15:43:57"
+}

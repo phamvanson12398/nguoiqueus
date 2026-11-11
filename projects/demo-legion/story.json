@@ -1,26 +1,329 @@
 {
- "meta": {"title": "Crowds + outfits demo (16:9)", "slug": "demo-legion", "fps": 30, "frames": 300, "seed": 9, "aspect": "16:9", "output": "demo_legion.mp4", "samples": 24},
+ "meta": {
+  "title": "Crowds + outfits demo (16:9)",
+  "slug": "demo-legion",
+  "fps": 30,
+  "frames": 300,
+  "seed": 9,
+  "aspect": "16:9",
+  "output": "demo_legion.mp4",
+  "samples": 24
+ },
  "factions": [
-  {"id": "rome", "culture": "roman_empire_50ad", "color": [0.66, 0.06, 0.04], "label": "ROME"},
-  {"id": "latins", "culture": "roman_empire_50ad", "color": [0.05, 0.22, 0.58], "label": "LATIN ALLIES"}
+  {
+   "id": "rome",
+   "culture": "roman_empire_50ad",
+   "color": [
+    0.66,
+    0.06,
+    0.04
+   ],
+   "label": "ROME"
+  },
+  {
+   "id": "britons",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.08,
+    0.48,
+    0.14
+   ],
+   "label": "BRITONS"
+  }
  ],
- "sets": [{"id": "field", "type": "open_field", "params": {"road": {"from": [0, -10], "to": [0, 90], "width": 3.5}}}],
+ "sets": [
+  {
+   "id": "field",
+   "type": "open_field",
+   "params": {
+    "road": {
+     "from": [
+      0,
+      -10
+     ],
+     "to": [
+      0,
+      90
+     ],
+     "width": 3.5
+    }
+   }
+  }
+ ],
  "chars": [
-  {"id": "marcus", "type": "person", "faction": "rome", "role": "soldier", "loc": [1.2, 2.0, 0], "look": {"accent": [0.95, 0.62, 0.05], "seed": 4},
-   "expressions": [[1, "worried"], [200, "focus"]], "blinks": [60, 160],
-   "pose": {"default": {"armL": ["ang", -0.35, 0.6], "armR": ["ang", 0.25, -0.25]}}}
+  {
+   "id": "marcus",
+   "type": "person",
+   "faction": "rome",
+   "role": "soldier",
+   "loc": [
+    1.2,
+    2.0,
+    0
+   ],
+   "look": {
+    "accent": [
+     0.95,
+     0.62,
+     0.05
+    ],
+    "seed": 4
+   },
+   "expressions": [
+    [
+     1,
+     "worried"
+    ],
+    [
+     200,
+     "focus"
+    ],
+    [
+     230,
+     "smirk"
+    ]
+   ],
+   "blinks": [
+    60,
+    160
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ang",
+      -0.35,
+      0.6
+     ],
+     "armR": [
+      "ang",
+      0.25,
+      -0.25
+     ]
+    }
+   },
+   "outfit_changes": [
+    [
+     230,
+     "briton_warrior_50ad",
+     "britons"
+    ]
+   ]
+  }
  ],
  "crowds": [
-  {"id": "legion", "faction": "rome", "role": "soldier", "count": 48, "formation": "block", "cols": 12, "spacing": [0.95, 1.0], "at": [-1, 8, 0],
-   "variants": 4, "march": [[30, 150]], "moves": [[30, [-1, 8]], [150, [-1, 4.5]]], "pose": {"armL": ["ang", -0.35, 0.6], "armR": ["ang", 0.25, -0.25]}},
-  {"id": "allies", "faction": "latins", "role": "soldier", "count": 36, "formation": "block", "cols": 12, "spacing": [0.95, 1.0], "at": [0, 26, 0],
-   "variants": 3, "march": [[60, 260]], "moves": [[60, [0, 26]], [260, [0, 18]]], "pose": {"armL": ["ang", -0.35, 0.6], "armR": ["ang", 0.25, -0.25]}}
+  {
+   "id": "legion",
+   "faction": "rome",
+   "role": "soldier",
+   "count": 48,
+   "formation": "block",
+   "cols": 12,
+   "spacing": [
+    0.95,
+    1.0
+   ],
+   "at": [
+    -1,
+    8,
+    0
+   ],
+   "variants": 4,
+   "march": [
+    [
+     30,
+     150
+    ]
+   ],
+   "moves": [
+    [
+     30,
+     [
+      -1,
+      8
+     ]
+    ],
+    [
+     150,
+     [
+      -1,
+      4.5
+     ]
+    ]
+   ],
+   "pose": {
+    "armL": [
+     "ang",
+     -0.35,
+     0.6
+    ],
+    "armR": [
+     "ang",
+     0.25,
+     -0.25
+    ]
+   }
+  },
+  {
+   "id": "britons",
+   "faction": "britons",
+   "role": "soldier",
+   "count": 34,
+   "formation": "scatter",
+   "cols": 12,
+   "spacing": [
+    0.95,
+    1.0
+   ],
+   "at": [
+    0,
+    24,
+    0
+   ],
+   "variants": 4,
+   "march": [
+    [
+     60,
+     260
+    ]
+   ],
+   "moves": [
+    [
+     60,
+     [
+      0,
+      26
+     ]
+    ],
+    [
+     260,
+     [
+      0,
+      18
+     ]
+    ]
+   ],
+   "pose": {
+    "armL": [
+     "ang",
+     -0.35,
+     0.6
+    ],
+    "armR": [
+     "ang",
+     0.25,
+     -0.25
+    ]
+   },
+   "area": [
+    16,
+    5
+   ]
+  }
  ],
- "camera": {"rig": "long", "dof": {"fstop": 4.0}, "shots": [
-  {"a": 1, "b": 110, "type": "establishing", "frame": {"subject": [0, 14, 0], "size": 14, "height": "high", "move": "crane_down", "angle": -15}},
-  {"a": 111, "b": 200, "type": "closeup", "fstop": 2.0, "frame": {"subject": "marcus", "move": "push_in", "angle": 15, "x": -0.3}},
-  {"a": 201, "b": 300, "type": "wide", "frame": {"subject": "legion", "move": "truck_right", "angle": 30, "height": "eye", "size": 6}}
- ]},
- "words": [[0.3, "Forty"], [0.7, "thousand"], [1.2, "men"], [1.6, "march"], [2.0, "north."], [4.0, "Marcus"], [4.5, "is"], [4.7, "one"], [4.9, "of"], [5.0, "them."]],
- "sound": {"music": {"mood": "tense", "gain": 0.14}}
+ "camera": {
+  "rig": "long",
+  "dof": {
+   "fstop": 4.0
+  },
+  "shots": [
+   {
+    "a": 1,
+    "b": 110,
+    "type": "establishing",
+    "frame": {
+     "subject": [
+      0,
+      14,
+      0
+     ],
+     "size": 14,
+     "height": "high",
+     "move": "crane_down",
+     "angle": -15
+    }
+   },
+   {
+    "a": 111,
+    "b": 200,
+    "type": "closeup",
+    "fstop": 2.0,
+    "frame": {
+     "subject": "marcus",
+     "move": "push_in",
+     "angle": 15,
+     "x": -0.3
+    }
+   },
+   {
+    "a": 201,
+    "b": 300,
+    "type": "medium",
+    "fstop": 2.4,
+    "frame": {
+     "subject": "marcus",
+     "move": "push_in",
+     "angle": -10
+    }
+   }
+  ]
+ },
+ "words": [
+  [
+   0.3,
+   "Forty"
+  ],
+  [
+   0.7,
+   "thousand"
+  ],
+  [
+   1.2,
+   "men"
+  ],
+  [
+   1.6,
+   "march"
+  ],
+  [
+   2.0,
+   "north."
+  ],
+  [
+   4.0,
+   "Marcus"
+  ],
+  [
+   4.5,
+   "is"
+  ],
+  [
+   4.7,
+   "one"
+  ],
+  [
+   4.9,
+   "of"
+  ],
+  [
+   5.0,
+   "them."
+  ]
+ ],
+ "sound": {
+  "music": {
+   "mood": "tense",
+   "gain": 0.14
+  }
+ },
+ "cards": [
+  {
+   "style": "screen",
+   "variant": "place",
+   "sub": "BRITANNIA",
+   "text": "AD 50",
+   "caption": "the Roman frontier",
+   "from": 40,
+   "to": 100
+  }
+ ]
 }

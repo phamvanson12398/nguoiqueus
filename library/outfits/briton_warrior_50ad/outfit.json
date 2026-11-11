@@ -1,0 +1,828 @@
+{
+ "name": "briton_warrior_50ad",
+ "culture": "iron_age_britons_50ad",
+ "role": "soldier",
+ "title_vi": "Chiến binh bộ tộc Briton (~năm 43-60)",
+ "description_vi": "Chiến binh bộ tộc không mặc giáp, không đội mũ. Tunic len có tay màu phe, dài quá hông, có 2 sọc ngang vàng weld ($cloth2) trên thân và 1 sọc ở gấu (gợi vải dệt sọc/kẻ ô hai màu), thắt dây lưng da ở y≈0,3. Tóc dài xõa, ria mép rủ dài qua khóe miệng (cằm cạo, theo Caesar). Má trái vẽ một đường xoắn xanh woad mảnh, má phải một nét cong (tiết chế, không phủ kín). Tay trái cầm khiên gỗ dài bầu dục hơi thắt eo màu phe, viền sắt sẫm, gờ dọc spina, núm khiên tròn bằng đồng ở giữa, hoa văn triskele vàng ở thùy trên. Tay phải cầm giáo gỗ dài, mũi sắt hình lá rộng nhô cao trên đầu. Kiếm sắt dài treo hông phải trong bao đồng. Chân đi giày da mềm buộc dây cổ chân.",
+ "silhouette_vi": "đầu trần tóc dài + ria rủ, khiên bầu dục dài thắt eo có núm tròn và gờ dọc, giáo mũi lá rộng nhô trên đầu: khác hẳn mũ có gờ che gáy, khiên chữ nhật cong và pilum mũi nhỏ của lính La Mã",
+ "sources": [
+  {
+   "claim": "Đàn ông Briton để tóc dài, cạo hết trừ đầu và môi trên (ria mép), bôi thân bằng vitrum màu xanh",
+   "source": "Julius Caesar, De Bello Gallico 5.14"
+  },
+  {
+   "claim": "Chiến binh phần lớn không giáp; khiên gỗ dài bầu dục có gờ giữa (spina) và núm khiên, giáo, kiếm sắt dài trong bao đồng trang trí La Tène; giáp xích và mũ chỉ giới thượng lưu có",
+   "source": "culture.json iron_age_britons_50ad; British Museum Room 50"
+  },
+  {
+   "claim": "Vải len dệt sọc/kẻ ô ít nhất hai màu, nhuộm woad (xanh), weld (vàng)",
+   "source": "British Museum / Teaching History 100, 'Clothes tools'"
+  },
+  {
+   "claim": "Woad vẽ tiết chế vì nghĩa của 'vitrum' còn tranh cãi; khiên Battersea là đồ nghi lễ nên chỉ mượn hoa văn triskele",
+   "source": "culture.json uncertain_vi mục 1 và 4"
+  }
+ ],
+ "torso": "$team",
+ "hair": "long",
+ "beard": "mustache",
+ "palette": {},
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tunic_hem",
+   "pts": {
+    "rrect": [
+     0,
+     -0.05,
+     0.84,
+     0.22,
+     0.05
+    ]
+   },
+   "mat": "$team",
+   "z": 0.11,
+   "outline": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "hem_stripe",
+   "pts": [
+    [
+     -0.4,
+     -0.11
+    ],
+    [
+     0.4,
+     -0.11
+    ]
+   ],
+   "w": 0.05,
+   "mat": "$cloth2",
+   "z": 0.115
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "stripe1",
+   "pts": [
+    [
+     -0.38,
+     0.5
+    ],
+    [
+     0.38,
+     0.5
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$cloth2",
+   "z": 0.13
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "stripe2",
+   "pts": [
+    [
+     -0.37,
+     0.64
+    ],
+    [
+     0.37,
+     0.64
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$cloth2",
+   "z": 0.13
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.3,
+     0.86,
+     0.07,
+     0.02
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.18,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "scabbard",
+   "pts": {
+    "rrect": [
+     0.4,
+     0,
+     0.07,
+     0.6,
+     0.03
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.19,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "sword_grip",
+   "pts": [
+    [
+     0.4,
+     0.31
+    ],
+    [
+     0.4,
+     0.44
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$leather",
+   "z": 0.195
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "sword_guard",
+   "pts": [
+    [
+     0.35,
+     0.31
+    ],
+    [
+     0.45,
+     0.31
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$metal_dark",
+   "z": 0.196
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "sword_pommel",
+   "c": [
+    0.4,
+    0.46
+   ],
+   "r": 0.035,
+   "mat": "$metal",
+   "z": 0.197
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "mustache_droopL",
+   "pts": [
+    [
+     -0.11,
+     -0.1
+    ],
+    [
+     -0.19,
+     -0.15
+    ],
+    [
+     -0.22,
+     -0.26
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$hair",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "mustache_droopR",
+   "pts": [
+    [
+     0.11,
+     -0.1
+    ],
+    [
+     0.19,
+     -0.15
+    ],
+    [
+     0.22,
+     -0.26
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$hair",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "woad_spiral",
+   "pts": [
+    [
+     -0.255,
+     -0.19
+    ],
+    [
+     -0.277,
+     -0.147
+    ],
+    [
+     -0.32,
+     -0.133
+    ],
+    [
+     -0.357,
+     -0.153
+    ],
+    [
+     -0.368,
+     -0.19
+    ],
+    [
+     -0.351,
+     -0.221
+    ],
+    [
+     -0.32,
+     -0.23
+    ],
+    [
+     -0.295,
+     -0.215
+    ],
+    [
+     -0.288,
+     -0.19
+    ],
+    [
+     -0.301,
+     -0.171
+    ],
+    [
+     -0.32,
+     -0.167
+    ],
+    [
+     -0.334,
+     -0.176
+    ],
+    [
+     -0.335,
+     -0.19
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$cloth",
+   "z": 0.045
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "woad_curve",
+   "pts": [
+    [
+     0.27,
+     -0.13
+    ],
+    [
+     0.31,
+     -0.18
+    ],
+    [
+     0.36,
+     -0.2
+    ],
+    [
+     0.39,
+     -0.16
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$cloth",
+   "z": 0.045
+  },
+  {
+   "op": "shape",
+   "on": "handL",
+   "name": "shield",
+   "pts": [
+    [
+     -0.03,
+     0.495
+    ],
+    [
+     0.09,
+     0.47
+    ],
+    [
+     0.16,
+     0.42
+    ],
+    [
+     0.205,
+     0.34
+    ],
+    [
+     0.22,
+     0.24
+    ],
+    [
+     0.205,
+     0.12
+    ],
+    [
+     0.195,
+     0.02
+    ],
+    [
+     0.205,
+     -0.08
+    ],
+    [
+     0.22,
+     -0.2
+    ],
+    [
+     0.205,
+     -0.3
+    ],
+    [
+     0.16,
+     -0.38
+    ],
+    [
+     0.09,
+     -0.43
+    ],
+    [
+     -0.03,
+     -0.455
+    ],
+    [
+     -0.15,
+     -0.43
+    ],
+    [
+     -0.22,
+     -0.38
+    ],
+    [
+     -0.265,
+     -0.3
+    ],
+    [
+     -0.28,
+     -0.2
+    ],
+    [
+     -0.265,
+     -0.08
+    ],
+    [
+     -0.255,
+     0.02
+    ],
+    [
+     -0.265,
+     0.12
+    ],
+    [
+     -0.28,
+     0.24
+    ],
+    [
+     -0.265,
+     0.34
+    ],
+    [
+     -0.22,
+     0.42
+    ],
+    [
+     -0.15,
+     0.47
+    ]
+   ],
+   "mat": "$team",
+   "z": 0.05,
+   "outline": 0.035
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "shield_rim",
+   "pts": [
+    [
+     -0.03,
+     0.495
+    ],
+    [
+     0.09,
+     0.47
+    ],
+    [
+     0.16,
+     0.42
+    ],
+    [
+     0.205,
+     0.34
+    ],
+    [
+     0.22,
+     0.24
+    ],
+    [
+     0.205,
+     0.12
+    ],
+    [
+     0.195,
+     0.02
+    ],
+    [
+     0.205,
+     -0.08
+    ],
+    [
+     0.22,
+     -0.2
+    ],
+    [
+     0.205,
+     -0.3
+    ],
+    [
+     0.16,
+     -0.38
+    ],
+    [
+     0.09,
+     -0.43
+    ],
+    [
+     -0.03,
+     -0.455
+    ],
+    [
+     -0.15,
+     -0.43
+    ],
+    [
+     -0.22,
+     -0.38
+    ],
+    [
+     -0.265,
+     -0.3
+    ],
+    [
+     -0.28,
+     -0.2
+    ],
+    [
+     -0.265,
+     -0.08
+    ],
+    [
+     -0.255,
+     0.02
+    ],
+    [
+     -0.265,
+     0.12
+    ],
+    [
+     -0.28,
+     0.24
+    ],
+    [
+     -0.265,
+     0.34
+    ],
+    [
+     -0.22,
+     0.42
+    ],
+    [
+     -0.15,
+     0.47
+    ],
+    [
+     -0.03,
+     0.495
+    ]
+   ],
+   "w": 0.03,
+   "mat": "$metal_dark",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "spina",
+   "pts": [
+    [
+     -0.03,
+     0.44
+    ],
+    [
+     -0.03,
+     -0.4
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$leather",
+   "z": 0.055
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "triskele1",
+   "pts": [
+    [
+     -0.03,
+     0.29
+    ],
+    [
+     -0.03,
+     0.37
+    ],
+    [
+     -0.14,
+     0.383
+    ],
+    [
+     -0.13,
+     0.263
+    ]
+   ],
+   "w": 0.032,
+   "mat": "$trim",
+   "z": 0.058
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "triskele2",
+   "pts": [
+    [
+     -0.03,
+     0.29
+    ],
+    [
+     -0.099,
+     0.25
+    ],
+    [
+     -0.056,
+     0.148
+    ],
+    [
+     0.043,
+     0.216
+    ]
+   ],
+   "w": 0.032,
+   "mat": "$trim",
+   "z": 0.058
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "triskele3",
+   "pts": [
+    [
+     -0.03,
+     0.29
+    ],
+    [
+     0.039,
+     0.25
+    ],
+    [
+     0.106,
+     0.34
+    ],
+    [
+     -0.003,
+     0.391
+    ]
+   ],
+   "w": 0.032,
+   "mat": "$trim",
+   "z": 0.058
+  },
+  {
+   "op": "disc",
+   "on": "handL",
+   "name": "boss",
+   "c": [
+    -0.03,
+    0.02
+   ],
+   "r": 0.1,
+   "mat": "$metal",
+   "z": 0.065
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "boss_ring",
+   "pts": {
+    "ring": [
+     -0.03,
+     0.02,
+     0.1,
+     0.1,
+     24
+    ]
+   },
+   "w": 0.02,
+   "mat": "$ink",
+   "z": 0.067
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "spear_shaft",
+   "pts": [
+    [
+     0,
+     -0.3
+    ],
+    [
+     0,
+     2.02
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$leather",
+   "z": -0.02
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "spear_socket",
+   "pts": [
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     2.08
+    ]
+   ],
+   "w": 0.038,
+   "mat": "$metal_dark",
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "handR",
+   "name": "spear_leaf",
+   "pts": [
+    [
+     0,
+     2.06
+    ],
+    [
+     0.055,
+     2.12
+    ],
+    [
+     0.085,
+     2.21
+    ],
+    [
+     0.05,
+     2.31
+    ],
+    [
+     0,
+     2.42
+    ],
+    [
+     -0.05,
+     2.31
+    ],
+    [
+     -0.085,
+     2.21
+    ],
+    [
+     -0.055,
+     2.12
+    ]
+   ],
+   "mat": "$metal_dark",
+   "z": -0.02,
+   "outline": 0.015
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "shoe",
+   "pts": {
+    "ellipse": [
+     0.02,
+     0,
+     0.14,
+     0.08,
+     20
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.008,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "tie",
+   "pts": [
+    [
+     -0.06,
+     0.06
+    ],
+    [
+     0.08,
+     0.06
+    ]
+   ],
+   "w": 0.018,
+   "mat": [
+    0.16,
+    0.08,
+    0.03
+   ],
+   "z": 0.012
+  },
+  {
+   "op": "shape",
+   "on": "footR",
+   "name": "shoe",
+   "pts": {
+    "ellipse": [
+     0.02,
+     0,
+     0.14,
+     0.08,
+     20
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.008,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "tie",
+   "pts": [
+    [
+     -0.06,
+     0.06
+    ],
+    [
+     0.08,
+     0.06
+    ]
+   ],
+   "w": 0.018,
+   "mat": [
+    0.16,
+    0.08,
+    0.03
+   ],
+   "z": 0.012
+  }
+ ],
+ "kind": "outfit",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Chiến binh bộ tộc (đa số không có giáp). Thân: tunic len có tay, dài quá hông (torso $team, hoặc $cloth với 2-3 sọc ô ngang $cloth2 rộng 0,06 trên thân), thắt dây lưng da $leather ở y≈0,3. Không mặc giáp, không đội mũ (hair: auto, tóc dài hoặc buộc sau gáy). Râu: chủ yếu ria mép rủ dài qua khóe miệng (beard mustache), không che miệng. Mặt hoặc cánh tay vẽ 1-2 đường xoắn xanh woad mảnh ($cloth, stroke w 0,02), không phủ kín. Tay trái cầm khiên gỗ dài hình bầu dục, hơi thắt eo (cao ~0,95, rộng ~0,5), màu $team, gờ dọc giữa (spina, stroke $leather), núm khiên tròn bằng đồng $metal ở giữa, mép viền $metal_dark. Có thể vẽ một hoa văn xoắn triskele đơn giản $trim. Tay phải cầm giáo gỗ dài ~2,2 với mũi sắt hình lá $metal_dark. Kiếm sắt dài treo hông phải trong bao đồng $metal (cỡ 0,6 x 0,07). Quần bracae dài $cloth2 hoặc để chân trần với giày da mềm $leather. Bóng đen dễ nhận: tóc dài không mũ, ria rủ, khiên dài bầu dục có núm tròn, khác hẳn khiên chữ nhật cong của La Mã.",
+ "created": "2026-11-11T15:45:57",
+ "review": {
+  "score": 8,
+  "summary_vi": "Bản r2 đạt, 8/10, không cần sửa thêm. Mũi giáo hình lá giờ nhô hẳn trên đỉnh đầu, to hơn rõ so với mũi pilum. Ria rủ đã tách khỏi khóe miệng. Khiên bầu dục thắt eo, có gờ dọc, núm đồng và triskele phóng to, đọc rõ ở cả ảnh màu lẫn bóng đen. Mắt và miệng không bị che; khiên theo tay trái, giáo theo tay phải, kiếm trong bao đồng treo hông phải.",
+  "accuracy_vi": "Đúng sử liệu theo culture.json: không giáp, không mũ, tóc dài với ria mép (Caesar BG 5.14), tunic len sọc hai màu, khiên gỗ bầu dục có spina và núm đồng, giáo mũi lá, kiếm dài trong bao đồng, giày da mềm. Woad chỉ vẽ tiết chế trên má. Không có mũ sừng, không lẫn đồ của thời kỳ hay nước khác.",
+  "problems": [
+   "Phụ (không cần sửa): hoa văn triskele vẫn hơi góc cạnh, chưa thật uốn lượn. Ở cỡ điện thoại chỉ thấy một mảng vàng trên khiên, chấp nhận được.",
+   "Phụ: thân giáo dừng ở khoảng hông chứ không chạm đất như pilum. Phân biệt hai loại giáo vẫn dựa vào mũi lá to, nên không ảnh hưởng."
+  ]
+ }
+}

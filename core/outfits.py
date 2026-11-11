@@ -146,15 +146,17 @@ def dress(c, cid, outfit, look, head_r, prefix=None):
     slots = look["slots"]
     groups = {}
     hair = outfit.get("hair", look["hair"]) if outfit.get("hair") != "auto" else look["hair"]
-    draw_ops(c, prefix + "_hair", hair_ops(hair, head_r) + beard_ops(look["beard"], head_r), slots, groups)
+    own_face_hair = any(op.get("on") == "head" and any(k in op.get("name", "").lower() for k in ("beard", "mustache", "moustache", "goatee"))
+                        for op in outfit.get("items", []))
+    draw_ops(c, prefix + "_hair", hair_ops(hair, head_r) + ([] if own_face_hair else beard_ops(look["beard"], head_r)), slots, groups)
     draw_ops(c, prefix, outfit.get("items", []), slots, groups)
     if look.get("has_accent") and outfit.get("accent_item", True):
         # the protagonist's own colour: a neck scarf (works with every culture; outfits can opt out with accent_item: false)
         th = getattr(c, "torso_h", 0.82)
         draw_ops(c, prefix + "_acc", [
-            {"op": "shape", "on": "torso", "name": "scarf", "pts": {"rrect": [0, th - 0.02, 0.46, 0.15, 0.06]}, "mat": "$accent", "z": 0.24, "outline": 0.025},
+            {"op": "shape", "on": "torso", "name": "scarf", "pts": {"rrect": [0, th - 0.02, 0.46, 0.15, 0.06]}, "mat": "$accent", "z": 0.335, "outline": 0.025},
             {"op": "shape", "on": "torso", "name": "scarf_tail", "pts": [[0.06, th - 0.06], [0.2, th - 0.06], [0.16, th - 0.32], [0.04, th - 0.28]],
-             "mat": "$accent", "z": 0.245, "outline": 0.022}], slots, groups)
+             "mat": "$accent", "z": 0.34, "outline": 0.022}], slots, groups)
     return list(groups.values())
 
 

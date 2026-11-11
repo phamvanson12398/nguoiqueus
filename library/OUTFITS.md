@@ -26,7 +26,8 @@ Các mảnh 2D vẽ lên nhân vật `person` (cùng cú pháp `extras` của ch
   `{"ellipse": [cx, cy, rx, ry, n(, a0, a1 rad)]}`, `{"arc": [...]}`, `{"ring": [...]}`.
 - `mat`: ô màu `$team $team_dark $cloth $cloth2 $metal $metal_dark $leather $trim $hair $accent $ink $white` hoặc `[r, g, b]`.
   Dùng `$team` cho phần nhận diện phe (áo, khiên, cờ, lông mào) để hai phe cùng văn hóa khác màu.
-- `torso`: màu áo nền (ô màu). `hair`: `none` khi đội mũ kín, `auto` = theo văn hóa. `beard`: `none` để cấm râu.
+- `torso`: màu áo nền (ô màu). `hair`: `none` khi đội mũ kín, `auto` = theo văn hóa. `beard`: `none` để cấm râu. Râu/ria vẽ trong items thì
+  đặt tên có chữ `beard`/`mustache` (tool sẽ không thêm râu tự động nữa).
 - Tọa độ (thân `person`, đơn vị cảnh; nhân vật cao ~2,5):
   - `torso`: gốc ở đáy thân, thân rộng 0,8 (x −0,4…0,4), cao 0,82 (y 0…0,82); vai ở (±0,33; 0,66). Áo nền z 0,12; đồ trên thân z 0,13–0,25;
     tay nằm ở z 0,30 (đồ trên thân không che tay). Áo choàng sau lưng: z âm (−0,05).

@@ -94,6 +94,11 @@ cần nhiều bản đồ trong một chương thì thêm nhiều set với `id`
   15-40 khung, nối tiếp nhau theo lời đọc), `fills` (tô vùng), `labels` (chữ viết tay bật lên). Dùng cho "here's how it works".
 - Thời điểm `from`/`to` lấy theo chữ trong `words` (khung = giây × 30 + 1), để nét vẽ, mũi tên, vùng hiện đúng lúc lời nói tới.
 
-## 7. Nhiều quốc gia, phe, thời kỳ
-- Liệt kê trong `factions` (content) với văn hóa + thời kỳ, trang phục, màu, vũ khí đúng sử liệu; nói rõ chương nào có phe nào.
+## 7. Nhiều quốc gia, phe, thời kỳ (văn hóa, trang phục, đám đông)
+- Mỗi phe = một văn hóa (`library/cultures/<dân tộc>_<thời kỳ>`), trang phục theo **vai** của văn hóa đó (soldier, officer, commoner, noble,
+  priest…). Người trong story: `type: "person"` + `faction` + `role`; nhân vật chính có `look.accent` (màu riêng, khăn cổ) và giữ `seed`.
+- Đổi quốc gia/thời kỳ/cải trang: `outfit_changes` [[khung, vai hoặc id trang phục, phe]].
+- Quân đội, đám đông: `crowds` (đội hình block/line/column/wedge/scatter/circle, `moves`, `march`); cận cảnh thì dùng 1-3 nhân vật thật
+  đứng trước đám đông. Bản đồ/sa bàn dùng khối quân, không dùng đám đông.
+- Liệt kê trong `factions` (content) với văn hóa + thời kỳ (id dạng `roman_empire_50ad`), trang phục, màu, vũ khí đúng sử liệu; nói rõ chương nào có phe nào.
 - Hai phe giống nhau phải phân biệt được bằng màu, khiên, cờ. Không biếm họa sắc tộc; phe "địch" không bị vẽ xấu hơn.

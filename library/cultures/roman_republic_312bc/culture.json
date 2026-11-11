@@ -1,0 +1,171 @@
+{
+ "name": "roman_republic_312bc",
+ "title_vi": "La Mã thời Cộng hòa giữa (khoảng năm 312 TCN, chiến tranh Samnite lần 2)",
+ "years": [
+  -343,
+  -264
+ ],
+ "region": "Latium và Campania (miền trung Ý)",
+ "description_vi": "Nhà nước La Mã giữa hai cuộc chiến Samnite và trước Chiến tranh Punic. Năm 312 TCN, Appius Claudius Caecus làm censor và khởi công đường Via Appia (Rome–Capua) cùng cống dẫn nước Aqua Appia. Quân đội là dân quân công dân tự sắm đồ theo tài sản, có lẽ đã chia thành manipulus (hastati, principes, triarii). Lính đội mũ đồng Montefortino có chóp, đeo giáp ngực đồng vuông nhỏ (pectorale) buộc dây da, mặc tunic len, cầm khiên bầu dục cao (scutum) và giáo hasta. Kiếm gladius hispaniensis và mũ sắt CHƯA có. Đàn ông trưởng thành phần lớn để râu: thợ cạo chỉ đến Rome khoảng năm 300 TCN. Quan chức có imperium (consul, praetor) mặc toga trắng viền tía (praetexta), có lictor vác bó roi fasces đi trước. Dân thường mặc tunic len màu tự nhiên, thắt lưng, đi dép hoặc chân trần.",
+ "sources": [
+  {
+   "claim": "Giáp ngực đồng vuông khoảng một gang tay (pectorale/kardiophylax), một ống quyển, mũ đồng có ba lông vũ tía hoặc đen cao khoảng 1,5 bộ; giáp xích chỉ dành cho người giàu",
+   "source": "Polybius, Histories 6.23 (mô tả quân đội thế kỷ 2 TCN; áp lùi về 312 TCN là suy đoán)"
+  },
+  {
+   "claim": "Bàn luận hiện đại về việc pectorale đi theo tài sản chứ không theo hàng hastati/principes/triarii; mô tả của Polybius rất ngắn",
+   "source": "Bret Devereaux, 'Reconstructing the Roman Pectoral', A Collection of Unmitigated Pedantry (acoup.blog, 2026); Bishop & Coulston, Roman Military Equipment (2006)"
+  },
+  {
+   "claim": "Mũ Montefortino có từ thế kỷ 4 TCN, gốc Celt/Etrusca, thành mũ phổ biến nhất của quân Cộng hòa; hiện vật bằng đồng cuối thế kỷ 4–đầu thế kỷ 3 TCN",
+   "source": "The Metropolitan Museum of Art, Helmet of the Montefortino type (đồng, cuối TK 4–đầu TK 3 TCN), phòng 370; Worcester Art Museum, Type A Montefortino helmet"
+  },
+  {
+   "claim": "La Mã bỏ khiên tròn clipeus, dùng khiên dài scutum khi bắt đầu trả lương lính, cùng lúc chia hàng quân thành manipulus",
+   "source": "Livy, Ab Urbe Condita 8.8.3–8 (bối cảnh năm 340 TCN)"
+  },
+  {
+   "claim": "Trước Marius, quân La Mã có năm hiệu kỳ thú: đại bàng, sói, minotaur, ngựa, lợn rừng",
+   "source": "Pliny the Elder, Naturalis Historia 10.16 (bản Bohn đánh số 10.5)"
+  },
+  {
+   "claim": "Hiệu kỳ manipulus thời đầu là cây sào treo một bó cỏ khô (manipulus = 'nắm tay')",
+   "source": "Ovid, Fasti 3.115–118"
+  },
+  {
+   "claim": "Thợ cạo đầu tiên đến Rome từ Sicilia khoảng năm 300 TCN; trước đó người La Mã để râu",
+   "source": "Varro, De Re Rustica 2.11.10; Pliny, Naturalis Historia 7.211"
+  },
+  {
+   "claim": "Appius Claudius làm censor năm 312 TCN, xây đường Via Appia và cống Aqua Appia",
+   "source": "Livy, Ab Urbe Condita 9.29.5–8; Frontinus, De Aquaeductu 1.5"
+  },
+  {
+   "claim": "Toga praetexta (trắng, viền tía) là lễ phục của quan chức curule khi làm việc; lictor mang fasces và ghế curule (sella curulis) là phù hiệu thừa hưởng từ thời vua",
+   "source": "Sebesta & Bonfante (eds.), The World of Roman Costume (1994); Smith, Dictionary of Greek and Roman Antiquities (1875), mục 'Toga', 'Lictor'"
+  },
+  {
+   "claim": "Tường thành Servius xây lại bằng đá tufa Grotta Oscura sau trận Gallic năm 390 TCN; đền kiểu Tuscan có trang trí đất nung sơn màu",
+   "source": "Cornell, The Beginnings of Rome (1995); Livy 6.32.1"
+  },
+  {
+   "claim": "Trang bị và tranh phục dựng quân La Mã thế kỷ 4 TCN",
+   "source": "Sekunda & Northwood, Early Roman Armies (Osprey Men-at-Arms 283, 1995)"
+  }
+ ],
+ "uncertain_vi": "1) Cách chia hastati/principes/triarii có thật vào năm 312 TCN hay không còn tranh cãi: Livy 8.8 mô tả nó cho năm 340 TCN nhưng niên đại của Livy lộn xộn; Polybius viết về thế kỷ 2 TCN. 2) Năm du nhập scutum chưa rõ (Livy gắn với việc trả lương lính; có học giả cho rằng người Ý đã dùng từ trước chiến tranh Samnite). Không có bằng chứng scutum được 'học của người Samnite'. 3) Pilum đã phổ biến chưa thì chưa chắc, nên dùng giáo hasta là an toàn. 4) Màu tunic quân đội không có nguồn. Tunic len có thể nhuộm đỏ đất bằng madder/đất son hoặc để màu tự nhiên; ta chọn đỏ đất cho dễ nhận phe. 5) Không biết khiên vẽ hình gì; để trơn màu phe, có gờ dọc và núm. 6) Giáp của sĩ quan (giáp cơ bắp bằng đồng hay giáp vải lanh linothorax) suy ra từ tranh mộ Etrusca/Lucania và tượng, không có hiện vật La Mã chắc chắn. 7) Toga thời này nhỏ hơn và quấn gọn hơn toga thời Đế chế; có nguồn nói người xưa mặc toga không có tunic bên trong. 8) Năm 312 TCN đường Via Appia mới bắt đầu làm: lớp đá lát basalt có sau, đoạn đầu tiên lát năm 295 TCN (Livy 10.23), nên vẽ đường sỏi nện. 9) Chưa dùng SPQR làm biểu tượng (chỉ thấy từ cuối thời Cộng hòa); tượng sói của anh em Ogulnius dựng năm 296 TCN.",
+ "palette": {
+  "cloth": [
+   0.55,
+   0.1,
+   0.03
+  ],
+  "cloth2": [
+   0.8,
+   0.72,
+   0.55
+  ],
+  "metal": [
+   0.8,
+   0.5,
+   0.14
+  ],
+  "metal_dark": [
+   0.38,
+   0.21,
+   0.06
+  ],
+  "leather": [
+   0.3,
+   0.15,
+   0.05
+  ],
+  "trim": [
+   0.4,
+   0.03,
+   0.24
+  ]
+ },
+ "hair_styles": [
+  "short",
+  "curly"
+ ],
+ "hair_colors": [
+  [
+   0.07,
+   0.05,
+   0.04
+  ],
+  [
+   0.12,
+   0.07,
+   0.04
+  ],
+  [
+   0.2,
+   0.12,
+   0.06
+  ],
+  [
+   0.3,
+   0.18,
+   0.08
+  ]
+ ],
+ "beard_prob": 0.65,
+ "beard_styles": [
+  "full",
+  "goatee"
+ ],
+ "skin_tones": [
+  [
+   0.93,
+   0.74,
+   0.58
+  ],
+  [
+   0.84,
+   0.62,
+   0.46
+  ],
+  [
+   0.74,
+   0.54,
+   0.39
+  ],
+  [
+   0.64,
+   0.45,
+   0.32
+  ]
+ ],
+ "roles": {
+  "soldier": "roman_hastatus_312bc",
+  "officer": "roman_tribune_312bc",
+  "magistrate": "roman_consul_312bc",
+  "lictor": "roman_lictor_312bc",
+  "priest": "roman_flamen_312bc",
+  "commoner": "roman_farmer_312bc"
+ },
+ "role_briefs_vi": {
+  "roman_hastatus_312bc": "Lính bộ binh dân quân (hastatus hoặc princeps). MŨ: Montefortino bằng đồng ($metal), vòm tròn cao như nửa quả trứng, đỉnh có chóp/núm nhỏ (đĩa r≈0,06 trên đỉnh, chỗ cắm lông); vành dưới hơi loe thành gờ che gáy NGẮN ở phía sau; hai miếng che má đồng hình ba thùy treo hai bên (không che mắt và miệng). Trên chóp cắm 2–3 lông vũ thẳng đứng màu tía hoặc đen (Polybius), cao khoảng 0,35, có thể dùng $team_dark. hair 'none' dưới mũ; được để râu (beard auto, tỉ lệ cao). THÂN: tunic len cộc tay dài tới gối, màu $team (đỏ đất), thắt lưng da $leather. Trên ngực là giáp đồng VUÔNG NHỎ (pectorale) khoảng 0,26×0,26, rrect bo góc nhỏ, $metal, giữa ngực hơi lệch lên (cy≈0,52); có 3 vòng đồng nổi hoặc viền chấm nổi; bốn dây da $leather chéo qua vai và quanh sườn (stroke mảnh). CHÂN: một ống quyển đồng ở chân trái (footL, nhô lên ống chân), chân phải trần; dép da buộc dây. TAY TRÁI: khiên scutum BẦU DỤC cao ≈0,95, rộng ≈0,55, màu $team, viền da $leather, gờ dọc giữa (spina) chạy từ trên xuống dưới, ở giữa là núm gỗ/kim loại hình hạt đậu dọc ($metal_dark); mặt khiên trơn, không vẽ hình. TAY PHẢI: giáo hasta dài ≈2,3, cán gỗ $leather sáng, mũi lá đồng/sắt $metal_dark, có đầu nhọn đuôi. Kiếm thẳng ngắn đeo bên hông phải bằng dây đeo chéo (không phải gladius hispaniensis). Bóng đen nhận ra nhờ: mũ tròn có chóp cắm lông + khiên bầu dục cao + ô vuông đồng trên ngực.",
+  "roman_tribune_312bc": "Sĩ quan (tribunus militum, người trẻ thuộc dòng dõi quý tộc hoặc kỵ sĩ). MŨ: kiểu Attic hoặc Etrusco-Corinthian bằng đồng sáng $metal, lông mào ngang hình bờm chạy từ trán ra gáy, màu $team_dark hoặc tía $trim, cộng thêm hai lông vũ trắng thẳng hai bên; mặt để hở. THÂN: giáp ngực cơ bắp bằng đồng ($metal, có đường cơ ngực/bụng bằng stroke $metal_dark), hoặc giáp vải lanh trắng ngà ($cloth2) có tấm vai; dưới giáp là các dải da pteruges ($leather) phủ hông như váy tua; tunic $team lộ ở tay và gối. Thắt lưng quân sự đồng (cingulum) bản rộng ở eo. Áo choàng ngắn (sagum/paludamentum) màu đỏ đậm $team ở sau lưng (z âm), cài trâm tròn trên vai phải. Hai ống quyển đồng. TAY: tay phải cầm kiếm thẳng hoặc giáo ngắn; tay trái có thể cầm khiên bầu dục giống lính hoặc không. Râu được phép. Bóng đen: mũ có lông mào ngang rộng + áo choàng + dải tua dưới giáp. Phân biệt với lính bằng lông mào và giáp phủ kín ngực thay vì ô vuông nhỏ.",
+  "roman_consul_312bc": "Quan chức có imperium (consul/praetor), cũng dùng cho censor như Appius Claudius. Toga praetexta: tấm len TRẮNG NGÀ ($cloth2, hơi sáng) quấn từ vai trái xuống, vắt qua sau lưng rồi vòng dưới cánh tay phải, mép vải quấn chéo trước ngực thành một dải xéo lớn từ vai trái xuống hông phải. Dọc mép vải là DẢI VIỀN TÍA bản rộng ($trim, tía murex) chạy theo đường chéo và gấu. Tay phải để hở, thò ra khỏi nếp toga; tay trái bị toga phủ tới cổ tay. Toga thời này nhỏ, gọn, chưa có túi umbo cầu kỳ như thời Augustus. Bên trong là tunic trắng có thể lộ ở tay phải. Giày calceus da kín, buộc dây; quý tộc patrician đi giày đỏ (mullei), nên vẽ giày đỏ thẫm. Có thể cầm gậy ngà, đeo nhẫn vàng; không đội mũ. Tóc ngắn, râu đầy hoặc râu cắt gọn (trước khi có thợ cạo). Đạo cụ đi kèm: ghế curule (sella curulis) chân chữ X bằng ngà, lictor đi trước. Bóng đen: dải tía chéo trên nền trắng + tay trái giấu trong vải.",
+  "roman_lictor_312bc": "Cận vệ nghi lễ của quan chức (consul có 12 lictor, đi thành hàng một phía trước). Mặc tunic trắng ngà ($cloth2) hoặc toga trơn (không viền tía) khi ở trong thành; ngoài chiến dịch mặc áo choàng đỏ (sagum $team). Thắt lưng da. TAY TRÁI ôm trên vai trái bó FASCES: bó que gỗ bạch dương/du dài ≈1,3, rộng ≈0,18 ($leather sáng, có sọc que), buộc chéo bằng dây da đỏ ($team_dark). Ngoài tường thành Rome, bó có lưỡi rìu đồng/sắt ($metal_dark) nhô ra một bên đầu trên; trong thành thì bỏ rìu. Tay phải có thể cầm gậy nhỏ. Không mũ, có râu. Bóng đen: người đi bộ vác bó que có rìu trên vai.",
+  "roman_flamen_312bc": "Tư tế (flamen, ví dụ Flamen Dialis của thần Jupiter). MŨ APEX: mũ da chỏm tròn ôm đầu, màu trắng ngà (lông cừu tế), trên đỉnh có một que gỗ ô liu nhọn dựng đứng (≈0,25) với một búi len nhỏ ở gốc; dây buộc dưới cằm, không che miệng. ÁO: laena, áo choàng len dày hai lớp, màu tía đậm $trim hoặc đỏ sẫm, cài trâm trên vai, phủ ngoài tunic trắng. Được để râu. Tay có thể cầm dao tế hoặc đĩa rượu tế (patera đồng $metal). Phụ trợ: người thổi sáo đôi (tibia) khi tế lễ. Bóng đen: mũ tròn có que nhọn dựng trên đỉnh.",
+  "roman_farmer_312bc": "Nông dân hoặc thợ thủ công (phần lớn công dân, cũng là những người được gọi đi lính). Tunic len thô màu tự nhiên: trắng ngà, nâu sồi hoặc xám nâu ($cloth2 pha nâu, hoặc [0.45,0.3,0.15]), cộc tay hoặc chỉ hở một vai (exomis cho người làm việc nặng), dài tới trên gối, thắt bằng dây thừng hoặc dây da. Có thể khoác áo choàng ngắn có mũ trùm (cucullus) màu nâu. Chân trần hoặc dép da buộc dây (carbatina). Đầu trần, có thể đội nón rơm rộng vành khi ra đồng. Tóc ngắn rối, râu đầy. Đồ cầm theo nghề: liềm/cuốc sắt, búa thợ đá, giỏ, gùi, bò kéo cày. Thợ đá làm đường Via Appia thì cầm cuốc chim và thúng đá. Bóng đen: tunic hở một vai, đầu trần, cầm nông cụ."
+ },
+ "emblem_vi": "Khiên bầu dục trơn màu đỏ đất (chưa có tia sét hay cánh: đó là đồ thời Đế chế). Hiệu kỳ manipulus: cây sào gỗ treo bó cỏ khô (manipulus), sau này đổi thành bàn tay mở bằng đồng trên đỉnh sào; hiệu kỳ quân đoàn gồm năm con thú bằng đồng (đại bàng, sói, minotaur, ngựa, lợn rừng; Pliny). Cờ vải vexillum đỏ đất cho kỵ binh. Phù hiệu quyền lực dân sự: bó fasces có rìu, ghế curule chân chữ X, viền tía của toga. KHÔNG dùng chữ SPQR, đại bàng aquila vàng duy nhất hay tượng sói Capitoline.",
+ "architecture_vi": "Rome năm 312 TCN là thành phố bằng gạch phơi, gỗ và đá tufa. Tường thành Servius bằng các khối tufa vàng xám Grotta Oscura, xây lại sau năm 390 TCN. Đền thờ kiểu Tuscan/Etrusca: bệ đá cao có bậc thang phía trước, cột gỗ hoặc tufa thô thưa nhau, mái ngói đất nung đỏ rộng vành, trán tường và diềm mái bằng đất nung SƠN MÀU rực (đỏ, đen, vàng kem), tượng đất nung trên nóc (như đền Jupiter Capitolinus). Nhà dân có sân giữa (atrium) với lỗ mái thu nước, tường trát vữa trắng/vàng đất, mái ngói đỏ; nhà nông thôn bằng gỗ và tranh. Chưa có cẩm thạch, chưa có bê tông và vòm lớn. Công trình năm 312 TCN: đường Via Appia (lúc đầu là đường sỏi nện có rãnh hai bên, thẳng tắp băng qua đầm Pontine; lát đá basalt sau này) và cống ngầm Aqua Appia, chạy phần lớn dưới đất. Trại lính: hào cộng ụ đất có hàng rào cọc gỗ.",
+ "map_color": [
+  0.58,
+  0.15,
+  0.04
+ ],
+ "music_vi": "Kèn đồng thẳng tuba và kèn tròn cornu ra hiệu trận; kèn lituus đầu cong kiểu Etrusca; sáo đôi tibia (aulos) khi tế lễ và rước; trống khung, chũm chọe nhỏ trong lễ hội. Âm hưởng mộc, cổ, gần nhạc Etrusca/Hy Lạp hơn kèn hoành tráng kiểu phim Đế chế.",
+ "kind": "culture",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "La Mã thời Cộng hòa giữa, chiến tranh Samnite lần 2, Latium (miền trung Ý), khoảng năm 312 TCN. Các vai: soldier (lính bộ binh: mũ đồng Montefortino có chóp, giáp ngực đồng vuông nhỏ, tunic đỏ đất, khiên bầu dục scutum cao, giáo), officer, magistrate (quan chức mặc toga viền tía), commoner (nông dân/thợ). Màu phe đỏ đất.",
+ "created": "2026-11-11T15:57:31"
+}

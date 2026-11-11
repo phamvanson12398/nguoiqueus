@@ -135,9 +135,18 @@ Thẻ nảy vào trong 5 khung, lắc nhẹ, rồi tắt trong 3 khung cuối.
 ### `sound`
 `music` (`mood`: playful, sneaky, tense; `duck` = các khung hạ nhỏ nhạc), `ambience` (city, wind), `auto` (whoosh ở mỗi cắt cảnh trừ gần các khung `avoid`, pop khi đổi mặt, tick khi hiện phụ đề, swish khi vung tay của `gesture_chars`), `events` = `[khung, tên, gain]`, `repeat` (âm lặp đều, ví dụ bước chân). Khi có `voice.wav`, gain hiệu ứng nhân với `sfx_gain_with_voice` (0.8).
 
-### `factions` (video dài, đang làm)
-Các phe/quốc gia trong video: `{"id": "rome", "culture": "roman_republic_340bc", "color": [0.7, 0.1, 0.1], "emblem": "eagle", "label": "ROME"}`.
-Nhân vật có thể ghi `faction` và `role`. Bước "văn hóa + trang phục" (docs/LONGFORM.md mục 3b) sẽ lấy trang phục, màu, cờ từ đây; hiện builder chỉ kiểm tra tham chiếu.
+### `factions`, người theo văn hóa, `crowds` (video dài)
+Các phe/quốc gia: `{"id": "rome", "culture": "roman_empire_50ad", "color": [0.7, 0.06, 0.04], "label": "ROME"}`. Màu phe là ô `$team`
+của trang phục, màu vùng/mũi tên/khối quân trên bản đồ và sa bàn.
+- Nhân vật người: `{"id": "marcus", "type": "person", "faction": "rome", "role": "soldier", "look": {"hair": "short", "beard": "none",
+  "accent": [0.95, 0.6, 0.05], "seed": 3}, "outfit_changes": [[900, "briton_warrior_50ad", "britons"]]}`. `outfit` ghi thẳng id trang phục;
+  không có thì lấy `roles[role]` của văn hóa của phe. `accent` = màu riêng của nhân vật chính (tự quàng khăn cổ màu đó).
+  `look.skin_mode: "tones"` mới dùng màu da theo văn hóa (mặc định mặt trắng kiểu hoạt hình của tool).
+- Đám đông: `{"id": "legion", "faction": "rome", "role": "soldier", "count": 48, "formation": "block", "cols": 12, "spacing": [0.95, 1.0],
+  "at": [0, 8, 0], "rot": 0, "variants": 4, "faces": ["neutral", "focus"], "moves": [[30, [0, 8]], [150, [0, 4.5]]], "march": [[30, 150]],
+  "pose": {"armL": [...], "armR": [...]}, "from": 1, "to": 300}`. formation: block, line, column, wedge, scatter (`area`), circle (`radius`).
+  Vài lính mẫu (`variants`, khác tóc/râu/mặt) được nhân bản bằng collection instance nên 100+ người vẫn nhẹ. Camera nhắm `subject: "legion"`.
+- Thư viện: `library/cultures/`, `library/outfits/` — xem `library/OUTFITS.md`. Mẫu: `projects/demo-legion`.
 
 ### Video dài: chương
 Dự án video dài có `content.json` với `format: "long"`, `chapters` và `chapter` trên mỗi chuỗi. Sau khi canh chữ, `longform.py split` cắt
