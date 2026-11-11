@@ -21,6 +21,7 @@ for _m in [m for m in sys.modules if m == "core" or m.startswith("core.") or m.s
 import core
 from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards, overlay
 from core.expr import Env, ExprError
+from core import framing
 import storycheck
 from storycheck import LibIndex
 
@@ -229,9 +230,13 @@ class Builder:
             self.lens, self.cuts = res["lens"], res["cuts"]
         elif cs["rig"] == "long":
             shots = []
-            for s in cs["shots"]:
+            for k, s in enumerate(cs["shots"]):
+                if "frame" in s and "keys" not in s:       # shot preset -> two camera keys
+                    s = dict(s, keys=framing.frame_keys(s["frame"], s.get("type", "medium"), s["a"], s["b"],
+                                                        self.subject_pos(s["frame"].get("subject", [0, 0, 0]), (s["a"] + s["b"]) // 2, f"camera.shots[{k}].frame")))
+                    self.report.setdefault("framed", []).append([s["a"], s["b"], s.get("type")])
                 d = dict(a=s["a"], b=s["b"], keys=[tuple(k) for k in s["keys"]])
-                for k in ("ease_in", "ease_out", "follow_w", "omega"):
+                for k in ("ease_in", "ease_out", "follow_w", "omega", "type"):
                     if k in s: d[k] = s[k]
                 if "follow" in s:
                     src = s["follow"]; d["follow"] = (lambda src: (lambda f: tuple(self.env.val(src, self.env.frame_ns(f)))))(src)
@@ -259,6 +264,37 @@ class Builder:
             self.lens = camera.bake_camera(self.cam, self.cam_d, res, set(trans))
             self.cuts = sorted(trans)
             self.bake_dof(res, cs, cs["seqs"])
+
+    def value_at(self, segs, default, f, prop, where):
+        """value of one property of a track/blocking spec at frame f (None if nothing sets it)"""
+        rs = self.resolve_segments(segs, {}, where)
+        spec = next((sg for rng, sg in rs if any(r0 <= f <= r1 for r0, r1 in rng)), default)
+        if not spec or prop not in spec: return None
+        ns = self.env.frame_ns(f, None, where)
+        for k, src in (spec.get("let") or {}).items(): ns[k] = self.env.val(src, ns, where)
+        return tuple(self.env.val(spec[prop], ns, where))
+
+    def subject_pos(self, subj, f, where):
+        """ground point of a shot subject at frame f: [x,y,z], a character id, '<set id>.<anchor>' or an object name"""
+        if isinstance(subj, (list, tuple)): return tuple(self.env.const(subj, where))
+        if subj in self.anchors: return tuple(self.anchors[subj])
+        if subj in self.chars or bpy.data.objects.get(subj) is not None:    # animated already: evaluate the scene at f
+            ctx.sc.frame_set(f)
+            o = self.chars[subj].root if subj in self.chars else bpy.data.objects[subj]
+            return tuple(o.matrix_world.translation)
+        for cs in self.char_specs:
+            if cs["id"] == subj:
+                b = cs.get("blocking")
+                v = self.value_at(b.get("segments", []), b.get("default"), f, "location", where) if b else None
+                return v or tuple(self.env.const(cs.get("loc", [0, 0, 0]), where))
+        if subj in self.anchors: return tuple(self.anchors[subj])
+        for tr in self.st.get("tracks", []):
+            if tr.get("target") == subj and "use" not in tr:
+                v = self.value_at(tr.get("segments", []), tr.get("default"), f, "location", where)
+                if v: return v
+        o = bpy.data.objects.get(subj)
+        if o is None: raise StoryError(f"{where}: unknown subject '{subj}' (character id, '<set>.<anchor>', object name or [x,y,z])")
+        return tuple(o.matrix_world.translation)
 
     def bake_dof(self, res, cs, spans):
         """camera.dof = {"fstop": 2.8} turns depth of field on (focus = look point); a shot/seq may set its own "fstop"."""
@@ -307,7 +343,8 @@ class Builder:
         for cs in self.char_specs:
             if cs.get("talk"): chars.add_talk_mouth(self.chars[cs["id"]])
 
-        self.bake_camera()
+        long_rig = st["camera"].get("rig") == "long"
+        if not long_rig: self.bake_camera()
 
         for name, ranges in st.get("visibility", {}).items():
             geo.vis_track(self.obj(name, f"visibility.{name}"), [tuple(r) for r in ranges])
@@ -322,6 +359,7 @@ class Builder:
                 sk = c.skin.node_tree.nodes["Emission"].inputs[0]
                 for f_, col_ in cs["skin_keys"]:
                     sk.default_value = (*col_, 1); sk.keyframe_insert("default_value", frame=f_)
+        if long_rig: self.bake_camera()       # after tracks/blocking: shot presets frame subjects where they really are
 
         amp = timing.load_amplitude(os.path.join(self.dir, meta.get("voice", "voice.wav")), N, FPS)
         segs = {cs["id"]: self.resolve_segments(cs.get("pose", {}).get("segments", []), {}, f"chars.{cs['id']}.pose") for cs in self.char_specs}

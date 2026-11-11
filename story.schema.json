@@ -431,7 +431,8 @@
        "bubble",
        "iris",
        "fade",
-       "chapter"
+       "chapter",
+       "screen"
       ]
      },
      "text": {
@@ -472,7 +473,7 @@
      },
      "sub": {
       "type": "string",
-      "description": "chapter: small line above the title, e.g. 'CHAPTER 2'"
+      "description": "chapter/screen: small line above the big text, e.g. 'CHAPTER 2' or 'THE YEAR IS'"
      },
      "in": {
       "type": "integer",
@@ -497,6 +498,22 @@
      "faction": {
       "type": "string",
       "description": "(planned) take colours from this faction"
+     },
+     "variant": {
+      "enum": [
+       "year",
+       "number",
+       "question",
+       "quote",
+       "name",
+       "place",
+       "fact"
+      ],
+      "description": "screen: layout of the key-moment text screen"
+     },
+     "caption": {
+      "type": "string",
+      "description": "screen: small line under the big text"
      }
     }
    }
@@ -1370,8 +1387,7 @@
       "type": "object",
       "required": [
        "a",
-       "b",
-       "keys"
+       "b"
       ],
       "additionalProperties": false,
       "properties": {
@@ -1442,9 +1458,12 @@
        },
        "type": {
         "enum": [
-         "wide",
-         "medium",
+         "ecu",
          "closeup",
+         "medium",
+         "full",
+         "wide",
+         "establishing",
          "insert",
          "board",
          "map",
@@ -1454,8 +1473,128 @@
          "pov"
         ],
         "description": "shot vocabulary (for the report and for Claude)"
+       },
+       "frame": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "subject"
+        ],
+        "description": "shot preset instead of keys: the builder places the camera from the subject, type, angle, height and move (core/framing.py)",
+        "properties": {
+         "subject": {
+          "anyOf": [
+           {
+            "type": "string",
+            "description": "character id, '<set id>.<anchor>' or object name"
+           },
+           {
+            "type": "array",
+            "items": {
+             "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+           }
+          ]
+         },
+         "type": {
+          "enum": [
+           "ecu",
+           "closeup",
+           "medium",
+           "full",
+           "wide",
+           "establishing",
+           "insert",
+           "board",
+           "map",
+           "diagram",
+           "interior",
+           "card",
+           "pov"
+          ]
+         },
+         "angle": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "degrees around the subject, 0 = from the front (-Y), +90 = from +X"
+         },
+         "height": {
+          "enum": [
+           "eye",
+           "low",
+           "high",
+           "top"
+          ]
+         },
+         "x": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1,
+          "description": "subject position across the frame (-0.33 = left third)"
+         },
+         "y": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+         },
+         "size": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 200,
+          "description": "frame height in scene units (overrides the type)"
+         },
+         "lens": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 200
+         },
+         "look_dz": {
+          "type": "number"
+         },
+         "move": {
+          "enum": [
+           "push_in",
+           "pull_out",
+           "pan_left",
+           "pan_right",
+           "truck_left",
+           "truck_right",
+           "crane_up",
+           "crane_down",
+           "orbit_left",
+           "orbit_right",
+           "drift",
+           "static_drift"
+          ]
+         },
+         "amount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+         },
+         "roll": {
+          "type": "number",
+          "minimum": -8,
+          "maximum": 8
+         }
+        }
        }
-      }
+      },
+      "anyOf": [
+       {
+        "required": [
+         "keys"
+        ]
+       },
+       {
+        "required": [
+         "frame"
+        ]
+       }
+      ]
      },
      "description": "long-form shot list: straight cuts between shots (aim ~14 cuts/min, median 2-3 s, some 10-25 s shots); the camera drifts in every shot"
     }

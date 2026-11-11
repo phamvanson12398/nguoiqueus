@@ -271,6 +271,9 @@ def long_report(res, SHOTS, TRANS, PUNCH=(), N=None, min_shot=0.5, max_shot=25.0
     srt = sorted(lens_); med = srt[len(srt) // 2]
     cpm = (len(SHOTS) - 1) / max(total / 60, 1e-6)
     print(f"shots: {len(SHOTS)}  cuts/min: {cpm:.1f}  median shot: {med:.1f}s  shortest: {srt[0]:.1f}s  longest: {srt[-1]:.1f}s")
+    kinds = {}
+    for s in SHOTS: kinds[s.get("type", "?")] = kinds.get(s.get("type", "?"), 0) + 1
+    print("shot types: " + ", ".join(f"{k} {v}" for k, v in sorted(kinds.items(), key=lambda kv: -kv[1])))
     for s, L in zip(SHOTS, lens_):
         if L < min_shot: print(f"WARN shot {s['a']}-{s['b']} only {L:.2f}s (min {min_shot}s)"); ok = False
         if L > max_shot: print(f"WARN shot {s['a']}-{s['b']} is {L:.1f}s (max {max_shot}s: split it or cut away)"); ok = False

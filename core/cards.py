@@ -15,10 +15,13 @@ from .timing import ease, ease_out_back
 
 HALF_H = 36 / 28 / 2            # 0.643: half the visible height at depth lens/28 (9:16; 16:9 -> ctx.frame_half())
 HALF_W = HALF_H * 9 / 16
-STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris", "fade", "chapter")
+STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris", "fade", "chapter", "screen")
+# key-moment text screens (long-form): big text height + colour of the big text per variant
+SCREEN = {"year": (0.17, None), "number": (0.15, None), "question": (0.085, (1, 1, 1)), "quote": (0.07, (1, 1, 1)),
+          "name": (0.095, (1, 1, 1)), "place": (0.11, (1, 1, 1)), "fact": (0.08, (1, 1, 1))}
 DEFAULT_COLOR = {"title": (0.98, 0.30, 0.02), "label": (1.0, 0.85, 0.1), "stamp_x": (0.9, 0.1, 0.08),
                  "stamp_check": (0.1, 0.75, 0.25), "bubble": (0.98, 0.98, 0.97), "iris": (0.0, 0.0, 0.0),
-                 "fade": (0.0, 0.0, 0.0), "chapter": (0.80, 0.62, 0.30)}
+                 "fade": (0.0, 0.0, 0.0), "chapter": (0.80, 0.62, 0.30), "screen": (1.0, 0.80, 0.18)}
 
 
 def _alpha_mat(name, rgb):
@@ -56,13 +59,16 @@ def _text_width(body, size):
 def build_card(root, i, c):
     style = c.get("style", "title")
     default = {"title": 0.075, "label": 0.06, "bubble": 0.065, "chapter": 0.07}.get(style, 0.16)
+    if style == "screen":
+        default = SCREEN.get(c.get("variant", "fact"), SCREEN["fact"])[0]
+        if c.get("variant") == "quote" and c.get("text") and not c["text"].startswith(("“", '"')): c["text"] = "“" + c["text"] + "”"
     size = c.get("size") or default
     if size > 0.3:                    # written as a multiplier ("1.3x") instead of a height: treat it as one
         print(f"WARN card {i}: size {size} looks like a multiplier, using {round(default * size, 3)}")
         size = default * size
     body_ = c.get("text", "")
-    if style in ("title", "label", "bubble", "chapter") and body_:     # fit the frame width: wrap to 2 lines, then shrink
-        extra = {"title": 1.2, "label": 0.2, "bubble": 2.2, "chapter": 1.0}[style]
+    if style in ("title", "label", "bubble", "chapter", "screen") and body_:     # fit the frame width: wrap to 2 lines, then shrink
+        extra = {"title": 1.2, "label": 0.2, "bubble": 2.2, "chapter": 1.0, "screen": 1.6}[style]
         maxw = 1.9 * HALF_W
         if _text_width(body_, size) + size * extra > maxw and "\n" not in body_ and " " in body_:
             words = body_.split(" "); best = None
@@ -113,6 +119,23 @@ def build_card(root, i, c):
         o = bpy.data.objects.new(f"card{i}_iris", cu); ctx.col.objects.link(o); o.parent = h; o.location = (0, 0, 0.01)
         o.data.materials.append(flat("card_iris", rgb))
         c["_iris"] = o
+    elif style == "screen":
+        # dark see-through plate (the blurred scene shows behind), accent sub line, big text, caption, accent rule
+        var = c.get("variant", "fact")
+        m, fac = _alpha_mat(f"card{i}_plate", (0.02, 0.02, 0.03))
+        shape(h, f"card{i}_plate", rrect(0, 0, HALF_W * 2.4, HALF_H * 2.4, 0.001), m, -0.01, outline=0)
+        c["_fade"] = fac
+        inner = empty(f"card{i}_in", h); c["_inner"] = inner
+        big_rgb = SCREEN.get(var, SCREEN["fact"])[1] or rgb
+        nl = body.count("\n")
+        if c.get("sub"): _text(inner, f"card{i}_sub", c["sub"], max(0.032, size * 0.32), rgb, 0.0, outline=False)[0].location.y = size * (0.95 + 0.55 * nl)
+        if body: _text(inner, f"card{i}", body, size, big_rgb, 0.0)
+        cap = c.get("caption")
+        yb = -size * (0.85 + 0.55 * nl)
+        if cap: _text(inner, f"card{i}_cap", cap, max(0.03, min(0.05, size * 0.4)), (0.92, 0.92, 0.9), 0.0, outline=False)[0].location.y = yb - 0.02
+        wl = min(_text_width(body or "x", size) * 0.45, HALF_W * 0.8)
+        shape(inner, f"card{i}_line", rrect(0, yb + (0.035 if cap else 0.0) + size * 0.1, wl, max(0.004, size * 0.05), 0.0005),
+              flat(f"card_line{rgb}", rgb), 0.0, outline=0)
     elif style in ("fade", "chapter"):
         # full-frame plate whose opacity is keyed; 'chapter' = dark plate + chapter label (small, colour) + title (big, white)
         m, fac = _alpha_mat(f"card{i}_plate", (0.0, 0.0, 0.0) if style == "chapter" else rgb)
@@ -142,6 +165,23 @@ def bake_card(h, c):
             s = 1.0 if f >= a else 0.0
             h.scale = (s, s, s); h.keyframe_insert("scale", frame=f)
             o.scale = (r, r, 1); o.keyframe_insert("scale", frame=f)
+        return
+    if style == "screen":
+        # plate fades in 6 f to opacity (default 0.86); text pops in, then grows slowly (never still); out in 6 f
+        fac = c["_fade"]; inner = c["_inner"]; top = float(c.get("opacity", 0.86))
+        inner.scale = (0, 0, 0); inner.keyframe_insert("scale", frame=1)
+        for f in range(max(1, a - 1), min(N, b + 1) + 1):
+            if f < a or f > b: u = 0.0
+            elif f < a + 6: u = ease((f - a) / 6)
+            elif f > b - 6: u = ease((b - f) / 6)
+            else: u = 1.0
+            fac.default_value = top * u; fac.keyframe_insert("default_value", frame=f)
+            h.scale = (1, 1, 1) if a <= f <= b else (0, 0, 0); h.keyframe_insert("scale", frame=f)
+            if f < a or f > b: si = 0.0
+            elif f < a + 7: si = ease_out_back((f - a) / 7, 1.6)
+            elif f > b - 4: si = ease((b - f) / 4) * (1 + 0.05 * (f - a) / max(1, b - a))
+            else: si = 1 + 0.05 * (f - a) / max(1, b - a)
+            inner.scale = (si, si, si); inner.keyframe_insert("scale", frame=f)
         return
     if style in ("fade", "chapter"):
         # fade: opacity 0 -> 1 over 'in' frames (default to-from), hold, 1 -> 0 over 'out' frames if given

@@ -576,21 +576,18 @@ def ideas(slug, topic=None, count=10, model=None):
     return data
 
 
+def long_rules():
+    """LONGFORM_RULES.md: script template + shot vocabulary for long-form jobs"""
+    return "\n\n" + open(os.path.join(ROOT, "LONGFORM_RULES.md"), encoding="utf-8").read() + "\n"
+
+
 LONG_CONTENT_RULES = """
-Đây là VIDEO DÀI YouTube 16:9 (không phải Shorts). Khác Shorts:
-- Chia chương (chapters), mỗi chương 2-4 phút, có tiêu đề ngắn tiếng Anh hiện trên thẻ chương; mỗi chuỗi (sequence) là một nhịp
-  kể 20-60 giây gồm nhiều cú máy, ghi `chapter` cho từng chuỗi và `shots` = danh sách cú máy dự kiến (khoảng 12-16 cắt/phút,
-  phần lớn 1,5-4 giây, thỉnh thoảng một cảnh dài 10-25 giây).
-- Kiểu cảnh: wide (toàn cảnh), medium, closeup (cận mặt, cảm xúc), insert (cận vật), board (bàn chiến thuật nhìn từ trên),
-  map (bản đồ: khi nhắc địa danh/hành quân), diagram (sơ đồ giải thích cơ chế), interior, card (màn hình chữ ở mốc quan trọng:
-  năm, tên trận, con số, câu hỏi lớn), pov. Chọn theo nội dung từng câu; màn hình chữ và bản đồ ở những mốc quan trọng, đa dạng.
-- Kịch bản: mở giữa cao trào rồi "let's go back", gieo câu hỏi sớm, mỗi 45-70 giây có một cú mới (tiết lộ, đảo chiều, con số bất ngờ),
-  phần giải thích chính ở khoảng 75 %, kết bằng câu gọi lại tiêu đề. Có một nhân vật dẫn dắt xuyên suốt nếu hợp.
-- Hài vẫn có nhưng thưa hơn Shorts; không cần gag mỗi 4-5 giây. Phụ đề nhỏ phía dưới.
-- Nhiều quốc gia/phe/thời kỳ: liệt kê trong `factions` (culture = văn hóa + thời kỳ, ghi trang phục, màu, vũ khí đúng sử liệu).
-- Chuyển chương: thẻ chương (transition 'fade' hoặc 'cut').
+Đây là VIDEO DÀI YouTube 16:9 (không phải Shorts): theo LONGFORM_RULES.md bên dưới (khung kịch bản, lời → kiểu cảnh, nhịp hình).
+- Chia chương (chapters); mỗi chuỗi (sequence) là một nhịp kể 20-60 giây, ghi `chapter` và `shots` = danh sách cú máy dự kiến
+  (12-16 cắt/phút theo `seconds`), mỗi cú có `type` chọn theo câu lời đọc tương ứng, `what_vi`, và `card_text` khi là màn hình chữ/bản đồ/nhãn.
+- Màn hình chữ ở mốc quan trọng khoảng 1 cái mỗi 45-90 giây (shot type card có card_text), đổi kiểu: năm, con số, câu hỏi, trích dẫn, tên, địa danh.
 - vo_en tổng phải đúng bằng các vo_en của chuỗi nối lại theo thứ tự.
-"""
+""" + "{RULES}"
 
 
 def write_content(slug, idea, minutes=1.0, model=None, wpm=190, fmt="short"):
@@ -613,11 +610,27 @@ def write_content(slug, idea, minutes=1.0, model=None, wpm=190, fmt="short"):
     return data
 
 
+def check_long_content(x, minutes):
+    """rhythm of the planned shots: cuts/min, key-moment text screens, variety of shot types"""
+    e = []
+    secs = sum(q.get("seconds", 0) for q in x["sequences"]) or minutes * 60
+    shots = [sh for q in x["sequences"] for sh in q.get("shots", [])]
+    cpm = len(shots) / max(secs / 60, 0.1)
+    if not 10 <= cpm <= 19: e.append(f"có {len(shots)} cú máy cho {secs:.0f} giây = {cpm:.1f} cắt/phút, cần 12-16 (thêm/bớt shots)")
+    cards = [sh for sh in shots if sh["type"] == "card"]
+    need = max(2, int(secs / 90))
+    if len(cards) < need: e.append(f"chỉ có {len(cards)} màn hình chữ (type card), cần ít nhất {need} (1 cái mỗi 45-90 giây ở mốc quan trọng)")
+    if any(not sh.get("card_text") for sh in cards): e.append("mỗi shot type card phải có card_text (chữ hiện trên màn hình)")
+    types = {sh["type"] for sh in shots}
+    if len(types) < 6: e.append(f"chỉ dùng {len(types)} kiểu cảnh ({sorted(types)}), cần đa dạng hơn (ít nhất 6)")
+    return e
+
+
 def write_content_long(slug, idea, minutes, model=None, wpm=190):
     words = int(round(minutes * wpm)); n_ch = max(2, round(minutes / 3)); n_seq = max(n_ch * 3, round(minutes * 60 / 35))
     prompt = (f"Viết content cho ý tưởng sau (JSON):\n{json.dumps(idea, ensure_ascii=False)}\n\n"
               f"Độ dài: {minutes} phút ≈ {words} từ lời đọc tiếng Anh (±8 %), khoảng {n_ch} chương, {n_seq} chuỗi.\n"
-              + LONG_CONTENT_RULES +
+              + LONG_CONTENT_RULES.replace("{RULES}", long_rules()) +
               "Theo STYLE.md cho phong cách nhân vật/bối cảnh. Mỗi chuỗi: lời đọc, bản dịch Việt, hành động, bối cảnh, đạo cụ, nhân vật, "
               "biểu cảm, gag (nếu có), tiếng động, hiệu ứng, chuyển cảnh, đường đi camera, chữ nhấn, shots. Kiểm chứng sự thật bằng web, ghi nguồn. "
               "library_needs: đồ chưa có trong thư viện; ưu tiên dùng lại (tham số, đổi màu), tối đa khoảng 3 món mới mỗi phút.\n"
@@ -633,6 +646,7 @@ def write_content_long(slug, idea, minutes, model=None, wpm=190):
         bad = sorted({q["chapter"] for q in x["sequences"]} - chs)
         if bad: e.append(f"chuỗi tham chiếu chương không có: {bad}")
         if [q["chapter"] for q in x["sequences"]] != sorted(q["chapter"] for q in x["sequences"]): e.append("chương của các chuỗi phải tăng dần")
+        e += check_long_content(x, minutes)
         return e
     data, info = call("write_content", prompt, load_schema("content_long"), project=slug, model=model, check=check)
     _save_versioned(slug, "content.json", data)
@@ -642,7 +656,8 @@ def write_content_long(slug, idea, minutes, model=None, wpm=190):
 def rewrite_seq(slug, index, request, model=None):
     d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
     prompt = (f"Content hiện tại:\n{json.dumps(content, ensure_ascii=False)}\n\nViết lại CHỈ chuỗi id={index} theo yêu cầu: {request}\n"
-              "Giữ mạch truyện và độ dài tổng gần như cũ. Trả chuỗi mới và toàn bộ lời đọc EN/VI sau khi thay.")
+              "Giữ mạch truyện và độ dài tổng gần như cũ. Trả chuỗi mới và toàn bộ lời đọc EN/VI sau khi thay."
+              + (long_rules() if content.get("format") == "long" else ""))
     schema = load_schema("sequence")
     if content.get("format") == "long":              # long-form sequences also carry chapter + shots
         schema = json.loads(json.dumps(schema)); schema["properties"]["sequence"] = load_schema("content_long")["properties"]["sequences"]["items"]
@@ -683,25 +698,49 @@ Luật khi viết story.json:
 
 
 PLAN_RULES_LONG = """
-Luật riêng cho VIDEO DÀI (story này là MỘT CHƯƠNG). Luật camera v3/seqs ở trên KHÔNG áp dụng: dùng rig "long" với shots (shot ngắn được).
-- meta.aspect = "16:9", meta.chapter = {n, title, start_sec}. Camera rig "long": `shots` liền nhau phủ khung 1..meta.frames,
-  mỗi shot 0,5-25 giây (phần lớn 1,5-4 s, khoảng 12-16 cắt/phút, thỉnh thoảng 1 cảnh dài 8-25 s), mỗi shot có `type`
-  (wide/medium/closeup/insert/board/map/diagram/interior/card/pov) và 2-3 keys; camera LUÔN trôi chậm trong shot (đẩy, lia, trượt ngang,
-  hạ/nâng cần) — đứng yên sẽ bị long_report báo lỗi. Cắt thẳng là chính; `trans` chỉ khi cần whip. Tránh cắt giữa một chữ.
-- Độ sâu trường ảnh: camera.dof = {"fstop": 2.8}; cận mặt/cận vật đặt shot.fstop 1.8-2.2; toàn cảnh 4-5.6. Look point = chủ thể.
-- Ống kính và khoảng cách khổ ngang (cảm biến 36 mm theo bề ngang → khung cao = khoảng_cách × 20,25 / lens). Nhân vật cao 2,5,
-  tâm mặt ở z ≈ 2,0, đỉnh đầu z ≈ 2,6:
-  - cận mặt (đầu + vai, khung cao ~1,5): khoảng cách ≈ 0,075 × lens (lens 50 → 3,7), look vào z ≈ 1,9-2,0, camera z ≈ 1,8-2,1;
-  - trung (từ thắt lưng, khung cao ~2,2): ≈ 0,11 × lens (lens 40 → 4,4), look z ≈ 1,6;
-  - toàn thân (khung cao ~3,4): ≈ 0,17 × lens (lens 32 → 5,4), look z ≈ 1,2; toàn cảnh: ≥ 0,3 × lens.
-  Gần hơn mức này sẽ cắt mất đầu. Cận vật (insert) tính theo kích thước vật.
+Luật riêng cho VIDEO DÀI (story này là MỘT CHƯƠNG; đọc LONGFORM_RULES.md bên dưới). Luật camera v3/seqs ở trên KHÔNG áp dụng:
+dùng rig "long" với shots (shot ngắn được).
+- meta.aspect = "16:9", meta.chapter = {n, title, start_sec}. `shots` liền nhau phủ khung 1..meta.frames, mỗi shot 0,5-25 giây
+  (phần lớn 1,5-4 s, 12-16 cắt/phút, thỉnh thoảng 1 cảnh dài 8-25 s); mỗi shot có `type`. Bám theo `shots` dự kiến trong content.
+- Viết shot bằng `frame` (khung đặt sẵn: subject, move, angle, height, x) — tool tự tính máy, không cắt đầu nhân vật. Chỉ dùng `keys`
+  khi cần đường máy đặc biệt. Camera luôn chuyển động; hai shot liền nhau đổi kiểu cảnh hoặc góc/chuyển động. Cắt ở đầu câu/chữ nhấn.
+- camera.dof = {"fstop": 2.8}; cận/cận vật đặt shot.fstop 1.8-2.2; toàn cảnh 4-5.6.
 - Phụ đề: captions.style "bottom" (mặc định của 16:9); không dùng highlight/impact kiểu Shorts.
-- Thẻ: chương mở bằng {"style":"chapter","sub":"CHAPTER n","text": tiêu đề IN HOA, from 1, to ~75} kèm {"style":"fade","from":1,"to":20,"in":0,"out":20}
-  (mờ từ đen); chương cuối kết bằng {"style":"fade", "hold": true} trong 30 khung cuối. Màn hình chữ ở mốc quan trọng: thẻ title (năm, tên trận,
-  con số) hoặc một shot type "card" (thẻ title to giữa khung, nền là cảnh mờ). pos x trong -1..1 theo bề ngang 16:9, phụ đề ở y ≈ -0,8.
+- Mở chương: {"style":"chapter","sub":"CHAPTER n","text": tiêu đề IN HOA, from 1, to ~75} + {"style":"fade","from":1,"to":20,"in":0,"out":20}.
+  Chương cuối kết bằng {"style":"fade","hold":true} trong 30 khung cuối.
+- MỌI card_text trong shots của content phải hiện trên màn hình: shot type card → thẻ style "screen" (variant year/number/question/
+  quote/name/place/fact) trùng thời gian shot đó; map/diagram/board/label → thẻ label/title hoặc chữ trên bối cảnh. pos x,y trong -1..1
+  theo khung 16:9; phụ đề ở y ≈ -0,8, tránh đặt thẻ nhỏ ở đó.
 - Âm thanh: không có whoosh ở mỗi cắt; nhạc liên tục (mood theo chương), tiếng động thưa và đúng hành động.
-- Các bối cảnh đặt xa nhau (gốc tọa độ, x = 300, x = 500 …); shot type map/board/diagram dùng bảng sơ đồ ở x = 500 nếu chưa có bối cảnh riêng.
+- Các bối cảnh đặt xa nhau (gốc tọa độ, x = 300, x = 500 …); map/board/diagram dùng bảng sơ đồ ở x = 500 nếu chưa có bối cảnh riêng.
 """
+
+
+def _norm_txt(t): return re.sub(r"[^A-Z0-9]+", " ", (t or "").upper()).strip()
+
+
+def check_long_story(st, content):
+    """long-form chapter: rhythm and every planned on-screen text present"""
+    e = []
+    cam = st.get("camera", {}); shots = cam.get("shots") or []
+    N = st["meta"]["frames"]
+    if shots:
+        cpm = (len(shots) - 1) / max(N / 30 / 60, 0.1)
+        if N > 1800 and not 9 <= cpm <= 20: e.append(f"{cpm:.1f} cắt/phút, cần 12-16 (chia hoặc gộp shot)")
+        run = 1
+        for p, q in zip(shots, shots[1:]):
+            same = p.get("type") == q.get("type") and (p.get("frame") or {}).get("subject") == (q.get("frame") or {}).get("subject") \
+                and (p.get("frame") or {}).get("move") == (q.get("frame") or {}).get("move") and "frame" in p and "frame" in q
+            run = run + 1 if same else 1
+            if run >= 3: e.append(f"shot {q['a']}-{q['b']}: 3 shot liền nhau cùng kiểu, cùng chủ thể, cùng chuyển động (đổi góc/kiểu)"); break
+    card_words = [set((_norm_txt(c.get("text", "")) + " " + _norm_txt(c.get("sub", "")) + " " + _norm_txt(c.get("caption", ""))).split())
+                  for c in st.get("cards", [])]
+    for q in content.get("sequences", []):
+        for sh in q.get("shots", []):
+            want = set(_norm_txt(sh.get("card_text")).split())
+            if sh["type"] == "card" and want and not any(len(want & cw) >= 0.8 * len(want) for cw in card_words):
+                e.append(f"màn hình chữ '{sh['card_text']}' (chuỗi {q.get('id')}) chưa có trong cards")
+    return e
 
 
 def plan_shots(slug, model=None):
@@ -724,7 +763,7 @@ def plan_shots(slug, model=None):
               + f"Thời gian từ (words, giây): {json.dumps(words['words'], ensure_ascii=False)}\n"
               + (f"meta.frames = {frames}.\n" if frames else "")
               + f"Content:\n{json.dumps(content, ensure_ascii=False)}\n\nThư viện:\n{_catalog_text()}\n"
-              + PLAN_RULES + (PLAN_RULES_LONG if long_ else ""))
+              + PLAN_RULES + (PLAN_RULES_LONG + long_rules() if long_ else ""))
 
     def check(x):
         pend = {(m["kind"], m["name"]) for m in x["missing"]}
@@ -732,6 +771,7 @@ def plan_shots(slug, model=None):
         if long_ and x["story"]["camera"].get("rig") != "long": e.append("video dài: camera.rig phải là 'long' (shots)")
         if long_ and x["story"]["meta"].get("aspect") != "16:9": e.append("video dài: meta.aspect phải là '16:9'")
         if frames and x["story"]["meta"]["frames"] != frames: e.append(f"meta.frames phải là {frames}")
+        if long_: e += check_long_story(x["story"], content)
         return e
     data, info = call("plan_shots", prompt, schema, project=slug, model=model, check=check)
     _save_versioned(slug, "story.json", data["story"])
