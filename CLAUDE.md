@@ -153,3 +153,14 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
 - Đã thử: "Nhờ Claude sửa" (khung 886, 42 s), góp ý thư viện (toast, gary_sneakers) qua `/api/library/design`.
 - Render: container chỉ có CPU, nên đã render đoạn 1–300 ở 25 % (46 phút, 9,2 s/khung): 300 khung + AAC, khoảng −20 dB, đỉnh −5,9 dB; thẻ, phụ đề, whip, bong bóng đều đúng. Cả video ở 100 % render trên máy người dùng (khoảng 1.966 × 1,4 s ≈ 46 phút).
 - Còn để ý: chữ phụ đề đôi khi trùng với nhãn thẻ ("BRAND-NEW SHOES"); plan_shots nên tránh thẻ trùng chữ với phụ đề.
+
+### Bước 6 — xong
+- `skill/blender-why-shorts/SKILL.md` (v4, 98 dòng thay cho 1.563 dòng): không còn dạy viết tay script Blender; dạy Claude dùng tool.
+  Gồm: tool nằm ở đâu, cách cập nhật (kể cả gỡ xung đột git đã gặp), bảng 5 bước với thời gian đo thật, điều khiển tool bằng
+  computer use hoặc dòng lệnh (không gõ vào Blender), danh sách kiểm tra ảnh xem trước, sửa tay `story.json`, thư viện, bảng lỗi
+  hay gặp, cách giao kết quả. Luật phong cách không chép lại mà trỏ tới `STYLE.md` (một nguồn duy nhất).
+- `skill/blender-why-shorts.zip`: tải lên claude.ai để thay skill cũ. Đã thử: một phiên Claude chỉ có skill này trả lời đúng quy trình
+  sửa một chuỗi đã render và lỗi "[beat]".
+- Thêm `tools/splice.py` + nút "Ghép vào video đầy đủ" ở tab Render (cần ffmpeg): thay khung A-B bằng `parts/*_AAAA-BBBB.mp4`, giữ
+  tiếng gốc, bản cũ lưu `*_before.mp4`. Đã thử khung 50-79, khung 1-30 và qua server với đoạn render thật.
+- `README.md`: hướng dẫn nhanh cho người dùng.

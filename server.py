@@ -302,6 +302,18 @@ def job_render(job, slug, pct=100, frames=None, samples=None):
     return {"file": os.path.relpath(path, pdir(slug)).replace("\\", "/") if path else None}
 
 
+def job_splice(job, slug, part):
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import splice
+    story = jload(os.path.join(pdir(slug), "story.json")) or {}
+    full = os.path.join(pdir(slug), story.get("meta", {}).get("output", "out.mp4"))
+    if not os.path.exists(full): raise ValueError(f"chưa có video đầy đủ {os.path.basename(full)} (render cả video trước)")
+    job.say(f"Ghép {os.path.basename(part)} vào {os.path.basename(full)} (bản cũ giữ ở *_before.mp4)…")
+    out = splice.splice(full, part)
+    job.say("Xong: " + os.path.basename(out))
+    return {"file": os.path.basename(out)}
+
+
 def job_design(job, kind, name, brief, dim, feedback):
     if kind == "chars": return bridge.design_char(name, brief, feedback=feedback)
     return bridge.design_item(kind, name, brief, dim=dim, feedback=feedback)
@@ -477,6 +489,9 @@ class Handler(BaseHTTPRequestHandler):
             if act == ["render"]:
                 b = self.jbody()
                 return self.send_json(start_job("render", slug, job_render, slug, b.get("pct", 100), b.get("frames"), b.get("samples")).to_json())
+            if act == ["splice"]:                      # put a re-rendered part (parts/*_AAAA-BBBB.mp4) into the full video
+                part = self.safe_join(d, self.jbody()["part"])
+                return self.send_json(start_job("splice", slug, job_splice, slug, part).to_json())
             if act == ["open"]:
                 f = self.safe_join(d, self.jbody()["file"])
                 if hasattr(os, "startfile"): os.startfile(f); return self.send_json({"ok": True})
@@ -503,7 +518,7 @@ class Handler(BaseHTTPRequestHandler):
         return {"api_key_warning": bridge.api_key_warning(), "claude": claude_ok, "claude_note": None if claude_ok else h,
                 "json_schema": bool(claude_ok and "--json-schema" in h), "blender": b,
                 "blender_found": bool(shutil.which(b) or os.path.exists(b)), "usage": bridge.usage(),
-                "wpm": WPM, "sec_per_frame": SEC_PER_FRAME,
+                "wpm": WPM, "sec_per_frame": SEC_PER_FRAME, "ffmpeg": bool(shutil.which("ffmpeg")),
                 "jobs": [j.to_json(10 ** 9) for j in JOBS.values() if j.status == "running"]}
 
     def library(self):

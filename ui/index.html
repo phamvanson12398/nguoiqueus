@@ -505,8 +505,11 @@ function renderRender() {
   const spf = S.status ? S.status.sec_per_frame : 1.4;
   $('#renderEst').innerHTML = `<div class="stat"><span class="muted">Số khung</span><b>${fr}</b></div><div class="stat"><span class="muted">Ước tính (100 %)</span><b>${fmtTime(fr * spf)}</b><span class="muted">${spf} s/khung + ~40 s biên dịch shader</span></div>`;
   $('#outputs').innerHTML = st.outputs.length ? st.outputs.map(o => `<div class="row" style="padding:4px 0"><b>${esc(o.file)}</b><span class="muted">${(o.size / 1e6).toFixed(1)} MB · ${esc(o.time)}</span>
-     <button onclick="play('${esc(o.file)}')">Xem</button><a href="${P('/file/' + o.file)}" download><button>Tải về</button></a><button onclick="openFile('${esc(o.file)}')">Mở bằng trình phát</button></div>`).join('') : '<span class="muted">Chưa có file.</span>';
+     <button onclick="play('${esc(o.file)}')">Xem</button><a href="${P('/file/' + o.file)}" download><button>Tải về</button></a><button onclick="openFile('${esc(o.file)}')">Mở bằng trình phát</button>
+     ${o.file.startsWith('parts/') ? `<button onclick="splicePart('${esc(o.file)}')" title="Thay đoạn khung này trong video đầy đủ (cần ffmpeg)">Ghép vào video đầy đủ</button>` : ''}</div>`).join('') : '<span class="muted">Chưa có file.</span>';
 }
+window.splicePart = f => { if (S.status && !S.status.ffmpeg) return toast('Cần ffmpeg: mở PowerShell gõ  winget install ffmpeg  rồi mở lại start_studio.bat', 7000);
+  run(P('/splice'), {part: f}, 'Ghép đoạn vào video'); };
 window.play = f => { const v = $('#player'); v.src = P('/file/' + f) + '?t=' + Date.now(); v.classList.remove('hidden'); v.play(); };
 window.openFile = async f => { const r = await api(P('/open'), {body: {file: f}}); if (!r.ok) play(f); };
 $('#btnRender').onclick = () => { if (!S.state.story) return toast('Chưa có story.json (bước 4)');
