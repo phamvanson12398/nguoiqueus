@@ -1,0 +1,172 @@
+{
+  "kind": "set",
+  "name": "kitchen",
+  "title_vi": "Bếp Mỹ ban ngày",
+  "description_vi": "Bếp kiểu Mỹ ban ngày, mở phía -Y để camera đứng trong phòng. Sàn gạch ô cờ đen trắng ô 0,8; tường sau (mặt tường ở y = 6,5) màu xanh nhạt, có dải gạch ốp. Quầy bếp mặt gỗ chạy dọc tường sau (mép trước ở y khoảng 5,42, cao 1,35), dưới quầy là tủ kem có cửa và ngăn kéo, có bồn rửa và vòi nước ngay dưới cửa sổ. Tủ treo màu kem. Cửa sổ đầy nắng bên trái (bầu trời, mặt trời, mây, rèm vàng, chậu cây trên bậu). Tủ lạnh retro xanh bạc hà bên phải (x = 3,5), cửa có nam châm và tờ giấy nhắn. Trần ở z = 6,5. Phần 'lamp' là đèn thả dây, chụp đỏ tròn có đáy phát sáng, đáy ở z 5,3, treo tại (0, 3,6). Hai lát bánh mì phết bơ dính ngay dưới chụp (tâm ở z 5,15), mặt có bơ úp vào đèn. Không có bàn: khoảng x -3,5..3, y 3..5 để trống cho bàn và tháp.",
+  "params": {
+    "origin": {
+      "type": "array",
+      "default": [
+        0,
+        0
+      ],
+      "desc_vi": "dời cả bếp (x, y); mặc định ở gốc tọa độ"
+    },
+    "wall_color": {
+      "type": "color",
+      "default": [
+        0.55,
+        0.74,
+        0.82
+      ],
+      "desc_vi": "màu tường"
+    },
+    "cabinet_color": {
+      "type": "color",
+      "default": [
+        0.93,
+        0.84,
+        0.62
+      ],
+      "desc_vi": "màu tủ bếp (kem)"
+    },
+    "counter_color": {
+      "type": "color",
+      "default": [
+        0.55,
+        0.32,
+        0.14
+      ],
+      "desc_vi": "màu mặt quầy gỗ"
+    },
+    "backsplash_color": {
+      "type": "color",
+      "default": [
+        0.3,
+        0.62,
+        0.6
+      ],
+      "desc_vi": "màu dải gạch ốp sau quầy"
+    },
+    "fridge_color": {
+      "type": "color",
+      "default": [
+        0.4,
+        0.78,
+        0.66
+      ],
+      "desc_vi": "màu tủ lạnh"
+    },
+    "lamp_color": {
+      "type": "color",
+      "default": [
+        0.85,
+        0.1,
+        0.07
+      ],
+      "desc_vi": "màu chụp đèn"
+    },
+    "lamp_on": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "đáy chụp đèn phát sáng"
+    },
+    "lamp_light": {
+      "type": "number",
+      "default": 0,
+      "desc_vi": "công suất đèn điểm thật trong chụp (W); 0 = không có"
+    },
+    "stuck_toast": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "hai lát bánh mì dính dưới chụp đèn"
+    },
+    "side_walls": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "có tường hai bên (x = -6,4 và x = 4,8) và trần"
+    },
+    "decor": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "đồ trang trí trên quầy (bát trái cây, ống đựng muỗng, chậu cây)"
+    }
+  },
+  "parts": [
+    "lamp",
+    "lamp_toast1",
+    "lamp_toast2"
+  ],
+  "space": "Phòng mở phía -Y. Camera đứng trong khoảng y từ -2,7 tới 2, x từ -4 tới 4; tường bên ở x = -6,5 và x = 4,9. Vùng diễn chính là sàn trống x từ -3,5 tới 3, y từ 3 tới 5, dùng cho bàn và tháp cao 4,6. Joe đứng ở (2,3; 4,6), ngay trước quầy và bên trái tủ lạnh. Khi Gary đứng trên thùng (z 2,07), đầu ở khoảng z 4,6, gần đáy đèn (z 5,25).\n\nGợi ý camera:\n- Cảnh rộng: lens 28-32, đặt ở (0,5; -2,5; 2,2), nhìn về (0; 4; 2,6). Thấy cả quầy, tủ lạnh, cửa sổ và đèn.\n- Hé lộ bánh dính đèn: hạ cần, máy ở (0,6; 1,2; 1,8) nhìn lên (0; 3,6; 5,2).\n- Cận Joe: máy ở (1,6; 1,6; 2,0) nhìn (2,3; 4,6; 2,0).\n- Không nhìn thẳng lên trần ở góc quá rộng, vì trần chỉ là một tấm phẳng.",
+  "anchors": {
+    "joe": "chỗ Joe đứng trước quầy (x, y)",
+    "table": "tâm khoảng trống đặt bàn hoặc tháp (x, y); vùng trống x -3,5..3, y 3..5",
+    "lamp": "đáy chụp đèn (x, y, z ≈ 5,3)",
+    "toast": "tâm hai lát bánh dính dưới đèn (x, y, z = 5,15)",
+    "counter": "mép trước mặt quầy (x giữa, y, z = 1,35)",
+    "fridge": "mặt trước tủ lạnh (x, y)",
+    "window": "tâm cửa sổ trên tường sau (x, y, z)"
+  },
+  "views": [
+    {
+      "pos": [
+        0.5,
+        -2.5,
+        2.2
+      ],
+      "look": [
+        0,
+        4,
+        2.6
+      ],
+      "lens": 28
+    },
+    {
+      "pos": [
+        0.6,
+        1.2,
+        1.8
+      ],
+      "look": [
+        0,
+        3.6,
+        5.1
+      ],
+      "lens": 35
+    },
+    {
+      "pos": [
+        -1.5,
+        0.5,
+        2
+      ],
+      "look": [
+        2.3,
+        4.6,
+        1.8
+      ],
+      "lens": 35
+    }
+  ],
+  "tags": [
+    "indoor",
+    "kitchen",
+    "home",
+    "day",
+    "toast"
+  ],
+  "notes_vi": "Mình chưa chạy build.py trong Blender; công cụ sẽ render thumbnail để kiểm tra.\n\nVật thể chuyển động được:\n- **`kitchen_lamp`** là empty gốc gắn ở trần (0; 3,6; 6,5). Xoay trục X hoặc Y quanh empty này thì đèn đung đưa như con lắc.\n- **`kitchen_lamp_toast1/2`** là con của đèn, nên tọa độ tính theo hệ của đèn (z cục bộ -1,35 ứng với z thế giới 5,15). Muốn cho bánh rơi khỏi đèn thì animate vị trí cục bộ (đi xuống theo -z), hoặc tắt `stuck_toast` rồi đặt bánh làm đạo cụ riêng.\n- Bơ úp lên trên, dính vào đáy chụp, nên camera đứng dưới nhìn lên thấy mặt bánh không có bơ (khớp gag bánh rơi úp mặt bơ).\n\nÁnh sáng và sàn:\n- Tường và trần tắt đổ bóng (`visible_shadow = False`) để nắng vẫn chiếu vào phòng dù có trần.\n- Sàn ô cờ gồm một tấm sàn trắng và một lưới gồm các ô đen nằm trong cùng một mesh, đưa vào noline để không có viền giữa các ô.\n\nTham số:\n- `lamp_light` > 0: thêm một đèn điểm thật trong chụp.\n- `side_walls = False`: bỏ hai tường bên và trần.\n\nBuild.py không dùng `random` chung, nên đổi thứ tự các bối cảnh không làm lệch phần ngẫu nhiên của cảnh khác.",
+  "status": "draft",
+  "brief_vi": "Bếp Mỹ ban ngày ở gốc tọa độ, mở phía -Y (camera đứng ở y từ -2.7 tới 2, không có tường chắn). Sàn gạch ô cờ đen trắng ô to (khoảng 0,8), tường sau ở y khoảng 6,5 với tủ bếp màu kem, quầy bếp chạy dọc tường sau (Joe đứng trước quầy ở khoảng (2.3, 4.6)), tủ lạnh bên phải (x khoảng 3,5), cửa sổ có nắng bên trái tường sau. Trần cao khoảng 6,5. Khoảng trống x từ -3,5 tới 3, y từ 3 tới 5 để đặt bàn và dựng tháp cao 4,6 (Gary đứng trên thùng ở z 2,07). Part 'lamp': đèn trần thả dây, chụp đèn tròn có đáy ở khoảng (0, 3.6, 5.3); hai lát bánh 'kẹt' ngay dưới chụp ở z 5,15. Không gắn sẵn bàn. parts: lamp",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T04:34:37",
+  "review": {
+    "score": 8,
+    "summary_vi": "Bếp đã dựng xong và nhìn qua là nhận ra bếp Mỹ ban ngày: sàn ô cờ, tủ kem, quầy gỗ, cửa sổ nắng có rèm vàng, tủ lạnh xanh bạc hà bên phải, đèn thả đỏ treo giữa phòng. Màu tươi, viền mực rõ, tỉ lệ hợp lý. Mình chỉ mới xem ảnh toàn cảnh (view0), chưa xem ảnh scale.png cạnh Joe. Còn vài lỗi nhỏ không đáng sửa, ví dụ sàn thò ra sau tường phải ở chỗ camera không thấy.",
+    "problems": [
+      "Nhỏ: sàn ô cờ (x tới 6,4) thò ra ngoài tường phải (x=4,9); camera đứng trong phòng sẽ không thấy chỗ này",
+      "Nhỏ: ô trắng hơi ngả xanh do phản chiếu trời, nhưng vẫn đọc rõ là gạch đen trắng",
+      "Ở góc máy thumbnail này, hai lát bánh dưới đèn nhìn hơi nhỏ; các góc máy cận đã gợi ý vẫn thấy rõ"
+    ]
+  }
+}
