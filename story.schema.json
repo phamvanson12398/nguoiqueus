@@ -405,7 +405,10 @@
             "description": "screen x,y in -1..1 (y=1 top)"
           },
           "size": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0.03,
+            "maximum": 0.3,
+            "description": "letter height in scene units at the captions depth (frame is 1.29 tall): title 0.075, label 0.06, bubble 0.065, stamps 0.16. NOT a multiplier."
           },
           "color": {
             "$ref": "#/$defs/rgb"

@@ -39,7 +39,17 @@ def _text_width(body, size):
 
 
 def build_card(root, i, c):
-    style = c.get("style", "title"); size = c.get("size") or {"title": 0.075, "label": 0.06, "bubble": 0.065}.get(style, 0.2)
+    style = c.get("style", "title")
+    default = {"title": 0.075, "label": 0.06, "bubble": 0.065}.get(style, 0.16)
+    size = c.get("size") or default
+    if size > 0.3:                    # written as a multiplier ("1.3x") instead of a height: treat it as one
+        print(f"WARN card {i}: size {size} looks like a multiplier, using {round(default * size, 3)}")
+        size = default * size
+    body_ = c.get("text", "")
+    if style in ("title", "label", "bubble") and body_:     # shrink to fit the frame width (9:16)
+        extra = {"title": 1.2, "label": 0.2, "bubble": 2.2}[style]
+        need = _text_width(body_, size) + size * extra
+        if need > 1.9 * HALF_W: size *= 1.9 * HALF_W / need
     rgb = tuple(c.get("color") or DEFAULT_COLOR[style]); body = c.get("text", "")
     x, y = c.get("pos") or ((0, 0.55) if style == "title" else (0, -0.6) if style == "iris" else (0, 0))
     h = empty(f"card{i}", root, (x * HALF_W, y * HALF_H, -0.02 - 0.0005 * i))

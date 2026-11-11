@@ -103,6 +103,8 @@ Gắn vào camera như phụ đề, kích thước không đổi theo ống kín
 
 Thẻ nảy vào trong 5 khung, lắc nhẹ, rồi tắt trong 3 khung cuối.
 
+`size` là **chiều cao chữ tính theo đơn vị cảnh**, không phải hệ số nhân (khung hình cao khoảng 1,29 đơn vị). Mặc định: title 0,075; label 0,06; bubble 0,065; dấu ✗/✓ 0,16. Giới hạn 0,03–0,3. Chữ dài sẽ tự co cho vừa bề ngang khung hình.
+
 ### `fx`
 `dust`: `[{"frame", "pos", "n", "radius", "size", "life", "rise"}]`, các cụm bụi dùng chung một pool.
 
