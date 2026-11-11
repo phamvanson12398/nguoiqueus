@@ -1,0 +1,103 @@
+{
+  "kind": "prop",
+  "name": "groma",
+  "title_vi": "Groma (dụng cụ đo đạc La Mã)",
+  "description_vi": "Groma 3D cắm trên đất: cọc gỗ cao ~2,2 có mũi sắt, tay đòn ngang ở đỉnh, chốt xoay ở đầu tay đòn mang thập tự gỗ (đầu thanh bọc đồng). Bốn dây dọi với quả dọi đồng treo ở bốn đầu thập tự, tự đung đưa nhẹ lặp vô hạn. Gốc ở mũi cọc (z = 0 là mặt đất). Xoay thập tự: animate rotation Z của `<name>_cross` (dây dọi đi theo).",
+  "dim": "3d",
+  "params": {
+    "pole_height": {
+      "type": "number",
+      "default": 2.2,
+      "desc_vi": "Chiều cao cọc gỗ (tính từ mũi sắt tới tay đòn)"
+    },
+    "arm_length": {
+      "type": "number",
+      "default": 0.6,
+      "desc_vi": "Độ dài tay đòn từ cọc tới chốt xoay"
+    },
+    "cross_radius": {
+      "type": "number",
+      "default": 0.5,
+      "desc_vi": "Bán kính thập tự (tâm tới đầu thanh)"
+    },
+    "cross_angle": {
+      "type": "number",
+      "default": 20,
+      "desc_vi": "Góc xoay ban đầu của thập tự (độ)"
+    },
+    "cord_length": {
+      "type": "number",
+      "default": 0.85,
+      "desc_vi": "Độ dài dây dọi"
+    },
+    "sway": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Quả dọi đung đưa nhẹ theo thời gian"
+    },
+    "sway_deg": {
+      "type": "number",
+      "default": 3,
+      "desc_vi": "Biên độ đung đưa (độ)"
+    },
+    "sway_period": {
+      "type": "number",
+      "default": 54,
+      "desc_vi": "Chu kỳ đung đưa (khung)"
+    },
+    "wood_color": {
+      "type": "array",
+      "default": [
+        0.42,
+        0.18,
+        0.05
+      ],
+      "desc_vi": "Màu gỗ"
+    },
+    "bronze_color": {
+      "type": "array",
+      "default": [
+        0.85,
+        0.45,
+        0.1
+      ],
+      "desc_vi": "Màu đồng (quả dọi, đầu thanh)"
+    },
+    "cord_color": {
+      "type": "array",
+      "default": [
+        0.12,
+        0.07,
+        0.03
+      ],
+      "desc_vi": "Màu dây"
+    }
+  },
+  "parts": [
+    "pole",
+    "cross",
+    "plumbs"
+  ],
+  "tags": [
+    "roman",
+    "survey",
+    "tool",
+    "ancient",
+    "wood",
+    "bronze",
+    "3d"
+  ],
+  "notes_vi": "Mình đã viết xong build.py cho groma nhưng chưa dựng thử trong Blender, nên chưa có ảnh xem lại.\n\n- **Cấu trúc:** `<name>_pole` là cọc gỗ. Mũi sắt, vòng đồng, tay đòn và chốt xoay là con của cọc. `<name>_cross` là object rỗng làm trục xoay đặt ở đầu tay đòn, góc ban đầu 20°. Xoay trục Z của nó thì cả thập tự lẫn dây dọi quay theo. `<name>_plumbs` là object rỗng chứa 4 dây dọi; bật/tắt hiện object này là ẩn/hiện cả 4 dây.\n- **Đung đưa:** mỗi quả dọi có trục riêng `<name>_plumb<i>`. Mình đặt 5 khóa giống sóng sin trên trục X và Y (biên độ 3°, chu kỳ 54 khung, trục Y chậm hơn 1,37 lần, lệch pha giữa các quả) rồi cho lặp vô hạn bằng modifier CYCLES. Vì vậy không cần biết video dài bao nhiêu khung. Khi story animate `_cross` hay `_plumbs` thì không đụng đến các khóa này.\n- **Tỉ lệ:** cọc 2,2, đỉnh thập tự khoảng 2,32, hơi thấp hơn nhân vật (2,5). Dây dài 0,85 nên quả dọi treo ngang ngực nhân vật. Tay đòn 0,6 giữ dây cách xa cọc, đúng như groma thật.\n- **Màu:** gỗ nâu ấm, đồng (0.85, 0.45, 0.1) là màu nhận diện, sắt tối, dây nâu sẫm. Dây có bán kính 0,012 để vẫn thấy trên điện thoại.\n- **Rủi ro chưa kiểm:** các phần con được đặt `parent` trực tiếp, tọa độ tính theo object cha. Phần con của cọc đã bù độ cao tâm cọc (`pz`). Nếu builder đổi ma trận cha khác cách này, vị trí các phần có thể lệch. Cần dựng thử để xác nhận.",
+  "status": "draft",
+  "brief_vi": "Groma 3D đứng trên đất: cọc gỗ cao ~2,2 có tay đòn ngang ở đỉnh, thập tự gỗ xoay được, 4 dây dọi với quả dọi đồng nhỏ (đung đưa nhẹ theo thời gian). Gốc ở chân cọc. parts: pole, cross, plumbs.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T17:42:50",
+  "review": {
+    "score": 8,
+    "summary_vi": "Groma đã đạt: cọc gỗ có mũi sắt cắm đúng mặt đất, tay đòn đưa thập tự ra xa cọc, 4 dây có quả dọi đồng treo đúng chỗ. Cao khoảng 2,3, vừa thấp hơn Joe (2,5). Màu gỗ và đồng tương phản, viền mực rõ. Lỗi nhỏ: nhìn thẳng từ trên xuống thì phần đồng bị ngả màu ô liu, chưa cần sửa.",
+    "problems": [
+      "Nhìn từ trên xuống, mặt ngửa của nắp đồng và trục giữa bị ánh trời nhuộm thành màu ô liu. Góc trên xuống ít dùng nên chưa cần sửa.",
+      "Cọc gỗ khá mảnh (r = 0,05) nhưng vẫn đọc được trên điện thoại vì có viền mực."
+    ]
+  }
+}

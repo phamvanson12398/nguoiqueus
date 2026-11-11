@@ -1,0 +1,196 @@
+{
+  "kind": "set",
+  "name": "roman_countryside",
+  "title_vi": "Vùng quê La Mã (Britannia / Ý)",
+  "description_vi": "Vùng quê cổ đại ban ngày, mở về phía -Y, khoảng diễn quanh (0, 4) tính từ origin, mặt đất z = 0. region 'britain': đồi xanh thấp, rừng sồi, nhà tròn mái tranh ở xa (huts), có thể bật dải sương mù (mist). region 'italy': đồi khô vàng, thông dù, dãy Apennine ở xa, nắng gắt (sun='auto' tăng đèn Sun). Thêm được các chi tiết cho câu chuyện, tọa độ tính từ origin: đầm lầy (swamp), các đỉnh đồi đỉnh bằng để đặt đống lửa báo hiệu (hills), sườn dốc có đường lát đá zíc zắc (steep_slope), lối mòn đất (trackway), mỏm đá đỉnh phẳng cho người đứng (outcrop), đồi bị xẻ đôi có đường xuyên qua và đống đá vụn (cutting). Đường La Mã không có trong set này mà đặt riêng bằng prop roman_road.",
+  "params": {
+    "name": {
+      "type": "string",
+      "default": "roman_countryside",
+      "desc_vi": "Tiền tố tên object"
+    },
+    "origin": {
+      "type": "array",
+      "default": [
+        0,
+        0
+      ],
+      "desc_vi": "Gốc bối cảnh [x, y] trong thế giới"
+    },
+    "region": {
+      "type": "string",
+      "default": "britain",
+      "enum": [
+        "britain",
+        "italy"
+      ],
+      "desc_vi": "Vùng: britain (xanh, sồi, nhà tròn) hoặc italy (khô vàng, thông dù, núi)"
+    },
+    "huts": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Nhà tròn mái tranh ở xa (chỉ khi region = britain)"
+    },
+    "mist": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "Các dải sương mù trong suốt phía sau khoảng diễn"
+    },
+    "sun": {
+      "type": "string",
+      "default": "auto",
+      "enum": [
+        "auto",
+        "keep"
+      ],
+      "desc_vi": "auto: với italy thì tăng đèn Sun (nắng gắt, bóng sắc). Đèn dùng chung cả video"
+    },
+    "swamp": {
+      "type": "object",
+      "default": null,
+      "desc_vi": "{at:[x,y], r}: đầm bùn có viền nước và lau sậy, mặt bùn ở z 0,08. Nhân vật đặt ở z -0,5 trông như lội ngập gối"
+    },
+    "hills": {
+      "type": "array",
+      "default": [
+        {
+          "at": [
+            -24,
+            48
+          ],
+          "h": 9
+        },
+        {
+          "at": [
+            22,
+            62
+          ],
+          "h": 12
+        }
+      ],
+      "desc_vi": "[{at:[x,y], h}]: đỉnh đồi xa, mỗi đỉnh có chỗ bằng (bán kính ~3) ở z = h để đặt beacon_fire"
+    },
+    "steep_slope": {
+      "type": "object",
+      "default": null,
+      "desc_vi": "{at:[x,y], h=10, width=20, legs=4}: sườn dốc lớn dâng về +Y, có đường lát đá zíc zắc từ chân lên đỉnh"
+    },
+    "trackway": {
+      "type": "array",
+      "default": null,
+      "desc_vi": "[[x,y], ...]: lối mòn đất quanh co, được làm mượt qua các điểm"
+    },
+    "outcrop": {
+      "type": "object",
+      "default": null,
+      "desc_vi": "{at:[x,y], h=3, size=4}: mỏm đá, đỉnh phẳng ở z = h, rộng khoảng size/2 để người đứng"
+    },
+    "cutting": {
+      "type": "object",
+      "default": null,
+      "desc_vi": "{at:[x,y], h=7, gap=7, angle=0}: đồi bị xẻ đôi, khe rộng gap chạy dọc trục Y (angle xoay theo độ), có đống đá vụn ở hai đầu"
+    },
+    "trees": {
+      "type": "number",
+      "default": 24,
+      "desc_vi": "Số cây (sồi hoặc thông dù), tránh khoảng diễn và các chi tiết"
+    },
+    "seed": {
+      "type": "number",
+      "default": 3,
+      "desc_vi": "Hạt ngẫu nhiên (không dùng random chung)"
+    }
+  },
+  "parts": [
+    "ground",
+    "trees",
+    "swamp",
+    "hill_1",
+    "hill_2",
+    "slope",
+    "slope_road",
+    "trackway",
+    "outcrop",
+    "cutting",
+    "huts",
+    "mist"
+  ],
+  "space": "Khoảng diễn quanh origin + (0, 4), mặt đất z = 0, trống trong bán kính khoảng 10. Máy đặt ở phía -Y (y khoảng -4 đến -10), ngang ngực (z 1,4-1,8), nhìn về +Y. Đồi nền ở y 45-120, núi Apennine (italy) ở y 150-178, cây ở hai bên từ y ≥ 10. Toàn cảnh đồi beacon: lùi máy lại và nâng cao rồi nhìn vào anchor hill_i. Với sườn dốc thì nhìn chéo từ bên để thấy đường zíc zắc. Cutting nên quay dọc trục khe (từ -Y nhìn vào).",
+  "anchors": {
+    "center": "Tâm khoảng diễn [ox, oy+4, 0]",
+    "swamp_center": "Tâm đầm lầy (khi có swamp)",
+    "hill_1": "Chỗ bằng trên đỉnh đồi thứ nhất, z = h (tương tự hill_2..hill_n)",
+    "slope": "Giữa mặt sườn dốc, z = h/2",
+    "slope_foot": "Đầu đường zíc zắc ở chân dốc",
+    "slope_top": "Cuối đường trên đỉnh dốc, z = h",
+    "cutting": "Tâm khe xẻ đồi, z = 0",
+    "outcrop": "Tâm đỉnh phẳng của mỏm đá, z = h",
+    "trackway_start": "Điểm đầu lối mòn"
+  },
+  "views": [
+    {
+      "pos": [
+        0,
+        -9,
+        1.7
+      ],
+      "look": [
+        0,
+        6,
+        1.4
+      ],
+      "lens": 27
+    },
+    {
+      "pos": [
+        -14,
+        -22,
+        9
+      ],
+      "look": [
+        0,
+        25,
+        3
+      ],
+      "lens": 24
+    },
+    {
+      "pos": [
+        10,
+        -6,
+        2.5
+      ],
+      "look": [
+        -6,
+        40,
+        6
+      ],
+      "lens": 35
+    }
+  ],
+  "tags": [
+    "set",
+    "ancient",
+    "roman",
+    "countryside",
+    "britain",
+    "italy",
+    "hills",
+    "swamp",
+    "longform",
+    "outdoor"
+  ],
+  "notes_vi": "- Chưa dựng thử trong Blender, chỉ mới viết code: cần chạy thumbnail để kiểm tra.\n- Mọi tọa độ tham số (at, trackway) đều tính từ origin. Anchor trả về tọa độ thế giới, dạng [x, y, z]: swamp_center, hill_1..n (z = h), slope (giữa mặt dốc), slope_foot, slope_top, cutting, outcrop (z = h), trackway_start, center (khoảng diễn).\n- Đầm lầy: mặt bùn ở z 0,08, viền nước bóng lộ ra giữa bùn và bờ, lau sậy chừa trống phía máy quay (-Y). Đặt nhân vật ở z -0,5 thì trông như lội ngập gối.\n- Đồi beacon: khối tiện, đỉnh phẳng bán kính khoảng 3 ở đúng z = h, có mảng đất để đánh dấu chỗ đặt beacon_fire. Mặc định có 2 đồi; truyền hills: [] để bỏ.\n- Sườn dốc nghiêng 35°, dâng về +Y. Đường lát đá gồm `legs` đoạn zíc zắc, có viền đá tối màu, từ chân dốc lên đến bậc phẳng trên đỉnh.\n- Cutting mặc định có khe rộng 7 chạy dọc trục Y, đủ chỗ đặt prop roman_road xuyên qua; dùng angle để xoay.\n- sun='auto' với italy sẽ tăng đèn Sun dùng chung (energy ≥ 4,6, ánh vàng, bóng sắc). Đèn này ảnh hưởng cả video, nên muốn giữ ánh sáng của story thì đặt sun='keep'.\n- Sương mù là các tấm trong suốt dạng emission, không có viền và không đổ bóng; có thể ẩn hoặc hiện cả nhóm qua part 'mist'.\n- Màu đất của vùng italy đã chọn ấm và đậm để không bị ánh trời nhuộm thành ô liu.\n- Cây, nhà và đá được rải tránh khoảng diễn và mọi chi tiết; dùng Random(seed) riêng nên không làm lệch random chung.",
+  "status": "draft",
+  "brief_vi": "Vùng quê cổ đại 3D có tham số, mở phía -Y, khoảng diễn quanh (0, 4), mặt đất z = 0. Params: origin [x, y]; region 'britain' (đồi xanh thấp, rừng sồi, nhà tròn mái tranh xa xa khi huts=true, sương mù khi mist=true) | 'italy' (đồi khô vàng, cây thông dù, núi Apennine phía xa, nắng gắt); swamp {at:[x,y], r} (đầm bùn nâu xanh có mép nước, tương đối với origin; nhân vật đứng ở z -0,5 trông như lội ngập gối); hills [{at, h}] (đỉnh đồi xa, mỗi đỉnh có chỗ bằng để đặt beacon_fire ở z = h); steep_slope {at} (sườn dốc lớn có đường La Mã zíc zắc lát đá); trackway [[x,y],...] (lối mòn đất quanh co); outcrop {at, h, size} (mỏm đá/vách núi phẳng đỉnh ở z = h để người đứng); cutting {at} (đồi bị xẻ đôi, đường xuyên qua, có đống đá vụn). Anchors (tọa độ thế giới): swamp_center, hill_1..hill_n, slope, cutting, outcrop, trackway_start. Đường La Mã đặt riêng bằng prop roman_road. Ánh sáng ngày, vật liệu Principled, hình khối to rõ.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T17:35:21",
+  "review": {
+    "score": 7,
+    "summary_vi": "Bản thứ hai đã đạt (7/10): góc máy chính thấy đồi xanh, cụm sồi hai bên, nhà tròn mái tranh có hàng rào, bụi cỏ ở tiền cảnh, và khoảng diễn ở giữa để trống cho nhân vật. Tôi mới xem ảnh góc mặc định của vùng Britannia; vùng Ý, đầm lầy, sườn dốc, mỏm đá, đồi xẻ và sương mù chưa được render thử lần nào.",
+    "problems": [
+      "Tiền cảnh vẫn là mảng cỏ khá trống. Chấp nhận được vì đây là khoảng diễn để trống cho nhân vật.",
+      "Trong khung mặc định chỉ thấy rõ một nhà tròn. Các nhà khác nằm ngoài khung hoặc bị cây che."
+    ]
+  }
+}

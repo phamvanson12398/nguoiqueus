@@ -1,0 +1,88 @@
+{
+  "kind": "prop",
+  "name": "ranging_pole",
+  "title_vi": "Cọc ngắm sọc đỏ trắng",
+  "description_vi": "Cọc ngắm (cọc tiêu trắc địa) 3D cao khoảng 2,6, thân tròn chia các khúc sơn đỏ và trắng xen kẽ, dưới cùng là mũi sắt nhọn, trên đỉnh có khâu sắt. Gốc tọa độ đặt ngay mũi nhọn (z = 0), nên story chỉ cần hạ z là cọc lún vào bùn. Có thể bật thêm cờ đuôi nheo nhỏ trên đỉnh để dễ nhìn từ xa.",
+  "dim": "3d",
+  "params": {
+    "height": {
+      "type": "number",
+      "default": 2.6,
+      "desc_vi": "Tổng chiều cao từ mũi nhọn tới đỉnh"
+    },
+    "radius": {
+      "type": "number",
+      "default": 0.05,
+      "desc_vi": "Bán kính thân cọc (to hơn thật để dễ nhìn trên điện thoại)"
+    },
+    "bands": {
+      "type": "integer",
+      "default": 6,
+      "desc_vi": "Số khúc sọc màu trên thân"
+    },
+    "tip_length": {
+      "type": "number",
+      "default": 0.24,
+      "desc_vi": "Chiều dài mũi sắt nhọn ở đầu dưới"
+    },
+    "color_a": {
+      "type": "array",
+      "default": [
+        0.85,
+        0.08,
+        0.06
+      ],
+      "desc_vi": "Màu khúc thứ nhất (khúc dưới cùng), mặc định đỏ"
+    },
+    "color_b": {
+      "type": "array",
+      "default": [
+        0.92,
+        0.9,
+        0.86
+      ],
+      "desc_vi": "Màu khúc xen kẽ, mặc định trắng"
+    },
+    "flag": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "Thêm cờ đuôi nheo nhỏ trên đỉnh"
+    },
+    "flag_color": {
+      "type": "array",
+      "default": [
+        0.95,
+        0.7,
+        0.05
+      ],
+      "desc_vi": "Màu cờ (chỉ dùng khi flag = true)"
+    }
+  },
+  "parts": [
+    "ranging_pole_tip",
+    "ranging_pole_shaft",
+    "ranging_pole_cap",
+    "ranging_pole_flag"
+  ],
+  "tags": [
+    "survey",
+    "roman",
+    "pole",
+    "measuring",
+    "outdoor",
+    "3d"
+  ],
+  "notes_vi": "Mình chưa dựng thử build.py này trong Blender, cũng chưa render ảnh thumbnail.\n\n- **Gốc tọa độ** đặt ngay mũi nhọn (z = 0). Muốn cọc lún bùn thì hạ z của object gốc, ví dụ −0,25 để vùi hết mũi sắt.\n- **Các khúc sọc** nằm trong empty `ranging_pole_shaft`, đánh số `ranging_pole_band0` (dưới cùng) đến `ranging_pole_band5`. Khúc 0 có màu `color_a` (đỏ), rồi xen kẽ với trắng.\n- **Cờ đuôi nheo** `ranging_pole_flag` chỉ được tạo khi `flag = true`. Mặc định không có, nên story chỉ nhắm phần này khi đã bật `flag`.\n- **Viền mực ở chỗ nối:** mỗi khúc là một trụ riêng nên chỗ nối giữa hai khúc có thể hiện một vòng viền mực mảnh. Nhìn kiểu hoạt hình thì chấp nhận được. Nếu thấy rối mắt thì giảm `bands` xuống 4–5.\n- **Độ dày và màu:** thân cọc to hơn đồ thật (bán kính 0,05) để xem rõ trên điện thoại. Màu trắng hơi ngả ấm để đỡ bị ánh trời nhuộm xanh.\n- **Nghiêng cọc:** muốn cọc nghiêng thì xoay object gốc trong story. Tâm xoay nằm ở mũi nhọn nên cọc nghiêng như cắm trong đất.",
+  "status": "draft",
+  "brief_vi": "Cọc ngắm 3D cao ~2,6, sọc đỏ trắng xen kẽ, đầu dưới nhọn. Gốc ở mũi nhọn (story hạ z để cọc lún bùn). 3D.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T17:44:20",
+  "review": {
+    "score": 8,
+    "summary_vi": "Mình đã xem đủ 5 ảnh render: cọc ngắm có sọc đỏ trắng xen kẽ rõ ràng, mũi sắt nhọn ở dưới và khâu sắt trên đỉnh, nhận ra ngay. Cọc cao hơn Joe một chút, đúng tỉ lệ, và mũi nhọn chạm đúng mặt đất (z = 0). Chỉ có thân cọc hơi mảnh khi quay toàn cảnh, cần thì đặt tham số radius lớn hơn.",
+    "problems": [
+      "Thân cọc khá mảnh (r 0,05). Ở toàn cảnh trên điện thoại cọc có thể khó thấy; khi cần thì story đặt radius 0,07.",
+      "Nhìn từ trên xuống, khâu sắt trên đỉnh bị ánh trời nhuộm xanh đậm. Góc này ít khi dùng nên không đáng sửa."
+    ]
+  }
+}

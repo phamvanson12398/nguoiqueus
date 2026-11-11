@@ -1,0 +1,106 @@
+{
+  "kind": "prop",
+  "name": "milestone",
+  "title_vi": "Cột mốc đá La Mã",
+  "description_vi": "Cột mốc đá La Mã cao khoảng 1,6: thân trụ hơi thon, đỉnh vòm tròn, mép mòn gợn không đều, đứng trên đế vuông bo góc. Chữ khắc lõm uốn theo mặt trụ ở mặt -Y (mặc định \"VIA APPIA\" xếp 2 dòng, kèm dòng nhỏ \"MP XII\" chỉ số dặm). Gốc ở tâm đáy. Đá vôi màu ấm để ánh trời xanh không làm ngả xám.",
+  "dim": "3d",
+  "params": {
+    "text": {
+      "type": "string",
+      "default": "VIA APPIA",
+      "desc_vi": "Chữ khắc chính. Dùng '|' để tự ngắt dòng; chữ dài có dấu cách thì tự xếp mỗi từ một dòng"
+    },
+    "subtext": {
+      "type": "string",
+      "default": "MP XII",
+      "desc_vi": "Dòng chữ nhỏ phía dưới (số dặm La Mã); để rỗng thì bỏ"
+    },
+    "height": {
+      "type": "number",
+      "default": 1.6,
+      "desc_vi": "Chiều cao tổng kể cả đế"
+    },
+    "radius": {
+      "type": "number",
+      "default": 0.3,
+      "desc_vi": "Bán kính thân trụ"
+    },
+    "base": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có đế đá vuông hay không"
+    },
+    "text_size": {
+      "type": "number",
+      "default": 0.15,
+      "desc_vi": "Cỡ chữ khắc chính"
+    },
+    "text_z": {
+      "type": "number",
+      "default": 1.12,
+      "desc_vi": "Độ cao tâm khối chữ (tính theo cột cao 1,6, tự co theo height)"
+    },
+    "stone_color": {
+      "type": "array",
+      "default": [
+        0.62,
+        0.5,
+        0.34
+      ],
+      "desc_vi": "Màu đá thân (linear, nên giữ tông ấm)"
+    },
+    "base_color": {
+      "type": "array",
+      "default": [
+        0.5,
+        0.4,
+        0.28
+      ],
+      "desc_vi": "Màu đá đế"
+    },
+    "groove_color": {
+      "type": "array",
+      "default": [
+        0.1,
+        0.07,
+        0.05
+      ],
+      "desc_vi": "Màu lòng rãnh chữ khắc"
+    },
+    "wear": {
+      "type": "number",
+      "default": 0.012,
+      "desc_vi": "Độ mòn gợn của mặt đá (0 = trơn láng)"
+    },
+    "seed": {
+      "type": "integer",
+      "default": 3,
+      "desc_vi": "Hạt ngẫu nhiên cho vết mòn"
+    }
+  },
+  "parts": [
+    "body",
+    "base"
+  ],
+  "tags": [
+    "roman",
+    "stone",
+    "road",
+    "milestone",
+    "ancient",
+    "3d",
+    "landmark"
+  ],
+  "notes_vi": "Mình viết xong build.py nhưng **chưa dựng thử trong Blender**: chưa có ảnh thumbnail, chưa kiểm phép trừ boolean. Bridge cần dựng nó để kiểm tra.\n\nCách dựng:\n- Thân cột là khối tiện, gốc ở tâm đáy. Đế vuông bo góc cao 0,24, có thể tắt bằng `base: false`.\n- Thân hơi thon (đỉnh còn 94 % bán kính), đỉnh vòm dẹt. Mép mòn là gợn sin ngẫu nhiên theo `seed`, mạnh hơn ở vành trên.\n- Chữ khắc lõm thật: mỗi dòng chữ là một khối cắt, được uốn quanh mặt trụ ở mặt -Y để rãnh sâu đều 2,8 cm.\n- Rãnh được trừ bằng modifier BOOLEAN (solver EXACT). `material_mode = 'INDEX'` gán vật liệu tối `milestone_groove_*` cho lòng chữ.\n- Các khối cắt `{name}_cut<i>` được ẩn bằng `keep_hidden` và gắn vào root để không bị dọn mất. Story không cần animate chúng.\n\nChữ:\n- Chữ dài có dấu cách thì tự xếp mỗi từ một dòng: \"VIA\" / \"APPIA\".\n- Dùng '|' để tự ngắt dòng.\n- Dòng quá rộng (quá ~86° mặt trước) thì bị nén ngang cho vừa.\n- `subtext` mặc định là \"MP XII\" (cỡ 72 %). Để rỗng thì bỏ dòng này.\n\nRủi ro cần xem trên ảnh render:\n1. Nếu bản Blender này không có thuộc tính `material_mode`, lòng chữ sẽ cùng màu đá. Chữ vẫn lõm, chỉ kém tương phản.\n2. Viền mực (solidify lật pháp tuyến) có thể làm rãnh chữ dày lên một chút.\n\nMàu đá vôi để tông ấm (0.62, 0.50, 0.34) theo lưu ý ánh trời xanh trong AUTHORING.md.",
+  "status": "draft",
+  "brief_vi": "Cột mốc đá La Mã hình trụ cao ~1,6, mép mòn, chữ khắc lõm mặt -Y. Params: text (mặc định 'VIA APPIA'). Gốc ở tâm đáy. 3D.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T17:52:09",
+  "review": {
+    "score": 8,
+    "summary_vi": "Cột mốc đá La Mã đã đạt: dáng trụ đỉnh vòm, mép mòn, có đế vuông, cao khoảng 2/3 Joe, đứng đúng trên mặt đất. Chữ \"VIA / APPIA / MP XII\" ở mặt trước giờ đọc rõ, không còn vỡ như bản trước.",
+    "problems": [
+      "Còn lỗi nhỏ, không đáng sửa: đỉnh vòm có một vệt hình sao rất nhỏ (chỉ thấy khi nhìn thẳng từ trên xuống). Ở ảnh nhìn ngang, chữ chỉ hơi gợn trên mép cột, đúng như chữ khắc bám mặt đá."
+    ]
+  }
+}

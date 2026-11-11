@@ -1,0 +1,81 @@
+{
+  "kind": "prop",
+  "name": "beacon_fire",
+  "title_vi": "Đống lửa hiệu trên đỉnh đồi",
+  "description_vi": "Đống lửa hiệu 3D: củi xếp hình nón (teepee) trên vòng đá, ngọn lửa hoạt hình phát sáng cam/vàng nhiều lớp, cột khói xám cao mảnh làm từ các cụm cầu chồng nhau, hơi lệch theo gió. Gốc ở tâm đáy. Phần khói có gốc ở đáy cột khói nên story chỉ cần scale trục Z từ 0,05 lên 1 là khói bốc dần. Hình khối to, đủ rõ khi đặt xa camera (scale 3).",
+  "dim": "3d",
+  "params": {
+    "lit": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "Đang cháy: false thì lửa và khói ẩn sẵn (story vẫn bật được bằng cách nhắm thẳng vào phần fire/smoke)"
+    },
+    "smoke_height": {
+      "type": "number",
+      "default": 5,
+      "desc_vi": "Chiều cao cột khói (đơn vị trước khi scale)"
+    },
+    "smoke_drift": {
+      "type": "number",
+      "default": 0.6,
+      "desc_vi": "Độ lệch ngang của đỉnh khói theo gió (0 = thẳng đứng)"
+    },
+    "smoke_color": {
+      "type": "color",
+      "default": [
+        0.42,
+        0.42,
+        0.44
+      ],
+      "desc_vi": "Màu khói xám"
+    },
+    "flame_color": {
+      "type": "color",
+      "default": [
+        0.98,
+        0.3,
+        0.02
+      ],
+      "desc_vi": "Màu lớp lửa ngoài (emission)"
+    },
+    "wood_color": {
+      "type": "color",
+      "default": [
+        0.32,
+        0.16,
+        0.06
+      ],
+      "desc_vi": "Màu củi"
+    },
+    "stones": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "Có vòng đá quanh chân đống củi"
+    }
+  },
+  "parts": [
+    "wood",
+    "fire",
+    "smoke"
+  ],
+  "tags": [
+    "fire",
+    "beacon",
+    "signal",
+    "smoke",
+    "hill",
+    "ancient",
+    "military",
+    "3d"
+  ],
+  "notes_vi": "Mình viết xong build.py nhưng chưa dựng thử trong Blender, chưa render ảnh thumb và cũng chưa tự chấm điểm bằng ảnh. Vòng dựng thumbnail của bridge sẽ kiểm tra việc này.\n\n- **Ba phần:**\n  - `{name}_wood`: empty, chứa 9 khúc củi dựng nghiêng thành hình nón, giao nhau ở z≈1,3; thêm 2 khúc nằm ngang dưới chân và 10 hòn đá xếp vòng quanh (r≈0,95).\n  - `{name}_fire`: empty, chứa 3 lớp lửa phát sáng hình giọt nước (cam / vàng cam / vàng nhạt). Đỉnh lửa ở z≈2,05, cao hơn đầu đống củi. Thêm 3 lưỡi lửa nhỏ ngả ra ngoài để hình dáng đọc ra là lửa chứ không phải giọt nước.\n  - `{name}_smoke`: empty có gốc ở z≈1,8 (đáy cột khói). Các cụm khói là con của nó và đặt theo tọa độ cục bộ, nên story chỉ cần key `scale.z` từ 0,05 lên 1 là khói bốc dần từ dưới lên.\n- **Khói:** bán kính 0,34 ở chân, nở dần lên 0,64 ở đỉnh, lệch ngang theo `smoke_drift`. Khi scale 3, cột khói dày khoảng 2–4 đơn vị nên vẫn rõ ở xa.\n- **`lit=false`:** lửa, khói và mọi phần con đều dùng `keep_hidden`. Story vẫn bật lên được bằng cách nhắm thẳng vào `{name}_fire` / `{name}_smoke`.\n- **Màu:** lửa dùng `flat()` (phát sáng) nên ánh trời không nhuộm xanh được. Khói dùng PBR xám, độ nhám 1, để có khối sáng tối.\n- **Ngẫu nhiên:** dùng seed cố định (7), nên mỗi lần dựng ra giống hệt nhau.",
+  "status": "draft",
+  "brief_vi": "Đống lửa hiệu trên đỉnh đồi: củi chất hình nón, lửa emission cam hoạt hình, cột khói xám cao mảnh. Params: lit (bool), smoke_height (mặc định 5). parts: wood, fire, smoke — part smoke là empty/object có gốc ở đáy cột khói để story scale trục Z từ 0,05 lên 1 (khói bốc dần). Gốc ở tâm đáy. Được đặt rất xa camera (scale 3) nên khói phải to, rõ.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T17:47:45",
+  "review": {
+    "score": 8,
+    "summary_vi": "Bản sửa vòng 2 đạt 8/10: lửa giờ là chùm lưỡi cam và vàng nhọn, nhìn qua là nhận ra; củi và vòng đá lộ rõ dưới chân, cột khói xám đậm và cao, đứng đúng mặt đất, tỉ lệ cạnh Joe hợp lý. Còn một điểm nhỏ không sửa: chân cột khói che mất phần đỉnh của lưỡi lửa chính.",
+    "problems": []
+  }
+}
