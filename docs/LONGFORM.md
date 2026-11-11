@@ -113,7 +113,7 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
 | Canh chữ 1.500–3.000 từ | `align.py` quy hoạch động O((P·G)²) | canh theo đoạn/chương |
 | Render | 1,4 s/khung → 20 phút ≈ 14 giờ | render "on twos" (15 hình/giây nhân đôi), hàng đợi render theo chương, render tiếp khi bị ngắt |
 | Đám đông, đội hình quân | mỗi nhân vật khoảng 120 object | "lính phụ" nhẹ (collection instance), lệnh đội hình (hàng, khối, nêm) |
-| Trang phục đúng thời kỳ | món đồ nhận diện vẽ lên thân/đầu | **bộ trang phục** ghép được (mũ, giáp, khiên, vũ khí, áo) như món thư viện, Claude thiết kế theo thời kỳ |
+| Nhiều quốc gia/phe/thời kỳ trong một video, mỗi nơi trang phục khác | món đồ nhận diện vẽ lên thân/đầu, không có khái niệm phe | **văn hóa** (`cultures/`) + **phe** trong story + **bộ trang phục** theo vai, Claude tra cứu và thiết kế (mục 3b) |
 | Nền phẳng nhiều lớp, mờ xa | bối cảnh 3D | kiểu bối cảnh "diorama": các lớp tranh 2D phẳng xếp sâu, có parallax, mờ theo xa (mist có sẵn) |
 | Bản đồ, mũi tên quân, dòng thời gian, mặt cắt | bảng sơ đồ + thẻ | bối cảnh `map` (vùng, sông, mũi tên di chuyển, quân cờ), `timeline`, `cutaway` |
 | Phụ đề | to giữa màn hình kiểu shorts | kiểu video dài: phụ đề nhỏ phía dưới hoặc tắt (YouTube có CC) |
@@ -137,8 +137,11 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    - bối cảnh `tactical_board` (nền đất có vân, khối đơn vị theo màu phe, mũi tên vẽ dần, bụi mù);
    - bối cảnh `parchment_map` (đường bờ biển, núi, sông, nhãn địa danh, mũi tên hành quân vẽ dần, vân giấy);
    - `paper_diagram` (giấy kẻ, nét vẽ dần, tay cầm bút).
-4. **Trang phục theo thời kỳ + đám đông:** thư viện `outfits/<thời kỳ>/` (mũ, giáp, khiên có hoa văn, giáo); lính phụ nhẹ (collection
-   instance) với lệnh đội hình (hàng, khối, cột); nhân vật dẫn dắt chính có màu riêng.
+4. **Văn hóa, phe, trang phục, đám đông** (chi tiết ở mục 3b):
+   - thư viện `cultures/` và `outfits/`, khối `factions` trong story, nhân vật/đám đông/bản đồ/thẻ lấy màu và đồ từ phe;
+   - việc Claude mới `design_culture`, `design_outfit` (có tra nguồn, ảnh xếp hàng so sánh các phe);
+   - lính phụ nhẹ (collection instance), lệnh đội hình (hàng, khối, cột, nêm), trộn ngẫu nhiên màu da, tóc, râu, kiểu mũ trong cùng phe;
+   - nhân vật dẫn dắt (POV) giữ màu riêng và khuôn mặt cố định khi đổi trang phục qua các thời kỳ/quốc gia.
 5. **Âm thanh video dài:** nhạc nền liên tục đổi theo chương, chuẩn hóa −14 LUFS, nén giọng; tiếng động vẫn theo hành động nhưng thưa hơn shorts.
 6. **Render nhanh:** hàng đợi render theo chương, render tiếp từ khung đang dở, đo tốc độ trên máy người dùng
    (20 phút ≈ 36.000 khung × 1,4 s ≈ 14 giờ; cần tối ưu số mẫu, độ sâu trường ảnh, đám đông instance).
@@ -147,6 +150,62 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
 
 **Lưu ý bản quyền và khác biệt:** không chép nhân vật, thumbnail, kịch bản hay khung hình của Squire Explains. Giữ nhân vật của tool,
 chọn bảng màu, người dẫn và đề tài riêng; chỉ học "ngữ pháp" (nhịp cắt, kiểu cảnh, cách mở bài).
+
+## 3b. Nhiều quốc gia, phe, thời kỳ trong một video
+Video lịch sử dài hầu như luôn có nhiều bên: ngay video mẫu đã có La Mã và liên minh Latin (trang phục gần như giống nhau,
+phải phân biệt bằng màu và khiên), rồi phalanx Macedonia. Một video 15 phút có thể đi từ Nhật thời Edo sang Bồ Đào Nha,
+hoặc từ Mông Cổ sang Đại Việt, Ba Tư, châu Âu. Vì vậy trang phục không gắn với "thời kỳ" chung chung mà với **văn hóa + thời kỳ + vai**.
+
+### Ba lớp dữ liệu
+1. **Văn hóa** — `library/cultures/<id>/culture.json`, ví dụ `roman_republic_300bc`, `macedon_330bc`, `dai_viet_1280`,
+   `mongol_1280`, `edo_japan_1600`, `ottoman_1450`. Gồm:
+   - tên, vùng, khoảng năm; **nguồn** (sách, bảo tàng, hiện vật) và các điểm còn tranh cãi;
+   - bảng màu (vải, kim loại, da thuộc), hoa văn, biểu tượng cờ/khiên (vẽ 2D);
+   - dải màu da, kiểu tóc, râu (để đám đông đa dạng tự nhiên);
+   - danh sách **vai** và bộ trang phục cho từng vai: lính nhẹ, lính nặng, kỵ binh, chỉ huy, vua/quan, thường dân, thương nhân, tu sĩ…;
+   - phong cách kiến trúc (mái, tường, cột, vật liệu) để bối cảnh nhận làm tham số;
+   - màu trên bản đồ, gợi ý nhạc nền (nhạc cụ đặc trưng).
+2. **Bộ trang phục** — `library/outfits/<văn hóa>_<vai>/` gồm `outfit.json` + `build.py`, giống món thư viện hiện có.
+   Nhân vật vẫn 2D, nên mỗi món là hình phẳng gắn vào một **khe**:
+   - `head` (mũ, khăn, tóc búi, mũ giáp có chỏm/lông), `torso` (giáp, áo, áo choàng phủ thân), `back` (áo choàng, cờ lưng),
+     `legs`, `footL/footR` (đã có sẵn từ đợt giày Gary), `handL/handR` (khiên, giáo, kiếm, cung, quạt — đồ cầm tay 2D theo luật cũ);
+   - đồ rơi/lăn (khiên rơi, mũ văng) vẫn là 3D như luật mục 8 của skill.
+3. **Phe** trong `story.json` (theo video, không lưu thư viện):
+   ```json
+   "factions": [
+     {"id": "rome",  "culture": "roman_republic_300bc", "color": "red",  "emblem": "eagle",  "label": "ROME"},
+     {"id": "latin", "culture": "roman_republic_300bc", "color": "blue", "emblem": "wolf",   "label": "LATIN LEAGUE"},
+     {"id": "mace",  "culture": "macedon_330bc",        "color": "gold", "label": "MACEDON"}
+   ]
+   ```
+   Hai phe cùng văn hóa (La Mã và Latin) dùng chung trang phục, chỉ khác màu áo, khiên, cờ.
+
+### Mọi thứ khác lấy từ phe
+- Nhân vật: `{"id": "marcus", "faction": "rome", "role": "hastatus"}`; đổi trang phục giữa video bằng
+  `outfit_changes: [{"at": "w(120)", "faction": "mace", "role": "pikeman"}]` (cải trang, sang nước khác, nhảy thời kỳ).
+- Đám đông: `{"faction": "latin", "role": "hastatus", "count": 120, "formation": "block", "rows": 8}`. Mỗi lính trộn ngẫu nhiên
+  trong phạm vi văn hóa (màu da, râu, mũ biến thể, độ cũ của áo) theo `seed`, để không ra hàng nhân bản giống hệt.
+- Bản đồ và bàn chiến thuật: vùng đất, khối quân, mũi tên tô màu phe; nhãn lấy `label`.
+- Thẻ chữ mốc: `{"style": "title", "text": "340 BC", "faction": "rome"}` dùng màu và hoa văn của phe.
+- Bối cảnh: `{"use": "town", "culture": "edo_japan_1600"}` → mái ngói cong, tường gỗ; cùng `build.py`, khác tham số.
+- Màu ánh sáng/bảng màu cảnh có thể đổi theo vùng (sa mạc, thảo nguyên, rừng nhiệt đới) như đổi theo giờ trong ngày.
+
+### Claude làm gì
+- `write_content`: cùng với lời đọc, liệt kê các phe/văn hóa/thời kỳ xuất hiện và chương nào có phe nào.
+- `plan_shots`: gán `faction`/`role` cho mọi nhân vật và đám đông; báo văn hóa/trang phục còn thiếu trong `missing`.
+- `design_culture` (việc mới): tra cứu (có WebSearch) → viết `culture.json` kèm nguồn và mức chắc chắn; người dùng duyệt.
+- `design_outfit` (việc mới): viết `build.py` cho từng vai. Tool render **ảnh xếp hàng**: mọi vai của văn hóa đó đứng cạnh Joe,
+  và mọi phe của video đứng cạnh nhau. Claude tự chấm:
+  1. đúng nguồn (không lẫn đồ của thời kỳ/nước khác, ví dụ không đội mũ sừng cho Viking, không mặc giáp samurai cho lính Trung Hoa);
+  2. **nhận ra phe chỉ bằng bóng đen ở cỡ thumbnail** (dáng mũ, khiên, giáo khác nhau; màu là lớp thứ hai);
+  3. hợp phong cách tool: khối to, rõ, ít chi tiết vụn.
+- Video sau cùng chủ đề dùng lại văn hóa và trang phục đã duyệt; thư viện lớn dần như đạo cụ hiện nay.
+
+### Luật tôn trọng (ghi vào STYLE.md khi làm)
+- Không vẽ biếm họa sắc tộc (mắt, mũi, màu da phóng đại); khuôn mặt mọi dân tộc dùng chung kiểu đầu tròn của tool, khác nhau ở
+  tóc, râu, trang phục, dải màu da thật.
+- Biểu tượng tôn giáo, cờ của nhà nước hiện đại: chỉ dùng khi lời đọc cần và đúng thời kỳ; tránh biểu tượng bị cấm hay gây kích động.
+- Phe "địch" không bị vẽ xấu hơn; câu chuyện nhìn từ một phía nhưng hình ảnh công bằng.
 
 ## 4. Cần thêm để phân tích sâu hơn
 - Bản chép lời (YouTube → "…" → Show transcript → copy) của 2 video dài, ví dụ "Why Knights Stopped Using Shields" và "Roman Front Line":
