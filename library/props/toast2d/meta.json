@@ -1,0 +1,115 @@
+{
+  "kind": "prop",
+  "name": "toast2d",
+  "title_vi": "Lát bánh mì 2D cầm tay (có bơ và dao phết)",
+  "description_vi": "Lát bánh mì sandwich 2D cỡ 0,42 × 0,42, vẽ trong mặt phẳng nhân vật để cầm tay. Viền mực dày 0,05. Bánh có vỏ nâu, ruột vàng nhạt, mép trên hơi vồng. Lớp bơ vàng tươi mép gợn sóng ở mặt trên, có một vệt sáng. Con dao phết bơ 2D (cán đỏ, lưỡi bạc, đầu dao dính bơ) đặt nghiêng phía trên bên trái, tại (-0,3; +0,1) so với tâm, mũi dao chĩa vào lát bánh. Gốc ở tâm. Gắn vào torso ở loc [0.45, 0.5, 0.42]. Các phần: <name>_bread, <name>_butter, <name>_knife. Mỗi phần là một empty riêng nên story animate được từng phần. Dao xoay quanh tâm của chính nó.",
+  "dim": "2d",
+  "params": {
+    "butter": {
+      "type": "string",
+      "default": "top",
+      "enum": [
+        "top",
+        "none"
+      ],
+      "desc_vi": "'top' = có lớp bơ ở mặt trên; 'none' = lớp bơ vẫn được tạo nhưng ẩn bằng keep_hidden"
+    },
+    "knife": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có hiện dao phết bơ không. false = dao vẫn được tạo nhưng ẩn bằng keep_hidden"
+    },
+    "knife_butter": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Đầu lưỡi dao có dính bơ không"
+    },
+    "knife_pos": {
+      "type": "array",
+      "default": [
+        -0.3,
+        0.1
+      ],
+      "desc_vi": "Vị trí tâm dao so với tâm lát bánh"
+    },
+    "knife_angle": {
+      "type": "number",
+      "default": -40,
+      "desc_vi": "Góc nghiêng của dao (độ). Số âm thì mũi dao chĩa xuống phải, vào lát bánh"
+    },
+    "outline": {
+      "type": "number",
+      "default": 0.05,
+      "desc_vi": "Độ dày viền mực quanh lát bánh"
+    },
+    "crust_color": {
+      "type": "array",
+      "default": [
+        0.45,
+        0.16,
+        0.03
+      ],
+      "desc_vi": "Màu vỏ bánh (linear)"
+    },
+    "crumb_color": {
+      "type": "array",
+      "default": [
+        0.92,
+        0.6,
+        0.26
+      ],
+      "desc_vi": "Màu ruột bánh (linear)"
+    },
+    "butter_color": {
+      "type": "array",
+      "default": [
+        1,
+        0.82,
+        0.08
+      ],
+      "desc_vi": "Màu bơ (linear)"
+    },
+    "handle_color": {
+      "type": "array",
+      "default": [
+        0.8,
+        0.07,
+        0.04
+      ],
+      "desc_vi": "Màu cán dao"
+    },
+    "scale": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Phóng to/thu nhỏ cả món"
+    }
+  },
+  "parts": [
+    "bread",
+    "butter",
+    "knife"
+  ],
+  "tags": [
+    "food",
+    "bread",
+    "toast",
+    "butter",
+    "knife",
+    "2d",
+    "handheld",
+    "kitchen"
+  ],
+  "notes_vi": "Tôi chưa dựng thử build.py này trong Blender: tool sẽ render thumbnail và các góc nhìn sau.\n\n- **Cách tạo phần ẩn:** khi `butter='none'` hoặc `knife=false`, phần đó vẫn được tạo nhưng mọi object trong phần bị đánh dấu `keep_hidden`. Hệ quả: nếu story nhắm vào nhóm `<name>_knife` để bật hiện, các con vẫn ẩn, vì `set_visible` bỏ qua object có `keep_hidden`. Muốn dao xuất hiện giữa video thì dựng với `knife=true`, rồi dùng track visibility để ẩn dao lúc đầu và hiện ra đúng khung cần.\n- **Màu:** ruột bánh (0.92, 0.60, 0.26) được chỉnh sậm hơn và bơ (1.0, 0.82, 0.08) vàng tươi hơn, để hai màu không lẫn nhau. Lớp bơ còn có viền mực mảnh và một vệt sáng.\n- **Cách dao bám tay:** dao là empty đặt tại `knife_pos`, đã xoay `knife_angle`, nên khi animate rotation dao xoay quanh tâm của chính nó. Nếu muốn dao bám tay trái, đổi `knife_pos` (ví dụ [-0.85, 0.05] khi tay trái ở khoảng (-0.4, 0.45) trong hệ tọa độ thân).\n- **Thứ tự lớp:** dao nằm ở z 0.07-0.10, trước lát bánh, nên mũi dao đè lên mép trái lát bánh như đang phết.\n- **Không trùng đồ cũ:** `toast` hiện có là bản 3D dùng khi bánh rơi hoặc úp xuống sàn. Ngay khung bánh rời tay, đổi `toast2d` sang `toast`.",
+  "status": "draft",
+  "brief_vi": "Lát bánh 2D cầm tay, nằm trong mặt phẳng nhân vật, khoảng 0,42 × 0,42, viền mực dày. Mặt trên có lớp bơ vàng (tham số butter: 'top' | 'none'). Tham số knife (true/false): con dao phết bơ 2D đặt nghiêng phía trên-trái, cách khoảng (-0,3, +0,1) so với tâm, là part riêng. Gốc ở tâm. Gắn vào torso ở loc [0.45, 0.5, 0.42] (bàn tay phải đặt bằng ik ở (0.45, 0.45)). parts: bread, butter, knife",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T04:43:23",
+  "review": {
+    "score": 8,
+    "summary_vi": "Nhìn qua là nhận ra ngay lát bánh mì sandwich 2D. Bánh có viền mực dày, vỏ nâu, ruột vàng nhạt, lớp bơ vàng tươi có vệt sáng; dao phết bơ cán đỏ đặt nghiêng phía trên bên trái, mũi chĩa vào bánh như đang phết. Joe cầm trước ngực thì tỉ lệ hợp lý, chưa cần sửa.",
+    "problems": [
+      "(Nhỏ, không cần sửa) Vệt bơ ở đầu dao chạm vào lớp bơ trên bánh nên hai mảng vàng liền nhau. Nhìn vẫn hiểu là dao đang phết bơ.",
+      "(Nhỏ) Trong ảnh scale, lát bánh khá nhỏ so với thân Joe (đúng cỡ 0,42 như mô tả), nhưng vẫn rõ nhờ viền mực dày và màu bơ vàng tươi."
+    ]
+  }
+}
