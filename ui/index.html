@@ -143,8 +143,25 @@ small.err{color:var(--bad)}
   <!-- 3. VOICE -->
   <section id="tab-voice" class="hidden">
     <div class="panel">
-      <h2>Giọng đọc</h2>
-      <p class="muted">Tự làm giọng từ lời đọc tiếng Anh (ElevenLabs…), lưu dạng .wav rồi tải lên. Tool canh từng chữ theo khoảng lặng, sai số khoảng 0,3 s.</p>
+      <h2>Bước 1: lấy lời đọc cho phần mềm giọng</h2>
+      <p class="muted"><code>[beat]</code> trong content là ký hiệu cho người làm video (chỗ dừng 0,5–1 giây để chèn gag), phần mềm đọc giọng không hiểu. Chọn cách đổi <code>[beat]</code> hợp với phần mềm của bạn rồi dán bản dưới đây vào đó.</p>
+      <div class="row">
+        <label>Đổi [beat] thành
+          <select id="ttsMode">
+            <option value="dots">dấu "..." (hầu hết phần mềm đều ngắt)</option>
+            <option value="lines">xuống dòng (phần mềm đọc từng dòng/đoạn)</option>
+            <option value="ssml">&lt;break time="0.8s" /&gt; (ElevenLabs, Azure, Google)</option>
+            <option value="remove">bỏ đi (tự chèn khoảng lặng khi cắt ghép)</option>
+          </select></label>
+        <button id="ttsCopy" class="blue">Sao chép</button><button id="ttsDownload">Tải .txt</button>
+        <span id="ttsInfo" class="muted"></span>
+      </div>
+      <textarea id="ttsText" rows="7" readonly style="margin-top:8px"></textarea>
+      <p class="muted">Nếu nghe lại thấy chưa ngắt ở các chỗ beat, thử kiểu khác hoặc tự chèn khoảng lặng trong phần mềm cắt ghép. Bước canh chữ vẫn đúng, vì tool dò khoảng lặng thật trong file giọng chứ không dựa vào ký hiệu.</p>
+    </div>
+    <div class="panel">
+      <h2>Bước 2: tải giọng đọc lên</h2>
+      <p class="muted">Lưu giọng dạng .wav rồi tải lên. Tool canh từng chữ theo khoảng lặng, sai số khoảng 0,3 s.</p>
       <div class="row"><input type="file" id="voiceFile" accept=".wav,audio/wav"><button id="btnUpload" class="primary">Tải lên &amp; canh chữ</button><button id="btnRealign">Canh lại</button></div>
       <audio id="voicePlayer" controls class="hidden" style="width:100%;margin-top:10px"></audio>
     </div>
@@ -368,6 +385,36 @@ function renderContent() {
 function wordCount() { const n = ($('#voEn').value.match(/[A-Za-z0-9'’]+/g) || []).length; const e = Math.round((parseFloat($('#minutes').value) || 1) * 150);
   $('#cWords').textContent = `${n} từ (mục tiêu ~${e}) · khoảng ${Math.round(n / 150 * 60)} giây`; }
 $('#voEn').oninput = wordCount;
+
+// ---------------- narration for the TTS software ([beat] -> something the voice engine understands) ----------------
+function ttsText(vo, mode) {
+  let t = (vo || '').replace(/\r/g, '');
+  const beat = /([.!?,;:…]*)[ \t]*\[\s*beat[^\]]*\][ \t]*/gi;
+  if (mode === 'dots') t = t.replace(beat, (m, p) => (/[?!]/.test(p) ? p.replace(/[.…]/g, '') : '') + '... ');
+  else if (mode === 'lines') t = t.replace(beat, (m, p) => (p || '') + '\n\n');
+  else if (mode === 'ssml') t = t.replace(beat, (m, p) => (p || '') + ' <break time="0.8s" /> ');
+  else t = t.replace(beat, (m, p) => (p || '') + ' ');
+  t = t.replace(/\[[^\]]*\]/g, ' ');                                   // other stage notes in []
+  return t.split('\n').map(l => l.replace(/[ \t]{2,}/g, ' ').trim()).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+function renderTts() {
+  const c = S.state && S.state.content;
+  const mode = $('#ttsMode').value;
+  const txt = c ? ttsText(c.vo_en, mode) : '';
+  $('#ttsText').value = c ? txt : 'Chưa có content (bước 2).';
+  const beats = c ? ((c.vo_en.match(/\[\s*beat[^\]]*\]/gi) || []).length) : 0;
+  $('#ttsInfo').textContent = c ? `${(txt.match(/[A-Za-z0-9'’]+/g) || []).length} từ · ${beats} chỗ beat` : '';
+}
+try { $('#ttsMode').value = localStorage.getItem('ws_tts') || 'dots'; } catch (e) {}
+$('#ttsMode').onchange = () => { try { localStorage.setItem('ws_tts', $('#ttsMode').value); } catch (e) {} renderTts(); };
+$('#ttsCopy').onclick = async () => {
+  try { await navigator.clipboard.writeText($('#ttsText').value); } catch (e) { $('#ttsText').select(); document.execCommand('copy'); }
+  toast('Đã sao chép lời đọc');
+};
+$('#ttsDownload').onclick = () => {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([$('#ttsText').value], {type: 'text/plain;charset=utf-8'}));
+  a.download = `${S.slug || 'voice'}_tts.txt`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+};
 function collectContent() {
   const c = JSON.parse(JSON.stringify(S.state.content));
   c.vo_en = $('#voEn').value; c.vo_vi = $('#voVi').value;
@@ -418,6 +465,7 @@ function bindSeqs() {
 
 // ---------------- 3. voice ----------------
 function renderVoice() {
+  renderTts();
   const st = S.state; const w = st.words;
   const pl = $('#voicePlayer'); pl.classList.toggle('hidden', !st.has_voice);
   if (st.has_voice && !pl.src.includes(S.slug)) pl.src = P('/file/voice.wav');
