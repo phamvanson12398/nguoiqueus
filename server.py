@@ -204,10 +204,12 @@ def run_builder(job, slug, args, progress_total=None):
         job.say(line); last.append(line)
     p.wait(); job.procs.remove(p)
     if job.cancelled: raise ValueError("đã hủy")
-    out = "\n".join(last[-40:])
+    out = "\n".join(last[-60:])
     if p.returncode != 0 or "BUILD FAILED" in out or "Traceback" in out:
-        raise ValueError("Blender báo lỗi (xem log)")
-    return out
+        tail = [l for l in last[-30:] if l.strip()]
+        key = next((l for l in reversed(tail) if "BUILD FAILED" in l or "Error" in l), tail[-1] if tail else "")
+        raise ValueError("Blender báo lỗi: " + key + "\n" + "\n".join(tail[-12:]))
+    return "\n".join(last)
 
 
 def job_preview(job, slug, frames, pct=35):
@@ -215,8 +217,8 @@ def job_preview(job, slug, frames, pct=35):
     if os.path.isdir(prev):
         for f in os.listdir(prev):
             if f.endswith(".png"): os.remove(os.path.join(prev, f))
-    run_builder(job, slug, ["--preview", ",".join(str(f) for f in frames), "--pct", str(pct)])
-    return {"previews": sorted(f for f in os.listdir(prev) if f.endswith(".png"))}
+    out = run_builder(job, slug, ["--preview", ",".join(str(f) for f in frames), "--pct", str(pct)])
+    return {"previews": sorted(f for f in os.listdir(prev) if f.endswith(".png")), "log": out}
 
 
 def default_preview_frames(slug):
@@ -229,27 +231,50 @@ def default_preview_frames(slug):
 
 
 def job_build(job, slug, design=True, preview=True):
-    """'Duyệt & dựng': plan shots -> design missing library items -> check -> preview"""
-    d = pdir(slug)
+    """'Duyệt & dựng': plan shots -> design missing library items -> check -> build + preview, with automatic fix rounds"""
+    d = pdir(slug); lib = storycheck.LibIndex()
     if not os.path.exists(os.path.join(d, "words.json")): raise ValueError("chưa có giọng đọc đã canh chữ (tải voice.wav lên trước)")
-    job.say("1/3 Claude chuyển content thành story.json (bảng khung hình, camera v3)…")
+    job.say("1/4 Claude chuyển content thành story.json (bảng khung hình, camera v3)…")
     res = bridge.plan_shots(slug)
     missing = res.get("missing", [])
-    job.say(f"   story.json xong. Thiếu trong thư viện: {', '.join(m['kind'] + '/' + m['name'] for m in missing) or 'không'}")
+    job.say(f"   story.json xong. Đồ mới cần thiết kế: {', '.join(m['kind'] + '/' + m['name'] for m in missing) or 'không'}")
+    failed = []
     if missing and design:
-        job.say("2/3 Thiết kế phần thiếu…")
-        for m in missing:
-            job.say(f" - {m['kind']}/{m['name']}: {m['brief']}")
-            if m["kind"] == "chars": r = bridge.design_char(m["name"], m["brief"])
-            else: r = bridge.design_item(m["kind"], m["name"], m["brief"])
-            job.say(f"   -> {r.get('rounds', [{}])[-1].get('summary_vi', '') if r.get('rounds') else r}")
+        job.say("2/4 Thiết kế đồ còn thiếu (mỗi món vài phút)…")
+        for k, m in enumerate(missing, 1):
+            if lib.exists(m["kind"], m["name"]):
+                job.say(f" - [{k}/{len(missing)}] {m['kind']}/{m['name']}: đã có trong thư viện, bỏ qua"); continue
+            job.say(f" - [{k}/{len(missing)}] {m['kind']}/{m['name']}: {m['brief']}")
+            try:
+                r = bridge.design_char(m["name"], m["brief"]) if m["kind"] == "chars" else bridge.design_item(m["kind"], m["name"], m["brief"])
+                last = (r.get("rounds") or [{}])[-1]
+                job.say(f"   -> {last.get('score', '?')}/10 {last.get('summary_vi', '')}")
+                if not r.get("ok", True): failed.append(m["name"])
+            except Exception as e:
+                if job.cancelled: raise
+                failed.append(m["name"]); job.say(f"   -> LỖI: {e}")
+    if failed: raise ValueError("thiết kế chưa xong: " + ", ".join(failed) + " (xem log; có thể thiết kế lại ở tab Thư viện rồi bấm 'Chỉ render lại xem trước')")
     errs = storycheck.check_story(jload(os.path.join(d, "story.json")))
     if errs: raise ValueError("story.json còn lỗi: " + "; ".join(errs[:5]))
-    if preview:
+    if not preview: return {"missing": missing}
+    for attempt in range(bridge.MAX_FIX + 1):
         frames = default_preview_frames(slug)
-        job.say(f"3/3 Xem trước các khung {frames} (35 %)…")
-        job_preview(job, slug, frames)
-    return {"missing": missing}
+        job.say(f"{3 if attempt == 0 else '3b'}/4 Dựng cảnh trong Blender và xem trước khung {frames} (35 %)…")
+        problem = None
+        try:
+            out = job_preview(job, slug, frames)["log"]
+            warns = [l for l in out.splitlines() if l.startswith("WARN") or "CAMERA NEEDS FIX" in l]
+            if warns: problem = "Camera chưa đạt cam_report:\n" + "\n".join(warns)
+        except ValueError as e:
+            if job.cancelled: raise
+            problem = f"Dựng trong Blender bị lỗi:\n{e}"
+        if not problem:
+            job.say("4/4 Xong: CAMERA OK, đã có ảnh xem trước. Xem ảnh rồi bấm Render, hoặc mô tả lỗi để Claude sửa.")
+            return {"missing": missing, "fix_rounds": attempt}
+        if attempt == bridge.MAX_FIX: raise ValueError(problem)
+        job.say(f"   {problem.splitlines()[0]} -> nhờ Claude sửa story.json ({attempt + 1}/{bridge.MAX_FIX})")
+        data = bridge.fix_from_preview(slug, problem + "\n(Chưa có ảnh: sửa theo thông báo lỗi.)", [])
+        job.say("   Đã sửa: " + data["explain_vi"])
 
 
 def job_fix(job, slug, problem, frames):

@@ -326,7 +326,7 @@ Mô tả từ người dùng: {brief}
 Viết build.py theo đúng API dưới đây. Dùng khối cơ bản và vật liệu của core; đặt tên vật liệu theo tên đồ vật
 (ví dụ "{name}_body") để không đụng vật liệu sẵn có. Gốc tọa độ ở tâm đáy (3D). Tỉ lệ: nhân vật cao khoảng 2,5 đơn vị.
 Đưa các lựa chọn hữu ích ra params (màu, trạng thái, nhãn chữ...) kèm mặc định. parts = tên các object con mà story
-có thể muốn animate. Có thể đọc core/geo.py, core/look.py hoặc đồ khác trong library/ nếu cần.
+có thể muốn animate; object con tên đúng f"{{name}}_<phần>". Nếu mô tả có "parts: a, b" thì PHẢI tạo đúng các phần đó. Có thể đọc core/geo.py, core/look.py hoặc đồ khác trong library/ nếu cần.
 
 === library/AUTHORING.md ===
 {_read('library/AUTHORING.md')}
@@ -587,6 +587,33 @@ def rewrite_seq(slug, index, request, model=None):
     return data
 
 
+PLAN_RULES = """
+Luật khi viết story.json:
+- Phủ trọn meta.frames: camera v3 gồm các seqs liền nhau từ khung 1 tới khung cuối. Mỗi seq dài ít nhất 90 khung
+  (cam_report báo lỗi nếu ngắn hơn); khóa camera cách nhau ít nhất 20 khung, đi chậm và đều (gia tốc < 4 mm/khung²);
+  trans có kiểu whip/push/match/cut tại khung đầu seq sau. Punch [khung, hệ số, dur, hold]; shakes [khung, 0.5-1.5, 8-14].
+- Mốc thời gian lấy từ words (giây × 30 + 1 = khung). Hành động, biểu cảm, tiếng động rơi đúng vào chữ nhấn.
+- Nhân vật cao khoảng 2,5 đơn vị và đứng trên mặt đất z = 0. Bối cảnh chính ở gốc tọa độ, bảng sơ đồ ở x = 500
+  (camera cách bảng 7,7, lens 45, đặt captions.lift khi đang chiếu bảng).
+- Thẻ chữ trên màn hình (thẻ tên, "10 MINUTES EARLIER", "TEST 1", thẻ chương, "REPLAY", nhãn số đo, dấu ✗/✓,
+  bong bóng tưởng tượng, iris-out kết video) đặt trong `cards` (xem STORY.md); tránh vùng phụ đề y ≈ -0,2.
+- Hiệu ứng builder chưa có thì làm xấp xỉ:
+  - slow-mo/REPLAY/tua ngược: track chạy chậm hoặc ngược trên cùng vật, kèm thẻ "REPLAY";
+  - freeze-frame: giữ nguyên tư thế và vị trí, camera vẫn trôi nhẹ;
+  - chia đôi màn hình: hai sơ đồ đặt cạnh nhau trên diagram_board;
+  - vệt mờ, VHS, lấp lánh: bỏ qua, hoặc thay bằng thẻ hoặc bụi.
+  Đừng bịa thêm trường ngoài schema.
+- Đồ cầm tay 2D gắn vào nhân vật (props của char, on torso/head). Đồ 3D rơi/lăn/nằm đất nằm trong props của set,
+  chuyển động bằng tracks (có thể dùng motions có sẵn) và visibility để đổi 2D↔3D đúng khung hành động.
+- Tên object: id của đồ là tên gốc; phần con của đồ là "<id>_<phần>". Với đồ của thư viện, chỉ nhắm các phần có trong
+  'parts' của nó. Với đồ mới, ghi rõ trong brief của missing: "parts: crate, chair", để lúc thiết kế đặt đúng tên.
+- missing chỉ gồm tên CHƯA có trong thư viện. Muốn biến thể của đồ có sẵn thì dùng params của nó; nếu không đủ
+  thì đặt một tên mới (ví dụ gary_sneakers) rồi đưa vào missing. Không đưa tên đã có vào missing.
+  Giữ số món mới ít nhất có thể: gộp đồ trang trí vào bối cảnh, bỏ đồ phụ không cần cho gag.
+- Biểu cảm chỉ dùng mặt có trong faces của nhân vật đó (xem catalog).
+"""
+
+
 def plan_shots(slug, model=None):
     d = _project_dir(slug)
     content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
@@ -602,7 +629,7 @@ def plan_shots(slug, model=None):
               f"Dùng camera rig 'v3'. Thời gian từ (words, giây): {json.dumps(words['words'], ensure_ascii=False)}\n"
               + (f"meta.frames = {frames}.\n" if frames else "")
               + f"Content:\n{json.dumps(content, ensure_ascii=False)}\n\nThư viện:\n{_catalog_text()}\n"
-              "Đồ chưa có thì vẫn tham chiếu theo tên mới và liệt kê trong missing (kind, name, brief) để thiết kế sau.")
+              + PLAN_RULES)
 
     def check(x):
         pend = {(m["kind"], m["name"]) for m in x["missing"]}

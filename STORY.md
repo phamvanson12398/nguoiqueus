@@ -84,6 +84,25 @@ Mẫu chuyển động có sẵn: `{"target": "cv_drop0", "use": "drop_tumble", 
 ### `words`, `captions`
 `words` = `[[giây, "chữ"], ...]` lấy từ `align_vo.py`. Trong `captions`: `highlight` là chữ tô vàng phóng to, `impact` là chữ nổ cam kèm khung burst (ví dụ `clang`), `lift` là các khoảng khung đẩy phụ đề lên cao (khi đang chiếu sơ đồ).
 
+### `cards` — thẻ chữ trên màn hình
+Gắn vào camera như phụ đề, kích thước không đổi theo ống kính. `pos` = toạ độ màn hình (x, y) từ -1 tới 1 (y = 1 là mép trên). Phụ đề nằm ở khoảng y ≈ -0,2 nên đặt thẻ tránh vùng đó.
+```json
+{"style": "title", "text": "10 MINUTES EARLIER", "from": 160, "to": 220, "pos": [0, 0.6]}
+{"style": "label", "text": "30 IN", "from": 700, "to": 780, "pos": [-0.5, -0.4]}
+{"style": "stamp_x", "from": 1210, "to": 1260, "pos": [0.3, -0.5], "size": 0.18}
+{"style": "bubble", "text": "1 TON", "from": 250, "to": 330, "pos": [0.4, 0.55]}
+{"style": "iris", "from": 1880, "to": 1920, "pos": [0, -0.6]}
+```
+| style | dùng cho |
+|---|---|
+| `title` | thẻ chương hoặc thẻ thời gian, chữ trắng trên băng màu (mặc định cam) |
+| `label` | nhãn chữ vàng viền đen (chú thích, số đo) |
+| `stamp_x`, `stamp_check` | dấu ✗ đỏ hoặc ✓ xanh to (có thể kèm chữ nhỏ) |
+| `bubble` | bong bóng tưởng tượng có chữ |
+| `iris` | khép tròn về đen để kết video; giữ đen tới hết |
+
+Thẻ nảy vào trong 5 khung, lắc nhẹ, rồi tắt trong 3 khung cuối.
+
 ### `fx`
 `dust`: `[{"frame", "pos", "n", "radius", "size", "life", "rise"}]`, các cụm bụi dùng chung một pool.
 

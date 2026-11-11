@@ -19,7 +19,7 @@ for _m in [m for m in sys.modules if m == "core" or m.startswith("core.") or m.s
     del sys.modules[_m]
 
 import core
-from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer
+from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards
 from core.expr import Env, ExprError
 import storycheck
 from storycheck import LibIndex
@@ -325,6 +325,8 @@ class Builder:
         cap_root = captions.build_captions(self.caps, self.lens, lift_ranges=[tuple(r) for r in cp.get("lift", [])],
                                            burst_word=cp.get("burst_word", (cp.get("impact") or [""])[0].upper() or None))
 
+        cards_root = cards.build_cards(st.get("cards"), self.lens)
+
         fxs = st.get("fx", {})
         for k, d in enumerate(fxs.get("dust", [])):
             d = dict(d); fr = d.pop("frame"); pos = tuple(self.env.const(d.pop("pos"), f"fx.dust[{k}].pos"))
@@ -343,6 +345,7 @@ class Builder:
         noline = []
         for c in self.chars.values(): noline += look.descendants(c.root)
         noline += look.descendants(cap_root)
+        if cards_root: noline += look.descendants(cards_root)
         for r in self.noline_roots: noline += look.descendants(r)
         for p_ in fx.PUFF_POOL: noline += look.descendants(p_)
         look.setup_look(noline)

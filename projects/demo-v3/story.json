@@ -463,5 +463,67 @@
         0.3
       ]
     ]
-  }
+  },
+  "cards": [
+    {
+      "style": "title",
+      "text": "10 MINUTES EARLIER",
+      "from": 40,
+      "to": 90,
+      "pos": [
+        0,
+        0.62
+      ]
+    },
+    {
+      "style": "label",
+      "text": "30 IN",
+      "from": 40,
+      "to": 90,
+      "pos": [
+        -0.55,
+        -0.55
+      ]
+    },
+    {
+      "style": "bubble",
+      "text": "1 TON",
+      "from": 40,
+      "to": 90,
+      "pos": [
+        0.45,
+        0.3
+      ]
+    },
+    {
+      "style": "stamp_x",
+      "from": 120,
+      "to": 148,
+      "pos": [
+        0.35,
+        -0.5
+      ],
+      "size": 0.16
+    },
+    {
+      "style": "stamp_check",
+      "text": "OK",
+      "from": 120,
+      "to": 148,
+      "pos": [
+        -0.35,
+        -0.5
+      ],
+      "size": 0.16
+    },
+    {
+      "style": "iris",
+      "from": 170,
+      "to": 195,
+      "pos": [
+        0,
+        -0.3
+      ]
+    }
+  ]
 }

@@ -34,7 +34,8 @@ def align(wav, text, fps=30, tail=1.2):
             i = j
         else: i += 1
 
-    toks = re.findall(r"[A-Za-z0-9'’]+[^\sA-Za-z0-9]*", clean_script(text))
+    # words keep inner hyphens ("brand-new", "Uh-huh") and trailing punctuation; leading quotes are dropped
+    toks = re.findall(r"[A-Za-z0-9'’]+(?:[-–][A-Za-z0-9'’]+)*[^\sA-Za-z0-9]*", clean_script(text))
     if not toks: raise ValueError("script has no words")
 
     def syl(t):
