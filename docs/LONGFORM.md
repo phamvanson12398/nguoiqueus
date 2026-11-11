@@ -134,6 +134,7 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    + "let's go back", gieo bí ẩn sớm, cú mới mỗi 45–70 s, giải thích ở khoảng 75 %, mở rộng + câu chốt gọi lại tiêu đề; luật gắn lời với kiểu cảnh
    như mục 1. Kiểu cảnh: toàn cảnh, trung, cận mặt, cận vật, bàn chiến thuật, bản đồ, sơ đồ, nội cảnh, thẻ chữ mốc
    (năm, tên trận, con số; người dùng muốn có "màn hình chữ" ở mốc quan trọng). Claude chọn kiểu theo nội dung từng câu.
+   - **Trạng thái:** xong (CLAUDE.md, "Video dài — Bước 2"; `LONGFORM_RULES.md`).
 3. **Bàn chiến thuật + bản đồ giấy da**:
    - bối cảnh `tactical_board` (nền đất có vân, khối đơn vị theo màu phe, mũi tên vẽ dần, bụi mù);
    - bối cảnh `parchment_map` (đường bờ biển, núi, sông, nhãn địa danh, mũi tên hành quân vẽ dần, vân giấy);

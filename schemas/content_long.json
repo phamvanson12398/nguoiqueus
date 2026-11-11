@@ -117,9 +117,12 @@
        "properties": {
         "type": {
          "enum": [
-          "wide",
-          "medium",
+          "ecu",
           "closeup",
+          "medium",
+          "full",
+          "wide",
+          "establishing",
           "insert",
           "board",
           "map",

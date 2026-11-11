@@ -189,3 +189,20 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
 - Còn để ý: Claude đặt máy cận mặt quá sát (cắt đầu) → đã thêm công thức khoảng cách theo lens vào `PLAN_RULES_LONG`, cần thử lại ở bước 2.
   Container: 16:9 ở 25 % khoảng 20 s/khung (DOF + lớp phủ chỉ thêm ~7 %); đo trên máy người dùng bằng `verify_long.bat`.
 
+### Bước 2 — xong (mẫu kịch bản + bộ kiểu cảnh)
+- `LONGFORM_RULES.md` (gửi kèm write_content/rewrite/plan_shots của video dài): khung kịch bản theo % thời lượng (mở giữa cao trào →
+  "let's go back" → câu hỏi → cú mới mỗi 45-70 s → giải thích ~75 % → mở rộng → gọi lại tiêu đề), luật lời đọc, bảng lời → kiểu cảnh,
+  nhịp hình, cách viết shot, màn hình chữ, nhiều phe.
+- `core/framing.py`: shot `frame` (subject/type/angle/height/x/move) → keys đúng khoảng cách theo lens; builder video dài dựng camera
+  sau tracks/blocking và lấy chủ thể ở khung giữa cú máy. Hết lỗi cận mặt cắt đầu.
+- Thẻ `screen` (year/number/question/quote/name/place/fact). `long_report` in số shot theo kiểu.
+- Kiểm tra: `check_long_content` (12-16 cắt/phút, ≥ 1 màn hình chữ mỗi 90 s, ≥ 6 kiểu cảnh), `check_long_story` (mọi card_text của
+  content phải lên màn hình; không 3 shot giống hệt liền nhau). Thử trên bản cũ: bắt được 1 dòng chữ Claude quên đưa lên màn hình.
+- Chạy thật:
+  - write_content 5 phút "Why Were Roman Roads So Straight?" (`projects/why-roman-roads-straight`, 368 s): bám khung kịch bản
+    (mở ở Britannia, "let's go back", câu hỏi ở ~30 s, "So here's the real answer" ở 74 %, gọi lại tiêu đề), 75 cú máy = 15,1 cắt/phút,
+    9 kiểu cảnh (8 màn hình chữ, 7 bản đồ, 9 sơ đồ, 1 bàn chiến thuật), 4 phe. Cần 14 món mới (bản đồ giấy da, đồng quê La Mã,
+    nhân vật La Mã/Briton…) → bước 3-4.
+  - plan_shots lại chương 1 video nắp cống (13 phút): 26/29 shot dùng `frame`, 15,7 cắt/phút, 9 kiểu, 6 màn hình chữ, `CAMERA OK`,
+    cận mặt thấy trọn đầu. Ảnh: `docs/img/longform_step2.jpg`.
+

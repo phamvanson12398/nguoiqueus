@@ -1,13 +1,12 @@
 {
   "meta": {
-    "title": "Why Are Manhole Covers Round? — Chapter 1: The Square Deal",
-    "slug": "manhole-long-ch1",
+    "title": "Why Are Manhole Covers Round? — Ch.1 The Square Deal",
     "fps": 30,
     "frames": 3218,
     "seed": 7,
     "aspect": "16:9",
     "voice": "voice.wav",
-    "output": "ch01_square_deal.mp4",
+    "output": "chapter01.mp4",
     "samples": 32,
     "chapter": {
       "n": 1,
@@ -15,77 +14,48 @@
       "start_sec": 0
     }
   },
-  "factions": [
-    {
-      "id": "city_road_crew",
-      "culture": "us_city_public_works_2020s",
-      "color": [
-        0.98,
-        0.3,
-        0.02
-      ],
-      "label": "ROAD CREW",
-      "note": "Joe + Sam: hi-vis, hard hat, cast-iron covers"
-    },
-    {
-      "id": "budget_office",
-      "culture": "us_municipal_office_2020s",
-      "color": [
-        0.05,
-        0.45,
-        0.15
-      ],
-      "label": "BUDGET OFFICE",
-      "note": "Gary: shirt, green vest, red bow tie"
-    }
-  ],
   "defs": {
-    "jsq": "lambda f: lerp(1.0, 0.55, ease((f - 2208) / 35.0)) if 2208 <= f <= 2261 else (lerp(1.0, 0.55, ease((f - 2546) / 30.0)) if 2546 <= f <= 2597 else 1.0)",
-    "jlift": "lambda f: 0.03 * sin(f / FPS * 3) - (0.1 * sin(pi * (f - 2536) / 10.0) if 2536 <= f <= 2546 else 0)",
-    "jwob": "lambda f: 0.12 * sin((f - 2180) * 0.5) if 2180 <= f <= 2261 else (0.15 * sin((f - 2536) * 0.7) if 2536 <= f <= 2597 else 0)",
-    "rise": "lambda f, a: lerp(-2.7, -1.12, min(1, max(0, (f - a) / 10.0))) + (0.12 * sin(min(1, (f - a) / 10.0) * pi) if f - a < 16 else 0) + 0.02 * sin(f * 0.3)"
+    "tip": "lambda f, a: 1 - 0.75 * ease(clamp01((f - a) / 30.0))",
+    "wob": "lambda f, a: 0.16 * sin((f - a) * 0.5) * clamp01((f - a) / 8.0)",
+    "pop_up": "lambda f, a: lerp(-2.7, -1.12, clamp01((f - a) / 12.0)) + 0.12 * sin(clamp01((f - a) / 12.0) * pi) + 0.02 * sin(f * 0.3)"
   },
   "sets": [
     {
       "type": "street",
-      "note": "Main play area: square hole at (0,4). Round covers along +Y for the tracking shot.",
+      "params": {
+        "length": 80,
+        "cones": [
+          [
+            -2.1,
+            5.6
+          ],
+          [
+            2.3,
+            5.8
+          ],
+          [
+            -2.6,
+            3
+          ],
+          [
+            2.9,
+            2.6
+          ]
+        ]
+      },
       "props": [
         {
-          "id": "hole_sq",
+          "id": "hole",
           "type": "manhole_hole",
           "params": {
-            "kind": "square"
+            "kind": "square",
+            "prefix": "hole_s"
           },
           "loc": [
             0,
             4,
             0
           ]
-        },
-        {
-          "id": "hole_rd",
-          "type": "manhole_hole",
-          "params": {
-            "kind": "round"
-          },
-          "loc": [
-            0,
-            4,
-            0
-          ]
-        },
-        {
-          "id": "cv_round",
-          "type": "manhole_cover",
-          "params": {
-            "kind": "round"
-          },
-          "loc": [
-            0,
-            4,
-            0.02
-          ],
-          "note": "the round cover that gets 'undecided' (zips away)"
         },
         {
           "id": "cv_hook",
@@ -93,7 +63,7 @@
           "params": {
             "kind": "square"
           },
-          "note": "hook: floating square cover"
+          "note": "hook: lơ lửng, rơi, tua ngược"
         },
         {
           "id": "cv_d1",
@@ -123,8 +93,8 @@
             "kind": "round"
           },
           "loc": [
-            0.4,
-            12,
+            -1.2,
+            14,
             0.02
           ]
         },
@@ -135,8 +105,8 @@
             "kind": "round"
           },
           "loc": [
-            -0.7,
-            17,
+            1.3,
+            20,
             0.02
           ]
         },
@@ -147,8 +117,8 @@
             "kind": "round"
           },
           "loc": [
-            0.8,
-            22,
+            -1.2,
+            26,
             0.02
           ]
         },
@@ -159,34 +129,31 @@
             "kind": "round"
           },
           "loc": [
-            -0.3,
-            27,
+            1.3,
+            32,
             0.02
           ]
         },
         {
-          "id": "traffic_light",
+          "id": "signal",
           "type": "traffic_light",
           "params": {
             "state": "red"
           },
           "loc": [
-            3.2,
+            2.6,
             6.6,
             0
           ],
           "rot": [
             0,
             0,
-            -0.35
+            0.3
           ]
         },
         {
           "id": "milk",
           "type": "milk_carton",
-          "params": {
-            "label": "MILK"
-          },
           "loc": [
             0.75,
             3.7,
@@ -201,8 +168,7 @@
       ]
     },
     {
-      "type": "office",
-      "note": "x=300; coffee-table top = square manhole cover (planted for chapter 2 tag)"
+      "type": "office"
     }
   ],
   "camera": {
@@ -214,1227 +180,521 @@
     "shots": [
       {
         "a": 1,
-        "b": 111,
+        "b": 125,
         "type": "insert",
-        "fstop": 2.2,
-        "note": "floating square lid, crane down to the hole",
-        "keys": [
-          [
-            1,
-            [
-              1.6,
-              0.6,
-              1
-            ],
-            [
-              0,
-              4,
-              2.3
-            ],
-            40,
-            0
+        "fstop": 2.8,
+        "note": "nắp vuông 300 lb lơ lửng trên miệng hố, hạ cần xuống hố",
+        "frame": {
+          "subject": [
+            0,
+            4,
+            1.3
           ],
-          [
-            111,
-            [
-              0.9,
-              1.6,
-              1.35
-            ],
-            [
-              0,
-              4,
-              0.4
-            ],
-            42,
-            0
-          ]
-        ]
+          "size": 3.2,
+          "lens": 35,
+          "height": "eye",
+          "angle": 15,
+          "move": "crane_down",
+          "amount": 1.5
+        }
       },
       {
-        "a": 112,
-        "b": 244,
+        "a": 126,
+        "b": 226,
+        "type": "closeup",
+        "fstop": 2,
+        "note": "Sam thò đầu khỏi hố",
+        "frame": {
+          "subject": "sam",
+          "move": "push_in",
+          "angle": 10,
+          "height": "eye",
+          "x": 0.2,
+          "look_dz": 0.1
+        }
+      },
+      {
+        "a": 227,
+        "b": 276,
         "type": "medium",
-        "note": "Sam pops out of the hole, push in on him",
-        "keys": [
-          [
-            112,
-            [
-              -1.6,
-              0.7,
-              1.2
-            ],
-            [
-              -0.4,
-              4.1,
-              0.95
-            ],
-            35,
-            0
-          ],
-          [
-            244,
-            [
-              -0.7,
-              1.6,
-              1.05
-            ],
-            [
-              0,
-              4,
-              0.75
-            ],
-            45,
-            0
-          ]
-        ]
+        "note": "'Joe?' — Joe ở mép hố sốc, Sam bên phải",
+        "frame": {
+          "subject": "joe",
+          "move": "truck_right",
+          "angle": -25,
+          "height": "low",
+          "x": -0.3
+        }
       },
       {
-        "a": 245,
-        "b": 284,
+        "a": 277,
+        "b": 296,
         "type": "pov",
-        "note": "POV up at the lid: getting dark",
+        "note": "POV thấp cạnh Sam: nắp lao xuống che trời",
         "keys": [
           [
-            245,
+            277,
             [
-              0,
-              3,
-              0.5
+              0.25,
+              3.2,
+              0.3
             ],
             [
               0,
-              4.1,
-              2
+              4.05,
+              2.4
             ],
-            28,
+            24,
             0
           ],
           [
-            284,
+            296,
             [
-              0.03,
-              3.08,
-              0.45
+              0.22,
+              3.28,
+              0.32
             ],
             [
               0,
-              4.1,
-              1.85
+              4.05,
+              1.5
             ],
-            30,
-            0
+            24,
+            2
           ]
         ]
       },
       {
-        "a": 285,
-        "b": 415,
+        "a": 297,
+        "b": 385,
         "type": "medium",
-        "note": "CLANG, freeze, REPLAY rewind",
+        "note": "CLANG, freeze-frame thẻ tên, REPLAY tua ngược",
+        "frame": {
+          "subject": [
+            0,
+            4,
+            0
+          ],
+          "size": 3,
+          "look_dz": -0.6,
+          "height": "high",
+          "angle": 20,
+          "move": "crane_up",
+          "amount": 0.8
+        }
+      },
+      {
+        "a": 386,
+        "b": 445,
+        "type": "card",
+        "fstop": 1.8,
+        "note": "whip sang thẻ 3 DAYS EARLIER",
+        "frame": {
+          "subject": [
+            0,
+            4,
+            0
+          ],
+          "move": "push_in",
+          "angle": -10
+        }
+      },
+      {
+        "a": 446,
+        "b": 609,
+        "type": "establishing",
+        "fstop": 5.6,
+        "note": "toàn cảnh phố + màn hình câu hỏi",
+        "frame": {
+          "subject": [
+            0,
+            10,
+            0
+          ],
+          "move": "crane_down",
+          "angle": -10
+        }
+      },
+      {
+        "a": 610,
+        "b": 805,
+        "type": "wide",
+        "fstop": 5.6,
+        "note": "tracking dọc phố qua các nắp tròn, ✗ ✗ ✓",
         "keys": [
           [
-            285,
+            610,
             [
-              1.9,
-              1.2,
+              3.4,
+              8.5,
               1.5
             ],
             [
-              -0.3,
-              4.1,
-              0.7
+              -0.6,
+              14,
+              0.35
             ],
             32,
             0
           ],
           [
-            415,
+            805,
             [
-              1.6,
-              1.6,
-              1.55
+              3.4,
+              26.5,
+              1.5
             ],
             [
-              -0.2,
-              4.1,
-              1.1
+              -0.6,
+              32,
+              0.35
             ],
-            34,
+            32,
             0
           ]
         ]
       },
       {
-        "a": 416,
-        "b": 545,
-        "type": "wide",
-        "fstop": 5,
-        "note": "whip: street establishing, crane up",
-        "keys": [
-          [
-            416,
-            [
-              -4.5,
-              -3,
-              1.6
-            ],
-            [
-              0,
-              6,
-              0.8
-            ],
-            26,
-            0
-          ],
-          [
-            545,
-            [
-              -4,
-              -2.2,
-              3.4
-            ],
-            [
-              0,
-              8,
-              0.6
-            ],
-            28,
-            0
-          ]
-        ]
-      },
-      {
-        "a": 546,
-        "b": 678,
-        "type": "card",
-        "fstop": 2,
-        "note": "question card over round cover, then not square / not triangle / round",
-        "keys": [
-          [
-            546,
-            [
-              0.9,
-              1.9,
-              1.9
-            ],
-            [
-              0,
-              4,
-              0.1
-            ],
-            40,
-            0
-          ],
-          [
-            678,
-            [
-              0.45,
-              2.75,
-              1.55
-            ],
-            [
-              0,
-              4,
-              0
-            ],
-            45,
-            0
-          ]
-        ]
-      },
-      {
-        "a": 679,
-        "b": 767,
-        "type": "wide",
-        "fstop": 4.5,
-        "note": "tracking +Y over round covers",
-        "keys": [
-          [
-            679,
-            [
-              -3.6,
-              8,
-              1.6
-            ],
-            [
-              0,
-              13,
-              0.2
-            ],
-            30,
-            0
-          ],
-          [
-            767,
-            [
-              -3.6,
-              20,
-              1.6
-            ],
-            [
-              0,
-              25,
-              0.2
-            ],
-            30,
-            0
-          ]
-        ]
-      },
-      {
-        "a": 768,
-        "b": 899,
-        "type": "insert",
-        "fstop": 2,
-        "note": "suspicious: arc on the round cover; 3 DAYS EARLIER",
-        "keys": [
-          [
-            768,
-            [
-              -1.4,
-              2.6,
-              0.9
-            ],
-            [
-              0,
-              4,
-              0.05
-            ],
-            45,
-            0
-          ],
-          [
-            899,
-            [
-              -0.4,
-              2.1,
-              0.85
-            ],
-            [
-              0,
-              4,
-              0.05
-            ],
-            48,
-            0
-          ]
-        ]
-      },
-      {
-        "a": 900,
+        "a": 806,
         "b": 971,
         "type": "insert",
         "fstop": 2,
-        "note": "round cover zips away at 'undecide'",
-        "keys": [
-          [
-            900,
-            [
-              0.5,
-              2.3,
-              1
-            ],
-            [
-              0,
-              4,
-              0.1
-            ],
-            45,
-            0
-          ],
-          [
-            971,
-            [
-              0.4,
-              2.6,
-              0.95
-            ],
-            [
-              0,
-              4,
-              0.1
-            ],
-            45,
-            0
-          ]
-        ]
+        "note": "dolly-in vào một nắp tròn: 'Somebody decided this'",
+        "frame": {
+          "subject": "rc4",
+          "size": 1.3,
+          "move": "push_in",
+          "angle": 20,
+          "amount": 1.4
+        }
       },
       {
         "a": 972,
         "b": 1108,
         "type": "medium",
-        "fstop": 2.4,
-        "note": "whip to office: Meet Gary, push to close",
-        "keys": [
-          [
-            972,
-            [
-              298.6,
-              0.2,
-              1.45
-            ],
-            [
-              299.4,
-              3.7,
-              1.35
-            ],
-            40,
-            0
-          ],
-          [
-            1108,
-            [
-              299.7,
-              1.7,
-              1.8
-            ],
-            [
-              299.4,
-              3.7,
-              1.75
-            ],
-            50,
-            0
-          ]
-        ]
+        "note": "Gary, freeze-frame thẻ tên",
+        "frame": {
+          "subject": "gary",
+          "move": "push_in",
+          "angle": 15,
+          "x": -0.25
+        }
       },
       {
         "a": 1109,
         "b": 1214,
-        "type": "medium",
-        "note": "arc 30deg as Gary flings the round cover",
-        "keys": [
-          [
-            1109,
-            [
-              297.6,
-              0.9,
-              1.4
-            ],
-            [
-              299.6,
-              3.7,
-              1.25
-            ],
-            35,
-            0
-          ],
-          [
-            1214,
-            [
-              298.9,
-              0.5,
-              1.45
-            ],
-            [
-              299.7,
-              3.6,
-              1.25
-            ],
-            35,
-            0
-          ]
-        ]
+        "type": "full",
+        "note": "Gary gạt nắp tròn đi, vòng cung",
+        "frame": {
+          "subject": "gary",
+          "move": "orbit_left",
+          "angle": 30,
+          "x": -0.2,
+          "amount": 1.5
+        }
       },
       {
         "a": 1215,
         "b": 1349,
         "type": "closeup",
         "fstop": 2,
-        "note": "square trophy, 'Squares are the future!'",
-        "keys": [
-          [
-            1215,
-            [
-              300.1,
-              1.4,
-              1.5
-            ],
-            [
-              299.4,
-              3.7,
-              1.6
-            ],
-            50,
-            0
-          ],
-          [
-            1349,
-            [
-              299.1,
-              1.8,
-              1.25
-            ],
-            [
-              299.4,
-              3.7,
-              1.8
-            ],
-            55,
-            3
-          ]
-        ]
+        "note": "giơ nắp vuông như cúp: 'Squares are the future!'",
+        "frame": {
+          "subject": "gary",
+          "move": "push_in",
+          "angle": -10,
+          "height": "low",
+          "x": 0.25
+        }
       },
       {
         "a": 1350,
-        "b": 1417,
-        "type": "medium",
-        "note": "he orders five hundred",
-        "keys": [
-          [
-            1350,
-            [
-              300.8,
-              0.9,
-              1.5
-            ],
-            [
-              299.5,
-              3.7,
-              1.3
-            ],
-            40,
-            0
-          ],
-          [
-            1417,
-            [
-              300.6,
-              1.2,
-              1.5
-            ],
-            [
-              299.5,
-              3.7,
-              1.3
-            ],
-            40,
-            0
-          ]
-        ]
-      },
-      {
-        "a": 1418,
         "b": 1500,
         "type": "insert",
         "fstop": 2,
-        "note": "phone: badge '!' + 500 SQUARE COVERS",
-        "keys": [
-          [
-            1418,
-            [
-              299.95,
-              2.2,
-              1.3
-            ],
-            [
-              299.65,
-              3.4,
-              1.15
-            ],
-            60,
-            0
-          ],
-          [
-            1500,
-            [
-              299.9,
-              2.35,
-              1.28
-            ],
-            [
-              299.65,
-              3.4,
-              1.15
-            ],
-            60,
-            0
-          ]
-        ]
+        "note": "điện thoại đặt 500 cái",
+        "frame": {
+          "subject": "gary_phone",
+          "size": 0.8,
+          "move": "push_in",
+          "angle": 10,
+          "height": "eye"
+        }
       },
       {
         "a": 1501,
         "b": 1651,
-        "type": "medium",
-        "note": "track Joe entering right->left, settle on proud close",
-        "keys": [
-          [
-            1501,
-            [
-              303.2,
-              0.4,
-              1.4
-            ],
-            [
-              303.3,
-              3.8,
-              1.3
-            ],
-            35,
+        "type": "full",
+        "fstop": 4,
+        "note": "Joe bước vào từ phải sang trái, thẻ tên",
+        "frame": {
+          "subject": [
+            301.9,
+            3.5,
             0
           ],
-          [
-            1560,
-            [
-              301.9,
-              0.6,
-              1.45
-            ],
-            [
-              301.6,
-              3.8,
-              1.4
-            ],
-            38,
-            0
-          ],
-          [
-            1651,
-            [
-              301.5,
-              1.6,
-              1.65
-            ],
-            [
-              301.4,
-              3.8,
-              1.75
-            ],
-            45,
-            0
-          ]
-        ]
+          "move": "truck_left",
+          "angle": 0,
+          "amount": 1.2
+        }
       },
       {
         "a": 1652,
         "b": 1729,
-        "type": "medium",
-        "fstop": 4,
-        "note": "two-shot: Joe doesn't like this",
-        "keys": [
-          [
-            1652,
-            [
-              300.4,
-              -0.8,
-              1.5
-            ],
-            [
-              300.4,
-              3.7,
-              1.25
-            ],
-            35,
-            0
-          ],
-          [
-            1729,
-            [
-              300.4,
-              -0.4,
-              1.45
-            ],
-            [
-              300.4,
-              3.7,
-              1.25
-            ],
-            35,
-            0
-          ]
-        ]
+        "type": "closeup",
+        "fstop": 2,
+        "note": "Joe không thích chuyện này",
+        "frame": {
+          "subject": "joe",
+          "move": "push_in",
+          "angle": -15,
+          "x": 0.25
+        }
       },
       {
         "a": 1730,
-        "b": 1799,
-        "type": "closeup",
-        "fstop": 2,
-        "note": "Joe: Boss, the round ones work",
-        "keys": [
-          [
-            1730,
-            [
-              300.9,
-              1.8,
-              1.85
-            ],
-            [
-              301.4,
-              3.8,
-              1.75
-            ],
-            55,
-            0
-          ],
-          [
-            1799,
-            [
-              301,
-              2.05,
-              1.85
-            ],
-            [
-              301.4,
-              3.8,
-              1.75
-            ],
-            55,
-            0
-          ]
-        ]
-      },
-      {
-        "a": 1800,
         "b": 1887,
-        "type": "closeup",
-        "fstop": 2,
-        "note": "Gary: Exactly. Boring.",
-        "keys": [
-          [
-            1800,
-            [
-              299.9,
-              1.8,
-              1.85
-            ],
-            [
-              299.4,
-              3.7,
-              1.75
-            ],
-            55,
+        "type": "medium",
+        "note": "hai người đối mặt: 'Boss…' / 'Exactly' / 'Boring'",
+        "frame": {
+          "subject": [
+            300.45,
+            3.5,
             0
           ],
-          [
-            1887,
-            [
-              299.8,
-              2.05,
-              1.85
-            ],
-            [
-              299.4,
-              3.7,
-              1.75
-            ],
-            55,
-            0
-          ]
-        ]
+          "size": 2.9,
+          "move": "drift",
+          "angle": 0
+        }
       },
       {
         "a": 1888,
-        "b": 1998,
+        "b": 1997,
         "type": "insert",
-        "note": "bill unrolls, crane down to the floor",
+        "fstop": 2,
+        "note": "hóa đơn bung xuống sàn, hạ cần theo",
         "keys": [
           [
             1888,
             [
-              299.9,
-              1.6,
-              1.9
+              299.55,
+              1.2,
+              1.75
             ],
             [
               299.4,
               3.5,
               1.55
             ],
-            42,
+            40,
             0
           ],
           [
-            1998,
+            1997,
             [
-              299.85,
-              1.3,
+              299.55,
+              1.35,
               0.9
             ],
             [
               299.4,
-              3.4,
-              0.45
+              3.5,
+              0.55
             ],
-            42,
+            40,
             0
           ]
         ]
       },
       {
-        "a": 1999,
+        "a": 1998,
+        "b": 2031,
+        "type": "closeup",
+        "fstop": 2,
+        "note": "Gary cười",
+        "frame": {
+          "subject": "gary",
+          "move": "push_in",
+          "angle": 15,
+          "x": -0.25
+        }
+      },
+      {
+        "a": 2032,
         "b": 2061,
-        "type": "medium",
-        "note": "pan Gary smiles -> Joe gulps",
-        "keys": [
-          [
-            1999,
-            [
-              299.9,
-              1,
-              1.7
-            ],
-            [
-              299.4,
-              3.7,
-              1.75
-            ],
-            45,
-            0
-          ],
-          [
-            2061,
-            [
-              300.9,
-              1,
-              1.7
-            ],
-            [
-              301.4,
-              3.8,
-              1.75
-            ],
-            45,
-            0
-          ]
-        ]
+        "type": "ecu",
+        "fstop": 1.8,
+        "note": "Joe nuốt khan",
+        "frame": {
+          "subject": "joe",
+          "move": "push_in",
+          "angle": -10
+        }
       },
       {
         "a": 2062,
-        "b": 2308,
+        "b": 2258,
         "type": "medium",
-        "note": "whip DAY 1: Joe lifts, wobble, tip, drop; crane follows into hole",
-        "keys": [
-          [
-            2062,
-            [
-              -1.6,
-              0.5,
-              1.2
-            ],
-            [
-              -0.2,
-              4,
-              1
-            ],
-            35,
+        "note": "DAY 1: Joe nhấc nắp, chao, dựng nghiêng",
+        "frame": {
+          "subject": "joe",
+          "move": "drift",
+          "angle": 20,
+          "height": "low",
+          "x": -0.2
+        }
+      },
+      {
+        "a": 2259,
+        "b": 2308,
+        "type": "full",
+        "fstop": 4,
+        "note": "nắp rơi tọt, hạ cần theo",
+        "frame": {
+          "subject": [
+            0,
+            4,
             0
           ],
-          [
-            2230,
-            [
-              -0.4,
-              1.2,
-              1.15
-            ],
-            [
-              -0.1,
-              4,
-              0.8
-            ],
-            38,
-            0
-          ],
-          [
-            2308,
-            [
-              0.2,
-              1.7,
-              1
-            ],
-            [
-              0,
-              4,
-              0.2
-            ],
-            42,
-            0
-          ]
-        ]
+          "size": 3.2,
+          "look_dz": -0.4,
+          "height": "high",
+          "angle": 25,
+          "move": "crane_down"
+        }
       },
       {
         "a": 2309,
         "b": 2402,
         "type": "closeup",
-        "fstop": 1.8,
-        "note": "Sam: I'm okay! (cover hat)",
-        "keys": [
-          [
-            2309,
-            [
-              0.5,
-              1.9,
-              0.75
-            ],
-            [
-              0,
-              4,
-              0.7
-            ],
-            55,
-            0
-          ],
-          [
-            2402,
-            [
-              0.45,
-              2.15,
-              0.75
-            ],
-            [
-              0,
-              4,
-              0.7
-            ],
-            55,
-            0
-          ]
-        ]
+        "fstop": 2,
+        "note": "Sam: 'I'm okay!'",
+        "frame": {
+          "subject": "sam",
+          "move": "push_in",
+          "angle": 10,
+          "height": "eye",
+          "x": 0.2,
+          "look_dz": 0.1
+        }
       },
       {
         "a": 2403,
-        "b": 2642,
+        "b": 2591,
         "type": "medium",
-        "note": "whip DAY 2: same framing (rule of three), horn, slip, drop",
-        "keys": [
-          [
-            2403,
-            [
-              -1.6,
-              0.5,
-              1.2
-            ],
-            [
-              -0.2,
-              4,
-              1
-            ],
-            35,
-            0
-          ],
-          [
-            2571,
-            [
-              -0.4,
-              1.2,
-              1.15
-            ],
-            [
-              -0.1,
-              4,
-              0.8
-            ],
-            38,
-            0
-          ],
-          [
-            2642,
-            [
-              0.2,
-              1.7,
-              1
-            ],
-            [
-              0,
-              4,
-              0.2
-            ],
-            42,
-            0
-          ]
-        ]
+        "note": "DAY 2: còi xe, trượt tay, nắp nghiêng",
+        "frame": {
+          "subject": "joe",
+          "move": "truck_right",
+          "angle": -20,
+          "height": "low",
+          "x": -0.2
+        }
       },
       {
-        "a": 2643,
+        "a": 2592,
         "b": 2680,
-        "type": "closeup",
-        "fstop": 1.8,
-        "note": "Sam: Still okay!",
-        "keys": [
-          [
-            2643,
-            [
-              0.55,
-              1.85,
-              0.8
-            ],
-            [
-              0,
-              4,
-              0.7
-            ],
-            55,
+        "type": "full",
+        "fstop": 4,
+        "note": "rơi lần 2, Sam thò lên 'Still okay!'",
+        "frame": {
+          "subject": [
+            0,
+            4,
             0
           ],
-          [
-            2680,
-            [
-              0.5,
-              2.05,
-              0.78
-            ],
-            [
-              0,
-              4,
-              0.7
-            ],
-            55,
-            0
-          ]
-        ]
+          "size": 3.2,
+          "look_dz": -0.4,
+          "height": "high",
+          "angle": -20,
+          "move": "crane_down"
+        }
       },
       {
         "a": 2681,
-        "b": 2766,
-        "type": "wide",
-        "fstop": 5,
-        "note": "whip DAY 3: quiet street, no wind, no trucks",
-        "keys": [
-          [
-            2681,
-            [
-              -4,
-              -2,
-              2
-            ],
-            [
-              0.5,
-              4.8,
-              1.2
-            ],
-            28,
-            0
-          ],
-          [
-            2766,
-            [
-              -3.4,
-              -1.4,
-              1.9
-            ],
-            [
-              0.5,
-              4.8,
-              1.2
-            ],
-            28,
-            0
-          ]
-        ]
-      },
-      {
-        "a": 2767,
         "b": 2802,
         "type": "insert",
         "fstop": 2,
-        "note": "traffic light red -> green",
-        "keys": [
-          [
-            2767,
-            [
-              2,
-              3.6,
-              2.5
-            ],
-            [
-              3.2,
-              6.6,
-              3.3
-            ],
-            50,
-            0
+        "note": "DAY 3: đèn đỏ đổi xanh",
+        "frame": {
+          "subject": [
+            2.6,
+            6.6,
+            3.25
           ],
-          [
-            2802,
-            [
-              2.1,
-              3.9,
-              2.6
-            ],
-            [
-              3.2,
-              6.6,
-              3.3
-            ],
-            50,
-            0
-          ]
-        ]
+          "size": 1.5,
+          "move": "push_in",
+          "angle": -10,
+          "height": "eye"
+        }
       },
       {
         "a": 2803,
-        "b": 2953,
+        "b": 2885,
         "type": "closeup",
         "fstop": 2,
-        "note": "Joe total focus, follow down to the cover: it fits",
-        "keys": [
-          [
-            2803,
-            [
-              -0.75,
-              1.9,
-              1.85
-            ],
-            [
-              -0.45,
-              3.95,
-              1.75
-            ],
-            55,
-            0
-          ],
-          [
-            2870,
-            [
-              -0.3,
-              1.95,
-              1.6
-            ],
-            [
-              -0.2,
-              3.95,
-              1.2
-            ],
-            50,
-            0
-          ],
-          [
-            2953,
-            [
-              0.5,
-              2,
-              1.2
-            ],
-            [
-              0,
-              4,
-              0.2
-            ],
-            45,
-            0
-          ]
-        ]
+        "note": "Joe nheo mắt tập trung",
+        "frame": {
+          "subject": "joe",
+          "move": "push_in",
+          "angle": 10,
+          "height": "low",
+          "x": -0.2
+        }
       },
       {
-        "a": 2954,
-        "b": 3130,
-        "type": "wide",
+        "a": 2886,
+        "b": 3047,
+        "type": "full",
         "fstop": 4,
-        "note": "step on corner, flip, diagonal, vanish",
-        "keys": [
-          [
-            2954,
-            [
-              2.6,
-              -0.4,
-              1.6
-            ],
-            [
-              -0.2,
-              4,
-              0.7
-            ],
-            32,
+        "note": "đặt nắp vừa khít, vòng cung, Joe nhảy lên góc",
+        "frame": {
+          "subject": [
+            -0.25,
+            4,
             0
           ],
-          [
-            3130,
-            [
-              2.1,
-              0.4,
-              1.5
-            ],
-            [
-              -0.1,
-              4,
-              0.5
-            ],
-            32,
-            0
-          ]
-        ]
+          "size": 3.4,
+          "look_dz": -0.3,
+          "height": "high",
+          "angle": 15,
+          "move": "orbit_left",
+          "amount": 2
+        }
       },
       {
-        "a": 3131,
+        "a": 3048,
         "b": 3188,
-        "type": "insert",
-        "fstop": 2,
-        "note": "Sam's milk dragged into the hole",
-        "keys": [
-          [
-            3131,
-            [
-              1.6,
-              2.3,
-              0.8
-            ],
-            [
-              0.5,
-              3.75,
-              0.35
-            ],
-            45,
+        "type": "medium",
+        "note": "nắp lật chéo biến mất, kéo theo hộp sữa",
+        "frame": {
+          "subject": [
+            0.2,
+            4,
             0
           ],
-          [
-            3188,
-            [
-              1.4,
-              2.5,
-              0.7
-            ],
-            [
-              0.2,
-              3.95,
-              0.15
-            ],
-            45,
-            0
-          ]
-        ]
+          "size": 2.8,
+          "look_dz": -0.8,
+          "height": "high",
+          "angle": -25,
+          "move": "crane_down"
+        }
       },
       {
         "a": 3189,
         "b": 3218,
         "type": "pov",
-        "fstop": 2,
-        "note": "low POV: Sam 'Not okay!'",
-        "keys": [
-          [
-            3189,
-            [
-              0.3,
-              2.6,
-              0.4
-            ],
-            [
-              0,
-              4,
-              0.85
-            ],
-            40,
-            4
-          ],
-          [
-            3218,
-            [
-              0.28,
-              2.75,
-              0.42
-            ],
-            [
-              0,
-              4,
-              0.85
-            ],
-            40,
-            4
-          ]
-        ]
+        "note": "Joe nhìn xuống hố: Sam 'Not okay!'",
+        "frame": {
+          "subject": "sam",
+          "height": "high",
+          "angle": 10,
+          "move": "push_in"
+        }
       }
     ],
     "trans": {
-      "416": [
+      "386": [
         "whip",
         1
       ],
@@ -1459,26 +719,38 @@
       [
         297,
         1.2,
-        6,
-        45
+        8,
+        40
       ],
       [
-        1436,
+        1323,
         1.15,
         8,
-        30
+        40
       ],
       [
-        1950,
-        1.12,
+        1373,
+        1.15,
         8,
-        15
+        40
+      ],
+      [
+        2934,
+        1.15,
+        8,
+        40
       ],
       [
         3048,
         1.2,
+        6,
+        40
+      ],
+      [
+        3189,
+        1.15,
         8,
-        45
+        25
       ]
     ],
     "shakes": [
@@ -1488,19 +760,24 @@
         12
       ],
       [
-        2284,
-        0.8,
-        10
-      ],
-      [
-        2620,
-        0.8,
-        10
-      ],
-      [
-        3110,
+        2271,
         1,
-        12
+        10
+      ],
+      [
+        2604,
+        1,
+        10
+      ],
+      [
+        3013,
+        0.5,
+        8
+      ],
+      [
+        3116,
+        0.6,
+        8
       ]
     ]
   },
@@ -1509,13 +786,25 @@
       "id": "joe",
       "type": "joe",
       "faction": "city_road_crew",
-      "role": "cover installer",
+      "role": "installer",
       "loc": [
-        -0.45,
-        3.95,
+        -0.7,
+        4,
         0
       ],
       "props": [
+        {
+          "id": "joe_sq",
+          "type": "cover2d",
+          "params": {
+            "kind": "square"
+          },
+          "loc": [
+            0.3,
+            0.42,
+            0.45
+          ]
+        },
         {
           "id": "joe_rd",
           "type": "cover2d",
@@ -1527,45 +816,45 @@
             0.55,
             0.45
           ]
-        },
-        {
-          "id": "joe_sq",
-          "type": "cover2d",
-          "params": {
-            "kind": "square"
-          },
-          "loc": [
-            0.3,
-            0.45,
-            0.45
-          ]
         }
       ],
       "talk": [
         [
           1730,
-          1790
+          1798
         ]
       ],
       "expressions": [
         [
           1,
-          "focus"
+          "neutral"
         ],
         [
-          277,
+          260,
           "shock"
+        ],
+        [
+          972,
+          "neutral"
         ],
         [
           1501,
           "happy"
         ],
         [
+          1623,
+          "smug_closed"
+        ],
+        [
           1652,
           "focus"
         ],
         [
-          1950,
+          1730,
+          "neutral"
+        ],
+        [
+          1862,
           "shock"
         ],
         [
@@ -1573,27 +862,31 @@
           "focus"
         ],
         [
-          2268,
+          2259,
           "shock"
         ],
         [
-          2403,
+          2320,
+          "neutral"
+        ],
+        [
+          2429,
           "focus"
         ],
         [
-          2502,
+          2499,
           "shock"
         ],
         [
-          2546,
+          2560,
           "focus"
         ],
         [
-          2602,
+          2592,
           "shock"
         ],
         [
-          2706,
+          2681,
           "neutral"
         ],
         [
@@ -1601,11 +894,11 @@
           "focus"
         ],
         [
-          2934,
+          2925,
           "happy"
         ],
         [
-          2978,
+          2997,
           "smug_closed"
         ],
         [
@@ -1613,29 +906,34 @@
           "shock"
         ]
       ],
+      "blinks": [
+        100,
+        700,
+        1580,
+        1700,
+        2150,
+        2470,
+        2860
+      ],
       "reacts": [
-        [
-          297,
-          "hop"
-        ],
         [
           1623,
           "proud"
         ],
         [
-          2043,
+          1862,
           "flinch"
         ],
         [
-          2268,
+          2272,
           "flinch"
         ],
         [
-          2502,
+          2499,
           "hop"
         ],
         [
-          2602,
+          2604,
           "flinch"
         ],
         [
@@ -1649,46 +947,23 @@
       ],
       "reaction_fx": [
         297,
-        2502,
+        2499,
         3048
       ],
-      "blinks": [
-        80,
-        1560,
-        1700,
-        2150,
-        2450,
-        2750
+      "fx": [
+        {
+          "type": "drips",
+          "from": 2032
+        }
       ],
       "blocking": {
         "segments": [
           {
-            "from": 1,
-            "to": 415,
-            "note": "hook: at the edge of the hole",
-            "location": [
-              -1.5,
-              4.4,
-              0
-            ]
-          },
-          {
-            "from": 416,
-            "to": 1500,
-            "note": "offstage",
-            "location": [
-              -42,
-              -40,
-              0
-            ]
-          },
-          {
             "from": 1501,
             "to": 1545,
-            "note": "walks in right->left",
             "location": [
-              "lerp(303.6, 301.4, (f - 1501) / 44.0)",
-              3.8,
+              "lerp(303.2, 301.5, (f - 1501) / 44.0)",
+              3.5,
               "0.03 * abs(sin(f * 0.42))"
             ]
           },
@@ -1696,60 +971,58 @@
             "from": 1546,
             "to": 2061,
             "location": [
-              301.4,
-              3.8,
+              301.5,
+              3.5,
               0
             ]
           },
           {
-            "from": 2960,
-            "to": 2972,
-            "note": "hop onto the corner",
+            "from": 2997,
+            "to": 3012,
             "let": {
-              "u": "(f - 2960) / 12.0"
+              "u": "clamp01((f - 2997) / 15.0)"
             },
             "location": [
-              "lerp(-0.45, -0.3, u)",
-              3.95,
-              "0.08 * u + 0.35 * sin(pi * u)"
+              "lerp(-0.7, -0.45, u)",
+              4,
+              "0.5 * sin(pi * u)"
             ]
           },
           {
-            "from": 2973,
+            "from": 3013,
             "to": 3047,
             "location": [
-              -0.3,
-              3.95,
-              "0.08 - 0.03 * sin((f - 2973) * 0.35) * exp(-(f - 2973) / 40.0)"
+              -0.45,
+              4,
+              0.06
             ]
           },
           {
             "from": 3048,
-            "to": 3062,
-            "note": "thrown off as the cover flips",
+            "to": 3060,
             "let": {
-              "u": "(f - 3048) / 14.0"
+              "u": "clamp01((f - 3048) / 12.0)"
             },
             "location": [
-              "lerp(-0.3, -0.95, u)",
-              3.95,
-              "0.08 * (1 - u) + 0.25 * sin(pi * u)"
+              "lerp(-0.45, -0.85, u)",
+              4,
+              "0.3 * sin(pi * u)"
             ]
           },
           {
-            "from": 3063,
+            "from": 3061,
             "to": 3218,
             "location": [
-              -0.95,
-              3.95,
+              -0.85,
+              4,
               0
             ]
           }
         ],
         "default": {
           "location": [
-            -0.45,
-            3.95,
+            -0.7,
+            4,
             0
           ]
         }
@@ -1758,14 +1031,14 @@
         "default": {},
         "segments": [
           {
-            "from": 1,
-            "to": 415,
-            "note": "hands up, just let go",
+            "from": 260,
+            "to": 971,
+            "note": "sốc, giơ tay",
             "armL": [
               "ik",
               [
                 -0.5,
-                0.8
+                "lerp(0.25, 0.8, pease(f, 260, 6))"
               ],
               -1
             ],
@@ -1773,7 +1046,7 @@
               "ik",
               [
                 0.5,
-                0.8
+                "lerp(0.25, 0.8, pease(f, 260, 6))"
               ],
               1
             ]
@@ -1781,7 +1054,7 @@
           {
             "from": 1501,
             "to": 1545,
-            "note": "walk in holding round cover",
+            "note": "đi vào, ôm nắp tròn",
             "let": {
               "ph": "(f - 1501) * 0.42"
             },
@@ -1805,8 +1078,8 @@
           },
           {
             "from": 1546,
-            "to": 2061,
-            "note": "proudly hugging the round cover",
+            "to": 2031,
+            "note": "ôm nắp tròn tự hào",
             "armL": [
               "ik",
               [
@@ -1825,58 +1098,56 @@
             ]
           },
           {
-            "ranges": [
-              [
-                2087,
-                2261
-              ],
-              [
-                2429,
-                2597
-              ],
-              [
-                2706,
-                2878
-              ]
-            ],
-            "note": "holding the square cover over the hole",
+            "from": 2032,
+            "to": 2061,
+            "note": "nuốt khan",
             "armL": [
               "ik",
               [
-                "0.3 - 0.35 * jsq(f)",
-                "0.45 + jlift(f)"
+                -0.43,
+                0.5
               ],
               -1
             ],
             "armR": [
               "ik",
               [
-                "0.3 + 0.35 * jsq(f)",
-                "0.45 + jlift(f)"
+                0.43,
+                0.5
+              ],
+              1
+            ],
+            "tilt": "-0.06 * pease(f, 2043, 5)"
+          },
+          {
+            "from": 2062,
+            "to": 2258,
+            "note": "ngày 1: nhấc, chao, dựng nghiêng",
+            "let": {
+              "lf": "0.25 * ease(clamp01((f - 2087) / 20.0))",
+              "sx": "tip(f, 2208)"
+            },
+            "armL": [
+              "ik",
+              [
+                "0.3 - 0.38 * sx",
+                "0.42 + lf"
+              ],
+              -1
+            ],
+            "armR": [
+              "ik",
+              [
+                "0.3 + 0.38 * sx",
+                "0.42 + lf"
               ],
               1
             ]
           },
           {
-            "ranges": [
-              [
-                2062,
-                2086
-              ],
-              [
-                2262,
-                2428
-              ],
-              [
-                2598,
-                2705
-              ],
-              [
-                2909,
-                2953
-              ]
-            ],
-            "note": "empty hands",
+            "from": 2259,
+            "to": 2402,
+            "note": "tay không",
             "armL": [
               "ik",
               [
@@ -1899,51 +1170,103 @@
             ]
           },
           {
-            "from": 2879,
-            "to": 2908,
-            "note": "lowering the cover flat",
+            "from": 2403,
+            "to": 2591,
+            "note": "ngày 2: còi, trượt tay, nghiêng",
+            "let": {
+              "lf": "0.25 * ease(clamp01((f - 2429) / 20.0)) - 0.22 * ease(clamp01((f - 2516) / 14.0))",
+              "sx": "tip(f, 2546)"
+            },
             "armL": [
               "ik",
               [
-                -0.15,
-                0.22
+                "0.3 - 0.38 * sx",
+                "0.42 + lf"
               ],
               -1
             ],
             "armR": [
               "ik",
               [
-                0.55,
-                0.22
+                "0.3 + 0.38 * sx",
+                "0.42 + lf"
               ],
               1
             ]
           },
           {
-            "from": 2954,
+            "from": 2592,
+            "to": 2680,
+            "armL": [
+              "ik",
+              [
+                -0.36,
+                0.42
+              ],
+              -1
+            ],
+            "armR": [
+              "ik",
+              [
+                0.36,
+                0.42
+              ],
+              1
+            ],
+            "body": [
+              0,
+              -0.02
+            ]
+          },
+          {
+            "from": 2681,
+            "to": 2885,
+            "note": "ngày 3: tập trung",
+            "let": {
+              "lf": "0.25 * ease(clamp01((f - 2842) / 20.0))"
+            },
+            "armL": [
+              "ik",
+              [
+                -0.08,
+                "0.42 + lf"
+              ],
+              -1
+            ],
+            "armR": [
+              "ik",
+              [
+                0.68,
+                "0.42 + lf"
+              ],
+              1
+            ]
+          },
+          {
+            "from": 2886,
+            "to": 2996,
+            "note": "vừa khít, vung nắm đấm",
+            "armL": [
+              "ik",
+              [
+                -0.36,
+                0.42
+              ],
+              -1
+            ],
+            "armR": [
+              "ik",
+              [
+                0.45,
+                "lerp(0.3, 0.95, pease(f, 2954, 6))"
+              ],
+              1
+            ]
+          },
+          {
+            "from": 2997,
             "to": 3047,
-            "note": "celebrate",
-            "armL": [
-              "ik",
-              [
-                -0.55,
-                0.95
-              ],
-              -1
-            ],
-            "armR": [
-              "ik",
-              [
-                0.55,
-                0.95
-              ],
-              1
-            ]
-          },
-          {
-            "from": 3048,
-            "to": 3218,
-            "note": "shock",
+            "note": "nhảy ăn mừng",
             "armL": [
               "ik",
               [
@@ -1960,6 +1283,27 @@
               ],
               1
             ]
+          },
+          {
+            "from": 3048,
+            "to": 3218,
+            "note": "sốc",
+            "armL": [
+              "ik",
+              [
+                -0.55,
+                0.6
+              ],
+              -1
+            ],
+            "armR": [
+              "ik",
+              [
+                0.55,
+                0.6
+              ],
+              1
+            ]
           }
         ]
       }
@@ -1968,10 +1312,10 @@
       "id": "gary",
       "type": "gary",
       "faction": "budget_office",
-      "role": "budget manager",
+      "role": "manager",
       "loc": [
         299.4,
-        3.7,
+        3.5,
         0
       ],
       "props": [
@@ -1985,6 +1329,18 @@
           ]
         },
         {
+          "id": "gary_rd",
+          "type": "cover2d",
+          "params": {
+            "kind": "round"
+          },
+          "loc": [
+            0,
+            0.45,
+            0.46
+          ]
+        },
+        {
           "id": "gary_sq",
           "type": "cover2d",
           "params": {
@@ -1992,19 +1348,7 @@
           },
           "loc": [
             0.35,
-            0.78,
-            0.46
-          ]
-        },
-        {
-          "id": "gary_rd",
-          "type": "cover2d",
-          "params": {
-            "kind": "round"
-          },
-          "loc": [
-            0.4,
-            0.55,
+            0.45,
             0.46
           ]
         },
@@ -2016,18 +1360,14 @@
             "notify": true
           },
           "loc": [
-            0.22,
-            0.45,
-            0.44
+            0.05,
+            0.5,
+            0.42
           ]
         },
         {
           "id": "gary_bill",
           "type": "bill",
-          "params": {
-            "prefix": "bill",
-            "total": "$$$"
-          },
           "loc": [
             0,
             0.62,
@@ -2042,7 +1382,7 @@
         ],
         [
           1215,
-          1345
+          1348
         ],
         [
           1800,
@@ -2055,24 +1395,20 @@
       ],
       "expressions": [
         [
-          972,
-          "neutral"
-        ],
-        [
-          1034,
-          "grumpy"
-        ],
-        [
-          1067,
+          1,
           "smirk"
         ],
         [
-          1323,
+          1297,
           "smug_closed"
         ],
         [
           1350,
           "smirk"
+        ],
+        [
+          1730,
+          "neutral"
         ],
         [
           1800,
@@ -2085,45 +1421,34 @@
         [
           1907,
           "smirk"
-        ]
-      ],
-      "reacts": [
-        [
-          1323,
-          "proud"
         ],
         [
-          1862,
-          "shiver"
-        ],
-        [
-          1907,
-          "proud"
+          1998,
+          "smug_closed"
         ]
       ],
       "blinks": [
-        1000,
-        1200,
-        1400,
-        1700,
-        1950
+        1050,
+        1250,
+        1460,
+        1760,
+        2010
+      ],
+      "reacts": [
+        [
+          1297,
+          "proud"
+        ],
+        [
+          1998,
+          "proud"
+        ]
       ],
       "blocking": {
-        "segments": [
-          {
-            "from": 972,
-            "to": 2061,
-            "location": [
-              299.4,
-              3.7,
-              0
-            ]
-          }
-        ],
         "default": {
           "location": [
-            -40,
-            -40,
+            299.4,
+            3.5,
             0
           ]
         }
@@ -2141,66 +1466,48 @@
         },
         "segments": [
           {
-            "from": 1034,
-            "to": 1059,
-            "note": "finger wag: hates waste",
-            "armR": [
-              "ik",
-              [
-                0.55,
-                "0.75 + 0.08 * sin(f * 1.2)"
-              ],
-              1
-            ]
-          },
-          {
-            "from": 1060,
+            "from": 972,
             "to": 1108,
-            "note": "raises the square like a trophy",
+            "note": "ôm bìa, tay phải trình bày",
             "armR": [
               "ik",
               [
-                0.35,
-                "lerp(0.3, 0.62, pease(f, 1060, 6))"
+                "0.5 + 0.05 * sin(f * 0.2)",
+                "0.35 + 0.15 * sin(f * 0.2)"
               ],
               1
             ]
           },
           {
             "from": 1109,
-            "to": 1149,
-            "note": "holds the round cover",
+            "to": 1181,
+            "note": "cầm nắp tròn",
+            "armL": [
+              "ik",
+              [
+                -0.4,
+                0.45
+              ],
+              -1
+            ],
             "armR": [
               "ik",
               [
                 0.4,
-                0.5
+                0.45
               ],
               1
             ]
           },
           {
-            "from": 1150,
-            "to": 1166,
-            "note": "flings it away",
-            "armR": [
-              "ik",
-              [
-                "lerp(0.4, 0.7, pease(f, 1150, 5))",
-                "lerp(0.5, 1.1, pease(f, 1150, 5))"
-              ],
-              1
-            ]
-          },
-          {
-            "from": 1167,
+            "from": 1182,
             "to": 1214,
-            "note": "gesturing",
+            "note": "gạt nắp tròn đi",
             "armR": [
               "ik",
               [
-                "0.5 + 0.08 * sin(f * 0.25)",
-                "0.55 + 0.12 * sin(f * 0.25)"
+                "lerp(0.4, 0.75, pease(f, 1182, 5))",
+                "lerp(0.45, 0.8, pease(f, 1182, 5))"
               ],
               1
             ]
@@ -2208,34 +1515,81 @@
           {
             "from": 1215,
             "to": 1349,
-            "note": "square trophy overhead",
+            "note": "giơ nắp vuông như cúp",
+            "let": {
+              "u": "pease(f, 1215, 8)"
+            },
             "armL": [
               "ik",
               [
-                -0.32,
-                0.82
+                -0.03,
+                "0.45 + 0.35 * u"
               ],
               -1
             ],
             "armR": [
               "ik",
               [
-                0.32,
-                0.82
+                0.73,
+                "0.45 + 0.35 * u"
               ],
               1
-            ],
-            "tilt": "0.06 * sin(f * 0.2)"
+            ]
           },
           {
             "from": 1350,
-            "to": 1887,
-            "note": "tapping the phone",
+            "to": 1500,
+            "note": "bấm điện thoại",
+            "armL": [
+              "ik",
+              [
+                -0.12,
+                0.42
+              ],
+              -1
+            ],
             "armR": [
               "ik",
               [
-                0.22,
-                "0.4 + 0.03 * abs(sin(f * 0.6))"
+                0.12,
+                "0.52 + 0.03 * sin(f * 1.3)"
+              ],
+              1
+            ]
+          },
+          {
+            "from": 1501,
+            "to": 1861,
+            "note": "khoanh tay",
+            "let": {
+              "u": "pease(f, 1501, 7)"
+            },
+            "armL": [
+              "ik",
+              [
+                "lerp(-0.47, 0.22, u)",
+                "lerp(0.30, 0.48, u)"
+              ],
+              1
+            ],
+            "armR": [
+              "ik",
+              [
+                "lerp(0.36, -0.22, u)",
+                "lerp(0.1, 0.42, u)"
+              ],
+              -1
+            ]
+          },
+          {
+            "from": 1862,
+            "to": 1887,
+            "note": "'Boring' phẩy tay",
+            "armR": [
+              "ik",
+              [
+                "lerp(0.36, 0.6, pease(f, 1862, 6))",
+                "lerp(0.1, 0.75, pease(f, 1862, 6))"
               ],
               1
             ]
@@ -2243,7 +1597,7 @@
           {
             "from": 1888,
             "to": 2061,
-            "note": "holding the bill",
+            "note": "cầm hóa đơn",
             "armL": [
               "ik",
               [
@@ -2260,7 +1614,7 @@
               ],
               1
             ],
-            "tilt": "-0.12 * pease(f, 1999, 8)"
+            "tilt": "0.06 * sin(f * 0.2)"
           }
         ]
       }
@@ -2275,49 +1629,22 @@
         4,
         -6
       ],
-      "props": [
-        {
-          "id": "sam_hat",
-          "type": "cover2d",
-          "on": "head",
-          "params": {
-            "kind": "square",
-            "size": 0.78
-          },
-          "loc": [
-            0,
-            0.5,
-            0.25
-          ],
-          "rot": [
-            0,
-            0,
-            0.12
-          ]
-        }
-      ],
-      "fx": [
-        {
-          "type": "drips",
-          "from": 2632
-        }
-      ],
       "talk": [
         [
           227,
-          277
+          290
         ],
         [
           2309,
-          2335
+          2340
         ],
         [
           2643,
-          2670
+          2675
         ],
         [
           3189,
-          3218
+          3215
         ]
       ],
       "expressions": [
@@ -2330,87 +1657,97 @@
           "shock"
         ],
         [
-          2300,
+          2290,
           "worried"
         ],
         [
-          3180,
+          3176,
           "shock"
         ]
       ],
+      "blinks": [
+        200,
+        2350,
+        2660
+      ],
       "reacts": [
         [
-          2309,
+          2292,
+          "hop"
+        ],
+        [
+          2624,
           "hop"
         ],
         [
           3189,
-          "hop"
+          "shiver"
         ]
       ],
       "reaction_fx": [
+        277,
         3189
       ],
-      "blinks": [
-        200,
-        2350
+      "fx": [
+        {
+          "type": "drips",
+          "from": 2622
+        }
       ],
       "blocking": {
         "segments": [
           {
-            "from": 150,
-            "to": 291,
+            "from": 280,
+            "to": 292,
             "location": [
               0,
               4,
-              "rise(f, 150)"
+              "lerp(-1.12, -3.2, clamp01((f - 280) / 8.0))"
             ]
           },
           {
-            "from": 292,
-            "to": 300,
-            "note": "ducks",
+            "from": 140,
+            "to": 279,
             "location": [
               0,
               4,
-              "lerp(-1.12, -3.5, (f - 292) / 8.0)"
+              "pop_up(f, 140)"
             ]
           },
           {
-            "from": 370,
-            "to": 415,
-            "note": "rewind: back up",
+            "from": 350,
+            "to": 385,
             "location": [
               0,
               4,
-              "lerp(-3.5, -1.12, min(1, (f - 370) / 10.0))"
+              "lerp(-3.2, -1.12, clamp01((f - 350) / 10.0))"
             ]
           },
           {
-            "from": 2300,
+            "from": 2290,
             "to": 2402,
             "location": [
               0,
               4,
-              "rise(f, 2300)"
+              "pop_up(f, 2290)"
             ]
           },
           {
-            "from": 2634,
+            "from": 2622,
             "to": 2680,
             "location": [
               0,
               4,
-              "rise(f, 2634)"
+              "pop_up(f, 2622)"
             ]
           },
           {
-            "from": 3180,
+            "from": 3176,
             "to": 3218,
             "location": [
               0,
               4,
-              "rise(f, 3180)"
+              "pop_up(f, 3176)"
             ]
           }
         ],
@@ -2444,22 +1781,27 @@
         },
         "segments": [
           {
-            "ranges": [
-              [
-                2309,
-                2402
-              ],
-              [
-                2643,
-                2680
-              ]
-            ],
-            "note": "thumbs up",
+            "from": 2309,
+            "to": 2402,
+            "note": "giơ ngón cái 'I'm okay!'",
             "armR": [
               "ik",
               [
-                0.6,
-                1
+                0.5,
+                "lerp(0.47, 0.95, pease(f, 2309, 6))"
+              ],
+              1
+            ]
+          },
+          {
+            "from": 2643,
+            "to": 2680,
+            "note": "'Still okay!' run run",
+            "armR": [
+              "ik",
+              [
+                0.5,
+                "lerp(0.47, 0.9, pease(f, 2643, 6)) + 0.03 * sin(f * 1.5)"
               ],
               1
             ]
@@ -2467,20 +1809,20 @@
           {
             "from": 3189,
             "to": 3218,
-            "note": "arms up: Not okay!",
+            "note": "'Not okay!' vung tay",
             "armL": [
               "ik",
               [
-                -0.55,
-                0.9
+                -0.6,
+                "0.9 + 0.06 * sin(f * 0.9)"
               ],
               -1
             ],
             "armR": [
               "ik",
               [
-                0.55,
-                0.9
+                0.6,
+                "0.9 - 0.06 * sin(f * 0.9)"
               ],
               1
             ]
@@ -2490,100 +1832,60 @@
     }
   ],
   "visibility": {
-    "hole_sq": [
-      [
-        1,
-        415
-      ],
-      [
-        2062,
-        3218
-      ]
-    ],
-    "hole_rd": [
-      [
-        416,
-        2061
-      ]
-    ],
-    "cv_round": [
-      [
-        416,
-        971
-      ]
-    ],
     "cv_hook": [
       [
         1,
-        415
+        385
+      ]
+    ],
+    "cv_d1": [
+      [
+        2259,
+        2290
+      ]
+    ],
+    "cv_d2": [
+      [
+        2592,
+        2620
       ]
     ],
     "cv_d3": [
       [
-        2879,
+        2886,
         3130
       ]
     ],
     "milk": [
       [
         2062,
-        3180
+        3170
       ]
     ],
-    "traffic_light_red_on": [
+    "signal_red_on": [
       [
         1,
         2780
       ]
     ],
-    "traffic_light_green_on": [
+    "signal_green_on": [
       [
         2781,
         3218
       ]
     ],
-    "gary_clip": [
+    "joe_sq": [
       [
-        972,
-        1214
+        2062,
+        2258
       ],
       [
-        1350,
-        1887
-      ]
-    ],
-    "gary_sq": [
-      [
-        1060,
-        1108
+        2403,
+        2591
       ],
       [
-        1215,
-        1349
-      ]
-    ],
-    "gary_rd": [
-      [
-        1109,
-        1166
-      ]
-    ],
-    "gary_phone": [
-      [
-        1350,
-        1887
-      ]
-    ],
-    "gary_phone_badge": [
-      [
-        1436,
-        1887
-      ]
-    ],
-    "gary_bill": [
-      [
-        1888,
-        2061
+        2681,
+        2885
       ]
     ],
     "joe_rd": [
@@ -2592,131 +1894,108 @@
         2061
       ]
     ],
-    "joe_sq": [
+    "gary_clip": [
       [
-        2087,
-        2261
-      ],
-      [
-        2429,
-        2597
-      ],
-      [
-        2706,
-        2878
+        1,
+        1108
       ]
     ],
-    "sam_hat": [
+    "gary_rd": [
       [
-        2309,
-        2402
-      ],
+        1109,
+        1200
+      ]
+    ],
+    "gary_sq": [
       [
-        2634,
-        2680
-      ],
+        1215,
+        1349
+      ]
+    ],
+    "gary_phone": [
       [
-        3180,
-        3218
+        1350,
+        1500
+      ]
+    ],
+    "gary_phone_badge": [
+      [
+        1373,
+        1500
+      ]
+    ],
+    "gary_bill": [
+      [
+        1888,
+        2061
       ]
     ]
   },
   "tracks": [
     {
       "target": "cv_hook",
-      "note": "hook: floats, hangs, drops diagonal, freeze, rewind",
+      "note": "lơ lửng 0,5 s+ rồi rơi; tua ngược REPLAY",
       "segments": [
         {
+          "from": 279,
+          "to": 321,
+          "let": {
+            "t": "(f - 279) / FPS"
+          },
+          "location": [
+            "0.02 * sin(f)",
+            4,
+            "max(-4, 2.4 - 6.86 * t * t)"
+          ],
+          "rotation_euler": [
+            "radians(30) + t * 2.5",
+            0,
+            "radians(45) + t * 2.0"
+          ]
+        },
+        {
+          "from": 322,
+          "to": 372,
+          "let": {
+            "t": "0.75 * (1 - (f - 322) / 50.0)"
+          },
+          "location": [
+            0,
+            4,
+            "2.4 - 6.86 * t * t"
+          ],
+          "rotation_euler": [
+            "radians(30) + t * 2.5",
+            0,
+            "radians(45) + t * 2.0"
+          ]
+        },
+        {
           "from": 1,
-          "to": 270,
-          "let": {
-            "u": "ease((f - 1) / 269.0)"
-          },
-          "location": [
-            "0.05 * sin(f * 0.07)",
-            4,
-            "lerp(2.7, 1.7, u) + 0.04 * sin(f * 0.11)"
-          ],
-          "rotation_euler": [
-            "0.35 + 0.05 * sin(f * 0.09)",
-            0.18,
-            "0.25 * sin(f * 0.03)"
-          ]
-        },
-        {
-          "from": 271,
-          "to": 284,
-          "location": [
-            "0.05 * sin(f * 0.07)",
-            4,
-            "1.7 + 0.02 * sin(f * 1.5)"
-          ],
-          "rotation_euler": [
-            "0.35 + 0.05 * sin(f * 0.09)",
-            0.18,
-            "0.25 * sin(f * 0.03)"
-          ]
-        },
-        {
-          "from": 285,
-          "to": 297,
-          "let": {
-            "u": "(f - 285) / 12.0"
-          },
-          "location": [
-            "0.05 * sin(f * 0.07) * (1 - u)",
-            4,
-            "lerp(1.7, -0.2, u * u)"
-          ],
-          "rotation_euler": [
-            "lerp(0.35 + 0.05 * sin(f * 0.09), 1.4, u)",
-            "0.18 * (1 - u)",
-            "lerp(0.25 * sin(f * 0.03), 0.785, u)"
-          ]
-        },
-        {
-          "from": 298,
-          "to": 351,
+          "to": 278,
           "location": [
             0,
             4,
-            -0.2
+            "2.4 + 0.04 * sin((f - 279) * 0.15)"
           ],
           "rotation_euler": [
-            1.4,
+            "radians(30) + 0.04 * sin(f * 0.1)",
             0,
-            0.785
+            "radians(45)"
           ]
         },
         {
-          "from": 352,
-          "to": 399,
-          "let": {
-            "u": "ease((f - 352) / 47.0)"
-          },
+          "from": 373,
+          "to": 385,
           "location": [
             0,
             4,
-            "lerp(-0.2, 1.7, u)"
+            "2.4 + 0.04 * sin((f - 373) * 0.15)"
           ],
           "rotation_euler": [
-            "lerp(1.4, 0.35, u)",
-            "0.18 * u",
-            "lerp(0.785, 0.0, u)"
-          ]
-        },
-        {
-          "from": 400,
-          "to": 415,
-          "location": [
+            "radians(30)",
             0,
-            4,
-            "1.7 + 0.03 * sin(f * 0.2)"
-          ],
-          "rotation_euler": [
-            0.35,
-            0.18,
-            0
+            "radians(45)"
           ]
         }
       ],
@@ -2734,43 +2013,11 @@
       }
     },
     {
-      "target": "cv_round",
-      "note": "'undecide it': yanked up and zips off screen right",
-      "segments": [
-        {
-          "from": 938,
-          "to": 971,
-          "location": [
-            "8 * ease(max(0, (f - 943) / 14.0))",
-            4,
-            "0.02 + 0.45 * min(1, (f - 938) / 5.0)"
-          ],
-          "rotation_euler": [
-            0,
-            "-0.5 * min(1, (f - 938) / 5.0)",
-            0
-          ]
-        }
-      ],
-      "default": {
-        "location": [
-          0,
-          4,
-          0.02
-        ],
-        "rotation_euler": [
-          0,
-          0,
-          0
-        ]
-      }
-    },
-    {
       "target": "cv_d1",
       "use": "drop_tumble",
       "params": {
-        "t0": 2262,
-        "x": -0.1,
+        "t0": 2259,
+        "x": 0,
         "y": 4
       }
     },
@@ -2778,25 +2025,25 @@
       "target": "cv_d2",
       "use": "drop_tumble",
       "params": {
-        "t0": 2598,
-        "x": -0.1,
+        "t0": 2592,
+        "x": 0,
         "y": 4
       }
     },
     {
       "target": "cv_d3",
-      "note": "day 3: set flat, teeter, flip, diagonal, vanish",
+      "note": "đặt vừa khít, bập bênh, lật chéo, lọt xuống",
       "segments": [
         {
-          "from": 2879,
-          "to": 2908,
+          "from": 2886,
+          "to": 2901,
           "let": {
-            "u": "(f - 2879) / 29.0"
+            "u": "(f - 2886) / 15.0"
           },
           "location": [
-            "lerp(-0.15, 0, u)",
-            "lerp(3.8, 4.0, u)",
-            "lerp(0.95, 0.02, u * u)"
+            "-0.1 * (1 - u)",
+            "4 - 0.15 * (1 - u)",
+            "lerp(0.95, 0.03, u * u)"
           ],
           "rotation_euler": [
             "radians(90) * (1 - ease(u))",
@@ -2805,79 +2052,52 @@
           ]
         },
         {
-          "from": 2909,
-          "to": 2977,
-          "location": [
-            0,
-            4,
-            0.02
-          ],
-          "rotation_euler": [
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          "from": 2978,
+          "from": 2902,
           "to": 3047,
           "location": [
             0,
             4,
-            0.02
+            0.03
           ],
           "rotation_euler": [
             0,
-            "0.06 * sin((f - 2978) * 0.35) * exp(-(f - 2978) / 40.0)",
+            "0.06 * sin((f - 3013) * 0.9) * clamp01((f - 3013) / 4.0) * clamp01((3047 - f) / 10.0)",
             0
           ]
         },
         {
           "from": 3048,
-          "to": 3067,
+          "to": 3096,
           "let": {
-            "u": "ease((f - 3048) / 19.0)"
+            "u": "ease(clamp01((f - 3048) / 14.0))",
+            "v": "ease(clamp01((f - 3064) / 14.0))"
           },
           "location": [
-            "-0.1 * u",
+            0,
             4,
-            "0.02 + 0.25 * u"
+            "0.03 + 0.35 * u"
           ],
           "rotation_euler": [
             0,
-            "-1.45 * u",
-            0
+            "radians(80) * u",
+            "radians(45) * v"
           ]
         },
         {
-          "from": 3068,
-          "to": 3102,
-          "location": [
-            -0.1,
-            4,
-            "0.27 + 0.03 * sin((f - 3068) * 0.5)"
-          ],
-          "rotation_euler": [
-            0,
-            -1.45,
-            "0.785 * ease((f - 3068) / 34.0)"
-          ]
-        },
-        {
-          "from": 3103,
+          "from": 3097,
           "to": 3130,
           "let": {
-            "t": "(f - 3103) / FPS"
+            "t": "(f - 3097) / FPS"
           },
           "location": [
-            -0.1,
+            0,
             4,
-            "0.27 - 0.5 * 9.8 * 1.4 * t * t"
+            "max(-5, 0.38 - 6.86 * t * t)"
           ],
           "rotation_euler": [
             0,
-            "-1.45 - t * 1.5",
-            "0.785 + t * 2.0"
+            "radians(80) + t * 2",
+            "radians(45)"
           ]
         }
       ],
@@ -2896,41 +2116,54 @@
     },
     {
       "target": "milk",
-      "note": "dragged in with the cover",
+      "note": "hộp sữa bị kéo theo xuống hố",
       "segments": [
         {
-          "from": 3145,
-          "to": 3157,
+          "from": 3103,
+          "to": 3140,
           "let": {
-            "u": "ease((f - 3145) / 12.0)"
+            "u": "ease(clamp01((f - 3103) / 25.0))"
           },
           "location": [
-            "lerp(0.75, 0.5, u)",
-            "lerp(3.7, 3.85, u)",
+            "lerp(0.75, 0.05, u)",
+            "lerp(3.7, 4.0, u)",
             0
           ],
           "rotation_euler": [
             0,
-            "-1.4 * u",
+            "radians(-70) * u",
             0.4
           ]
         },
         {
-          "from": 3158,
-          "to": 3180,
+          "from": 3141,
+          "to": 3170,
           "let": {
-            "t": "(f - 3158) / FPS",
-            "v": "min(1, (f - 3158) / 5.0)"
+            "t": "(f - 3141) / FPS"
           },
           "location": [
-            "lerp(0.5, 0.05, v)",
-            "lerp(3.85, 4.0, v)",
-            "0.2 - 0.5 * 9.8 * 1.4 * t * t"
+            0.05,
+            4,
+            "max(-5, -6.86 * t * t)"
           ],
           "rotation_euler": [
             0,
-            "-1.4 - t * 3",
-            "0.4 + t * 2"
+            "radians(-70) - t * 4",
+            0.4
+          ]
+        },
+        {
+          "from": 3171,
+          "to": 3218,
+          "location": [
+            0,
+            4,
+            -6
+          ],
+          "rotation_euler": [
+            0,
+            0,
+            0.4
           ]
         }
       ],
@@ -2949,85 +2182,89 @@
     },
     {
       "target": "joe_sq",
-      "note": "wobble + tip (squash) before the 3D swap",
       "segments": [
         {
-          "ranges": [
-            [
-              2087,
-              2261
-            ],
-            [
-              2429,
-              2597
-            ],
-            [
-              2706,
-              2878
-            ]
-          ],
-          "scale": [
-            "jsq(f)",
-            1,
-            1
+          "from": 2062,
+          "to": 2258,
+          "let": {
+            "lf": "0.25 * ease(clamp01((f - 2087) / 20.0))"
+          },
+          "location": [
+            0.3,
+            "0.42 + lf",
+            0.45
           ],
           "rotation_euler": [
             0,
             0,
-            "jwob(f)"
+            "wob(f, 2180)"
           ],
+          "scale": [
+            "tip(f, 2208)",
+            1,
+            1
+          ]
+        },
+        {
+          "from": 2403,
+          "to": 2591,
+          "let": {
+            "lf": "0.25 * ease(clamp01((f - 2429) / 20.0)) - 0.22 * ease(clamp01((f - 2516) / 14.0))"
+          },
           "location": [
             0.3,
-            "0.45 + jlift(f)",
+            "0.42 + lf",
             0.45
+          ],
+          "rotation_euler": [
+            0,
+            0,
+            "0.35 * ease(clamp01((f - 2516) / 14.0)) + 0.5 * wob(f, 2499)"
+          ],
+          "scale": [
+            "tip(f, 2546)",
+            1,
+            1
+          ]
+        },
+        {
+          "from": 2681,
+          "to": 2885,
+          "let": {
+            "lf": "0.25 * ease(clamp01((f - 2842) / 20.0))"
+          },
+          "location": [
+            0.3,
+            "0.42 + lf",
+            0.45
+          ],
+          "rotation_euler": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
           ]
         }
       ],
       "default": {
-        "scale": [
-          1,
-          1,
-          1
+        "location": [
+          0.3,
+          0.42,
+          0.45
         ],
         "rotation_euler": [
           0,
           0,
           0
         ],
-        "location": [
-          0.3,
-          0.45,
-          0.45
-        ]
-      }
-    },
-    {
-      "target": "gary_sq",
-      "segments": [
-        {
-          "from": 1060,
-          "to": 1108,
-          "location": [
-            0.35,
-            "lerp(0.45, 0.78, pease(f, 1060, 6))",
-            0.46
-          ]
-        },
-        {
-          "from": 1215,
-          "to": 1349,
-          "location": [
-            0,
-            "0.95 + 0.03 * sin(f * 0.2)",
-            0.46
-          ]
-        }
-      ],
-      "default": {
-        "location": [
-          0.35,
-          0.78,
-          0.46
+        "scale": [
+          1,
+          1,
+          1
         ]
       }
     },
@@ -3035,24 +2272,27 @@
       "target": "gary_rd",
       "segments": [
         {
-          "from": 1150,
-          "to": 1166,
+          "from": 1109,
+          "to": 1214,
+          "let": {
+            "u": "ease(clamp01((f - 1182) / 12.0))"
+          },
           "location": [
-            "lerp(0.4, 2.6, (f - 1150) / 16.0)",
-            "0.55 + 0.6 * sin(pi * (f - 1150) / 16.0)",
+            "1.8 * u",
+            "0.45 + 0.3 * u",
             0.46
           ],
           "rotation_euler": [
             0,
             0,
-            "-(f - 1150) * 0.4"
+            "-2.5 * u"
           ]
         }
       ],
       "default": {
         "location": [
-          0.4,
-          0.55,
+          0,
+          0.45,
           0.46
         ],
         "rotation_euler": [
@@ -3063,31 +2303,51 @@
       }
     },
     {
-      "target": "gary_phone_badge",
+      "target": "gary_sq",
+      "segments": [
+        {
+          "from": 1215,
+          "to": 1349,
+          "let": {
+            "u": "pease(f, 1215, 8)"
+          },
+          "location": [
+            0.35,
+            "0.45 + 0.35 * u",
+            0.46
+          ],
+          "rotation_euler": [
+            0,
+            0,
+            "0.08 * sin(f * 0.25)"
+          ]
+        }
+      ],
       "default": {
-        "let": {
-          "s": "pop_scale(f, 1436)"
-        },
-        "scale": [
-          "s",
-          "s",
-          1
+        "location": [
+          0.35,
+          0.45,
+          0.46
+        ],
+        "rotation_euler": [
+          0,
+          0,
+          0
         ]
       }
     },
     {
       "target": "bill_strip",
-      "note": "long... very long",
       "segments": [
         {
           "from": 1888,
           "to": 2061,
           "let": {
-            "s": "1.9 * ease((f - 1907) / 43.0) + 0.7 * ease((f - 1967) / 20.0)"
+            "u": "ease(clamp01((f - 1934) / 50.0))"
           },
           "scale": [
             1,
-            "max(0.03, s)",
+            "max(0.03, u * 2.6)",
             1
           ]
         }
@@ -4127,333 +3387,241 @@
       "sub": "CHAPTER 1",
       "text": "THE SQUARE DEAL",
       "from": 1,
-      "to": 72,
-      "opacity": 0.8,
-      "note": "slightly see-through so the floating-lid hook reads behind it"
+      "to": 75
     },
     {
       "style": "label",
       "text": "UP TO 300 LB",
-      "from": 76,
-      "to": 140,
+      "from": 78,
+      "to": 125,
       "pos": [
-        0.55,
+        0.45,
         0.55
       ]
     },
     {
       "style": "title",
-      "text": "SAM - VERY BAD DAY",
-      "from": 303,
-      "to": 350,
-      "pos": [
-        0,
-        0.55
-      ],
-      "note": "freeze-frame name card"
-    },
-    {
-      "style": "title",
-      "text": "REPLAY",
-      "from": 354,
-      "to": 412,
-      "pos": [
-        -0.65,
-        0.7
-      ],
-      "color": [
-        0.85,
-        0.08,
-        0.06
-      ]
-    },
-    {
-      "style": "label",
-      "text": "CLASSIC JOB-INTERVIEW PUZZLE",
-      "from": 470,
-      "to": 540,
+      "text": "SAM — VERY BAD DAY",
+      "from": 299,
+      "to": 330,
       "pos": [
         0,
         0.6
+      ],
+      "note": "freeze-frame thẻ tên"
+    },
+    {
+      "style": "label",
+      "text": "REPLAY",
+      "from": 333,
+      "to": 384,
+      "pos": [
+        -0.65,
+        0.7
       ]
     },
     {
-      "style": "title",
+      "style": "screen",
+      "variant": "year",
+      "sub": "LET'S GO BACK",
+      "text": "3 DAYS EARLIER",
+      "from": 386,
+      "to": 445
+    },
+    {
+      "style": "screen",
+      "variant": "question",
       "text": "WHY ARE MANHOLE COVERS ROUND?",
-      "from": 548,
-      "to": 606,
-      "pos": [
-        0,
-        0.3
-      ],
-      "size": 0.09
+      "from": 546,
+      "to": 608
     },
     {
       "style": "stamp_x",
       "text": "SQUARE",
-      "from": 622,
-      "to": 676,
+      "from": 612,
+      "to": 641,
       "pos": [
-        -0.55,
+        -0.45,
         0.35
-      ],
-      "size": 0.14
+      ]
     },
     {
       "style": "stamp_x",
       "text": "TRIANGLE",
-      "from": 649,
-      "to": 676,
+      "from": 643,
+      "to": 661,
       "pos": [
         0,
         0.35
-      ],
-      "size": 0.14
+      ]
     },
     {
       "style": "stamp_check",
       "text": "ROUND",
       "from": 662,
-      "to": 676,
+      "to": 700,
       "pos": [
-        0.55,
+        0.45,
         0.35
-      ],
-      "size": 0.14
-    },
-    {
-      "style": "stamp_check",
-      "from": 690,
-      "to": 712,
-      "pos": [
-        -0.35,
-        0.05
-      ],
-      "size": 0.1
-    },
-    {
-      "style": "stamp_check",
-      "from": 712,
-      "to": 734,
-      "pos": [
-        0.3,
-        0.15
-      ],
-      "size": 0.1
-    },
-    {
-      "style": "stamp_check",
-      "from": 734,
-      "to": 760,
-      "pos": [
-        -0.05,
-        0.25
-      ],
-      "size": 0.1
-    },
-    {
-      "style": "title",
-      "text": "3 DAYS EARLIER",
-      "from": 863,
-      "to": 897,
-      "pos": [
-        0,
-        0.55
       ]
     },
     {
-      "style": "title",
-      "text": "GARY - BUDGET MANAGER",
-      "from": 982,
-      "to": 1030,
+      "style": "stamp_check",
+      "from": 735,
+      "to": 765,
       "pos": [
-        0.45,
-        0.6
+        0.4,
+        0.3
       ],
-      "color": [
-        0.05,
-        0.45,
-        0.15
-      ]
+      "size": 0.12
     },
     {
-      "style": "label",
-      "text": "500 SQUARE COVERS",
-      "from": 1440,
-      "to": 1495,
+      "style": "stamp_check",
+      "from": 785,
+      "to": 805,
       "pos": [
-        0,
-        0.55
-      ]
+        -0.3,
+        0.3
+      ],
+      "size": 0.12
     },
     {
       "style": "title",
-      "text": "JOE - COVER INSTALLER",
-      "from": 1525,
-      "to": 1588,
+      "text": "GARY — BUDGET MANAGER",
+      "from": 978,
+      "to": 1032,
       "pos": [
         -0.45,
         0.6
-      ],
-      "color": [
-        0.03,
-        0.22,
-        0.55
+      ]
+    },
+    {
+      "style": "screen",
+      "variant": "number",
+      "text": "500",
+      "caption": "square covers ordered",
+      "from": 1373,
+      "to": 1440
+    },
+    {
+      "style": "title",
+      "text": "JOE — COVER INSTALLER",
+      "from": 1525,
+      "to": 1590,
+      "pos": [
+        0.45,
+        0.6
       ]
     },
     {
       "style": "label",
       "text": "$$$",
-      "from": 1950,
-      "to": 1996,
+      "from": 1934,
+      "to": 1995,
       "pos": [
-        0.45,
-        0.4
-      ],
-      "size": 0.1
-    },
-    {
-      "style": "title",
-      "text": "DAY 1",
-      "from": 2063,
-      "to": 2110,
-      "pos": [
-        -0.65,
-        0.7
-      ]
-    },
-    {
-      "style": "title",
-      "text": "DAY 2",
-      "from": 2404,
-      "to": 2450,
-      "pos": [
-        -0.65,
-        0.7
-      ]
-    },
-    {
-      "style": "title",
-      "text": "DAY 3",
-      "from": 2682,
-      "to": 2730,
-      "pos": [
-        -0.65,
-        0.7
-      ]
-    },
-    {
-      "style": "stamp_check",
-      "text": "IT FITS",
-      "from": 2934,
-      "to": 2953,
-      "pos": [
-        0.45,
+        0.5,
         0.45
       ],
       "size": 0.12
     },
     {
+      "style": "screen",
+      "variant": "year",
+      "text": "DAY 1",
+      "from": 2062,
+      "to": 2104
+    },
+    {
       "style": "stamp_x",
-      "text": "NOT OKAY",
-      "from": 3191,
-      "to": 3218,
+      "from": 2285,
+      "to": 2318,
       "pos": [
-        0.5,
-        0.5
+        0.55,
+        0.45
       ],
-      "size": 0.14
+      "size": 0.12
+    },
+    {
+      "style": "screen",
+      "variant": "year",
+      "text": "DAY 2",
+      "from": 2403,
+      "to": 2440
+    },
+    {
+      "style": "stamp_x",
+      "from": 2612,
+      "to": 2642,
+      "pos": [
+        0.55,
+        0.45
+      ],
+      "size": 0.12
+    },
+    {
+      "style": "screen",
+      "variant": "year",
+      "text": "DAY 3",
+      "from": 2681,
+      "to": 2718
     }
   ],
   "fx": {
     "dust": [
       {
-        "frame": 297,
+        "frame": 298,
         "pos": [
           0,
           4,
-          0.1
+          0
         ],
         "n": 10,
-        "radius": 0.7,
+        "radius": 0.6,
         "size": 0.7
       },
       {
-        "frame": 1168,
-        "pos": [
-          301.6,
-          3.2,
-          0.05
-        ],
-        "n": 4,
-        "radius": 0.3,
-        "size": 0.4
-      },
-      {
-        "frame": 2284,
+        "frame": 2272,
         "pos": [
           0,
           4,
-          0.05
+          0
         ],
         "n": 8,
-        "radius": 0.6,
+        "radius": 0.55,
         "size": 0.6
       },
       {
-        "frame": 2620,
+        "frame": 2605,
         "pos": [
           0,
           4,
-          0.05
+          0
         ],
         "n": 8,
-        "radius": 0.6,
+        "radius": 0.55,
         "size": 0.6
       },
       {
-        "frame": 2908,
+        "frame": 3013,
         "pos": [
-          0,
+          -0.4,
           4,
-          0.05
-        ],
-        "n": 5,
-        "radius": 0.5,
-        "size": 0.4
-      },
-      {
-        "frame": 2972,
-        "pos": [
-          -0.3,
-          3.95,
-          0.1
-        ],
-        "n": 4,
-        "radius": 0.3,
-        "size": 0.35
-      },
-      {
-        "frame": 3110,
-        "pos": [
-          0,
-          4,
-          0.05
-        ],
-        "n": 10,
-        "radius": 0.7,
-        "size": 0.7
-      },
-      {
-        "frame": 3172,
-        "pos": [
-          0,
-          4,
-          0.05
+          0
         ],
         "n": 5,
         "radius": 0.4,
         "size": 0.4
+      },
+      {
+        "frame": 3104,
+        "pos": [
+          0,
+          4,
+          0
+        ],
+        "n": 10,
+        "radius": 0.6,
+        "size": 0.7
       }
     ]
   },
@@ -4464,9 +3632,9 @@
       "gain_with_voice": 0.1,
       "duck": [
         297,
-        2284,
-        2620,
-        3110
+        2271,
+        2604,
+        3104
       ]
     },
     "ambience": {
@@ -4485,31 +3653,26 @@
         "name": "step",
         "from": 1501,
         "to": 1545,
-        "every": 11,
+        "every": 10,
         "gain": 0.3,
-        "note": "Joe walks in"
+        "note": "Joe bước vào văn phòng"
       }
     ],
     "events": [
       [
-        150,
-        "boing",
-        0.3
-      ],
-      [
-        245,
-        "slide_down",
+        142,
+        "pop",
         0.3
       ],
       [
         277,
         "squeak",
-        0.4
+        0.45
       ],
       [
-        285,
+        279,
         "slide_down",
-        0.4
+        0.45
       ],
       [
         297,
@@ -4517,22 +3680,22 @@
         0.6
       ],
       [
-        299,
+        298,
         "thud",
         0.5
       ],
       [
-        352,
+        322,
         "scratch",
-        0.5
+        0.45
       ],
       [
-        622,
+        612,
         "pop",
         0.3
       ],
       [
-        649,
+        644,
         "pop",
         0.3
       ],
@@ -4542,59 +3705,69 @@
         0.4
       ],
       [
-        690,
+        735,
         "pop",
         0.25
       ],
       [
-        712,
+        785,
         "pop",
         0.25
       ],
       [
-        734,
-        "pop",
-        0.25
-      ],
-      [
-        776,
+        768,
         "scratch",
-        0.4
+        0.3
       ],
       [
-        938,
-        "zip_out",
-        0.5
+        978,
+        "pop",
+        0.3
       ],
       [
-        1150,
+        1067,
+        "ding",
+        0.35
+      ],
+      [
+        1182,
         "swish",
         0.3
       ],
       [
-        1168,
-        "thud",
-        0.3
-      ],
-      [
-        1273,
+        1251,
         "cash",
-        0.5
+        0.4
       ],
       [
-        1323,
+        1297,
         "ding",
-        0.4
+        0.45
       ],
       [
-        1380,
+        1373,
         "cash",
-        0.4
+        0.45
       ],
       [
-        1436,
+        1418,
         "pop",
         0.3
+      ],
+      [
+        1525,
+        "pop",
+        0.3
+      ],
+      [
+        1623,
+        "ding",
+        0.35
+      ],
+      [
+        1862,
+        "slide_down",
+        0.35
       ],
       [
         1907,
@@ -4602,9 +3775,9 @@
         0.5
       ],
       [
-        1910,
+        1934,
         "slide_down",
-        0.4
+        0.45
       ],
       [
         1967,
@@ -4614,7 +3787,12 @@
       [
         2043,
         "gulp",
-        0.5
+        0.55
+      ],
+      [
+        2087,
+        "slide_up",
+        0.35
       ],
       [
         2180,
@@ -4622,74 +3800,74 @@
         0.3
       ],
       [
-        2262,
+        2259,
         "slide_down",
-        0.4
+        0.45
       ],
       [
-        2284,
+        2271,
         "crash",
         0.6
       ],
       [
-        2287,
-        "bonk",
-        0.4
+        2272,
+        "thud",
+        0.45
       ],
       [
-        2300,
+        2290,
         "boing",
-        0.3
+        0.35
       ],
       [
-        2499,
+        2478,
         "horn",
         0.6
       ],
       [
-        2502,
+        2499,
         "squeak",
-        0.4
+        0.45
       ],
       [
         2536,
-        "swish",
-        0.3
-      ],
-      [
-        2598,
         "slide_down",
-        0.4
+        0.35
       ],
       [
-        2620,
+        2592,
+        "slide_down",
+        0.45
+      ],
+      [
+        2604,
         "crash",
         0.6
       ],
       [
-        2623,
+        2606,
         "bonk",
         0.4
       ],
       [
-        2636,
+        2622,
         "boing",
-        0.3
-      ],
-      [
-        2645,
-        "gulp",
-        0.3
+        0.35
       ],
       [
         2781,
-        "tick",
+        "ding",
+        0.45
+      ],
+      [
+        2886,
+        "slide_down",
         0.3
       ],
       [
-        2908,
+        2902,
         "thud",
-        0.4
+        0.45
       ],
       [
         2934,
@@ -4697,44 +3875,44 @@
         0.5
       ],
       [
-        2960,
+        2997,
         "boing",
-        0.4
+        0.5
       ],
       [
-        2978,
-        "squeak",
-        0.3
+        3013,
+        "thud",
+        0.4
       ],
       [
         3048,
+        "squeak",
+        0.5
+      ],
+      [
+        3064,
         "slide_up",
-        0.4
+        0.35
       ],
       [
-        3068,
-        "swish",
-        0.3
-      ],
-      [
-        3103,
+        3104,
         "slide_down",
         0.5
       ],
       [
-        3110,
+        3116,
         "crash",
-        0.6
+        0.55
       ],
       [
-        3150,
+        3141,
         "slide_down",
-        0.3
+        0.35
       ],
       [
-        3172,
-        "bonk",
-        0.4
+        3165,
+        "thud",
+        0.3
       ],
       [
         3189,
@@ -4743,7 +3921,16 @@
       ]
     ]
   },
-  "notes": {
-    "vi": "Lệch content có chủ đích: (1) Hố ở cảnh hook và 3 ngày lắp là hố VUÔNG (hole_sq) để khớp lời giải thích chương 2 (đường chéo hình vuông lọt hố vuông); hố tròn + nắp tròn chỉ hiện ở đoạn 416-971. (2) Thẻ '3 DAYS EARLIER' đặt đúng lúc lời đọc 'three days ago' (khung 863) thay vì ngay sau tua ngược; sau tua ngược dùng thẻ 'REPLAY'. (3) Joe không có mặt 'worried', dùng 'focus'; Gary không có 'happy', 'smiles' dùng 'smirk'. (4) Không có xe tải: tiếng còi 'horn' + Joe giật mình. (5) Sam ướt sữa làm xấp xỉ bằng giọt mồ hôi (drips) và hộp sữa rơi xuống hố. (6) Thẻ chương opacity 0,8 để hook vẫn thấy phía sau. (7) Tay kiểu 'ang' bị schema CLI coi là mơ hồ (khớp cả ik lẫn ang) nên mọi động tác tay đều viết bằng ik."
-  }
+  "factions": [
+    {
+      "id": "city_road_crew",
+      "culture": "us_city_public_works_2020s",
+      "note": "Joe (áo xanh dương sọc phản quang, mũ cam) và Sam (áo cam, râu nâu)"
+    },
+    {
+      "id": "budget_office",
+      "culture": "us_municipal_office_2020s",
+      "note": "Gary (sơ mi trắng, gile xanh lá, nơ đỏ, kính tròn)"
+    }
+  ]
 }

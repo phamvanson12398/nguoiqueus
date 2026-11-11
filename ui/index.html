@@ -368,7 +368,7 @@ const SEQ_FIELDS = [['vo_en', 'Lời đọc (EN)', 'full', 'ta'], ['vo_vi', 'B�
   ['set', 'Bối cảnh'], ['transition', 'Chuyển sang chuỗi sau'], ['chars', 'Nhân vật (phẩy)', '', 'list'], ['props', 'Đạo cụ (phẩy)', '', 'list'],
   ['expressions', 'Biểu cảm'], ['camera', 'Đường đi camera'], ['gag', 'Gag', 'full'], ['sfx', 'Tiếng động (phẩy)', '', 'list'],
   ['fx', 'Hiệu ứng hình (phẩy)', '', 'list'], ['emphasis', 'Chữ nhấn (phẩy)', '', 'list']];
-const LONG_FIELDS = [['chapter', 'Chương', '', 'num'], ['shots', 'Cú máy dự kiến — mỗi dòng: kiểu | thấy gì | chữ trên màn hình (wide, medium, closeup, insert, board, map, diagram, interior, card, pov)', 'full', 'shots']];
+const LONG_FIELDS = [['chapter', 'Chương', '', 'num'], ['shots', 'Cú máy dự kiến — mỗi dòng: kiểu | thấy gì | chữ trên màn hình (ecu, closeup, medium, full, wide, establishing, insert, board, map, diagram, interior, card, pov)', 'full', 'shots']];
 const shotsText = a => (a || []).map(x => [x.type, x.what_vi, x.card_text || ''].join(' | ').replace(/ \| $/, '')).join('\n');
 const parseShots = t => t.split('\n').map(l => l.split('|').map(x => x.trim())).filter(p => p[0]).map(([type, what_vi, card_text]) => Object.assign({type, what_vi: what_vi || ''}, card_text ? {card_text} : {}));
 function seqCard(s, i) {

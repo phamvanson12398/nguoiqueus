@@ -47,6 +47,12 @@ Hàm và hằng dùng lại nhiều lần, ví dụ:
 ### `camera`
 - `"rig": "v3"` (dùng cho video mới): `seqs` gồm các chuỗi máy liền mạch, mỗi chuỗi có `keys` = `[khung, [vị trí máy], [điểm nhìn], lens, roll_độ]`. `trans` là chuyển cảnh tại khung đầu chuỗi sau: `{"101": ["whip", 1]}`, `push`, `match`, `cut`. `punch` = `[khung, hệ số, dur, hold]`, `shakes` = `[khung, độ mạnh, dur]`. Builder in `CAMERA OK` hoặc cảnh báo (luật skill mục 6).
 - `"rig": "long"` (video dài 16:9, cần `meta.aspect` = `"16:9"`): `shots` liền nhau, mỗi shot `{a, b, type, keys, fstop}` với `keys` giống v3 và `type` một trong `wide medium closeup insert board map diagram interior card pov`. Giữa các shot là **cắt thẳng** (không có whoosh); `trans` chỉ dùng khi cần `whip`. Hai keys = camera trôi đều suốt shot (đẩy, lia, trượt, nâng/hạ cần). Builder in `long_report`: số cắt/phút (nên 10-18, video mẫu khoảng 14), shot ngắn nhất/dài nhất (0,5-25 s), shot nào gần như đứng yên, gia tốc camera; đạt thì in `CAMERA OK`.
+- Shot của rig `long` nên dùng **`frame`** (khung đặt sẵn, `core/framing.py`) thay cho `keys`: `{"subject": "joe", "move": "push_in", "angle": 20, "height": "low", "x": -0.3}`.
+  `subject` = id nhân vật, `"<id bối cảnh>.<anchor>"`, tên vật thể hoặc `[x, y, z]`, lấy vị trí ở khung giữa cú máy. `type` của shot
+  (`ecu closeup medium full wide establishing insert board map diagram interior card pov`) chọn chiều cao khung và lens; tool tính
+  khoảng cách = chiều cao khung × lens / 20,25. Thêm: `height` (eye/low/high/top), `x`/`y`, `size`, `lens`, `look_dz`, `move`
+  (push_in pull_out pan_left pan_right truck_left truck_right crane_up crane_down orbit_left orbit_right drift), `amount`, `roll`.
+  Bảng chi tiết và luật nhịp: `LONGFORM_RULES.md`.
 - `"dof": {"fstop": 2.8}` (rig `v3` và `long`): bật độ sâu trường ảnh, lấy nét vào điểm nhìn; shot/seq có thể đặt `fstop` riêng (cận 1,8-2,2; toàn cảnh 4-5,6). Phụ đề và thẻ được render ở một cảnh phủ riêng nên vẫn nét.
 - `"rig": "shots_v2"` (kiểu cũ của video nắp cống): `shots` gồm từng cảnh quay với `cam`/`look` (từ, tới), `lens`, `whip`, `fstop`, hoặc `track` (camera bám theo biểu thức). `shakes` = `[khung, biên độ]`, `punch` = `[khung, hệ số]`.
 
@@ -106,6 +112,7 @@ Gắn vào camera như phụ đề, kích thước không đổi theo ống kín
 | `bubble` | bong bóng tưởng tượng có chữ |
 | `iris` | khép tròn về đen để kết video; giữ đen tới hết |
 | `fade` | mờ về đen (`in` khung) hoặc từ đen (`in: 0, out: n`); `hold: true` giữ đen tới hết (kết video dài) |
+| `screen` | màn hình chữ ở mốc quan trọng (video dài): nền tối trong suốt phủ khung, `sub` nhỏ ở trên, chữ to `text`, `caption` nhỏ ở dưới; `variant` = `year number question quote name place fact`; chữ to dần chậm trong lúc hiện |
 | `chapter` | thẻ chương video dài: nền tối phủ khung (`opacity`, mặc định 0,94), dòng nhỏ `sub` ("CHAPTER 2") và tiêu đề to; hiện/tắt mờ 8 khung |
 
 Khổ 16:9: `pos` vẫn tính -1..1 theo bề ngang và bề cao khung ngang; phụ đề `bottom` nằm ở y ≈ -0,8.
