@@ -142,7 +142,17 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    - việc Claude mới `design_culture`, `design_outfit` (có tra nguồn, ảnh xếp hàng so sánh các phe);
    - lính phụ nhẹ (collection instance), lệnh đội hình (hàng, khối, cột, nêm), trộn ngẫu nhiên màu da, tóc, râu, kiểu mũ trong cùng phe;
    - nhân vật dẫn dắt (POV) giữ màu riêng và khuôn mặt cố định khi đổi trang phục qua các thời kỳ/quốc gia.
-5. **Âm thanh video dài:** nhạc nền liên tục đổi theo chương, chuẩn hóa −14 LUFS, nén giọng; tiếng động vẫn theo hành động nhưng thưa hơn shorts.
+5. **Âm thanh và hiệu ứng hình cho video dài:**
+   - Nhạc nền: `music_bed` hiện tại chỉ là vòng 16 nốt tự tổng hợp (playful/sneaky/tense), nghe 10–20 phút sẽ nhàm và quá "hoạt hình".
+     Thêm thư viện `library/music/` gồm file nhạc miễn phí bản quyền người dùng tải về (YouTube Audio Library, Pixabay Music, nhạc CC0/CC-BY
+     có ghi công), gắn nhãn tâm trạng/nhạc cụ/văn hóa. Claude chọn bài theo chương, tool nối bài bằng crossfade, hạ nhạc khi có lời đọc
+     (khoảng −13 dB dưới giọng như video mẫu), dâng lên ở cảnh không lời; chuẩn hóa −14 LUFS, nén giọng.
+   - Tiếng động: giữ 22 tiếng tổng hợp cho gag; thêm bộ tiếng thật CC0 (Freesound CC0, Sonniss GDC) cho chiến trận và bối cảnh: bước quân đều,
+     gươm chạm, khiên va, ngựa, mưa tên, trống trận, tù và, tiếng hò đám đông, lửa, gió, mưa, chợ, sóng; nền âm thanh môi trường liên tục theo bối cảnh.
+     Tiếng động thưa và "thật" hơn shorts.
+   - Hiệu ứng hình mới: độ sâu trường ảnh, chỉnh màu theo giờ/vùng/thời kỳ, sương và bụi mù chiến trường, khói, lửa và tàn lửa, mưa/tuyết,
+     loạt tên bay, tia lửa khi va kim loại, cờ phấp phới, tia nắng xuyên mây, vignette + hạt phim nhẹ; mũi tên quân vẽ dần trên bản đồ;
+     chuyển chương bằng mờ dần qua đen + thẻ tên chương. Không vẽ máu me (an toàn quảng cáo YouTube).
 6. **Render nhanh:** hàng đợi render theo chương, render tiếp từ khung đang dở, đo tốc độ trên máy người dùng
    (20 phút ≈ 36.000 khung × 1,4 s ≈ 14 giờ; cần tối ưu số mẫu, độ sâu trường ảnh, đám đông instance).
 7. **Thumbnail 1280x720 + gói YouTube** (tiêu đề "Why…", mô tả có mốc chương, nguồn).
