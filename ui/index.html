@@ -227,7 +227,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const fmtTime = s => s == null ? '—' : s < 90 ? `${Math.round(s)} giây` : s < 5400 ? `${Math.round(s/60)} phút` : `${(s/3600).toFixed(1)} giờ`;
 function toast(m, ms=2600){const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'), ms);}
 async function api(path, opt={}) {
-  const o = {method: opt.method || (opt.body !== undefined ? 'POST' : 'GET'), headers: {}};
+  const o = {method: opt.method || (opt.body !== undefined || opt.raw !== undefined ? 'POST' : 'GET'), headers: {}};
   if (opt.raw) { o.body = opt.raw; o.headers['Content-Type'] = 'application/octet-stream'; }
   else if (opt.body !== undefined) { o.body = JSON.stringify(opt.body); o.headers['Content-Type'] = 'application/json'; }
   const r = await fetch(path, o); const j = await r.json().catch(() => ({error: 'bad response'}));

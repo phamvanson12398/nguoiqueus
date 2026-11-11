@@ -428,9 +428,16 @@ class Handler(BaseHTTPRequestHandler):
                     return self.send_json({"ok": True, "restored": target})
             if act == ["voice"] and method == "POST":
                 data = self.body()
-                if data[:4] != b"RIFF" or data[8:12] != b"WAVE": raise ValueError("cần file .wav (PCM)")
-                open(os.path.join(d, "voice.wav"), "wb").write(data)
-                return self.send_json(start_job("align", slug, job_align, slug).to_json())
+                if data[:4] != b"RIFF" or data[8:12] != b"WAVE": raise ValueError("cần file .wav (không nhận mp3/m4a)")
+                import wavfix
+                pcm, info = wavfix.to_pcm16(data)
+                if info["converted"]:                      # keep what the user uploaded, write 16-bit PCM for the tools
+                    open(os.path.join(d, "voice_original.wav"), "wb").write(data)
+                open(os.path.join(d, "voice.wav"), "wb").write(pcm)
+                j = start_job("align", slug, job_align, slug)
+                j.say(f"File tải lên: WAV {info['format']} {info['bits']}-bit, {info['channels']} kênh, {info['rate']} Hz"
+                      + (" -> đã chuyển sang PCM 16-bit (bản gốc: voice_original.wav)" if info["converted"] else ""))
+                return self.send_json(j.to_json())
             if act == ["align"]:
                 return self.send_json(start_job("align", slug, job_align, slug).to_json())
             if act == ["build"]:
