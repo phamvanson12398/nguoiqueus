@@ -2,7 +2,7 @@
 
     blender -b -P builder.py -- projects/<slug>/story.json                      build + checks only
     blender -b -P builder.py -- projects/<slug>/story.json --preview 50,200,366  PNG previews (35 %)
-    blender -b -P builder.py -- projects/<slug>/story.json --render              full mp4 (1080x1920)
+    blender -b -P builder.py -- projects/<slug>/story.json --render              full mp4 (1080x1920, or 1920x1080 with meta.aspect 16:9)
     options: --pct 35  --samples 16  --out <dir>  --check (validate story.json only, no Blender scene)
 
 The story format is described in STORY.md and story.schema.json.  Library items live in
@@ -19,7 +19,7 @@ for _m in [m for m in sys.modules if m == "core" or m.startswith("core.") or m.s
     del sys.modules[_m]
 
 import core
-from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards
+from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards, overlay
 from core.expr import Env, ExprError
 import storycheck
 from storycheck import LibIndex
@@ -94,6 +94,7 @@ class Builder:
         self.noline_roots = []
         self.anchors = {}
         self.report = {"warnings": []}
+        self.dof_on = False
 
     # ---------- helpers ----------
     def obj(self, name, where=""):
@@ -226,6 +227,22 @@ class Builder:
                                     [tuple(x) for x in cs.get("shakes", [])], [tuple(x) for x in cs.get("punch", [])],
                                     whip, fstop, track=track, hand=cs.get("hand", 0.010))
             self.lens, self.cuts = res["lens"], res["cuts"]
+        elif cs["rig"] == "long":
+            shots = []
+            for s in cs["shots"]:
+                d = dict(a=s["a"], b=s["b"], keys=[tuple(k) for k in s["keys"]])
+                for k in ("ease_in", "ease_out", "follow_w", "omega"):
+                    if k in s: d[k] = s[k]
+                if "follow" in s:
+                    src = s["follow"]; d["follow"] = (lambda src: (lambda f: tuple(self.env.val(src, self.env.frame_ns(f)))))(src)
+                shots.append(d)
+            trans = {int(k): tuple(v) for k, v in cs.get("trans", {}).items()}
+            punch = [tuple(x) for x in cs.get("punch", [])]; shakes = [tuple(x) for x in cs.get("shakes", [])]
+            res, shots, trans = camera.solve_long(shots, trans, punch, shakes, hand=cs.get("hand", 0.6))
+            self.report["camera_ok"] = camera.long_report(res, shots, trans, punch)
+            self.lens = camera.bake_camera(self.cam, self.cam_d, res, set(trans))
+            self.cuts = sorted(trans)
+            self.bake_dof(res, cs, cs["shots"])
         else:
             seqs = []
             for s in cs["seqs"]:
@@ -241,6 +258,18 @@ class Builder:
             self.report["camera_ok"] = camera.cam_report(res, seqs, trans, punch)
             self.lens = camera.bake_camera(self.cam, self.cam_d, res, set(trans))
             self.cuts = sorted(trans)
+            self.bake_dof(res, cs, cs["seqs"])
+
+    def bake_dof(self, res, cs, spans):
+        """camera.dof = {"fstop": 2.8} turns depth of field on (focus = look point); a shot/seq may set its own "fstop"."""
+        dof = cs.get("dof")
+        if not dof: return
+        base = dof.get("fstop", 2.8); fs = {}
+        for s in spans:
+            for f in range(s["a"], s["b"] + 1): fs[f] = s.get("fstop", base)
+        for f in res: fs.setdefault(f, base)
+        camera.bake_dof(self.cam_d, res, fs)
+        self.dof_on = True
 
     # ---------- main ----------
     def build(self):
@@ -249,7 +278,8 @@ class Builder:
         if errs: raise StoryError("story.json has errors:\n  " + "\n  ".join(errs))
         N, FPS = meta["frames"], meta["fps"]
         t0 = time.time()
-        sc = core.start(N, FPS, self.out, meta.get("samples", 32))
+        self.aspect = meta.get("aspect", "9:16")
+        sc = core.start(N, FPS, self.out, meta.get("samples", 32), aspect=self.aspect)
         random.seed(meta.get("seed", 7))
         geo.init(); fx.init(); faces.init()
         self.env = Env(FPS, N, st.get("defs"), st.get("consts"))
@@ -302,9 +332,16 @@ class Builder:
             chars.apply_expressions(self.chars[cs["id"]], blinks=tuple(cs.get("blinks", ())))
 
         cp = st.get("captions", {})
-        self.caps = captions.make_caps([tuple(x) for x in st.get("words", [])], set(cp.get("highlight", [])), impact=tuple(cp.get("impact", [])))
-        cap_root = captions.build_captions(self.caps, self.lens, lift_ranges=[tuple(r) for r in cp.get("lift", [])],
-                                           burst_word=cp.get("burst_word", (cp.get("impact") or [""])[0].upper() or None))
+        cstyle = cp.get("style", "pop" if self.aspect == "9:16" else "bottom")
+        WORDS = [tuple(x) for x in st.get("words", [])]
+        self.caps = captions.make_caps(WORDS, set(cp.get("highlight", [])), impact=tuple(cp.get("impact", []))) if cstyle == "pop" else []
+        if cstyle == "pop":
+            cap_root = captions.build_captions(self.caps, self.lens, lift_ranges=[tuple(r) for r in cp.get("lift", [])],
+                                               burst_word=cp.get("burst_word", (cp.get("impact") or [""])[0].upper() or None))
+        elif cstyle == "bottom":
+            cap_root = captions.build_subtitles(WORDS, self.lens, y=cp.get("y", -0.80), size=cp.get("size", 0.034))
+        else:
+            cap_root = None
 
         cards_root = cards.build_cards(st.get("cards"), self.lens)
 
@@ -325,11 +362,13 @@ class Builder:
 
         noline = []
         for c in self.chars.values(): noline += look.descendants(c.root)
-        noline += look.descendants(cap_root)
+        if cap_root: noline += look.descendants(cap_root)
         if cards_root: noline += look.descendants(cards_root)
         for r in self.noline_roots: noline += look.descendants(r)
         for p_ in fx.PUFF_POOL: noline += look.descendants(p_)
         look.setup_look(noline)
+        if self.dof_on:                       # DOF would blur captions/cards near the lens: render them in an overlay scene
+            overlay.make_overlay([cap_root, cards_root], samples=max(4, meta.get("samples", 32) // 4))
 
         self.build_sound()
         mixer.set_video_output(os.path.join(self.out, meta.get("output", "out.mp4")))
@@ -355,7 +394,10 @@ class Builder:
         au = S.get("auto", {})
         if au.get("enabled", True):
             gest = [self.chars[i] for i in au["gesture_chars"]] if "gesture_chars" in au else None
-            mixer.auto_sfx(mix, self.cuts, list(self.chars.values()), self.caps, avoid_cuts=tuple(au.get("avoid", ())), gain=g, gesture_chars=gest)
+            cuts = self.cuts
+            if self.st["camera"].get("rig") == "long":     # straight cuts are silent in long-form; whoosh only on whips
+                cuts = sorted(int(k) for k, v in self.st["camera"].get("trans", {}).items() if v[0] == "whip")
+            mixer.auto_sfx(mix, cuts, list(self.chars.values()), self.caps, avoid_cuts=tuple(au.get("avoid", ())), gain=g, gesture_chars=gest)
         for fr, nm, gain in S.get("events", []):
             mix.sfx(nm, fr, gain * g)
         for r in S.get("repeat", []):
@@ -388,6 +430,7 @@ def main(argv):
         pdir = os.path.join(B.out, "preview"); os.makedirs(pdir, exist_ok=True)
         sc.render.resolution_percentage = int(opt.get("pct", 35))
         sc.eevee.taa_render_samples = int(opt.get("samples", 16))
+        overlay.sync(sc.render.resolution_percentage, sc.eevee.taa_render_samples)
         sc.render.image_settings.media_type = 'IMAGE'; sc.render.image_settings.file_format = 'PNG'
         for fr in [int(x) for x in opt["preview"].split(",")]:
             t1 = time.time(); sc.frame_set(fr); sc.render.filepath = os.path.join(pdir, f"p_{fr:04d}.png")
@@ -395,6 +438,7 @@ def main(argv):
     if opt.get("render"):
         if "pct" in opt: sc.render.resolution_percentage = int(opt["pct"])
         if "samples" in opt: sc.eevee.taa_render_samples = int(opt["samples"])
+        overlay.sync(sc.render.resolution_percentage, sc.eevee.taa_render_samples)
         if "frames" in opt:                      # partial render A-B into parts/ (re-render one sequence)
             a, b = [int(x) for x in opt["frames"].replace("-", ",").split(",")]
             sc.frame_start, sc.frame_end = max(1, a), min(sc.frame_end, b)

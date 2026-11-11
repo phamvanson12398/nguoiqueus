@@ -8,3 +8,8 @@ _thumbs_tmp/
 logs/
 library/**/_review/
 projects/*/parts/
+projects/*/chapters/*/preview/
+projects/*/chapters/*/*.mp4
+projects/*/chapters/*/sfx_music.wav
+projects/*/chapters/*/parts/
+projects/*/chapters/concat.txt

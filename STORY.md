@@ -3,7 +3,8 @@
 Một file `story.json` mô tả trọn một video theo **khung hình** (30 khung = 1 giây). `builder.py` đọc file này, lấy bối cảnh, đạo cụ, nhân vật trong `library/` rồi dựng cảnh trong Blender. Schema dùng để kiểm tra nằm ở `story.schema.json`. Hai file mẫu:
 
 - `projects/manhole-round/story.json` — video nắp cống, dựng ra giống hệt bản v2 gốc (camera kiểu cũ `shots_v2`).
-- `projects/demo-v3/story.json` — ví dụ ngắn dùng camera v3 trôi liền mạch. Video mới nên dùng kiểu này.
+- `projects/demo-v3/story.json` — ví dụ ngắn dùng camera v3 trôi liền mạch. Shorts mới nên dùng kiểu này.
+- `projects/demo-long/story.json` — ví dụ **video dài 16:9**: `meta.aspect`, camera `long` (danh sách cú máy cắt thẳng), độ sâu trường ảnh, phụ đề dưới đáy, thẻ chương, mờ đen.
 
 ```bash
 blender -b -P builder.py -- projects/<slug>/story.json --check                 # chỉ kiểm tra file
@@ -29,6 +30,7 @@ Mọi chỗ cần con số đều nhận được **số** hoặc **chuỗi bi�
 
 ### `meta`
 `fps`, `frames` (bắt buộc), `seed` (bộ sinh ngẫu nhiên chung, dùng cho dãy nhà và lá cây), `voice` (file giọng đọc trong thư mục dự án), `output` (tên mp4), `samples` (mẫu EEVEE).
+`aspect`: `"9:16"` (Shorts 1080x1920, mặc định) hoặc `"16:9"` (video dài 1920x1080). `chapter` = `{n, title, start_sec}` khi story là một chương của video dài.
 
 ### `defs`, `consts`
 Hàm và hằng dùng lại nhiều lần, ví dụ:
@@ -44,6 +46,8 @@ Hàm và hằng dùng lại nhiều lần, ví dụ:
 
 ### `camera`
 - `"rig": "v3"` (dùng cho video mới): `seqs` gồm các chuỗi máy liền mạch, mỗi chuỗi có `keys` = `[khung, [vị trí máy], [điểm nhìn], lens, roll_độ]`. `trans` là chuyển cảnh tại khung đầu chuỗi sau: `{"101": ["whip", 1]}`, `push`, `match`, `cut`. `punch` = `[khung, hệ số, dur, hold]`, `shakes` = `[khung, độ mạnh, dur]`. Builder in `CAMERA OK` hoặc cảnh báo (luật skill mục 6).
+- `"rig": "long"` (video dài 16:9, cần `meta.aspect` = `"16:9"`): `shots` liền nhau, mỗi shot `{a, b, type, keys, fstop}` với `keys` giống v3 và `type` một trong `wide medium closeup insert board map diagram interior card pov`. Giữa các shot là **cắt thẳng** (không có whoosh); `trans` chỉ dùng khi cần `whip`. Hai keys = camera trôi đều suốt shot (đẩy, lia, trượt, nâng/hạ cần). Builder in `long_report`: số cắt/phút (nên 10-18, video mẫu khoảng 14), shot ngắn nhất/dài nhất (0,5-25 s), shot nào gần như đứng yên, gia tốc camera; đạt thì in `CAMERA OK`.
+- `"dof": {"fstop": 2.8}` (rig `v3` và `long`): bật độ sâu trường ảnh, lấy nét vào điểm nhìn; shot/seq có thể đặt `fstop` riêng (cận 1,8-2,2; toàn cảnh 4-5,6). Phụ đề và thẻ được render ở một cảnh phủ riêng nên vẫn nét.
 - `"rig": "shots_v2"` (kiểu cũ của video nắp cống): `shots` gồm từng cảnh quay với `cam`/`look` (từ, tới), `lens`, `whip`, `fstop`, hoặc `track` (camera bám theo biểu thức). `shakes` = `[khung, biên độ]`, `punch` = `[khung, hệ số]`.
 
 ### `chars` — nhân vật
@@ -83,6 +87,7 @@ Mẫu chuyển động có sẵn: `{"target": "cv_drop0", "use": "drop_tumble", 
 
 ### `words`, `captions`
 `words` = `[[giây, "chữ"], ...]` lấy từ `align_vo.py`. Trong `captions`: `highlight` là chữ tô vàng phóng to, `impact` là chữ nổ cam kèm khung burst (ví dụ `clang`), `lift` là các khoảng khung đẩy phụ đề lên cao (khi đang chiếu sơ đồ).
+`style`: `pop` (kiểu Shorts, từng 1-2 chữ nảy lên; mặc định của 9:16), `bottom` (cả câu ngắn, chữ nhỏ ở đáy khung; mặc định của 16:9; `y`, `size` chỉnh vị trí và cỡ), `off`.
 
 ### `cards` — thẻ chữ trên màn hình
 Gắn vào camera như phụ đề, kích thước không đổi theo ống kính. `pos` = toạ độ màn hình (x, y) từ -1 tới 1 (y = 1 là mép trên). Phụ đề nằm ở khoảng y ≈ -0,2 nên đặt thẻ tránh vùng đó.
@@ -100,6 +105,10 @@ Gắn vào camera như phụ đề, kích thước không đổi theo ống kín
 | `stamp_x`, `stamp_check` | dấu ✗ đỏ hoặc ✓ xanh to (có thể kèm chữ nhỏ) |
 | `bubble` | bong bóng tưởng tượng có chữ |
 | `iris` | khép tròn về đen để kết video; giữ đen tới hết |
+| `fade` | mờ về đen (`in` khung) hoặc từ đen (`in: 0, out: n`); `hold: true` giữ đen tới hết (kết video dài) |
+| `chapter` | thẻ chương video dài: nền tối phủ khung (`opacity`, mặc định 0,94), dòng nhỏ `sub` ("CHAPTER 2") và tiêu đề to; hiện/tắt mờ 8 khung |
+
+Khổ 16:9: `pos` vẫn tính -1..1 theo bề ngang và bề cao khung ngang; phụ đề `bottom` nằm ở y ≈ -0,8.
 
 Thẻ nảy vào trong 5 khung, lắc nhẹ, rồi tắt trong 3 khung cuối.
 
@@ -110,6 +119,15 @@ Thẻ nảy vào trong 5 khung, lắc nhẹ, rồi tắt trong 3 khung cuối.
 
 ### `sound`
 `music` (`mood`: playful, sneaky, tense; `duck` = các khung hạ nhỏ nhạc), `ambience` (city, wind), `auto` (whoosh ở mỗi cắt cảnh trừ gần các khung `avoid`, pop khi đổi mặt, tick khi hiện phụ đề, swish khi vung tay của `gesture_chars`), `events` = `[khung, tên, gain]`, `repeat` (âm lặp đều, ví dụ bước chân). Khi có `voice.wav`, gain hiệu ứng nhân với `sfx_gain_with_voice` (0.8).
+
+### `factions` (video dài, đang làm)
+Các phe/quốc gia trong video: `{"id": "rome", "culture": "roman_republic_340bc", "color": [0.7, 0.1, 0.1], "emblem": "eagle", "label": "ROME"}`.
+Nhân vật có thể ghi `faction` và `role`. Bước "văn hóa + trang phục" (docs/LONGFORM.md mục 3b) sẽ lấy trang phục, màu, cờ từ đây; hiện builder chỉ kiểm tra tham chiếu.
+
+### Video dài: chương
+Dự án video dài có `content.json` với `format: "long"`, `chapters` và `chapter` trên mỗi chuỗi. Sau khi canh chữ, `longform.py split` cắt
+giọng và chữ vào `chapters/NN/` (mỗi chương là một dự án con: `content.json`, `voice.wav`, `words.json` tính từ đầu chương, rồi
+`story.json`, `preview/`, mp4). Render lần lượt từng chương rồi `longform.py concat` ghép thành `out.mp4` (ffmpeg, không mã hóa lại).
 
 ### `teleport_holds`
 Danh sách vật thể được giữ khung để motion blur không kéo vệt khi dịch chuyển tức thời. Mặc định gồm gốc các nhân vật và các đạo cụ có track `location`.

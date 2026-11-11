@@ -129,6 +129,7 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    - `cam_report` kiểu mới: kiểm tra nhịp cắt, không cảnh nào đứng yên, cảnh dài xen cảnh ngắn.
    - Bật độ sâu trường ảnh (không còn phụ đề to sát ống kính); phụ đề nhỏ phía dưới hoặc tắt.
    - Video thử: 2–3 phút, 2 chương.
+   - **Trạng thái:** đã làm (xem mục 5).
 2. **Mẫu kịch bản + bộ kiểu cảnh** cho `write_content`/`plan_shots` dài: kịch bản ngôi "you" hiện tại (tùy chọn), mở giữa cao trào
    + "let's go back", gieo bí ẩn sớm, cú mới mỗi 45–70 s, giải thích ở khoảng 75 %, mở rộng + câu chốt gọi lại tiêu đề; luật gắn lời với kiểu cảnh
    như mục 1. Kiểu cảnh: toàn cảnh, trung, cận mặt, cận vật, bàn chiến thuật, bản đồ, sơ đồ, nội cảnh, thẻ chữ mốc

@@ -17,10 +17,14 @@ Blender UI does not keep stale module state.
 """
 
 
-def start(n_frames, fps=30, out_dir=None, samples=32, sfx_seed=11):
+def start(n_frames, fps=30, out_dir=None, samples=32, sfx_seed=11, aspect="9:16"):
     """reset Blender + all module state, create shared ink/white/face/puff materials lazily"""
-    from . import ctx, look, sfx
-    sc = ctx.setup(n_frames, fps, out_dir, samples)
+    from . import ctx, look, sfx, overlay
+    import bpy
+    old = bpy.data.scenes.get("Overlay")
+    if old is not None: bpy.data.scenes.remove(old)
+    overlay.SCENE = None
+    sc = ctx.setup(n_frames, fps, out_dir, samples, aspect)
     look.reset()
     sfx.init(sfx_seed)
     return sc

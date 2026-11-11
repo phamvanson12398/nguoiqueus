@@ -56,6 +56,15 @@ def align(wav, text, fps=30, tail=1.2):
     G = gaps[:-1] if gaps and gaps[-1][1] > DUR - 0.1 else gaps
     end_speech = gaps[-1][0] if gaps and gaps[-1][1] > DUR - 0.1 else DUR
 
+    # long scripts: the exhaustive search is O((P*G)^2).  Above 3000 (punctuation x pause) pairs, only pair a
+    # punctuation mark with pauses near its proportional time (syllables / total * speech length) and only
+    # look a few marks/pauses ahead.  Short scripts keep the exact search (same result as align_vo.py).
+    banded = len(P) * len(G) > 3000
+    if banded:
+        span = max(12.0, 0.06 * end_speech); AHEAD = 14
+        exp_t = [S[P[k] + 1] / S[-1] * end_speech for k in range(len(P))]
+        near_g = [[g for g in range(len(G)) if abs(G[g][0] - exp_t[k]) <= span] for k in range(len(P))]
+
     def cost(k0, k1, a, b):
         s = S[k1 + 1] - S[k0]; return s * math.log((s / max(b - a, 0.05)) / mean_rate) ** 2
 
@@ -63,12 +72,17 @@ def align(wav, text, fps=30, tail=1.2):
     def best(pi, gi):                                             # even speaking rate, pauses land on punctuation
         k0 = P[pi] + 1 if pi >= 0 else 0; t_ = G[gi][1] if gi >= 0 else 0.0
         res = (cost(k0, len(words) - 1, t_, end_speech) + 0.6 * (len(G) - 1 - gi), None)
-        for pj in range(pi + 1, len(P)):
-            for gj in range(gi + 1, len(G)):
+        if banded and len(P) - pi > AHEAD: res = (float("inf"), None)    # far from the end: must keep going
+        pjs = range(pi + 1, min(len(P), pi + 1 + AHEAD)) if banded else range(pi + 1, len(P))
+        for pj in pjs:
+            gjs = [g for g in near_g[pj] if gi < g <= gi + AHEAD] if banded else range(gi + 1, len(G))
+            for gj in gjs:
                 c = cost(k0, P[pj], t_, G[gj][0]) + 0.6 * (gj - gi - 1)
                 if c > res[0]: continue
                 tot = best(pj, gj)[0] + c
                 if tot < res[0]: res = (tot, (pj, gj))
+        if res[0] == float("inf"):                                # banded search found no way on: finish here
+            res = (cost(k0, len(words) - 1, t_, end_speech) + 0.6 * (len(G) - 1 - gi) + 1e6, None)
         return res
     sys.setrecursionlimit(max(10000, sys.getrecursionlimit()))
     chain = []; st = (-1, -1)

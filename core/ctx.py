@@ -13,6 +13,8 @@ N = 1
 OUT_DIR = ""
 FONT_PATH = None
 CLOUD = False
+ASPECT = "9:16"        # "9:16" shorts (1080x1920) or "16:9" long-form YouTube (1920x1080)
+RES = (1080, 1920)
 sc = None
 col = None
 cam = None
@@ -31,10 +33,22 @@ def default_out_dir():
     return "/home/claude/out/rail"
 
 
-def setup(n_frames, fps=30, out_dir=None, samples=32):
-    """Reset Blender and apply the standard 1080x1920 EEVEE settings (v2 script, lines 11-53)."""
-    global FPS, N, OUT_DIR, FONT_PATH, CLOUD, sc, col, cam, cam_d
-    FPS, N = fps, n_frames
+ASPECTS = {"9:16": (1080, 1920), "16:9": (1920, 1080)}
+
+
+def frame_half():
+    """(half width, half height) of the visible frame at depth lens/28 in front of a 36 mm-sensor camera
+    (sensor fit AUTO: the 36 mm cover the longer side) -- the depth captions and cards are kept at"""
+    long_ = 36 / 28 / 2
+    w, h = RES
+    return (long_, long_ * h / w) if w >= h else (long_ * w / h, long_)
+
+
+def setup(n_frames, fps=30, out_dir=None, samples=32, aspect="9:16"):
+    """Reset Blender and apply the standard EEVEE settings (v2 script, lines 11-53); 1080x1920 or 1920x1080."""
+    global FPS, N, OUT_DIR, FONT_PATH, CLOUD, sc, col, cam, cam_d, ASPECT, RES
+    if aspect not in ASPECTS: raise ValueError(f"aspect must be one of {list(ASPECTS)}")
+    FPS, N, ASPECT, RES = fps, n_frames, aspect, ASPECTS[aspect]
     CLOUD = bpy.app.background
     OUT_DIR = out_dir or default_out_dir()
     os.makedirs(OUT_DIR, exist_ok=True)
@@ -54,7 +68,7 @@ def setup(n_frames, fps=30, out_dir=None, samples=32):
     sc = bpy.context.scene
     sc.frame_start, sc.frame_end = 1, N
     sc.render.fps = FPS
-    sc.render.resolution_x, sc.render.resolution_y = 1080, 1920
+    sc.render.resolution_x, sc.render.resolution_y = RES
     sc.render.resolution_percentage = 100
     sc.view_settings.view_transform = 'Standard'
     sc.view_settings.look = 'None'

@@ -13,11 +13,26 @@ from .geo import empty, shape, stroke, ellipse, rrect
 from .look import flat
 from .timing import ease, ease_out_back
 
-HALF_H = 36 / 28 / 2            # 0.643: half the visible height at depth lens/28
+HALF_H = 36 / 28 / 2            # 0.643: half the visible height at depth lens/28 (9:16; 16:9 -> ctx.frame_half())
 HALF_W = HALF_H * 9 / 16
-STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris")
+STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris", "fade", "chapter")
 DEFAULT_COLOR = {"title": (0.98, 0.30, 0.02), "label": (1.0, 0.85, 0.1), "stamp_x": (0.9, 0.1, 0.08),
-                 "stamp_check": (0.1, 0.75, 0.25), "bubble": (0.98, 0.98, 0.97), "iris": (0.0, 0.0, 0.0)}
+                 "stamp_check": (0.1, 0.75, 0.25), "bubble": (0.98, 0.98, 0.97), "iris": (0.0, 0.0, 0.0),
+                 "fade": (0.0, 0.0, 0.0), "chapter": (0.80, 0.62, 0.30)}
+
+
+def _alpha_mat(name, rgb):
+    """emission colour with a keyable opacity (node 'Mix Shader' factor 0 = invisible, 1 = solid)"""
+    m = bpy.data.materials.new(name); m.use_nodes = True
+    try: m.surface_render_method = 'BLENDED'
+    except Exception: pass
+    nt = m.node_tree; nt.nodes.clear()
+    e = nt.nodes.new("ShaderNodeEmission"); e.inputs[0].default_value = (*rgb, 1)
+    tr = nt.nodes.new("ShaderNodeBsdfTransparent")
+    mx = nt.nodes.new("ShaderNodeMixShader"); mx.inputs[0].default_value = 0.0
+    o = nt.nodes.new("ShaderNodeOutputMaterial")
+    nt.links.new(tr.outputs[0], mx.inputs[1]); nt.links.new(e.outputs[0], mx.inputs[2]); nt.links.new(mx.outputs[0], o.inputs[0])
+    return m, mx.inputs[0]
 
 
 def _text(parent, name, body, size, rgb, z, outline=True):
@@ -40,14 +55,14 @@ def _text_width(body, size):
 
 def build_card(root, i, c):
     style = c.get("style", "title")
-    default = {"title": 0.075, "label": 0.06, "bubble": 0.065}.get(style, 0.16)
+    default = {"title": 0.075, "label": 0.06, "bubble": 0.065, "chapter": 0.07}.get(style, 0.16)
     size = c.get("size") or default
     if size > 0.3:                    # written as a multiplier ("1.3x") instead of a height: treat it as one
         print(f"WARN card {i}: size {size} looks like a multiplier, using {round(default * size, 3)}")
         size = default * size
     body_ = c.get("text", "")
-    if style in ("title", "label", "bubble") and body_:     # fit the frame width (9:16): wrap to 2 lines, then shrink
-        extra = {"title": 1.2, "label": 0.2, "bubble": 2.2}[style]
+    if style in ("title", "label", "bubble", "chapter") and body_:     # fit the frame width: wrap to 2 lines, then shrink
+        extra = {"title": 1.2, "label": 0.2, "bubble": 2.2, "chapter": 1.0}[style]
         maxw = 1.9 * HALF_W
         if _text_width(body_, size) + size * extra > maxw and "\n" not in body_ and " " in body_:
             words = body_.split(" "); best = None
@@ -59,6 +74,7 @@ def build_card(root, i, c):
         if need > maxw: size *= maxw / need
     rgb = tuple(c.get("color") or DEFAULT_COLOR[style]); body = c.get("text", "")   # (may have been wrapped above)
     x, y = c.get("pos") or ((0, 0.55) if style == "title" else (0, -0.6) if style == "iris" else (0, 0))
+    if style == "fade": x, y = 0, 0
     h = empty(f"card{i}", root, (x * HALF_W, y * HALF_H, -0.02 - 0.0005 * i))
     h.rotation_euler = (0, 0, math.radians(c.get("rot", 0)))
     if style == "title":
@@ -97,6 +113,17 @@ def build_card(root, i, c):
         o = bpy.data.objects.new(f"card{i}_iris", cu); ctx.col.objects.link(o); o.parent = h; o.location = (0, 0, 0.01)
         o.data.materials.append(flat("card_iris", rgb))
         c["_iris"] = o
+    elif style in ("fade", "chapter"):
+        # full-frame plate whose opacity is keyed; 'chapter' = dark plate + chapter label (small, colour) + title (big, white)
+        m, fac = _alpha_mat(f"card{i}_plate", (0.0, 0.0, 0.0) if style == "chapter" else rgb)
+        shape(h, f"card{i}_plate", rrect(0, 0, HALF_W * 2.4, HALF_H * 2.4, 0.001), m, -0.01, outline=0)
+        c["_fade"] = fac
+        if style == "chapter":
+            sub = c.get("sub") or ""
+            if sub: _text(h, f"card{i}_sub", sub, size * 0.55, rgb, 0.0, outline=False)[0].location.y = size * 1.25
+            if body: _text(h, f"card{i}", body, size, (1, 1, 1), 0.0, outline=False)
+            ln = flat(f"card_line{rgb}", rgb); wl = min(_text_width(body or "x", size) * 0.6, HALF_W)
+            shape(h, f"card{i}_line", rrect(0, -size * 0.95, wl, size * 0.06, 0.0005), ln, 0.0, outline=0)
     h.scale = (0, 0, 0)
     return h
 
@@ -116,6 +143,22 @@ def bake_card(h, c):
             h.scale = (s, s, s); h.keyframe_insert("scale", frame=f)
             o.scale = (r, r, 1); o.keyframe_insert("scale", frame=f)
         return
+    if style in ("fade", "chapter"):
+        # fade: opacity 0 -> 1 over 'in' frames (default to-from), hold, 1 -> 0 over 'out' frames if given
+        # chapter: plate 0.94 opaque; plate + text fade in 8 f, hold, fade out 8 f
+        fac = c["_fade"]; fin = int(c.get("in", (b - a) if style == "fade" else 8)); fout = int(c.get("out", 0 if style == "fade" else 8))
+        top = 1.0 if style == "fade" else float(c.get("opacity", 0.94))
+        for f in range(max(1, a - 1), min(N, b + 1) + 1):
+            if f < a or f > b: u = 0.0
+            elif f < a + fin: u = ease((f - a) / max(1, fin))
+            elif fout and f > b - fout: u = ease((b - f) / max(1, fout))
+            else: u = 1.0
+            if style == "fade" and not fout and f > b: u = 1.0 if c.get("hold", False) else 0.0
+            fac.default_value = top * u; fac.keyframe_insert("default_value", frame=f)
+            s = 1.0 if (a <= f <= b or (u > 0)) else 0.0
+            if style == "chapter" and a <= f <= b: s = 0.96 + 0.04 * u      # text eases in with a tiny grow
+            h.scale = (s, s, s); h.keyframe_insert("scale", frame=f)
+        return
     base = h.rotation_euler[2]
     for f in range(max(2, a - 1), min(N, b + 1) + 1):
         if f < a or f > b: s = 0.0
@@ -128,7 +171,9 @@ def bake_card(h, c):
 
 def build_cards(cards, lens_by_frame, ref_lens=28.0):
     """root under the camera at the captions depth; returns root (add its descendants to NOLINE)"""
+    global HALF_W, HALF_H
     if not cards: return None
+    if ctx.ASPECT != "9:16": HALF_W, HALF_H = ctx.frame_half()    # 9:16 keeps the original constants bit for bit
     root = empty("cards", ctx.cam, (0, 0, -1.0))
     for f in range(1, ctx.N + 1):
         k = lens_by_frame[f] / ref_lens

@@ -245,3 +245,69 @@ def bake_camera(cam, cam_d, res, cut_frames):
             for kp in fc.keyframe_points: kp.interpolation = 'LINEAR'
     return LENS_F
 
+
+
+# =====================================================================
+#  long-form (16:9 YouTube): shot list with hard cuts, every shot drifts
+# =====================================================================
+# SHOTS = [dict(a, b, keys=[(frame, cam, look, lens, roll)], fstop=None, ease_in=False, ease_out=False, follow=...)]
+# Like v3 sequences, but a video is many short shots (aim ~14 cuts/min, median 2-3 s, a long
+# 10-25 s establishing shot now and then) joined by straight cuts.  Inside a shot the camera
+# always drifts (slow push, pan, truck, crane); with 2 keys the drift has constant speed.
+def solve_long(SHOTS, TRANS=None, PUNCH=(), SHAKES=(), hand=0.6):
+    seqs = []
+    for s in SHOTS:
+        d = dict(s); d.setdefault("ease_in", False); d.setdefault("ease_out", False); seqs.append(d)
+    trans = {s["a"]: ("cut",) for s in seqs[1:]}
+    trans.update(TRANS or {})
+    return solve_camera(seqs, trans, PUNCH, SHAKES, hand=hand), seqs, trans
+
+
+def long_report(res, SHOTS, TRANS, PUNCH=(), N=None, min_shot=0.5, max_shot=25.0):
+    """Rhythm + motion gate for long-form shot lists.  Prints stats and problems; True when OK."""
+    FPS = ctx.FPS; ok = True
+    lens_ = [(s["b"] - s["a"] + 1) / FPS for s in SHOTS]
+    total = (SHOTS[-1]["b"] - SHOTS[0]["a"] + 1) / FPS
+    srt = sorted(lens_); med = srt[len(srt) // 2]
+    cpm = (len(SHOTS) - 1) / max(total / 60, 1e-6)
+    print(f"shots: {len(SHOTS)}  cuts/min: {cpm:.1f}  median shot: {med:.1f}s  shortest: {srt[0]:.1f}s  longest: {srt[-1]:.1f}s")
+    for s, L in zip(SHOTS, lens_):
+        if L < min_shot: print(f"WARN shot {s['a']}-{s['b']} only {L:.2f}s (min {min_shot}s)"); ok = False
+        if L > max_shot: print(f"WARN shot {s['a']}-{s['b']} is {L:.1f}s (max {max_shot}s: split it or cut away)"); ok = False
+    if total >= 60 and not (6 <= cpm <= 26):
+        print(f"WARN {cpm:.1f} cuts/min (aim 10-18; reference video ~14)"); ok = False
+    if total >= 120 and srt[-1] < 8:
+        print("WARN no shot >= 8 s: add a long establishing/explaining shot now and then"); ok = False
+    for i in range(1, len(SHOTS)):
+        if abs(SHOTS[i]["a"] - SHOTS[i - 1]["b"] - 1) > 0:
+            print(f"WARN gap/overlap between shots ending {SHOTS[i-1]['b']} and starting {SHOTS[i]['a']}"); ok = False
+    # every shot moves: camera travel or look travel or lens change, measured over the shot
+    for s in SHOTS:
+        a, b = s["a"], s["b"]; L = (b - a) / FPS
+        if L < 0.3: continue
+        c0, l0, n0 = res[a][0], res[a][1], res[a][2]; c1, l1, n1 = res[b][0], res[b][1], res[b][2]
+        dist = math.dist(c0, l0) or 1.0
+        move = (math.dist(c0, c1) + 0.5 * math.dist(l0, l1)) / dist + abs(n1 - n0) / max(n0, 1)
+        if move / L < 0.006:
+            print(f"WARN shot {a}-{b} barely moves ({100 * move:.1f}% of subject distance in {L:.1f}s): add a slow push/pan"); ok = False
+    worst = 0.0; cuts = sorted(TRANS)
+    for s in SHOTS:
+        for f in range(s["a"] + 1, s["b"]):
+            if any(abs(f - c) < 3 for c in cuts): continue
+            if any(P[0] <= f < P[0] + 12 or P[0] + P[2] + (P[3] if len(P) > 3 else 45) <= f < P[0] + P[2] + (P[3] if len(P) > 3 else 45) + 26 for P in PUNCH): continue
+            acc = math.dist([res[f+1][0][i] - 2*res[f][0][i] + res[f-1][0][i] for i in range(3)], (0, 0, 0))
+            worst = max(worst, acc)
+    print(f"worst cam accel: {worst*1000:.2f} mm/frame^2")
+    if worst * 1000 > 4.0: print("WARN camera accel spike > 4 mm/frame^2: add a key or move keys apart"); ok = False
+    print("CAMERA OK" if ok else "CAMERA NEEDS FIX")
+    return ok
+
+
+def bake_dof(cam_d, res, fstop_by_frame, focus_by_frame=None):
+    """depth of field: focus on the look point (or focus_by_frame[f] distance), f-stop per frame"""
+    cam_d.dof.use_dof = True
+    for f in sorted(res):
+        c, l = res[f][0], res[f][1]
+        cam_d.dof.focus_distance = (focus_by_frame or {}).get(f) or max(0.1, math.dist(c, l))
+        cam_d.dof.aperture_fstop = fstop_by_frame[f]
+        cam_d.dof.keyframe_insert("focus_distance", frame=f); cam_d.dof.keyframe_insert("aperture_fstop", frame=f)

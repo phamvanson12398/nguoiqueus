@@ -15,6 +15,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 if ROOT not in sys.path: sys.path.insert(0, ROOT)
 import claude_bridge as bridge
 import storycheck
+import longform
 
 PROJECTS = os.path.join(ROOT, "projects")
 UI = os.path.join(ROOT, "ui")
@@ -91,7 +92,7 @@ def slugify(s):
 
 
 def pdir(slug):
-    if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,60}", slug or ""): raise ValueError("tên dự án không hợp lệ")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,60}(/chapters/\d{2})?", slug or ""): raise ValueError("tên dự án không hợp lệ")
     return os.path.join(PROJECTS, slug)
 
 
@@ -100,10 +101,23 @@ def jload(path, default=None):
     except (FileNotFoundError, json.JSONDecodeError): return default
 
 
-def estimate(minutes, wpm=None):
+def is_long(slug):
+    return (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("format") == "long"
+
+
+def target(slug, chapter):
+    """a long project's chapter is planned/built/rendered as the sub-project <slug>/chapters/NN"""
+    return longform.chapter_slug(slug, int(chapter)) if chapter else slug
+
+
+def estimate(minutes, wpm=None, fmt="short"):
     """numbers shown next to the minutes box (wpm: measured from the project's voice when known)"""
     wpm = wpm or WPM
     words = int(round(minutes * wpm))
+    if fmt == "long":
+        frames = int(round(minutes * 60 * FPS)); n_ch = max(2, round(minutes / 3))
+        return {"minutes": minutes, "words": words, "sequences": max(n_ch * 3, round(minutes * 60 / 35)), "chapters": n_ch,
+                "shots": round(minutes * 14), "frames": frames, "render_seconds": round(frames * SEC_PER_FRAME), "wpm": wpm, "format": "long"}
     seqs = max(4, min(7, int(round(minutes * 6)))) if minutes <= 1.25 else int(round(minutes * 5.5))
     frames = int(round(minutes * 60 * FPS))
     return {"minutes": minutes, "words": words, "sequences": seqs, "chapters": 0 if minutes <= 1.25 else max(2, round(seqs / 5.5)),
@@ -130,7 +144,10 @@ def project_state(slug):
                       "time": datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(d, f))).isoformat(timespec="seconds")} for f in outs]
     hist = os.path.join(d, "history")
     st["history"] = sorted((f for f in os.listdir(hist) if f.endswith(".json")), reverse=True) if os.path.isdir(hist) else []
-    st["estimate"] = estimate((st["settings"] or {}).get("minutes", 1.0), (st["settings"] or {}).get("wpm_measured"))
+    st["estimate"] = estimate((st["settings"] or {}).get("minutes", 1.0), (st["settings"] or {}).get("wpm_measured"),
+                              (st["settings"] or {}).get("format", "short"))
+    st["format"] = (st["settings"] or {}).get("format", "short")
+    st["chapters"] = longform.status(slug) if st["format"] == "long" else None
     cur = BUSY.get(slug); st["job"] = JOBS[cur].to_json(10 ** 9) if cur and cur in JOBS else None
     return st
 
@@ -156,8 +173,11 @@ def job_write(job, slug, minutes):
     e = estimate(minutes)
     wpm = (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("wpm_measured") or WPM
     e = estimate(minutes, wpm)
-    job.say(f"Claude đang viết content {minutes} phút (~{e['words']} từ ở {wpm} từ/phút, ~{e['sequences']} chuỗi)…")
-    data = bridge.write_content(slug, idea, minutes, wpm=wpm)
+    fmt = "long" if is_long(slug) else "short"
+    e = estimate(minutes, wpm, fmt)
+    job.say(f"Claude đang viết content {minutes} phút " + ("(video dài 16:9, " + f"{e['chapters']} chương, " if fmt == "long" else "(")
+            + f"~{e['words']} từ ở {wpm} từ/phút, ~{e['sequences']} chuỗi)…")
+    data = bridge.write_content(slug, idea, minutes, wpm=wpm, fmt=fmt)
     job.say(f"Xong: {data['word_count']} từ, {len(data['sequences'])} chuỗi.")
     return {"words": data["word_count"]}
 
@@ -181,6 +201,9 @@ def job_align(job, slug):
     est = len(content["vo_en"].split()) / WPM * 60
     job.say(f"Giọng đọc {r['duration']} s ({r['frames']} khung), {r['word_count']} chữ, {len(r['segments'])} cụm. "
             f"Ước tính từ content: {est:.0f} s. Tốc độ giọng đo được: {wpm} từ/phút.")
+    if longform.is_long(content):
+        job.say("Chia giọng đọc theo chương…")
+        longform.split(slug, log=job.say)
     return {"duration": r["duration"], "frames": r["frames"]}
 
 
@@ -229,17 +252,34 @@ def job_preview(job, slug, frames, pct=35):
 def default_preview_frames(slug):
     story = jload(os.path.join(pdir(slug), "story.json"))
     cam = story["camera"]; spans = [(s["a"], s["b"]) for s in (cam.get("seqs") or cam.get("shots") or [])]
+    if len(spans) > 10:                                           # long-form shot list: 8 shots spread over the chapter
+        pick = [spans[round(i * (len(spans) - 1) / 7)] for i in range(8)]
+        return sorted({(a + b) // 2 for a, b in pick})
     fr = []
     for a, b in spans[:8]: fr.append((a + b) // 2)
     for a, b in spans[1:4]: fr.append(a + 2)                      # just after a transition
     return sorted(set(fr))[:10] or [1]
 
 
-def job_build(job, slug, design=True, preview=True):
+def job_build_long(job, slug, design=True, preview=True, chapters=None):
+    """long video: split (if needed), then plan/design/check/preview chapter by chapter (skips chapters that have a story)"""
+    if not os.path.exists(os.path.join(pdir(slug), "chapters", "index.json")): longform.split(slug, log=job.say)
+    st = longform.status(slug); out = {}
+    todo = [c for c in st if (int(c["n"]) in chapters if chapters else not c["story"])]
+    if not todo: job.say("Mọi chương đã có story.json (chọn chương để dựng lại)."); return {"chapters": []}
+    for c in todo:
+        job.say(f"===== Chương {c['n']:02d}/{len(st)} «{c['title']}» ({c['frames']} khung) =====")
+        out[c["n"]] = job_build(job, longform.chapter_slug(slug, c["n"]), design, preview)
+    job.say(f"Xong {len(todo)} chương. Xem ảnh từng chương rồi bấm Render (render lần lượt từng chương rồi ghép).")
+    return {"chapters": list(out)}
+
+
+def job_build(job, slug, design=True, preview=True, chapters=None):
     """'Duyệt & dựng': plan shots -> design missing library items -> check -> build + preview, with automatic fix rounds"""
+    if "/chapters/" not in slug and is_long(slug): return job_build_long(job, slug, design, preview, chapters)
     d = pdir(slug); lib = storycheck.LibIndex()
     if not os.path.exists(os.path.join(d, "words.json")): raise ValueError("chưa có giọng đọc đã canh chữ (tải voice.wav lên trước)")
-    job.say("1/4 Claude chuyển content thành story.json (bảng khung hình, camera v3)…")
+    job.say("1/4 Claude chuyển content thành story.json (bảng khung hình, " + ("16:9, shot list" if "/chapters/" in slug else "camera v3") + ")…")
     res = bridge.plan_shots(slug)
     missing = res.get("missing", [])
     job.say(f"   story.json xong. Đồ mới cần thiết kế: {', '.join(m['kind'] + '/' + m['name'] for m in missing) or 'không'}")
@@ -292,7 +332,22 @@ def job_fix(job, slug, problem, frames):
     return {"changes": len(data["changes"])}
 
 
+def job_render_long(job, slug, pct=100, samples=None):
+    """render every chapter whose mp4 is missing or older than its story.json, then join them"""
+    st = longform.status(slug)
+    if not st or not all(c["story"] for c in st): raise ValueError("chưa dựng đủ các chương (bấm Duyệt & dựng)")
+    todo = [c for c in st if not c["rendered"]]
+    job.say(f"Render {len(todo)}/{len(st)} chương" + (f" (đã có: {[c['n'] for c in st if c['rendered']]})" if len(todo) < len(st) else "") + "…")
+    for c in todo:
+        job.say(f"===== Render chương {c['n']:02d} «{c['title']}» ({c['frames']} khung) =====")
+        job_render(job, longform.chapter_slug(slug, c["n"]), pct, None, samples)
+    if int(pct or 100) != 100: job.say("(render thử dưới 100 %: vẫn ghép để xem)")
+    out = longform.concat(slug, log=job.say)
+    return {"file": os.path.basename(out)}
+
+
 def job_render(job, slug, pct=100, frames=None, samples=None):
+    if "/chapters/" not in slug and is_long(slug) and not frames: return job_render_long(job, slug, pct, samples)
     args = ["--render"]
     if pct and int(pct) != 100: args += ["--pct", str(int(pct))]
     if frames: args += ["--frames", frames]
@@ -402,7 +457,8 @@ class Handler(BaseHTTPRequestHandler):
         if api == ["status"]:
             return self.send_json(self.status())
         if api == ["estimate"]:
-            return self.send_json(estimate(float(q.get("minutes", ["1"])[0]), float(q["wpm"][0]) if q.get("wpm") else None))
+            return self.send_json(estimate(float(q.get("minutes", ["1"])[0]), float(q["wpm"][0]) if q.get("wpm") else None,
+                                           q.get("format", ["short"])[0]))
         if api == ["usage"]:
             return self.send_json(bridge.usage())
         if api[:1] == ["jobs"] and len(api) >= 2:
@@ -427,7 +483,8 @@ class Handler(BaseHTTPRequestHandler):
             b = self.jbody(); slug = slugify(b.get("slug") or b.get("title") or "video")
             base, k = slug, 2
             while os.path.exists(os.path.join(PROJECTS, slug)): slug = f"{base}-{k}"; k += 1
-            os.makedirs(pdir(slug)); save_settings(slug, minutes=float(b.get("minutes", 1.0)), title=b.get("title", ""))
+            os.makedirs(pdir(slug)); save_settings(slug, minutes=float(b.get("minutes", 1.0)), title=b.get("title", ""),
+                                                   format="long" if b.get("format") == "long" else "short")
             return self.send_json({"slug": slug})
 
         if api[:1] == ["projects"] and len(api) >= 2:
@@ -454,7 +511,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(start_job("rewrite_seq", slug, job_rewrite, slug, int(b["id"]), b["request"]).to_json())
             if act == ["content"] and method == "POST":
                 c = self.jbody()["content"]
-                errs = bridge.validate(c, bridge.load_schema("content"))
+                errs = bridge.validate(c, bridge.load_schema("content_long" if longform.is_long(c) else "content"))
                 if errs: raise ValueError("content sai cấu trúc: " + "; ".join(errs[:3]))
                 for i, s in enumerate(c["sequences"]): s["id"] = i + 1          # keep ids in display order
                 c["word_count"] = len(c["vo_en"].split())
@@ -484,16 +541,19 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(start_job("align", slug, job_align, slug).to_json())
             if act == ["build"]:
                 b = self.jbody()
-                return self.send_json(start_job("build", slug, job_build, slug, b.get("design", True), b.get("preview", True)).to_json())
+                return self.send_json(start_job("build", slug, job_build, slug, b.get("design", True), b.get("preview", True),
+                                                [int(x) for x in b.get("chapters", [])] or None).to_json())
             if act == ["preview"]:
-                b = self.jbody(); frames = b.get("frames") or default_preview_frames(slug)
-                return self.send_json(start_job("preview", slug, job_preview, slug, [int(f) for f in frames], int(b.get("pct", 35))).to_json())
+                b = self.jbody(); t = target(slug, b.get("chapter")); frames = b.get("frames") or default_preview_frames(t)
+                return self.send_json(start_job("preview", slug, job_preview, t, [int(f) for f in frames], int(b.get("pct", 35))).to_json())
             if act == ["fix"]:
-                b = self.jbody()
-                return self.send_json(start_job("fix", slug, job_fix, slug, b["problem"], [int(f) for f in b.get("frames", [])]).to_json())
+                b = self.jbody(); t = target(slug, b.get("chapter"))
+                return self.send_json(start_job("fix", slug, job_fix, t, b["problem"], [int(f) for f in b.get("frames", [])]).to_json())
             if act == ["render"]:
-                b = self.jbody()
-                return self.send_json(start_job("render", slug, job_render, slug, b.get("pct", 100), b.get("frames"), b.get("samples")).to_json())
+                b = self.jbody(); t = target(slug, b.get("chapter"))
+                return self.send_json(start_job("render", slug, job_render, t, b.get("pct", 100), b.get("frames"), b.get("samples")).to_json())
+            if act == ["concat"]:
+                return self.send_json(start_job("concat", slug, lambda job, s: {"file": os.path.basename(longform.concat(s, log=job.say))}, slug).to_json())
             if act == ["splice"]:                      # put a re-rendered part (parts/*_AAAA-BBBB.mp4) into the full video
                 part = self.safe_join(d, self.jbody()["part"])
                 return self.send_json(start_job("splice", slug, job_splice, slug, part).to_json())

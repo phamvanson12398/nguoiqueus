@@ -54,10 +54,12 @@ main{max-width:1180px;margin:0 auto;padding:18px}
 .bar{height:14px;background:var(--chip);border-radius:7px;overflow:hidden}
 .bar>div{height:100%;background:var(--accent);width:0;transition:width .4s}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.thumbs.wide{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
 .thumbs figure{margin:0;text-align:center;font-size:12px;color:var(--muted)}
 .thumbs img{width:100%;border-radius:6px;border:1px solid var(--line);cursor:zoom-in;background:#ccc}
 .grid.lib{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
 .lib img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;background:#ddd;cursor:zoom-in}
+.chapter-h{margin:18px 0 8px;font-size:16px;border-bottom:2px solid var(--accent2);padding-bottom:4px}
 .seg{font-size:13px;padding:3px 0;border-bottom:1px dashed var(--line)}
 .seg b{display:inline-block;width:110px;color:var(--accent2);font-variant-numeric:tabular-nums}
 #zoom{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:20}
@@ -114,6 +116,7 @@ small.err{color:var(--bad)}
     <div class="panel">
       <h2>Độ dài</h2>
       <div class="row">
+        <label>Khổ video <select id="fmt"><option value="short">Shorts dọc 9:16 (45 giây – 10 phút)</option><option value="long">Video dài YouTube 16:9 (5–20 phút, chia chương)</option></select></label>
         <label>Số phút <input type="number" id="minutes" min="0.5" max="10" step="0.5" value="1" style="width:80px"></label>
         <div class="stats" id="est"></div>
       </div>
@@ -182,7 +185,7 @@ small.err{color:var(--bad)}
       <div id="previews" class="thumbs"></div>
       <div class="row" style="margin-top:12px">
         <input type="text" id="fixText" placeholder="Thấy lỗi gì? vd: khung 200 phụ đề che miệng Gary, nắp cống quá nhỏ…" style="flex:1;min-width:300px">
-        <button id="btnFix">Nhờ Claude sửa</button>
+        <select id="fixCh" class="hidden" title="Chương cần sửa"></select><button id="btnFix">Nhờ Claude sửa</button>
       </div>
     </div>
   </section>
@@ -195,6 +198,7 @@ small.err{color:var(--bad)}
       <div class="row" style="margin-top:12px">
         <label>Độ phân giải <select id="rPct"><option value="100">100 % (1080x1920)</option><option value="50">50 %</option><option value="25">25 % (thử nhanh)</option></select></label>
         <label>Khung <input type="text" id="rFrames" placeholder="trống = cả video; vd 300-420" style="width:180px"></label>
+        <span id="rChapters" class="hidden"></span>
         <button id="btnRender" class="primary">Render</button>
       </div>
       <p class="muted">Khi chỉ render một đoạn khung, file lưu vào <code>parts/</code> (dùng khi chỉ sửa một chuỗi).</p>
@@ -268,14 +272,16 @@ async function loadProjects(select) {
 $('#projSel').onchange = async () => { S.slug = $('#projSel').value; try { localStorage.setItem('ws_proj', S.slug); } catch (e) {} await loadProject(); };
 $('#newProj').onclick = async () => {
   const t = prompt('Tên dự án (vd: why-pizza-boxes-square):'); if (!t) return;
-  const r = await api('/api/projects', {body: {title: t}}); await loadProjects(r.slug); showTab('idea');
+  const long = confirm('Video dài YouTube 16:9 (5–20 phút, chia chương)?\n\nOK = video dài · Hủy = Shorts dọc như cũ\n(đổi lại được ở bước 2 trước khi viết content)');
+  const r = await api('/api/projects', {body: {title: t, format: long ? 'long' : 'short', minutes: long ? 10 : 1}}); await loadProjects(r.slug); showTab('idea');
 };
 
 async function loadProject() {
   if (!S.slug) return;
   const st = S.state = await api(P(''));
   // step marks
-  const done = {idea: !!st.idea, content: !!st.content, voice: !!st.words, build: !!st.story, render: st.outputs.length > 0};
+  const done = {idea: !!st.idea, content: !!st.content, voice: !!st.words,
+    build: st.format === 'long' ? (st.chapters || []).length > 0 && st.chapters.every(c => c.story) : !!st.story, render: st.outputs.length > 0};
   $$('#tabs button').forEach(b => b.classList.toggle('done', !!done[b.dataset.tab]));
   renderIdeas(); renderContent(); renderVoice(); renderBuild(); renderRender();
   if (st.job && st.job.status === 'running' && (!S.job || S.job !== st.job.id)) watchJob(st.job.id, st.job.kind);
@@ -333,17 +339,26 @@ $('#btnFreeTopic').onclick = async () => { const t = $('#topic').value.trim(); i
   await api(P('/idea'), {body: {topic: t}}); await loadProject(); showTab('content'); };
 
 // ---------------- 2. content ----------------
+const isLong = () => $('#fmt').value === 'long';
 async function updateEst() {
   const m = parseFloat($('#minutes').value) || 1;
   const w = S.state && S.state.settings && S.state.settings.wpm_measured;
-  const e = await api(`/api/estimate?minutes=${m}` + (w ? `&wpm=${w}` : ''));
+  const e = await api(`/api/estimate?minutes=${m}&format=${$('#fmt').value}` + (w ? `&wpm=${w}` : ''));
   $('#est').innerHTML = `<div class="stat"><span class="muted">Lời đọc</span><b>~${e.words} từ</b></div>
-    <div class="stat"><span class="muted">Chuỗi máy</span><b>~${e.sequences}</b>${e.chapters ? `<span class="muted">${e.chapters} chương</span>` : ''}</div>
+    <div class="stat"><span class="muted">${e.format === 'long' ? 'Nhịp kể' : 'Chuỗi máy'}</span><b>~${e.sequences}</b>${e.chapters ? `<span class="muted">${e.chapters} chương</span>` : ''}</div>
+    ${e.shots ? `<div class="stat"><span class="muted">Cú máy</span><b>~${e.shots}</b><span class="muted">~14 cắt/phút</span></div>` : ''}
     <div class="stat"><span class="muted">Khung hình</span><b>${e.frames}</b></div>
     <div class="stat"><span class="muted">Render ước tính</span><b>${fmtTime(e.render_seconds)}</b><span class="muted">${S.status ? S.status.sec_per_frame : 1.4} s/khung</span></div>`;
 }
 $('#minutes').oninput = () => { clearTimeout(updateEst._t); updateEst._t = setTimeout(updateEst, 150); };
 $('#minutes').onchange = () => S.slug && api(P('/settings'), {body: {minutes: parseFloat($('#minutes').value)}});
+function fmtLimits() { const L = isLong(); $('#minutes').max = L ? 20 : 10; $('#minutes').min = L ? 3 : 0.5;
+  const m = parseFloat($('#minutes').value) || 1; if (L && m < 3) $('#minutes').value = 10; if (!L && m > 10) $('#minutes').value = 1; }
+$('#fmt').onchange = async () => {
+  if (S.state && S.state.content && !confirm('Dự án đã có content. Đổi khổ video thì cần viết content lại. Vẫn đổi?')) { $('#fmt').value = S.state.format || 'short'; return; }
+  fmtLimits(); updateEst();
+  if (S.slug) { await api(P('/settings'), {body: {format: $('#fmt').value, minutes: parseFloat($('#minutes').value)}}); await loadProject(); }
+};
 $('#btnWrite').onclick = () => {
   if (!S.state.idea) return toast('Chọn ý tưởng hoặc nhập chủ đề ở bước 1');
   if (S.state.content && !confirm('Viết content mới? Bản hiện tại vẫn được giữ trong lịch sử.')) return;
@@ -353,11 +368,17 @@ const SEQ_FIELDS = [['vo_en', 'Lời đọc (EN)', 'full', 'ta'], ['vo_vi', 'B�
   ['set', 'Bối cảnh'], ['transition', 'Chuyển sang chuỗi sau'], ['chars', 'Nhân vật (phẩy)', '', 'list'], ['props', 'Đạo cụ (phẩy)', '', 'list'],
   ['expressions', 'Biểu cảm'], ['camera', 'Đường đi camera'], ['gag', 'Gag', 'full'], ['sfx', 'Tiếng động (phẩy)', '', 'list'],
   ['fx', 'Hiệu ứng hình (phẩy)', '', 'list'], ['emphasis', 'Chữ nhấn (phẩy)', '', 'list']];
+const LONG_FIELDS = [['chapter', 'Chương', '', 'num'], ['shots', 'Cú máy dự kiến — mỗi dòng: kiểu | thấy gì | chữ trên màn hình (wide, medium, closeup, insert, board, map, diagram, interior, card, pov)', 'full', 'shots']];
+const shotsText = a => (a || []).map(x => [x.type, x.what_vi, x.card_text || ''].join(' | ').replace(/ \| $/, '')).join('\n');
+const parseShots = t => t.split('\n').map(l => l.split('|').map(x => x.trim())).filter(p => p[0]).map(([type, what_vi, card_text]) => Object.assign({type, what_vi: what_vi || ''}, card_text ? {card_text} : {}));
 function seqCard(s, i) {
-  const f = SEQ_FIELDS.map(([k, lab, cls, typ]) => {
+  const longF = S.state.content && S.state.content.format === 'long' ? LONG_FIELDS.map(([k, lab, cls, typ]) =>
+    `<div class="${cls}"><label>${lab}</label>${typ === 'num' ? `<input type="number" min="1" data-k="${k}" value="${s[k] ?? 1}" style="width:70px">` :
+      `<textarea data-k="${k}" rows="${Math.min(8, (s.shots || []).length + 1)}">${esc(shotsText(s.shots))}</textarea>`}</div>`).join('') : '';
+  const f = longF + SEQ_FIELDS.map(([k, lab, cls, typ]) => {
     const v = Array.isArray(s[k]) ? s[k].join(', ') : (s[k] ?? '');
     const inp = typ === 'ta' ? `<textarea data-k="${k}" rows="2">${esc(v)}</textarea>` :
-      k === 'transition' ? `<select data-k="${k}">${['whip','push','match','cut','none'].map(o => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('')}</select>` :
+      k === 'transition' ? `<select data-k="${k}">${['whip','push','match','cut','fade','none'].map(o => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('')}</select>` :
       `<input type="text" data-k="${k}" data-list="${typ === 'list' ? 1 : ''}" value="${esc(v)}">`;
     return `<div class="${cls || ''}"><label>${lab}</label>${inp}</div>`;
   }).join('');
@@ -372,6 +393,7 @@ function seqCard(s, i) {
 }
 function renderContent() {
   const st = S.state; const c = st.content;
+  $('#fmt').value = st.format || 'short'; fmtLimits();
   $('#minutes').value = (st.settings || {}).minutes || 1; updateEst();
   $('#contentBox').classList.toggle('hidden', !c);
   $('#histSel').innerHTML = '<option value="">Lịch sử phiên bản…</option>' + st.history.filter(h => h.startsWith('content_')).map(h => `<option>${esc(h)}</option>`).join('');
@@ -380,7 +402,14 @@ function renderContent() {
   $('#voEn').value = c.vo_en; $('#voVi').value = c.vo_vi; wordCount();
   $('#cSources').innerHTML = (c.sources || []).length ? 'Nguồn: ' + c.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.claim.slice(0, 60))}</a>`).join(' · ') : '';
   $('#cNeeds').innerHTML = (c.library_needs || []).length ? 'Cần thiết kế thêm: ' + c.library_needs.map(n => `<span class="chip draft" title="${esc(n.brief)}">${esc(n.kind)}/${esc(n.name)}</span>`).join('') : '';
-  $('#seqList').innerHTML = c.sequences.map(seqCard).join('');
+  const chT = {}; (c.chapters || []).forEach(x => chT[x.n] = x);
+  let lastCh = null;
+  $('#seqList').innerHTML = c.sequences.map((s, i) => {
+    let h = '';
+    if (c.format === 'long' && s.chapter !== lastCh) { lastCh = s.chapter; const x = chT[s.chapter] || {};
+      h = `<h3 class="chapter-h">Chương ${s.chapter}: ${esc(x.title || '')} <span class="muted">${esc(x.title_vi || '')}</span></h3>${x.summary_vi ? `<div class="muted" style="margin:-4px 0 8px">${esc(x.summary_vi)}</div>` : ''}`; }
+    return h + seqCard(s, i);
+  }).join('');
   bindSeqs();
 }
 const wpmNow = () => (S.state && S.state.settings && S.state.settings.wpm_measured) || (S.status && S.status.wpm) || 190;
@@ -425,6 +454,8 @@ function collectContent() {
     el.querySelectorAll('[data-k]').forEach(inp => {
       let v = inp.value; if (inp.dataset.list) v = v.split(',').map(x => x.trim()).filter(Boolean);
       if (inp.dataset.k === 'seconds') v = parseFloat(v) || 0;
+      if (inp.dataset.k === 'chapter') v = parseInt(v) || 1;
+      if (inp.dataset.k === 'shots') v = parseShots(v);
       s[inp.dataset.k] = v;
     });
     for (const k of ['chars', 'props', 'sfx', 'fx', 'emphasis']) s[k] = s[k] || [];
@@ -435,7 +466,8 @@ function collectContent() {
 $('#btnSave').onclick = async () => { try { const r = await api(P('/content'), {body: {content: collectContent()}}); toast(`Đã lưu (${r.word_count} từ)`); await loadProject(); } catch (e) { toast(e.message, 6000); } };
 $('#btnRestore').onclick = async () => { const h = $('#histSel').value; if (!h) return; if (!confirm('Khôi phục ' + h + '? Bản hiện tại được lưu vào lịch sử.')) return;
   await api(P(`/history/${h}/restore`), {body: {}}); await loadProject(); toast('Đã khôi phục'); };
-$('#btnAddSeq').onclick = () => { const c = collectContent(); c.sequences.push({id: c.sequences.length + 1, seconds: 6, vo_en: '', vo_vi: '', set: '', chars: [], props: [], action: '', camera: '', transition: 'cut', expressions: '', gag: '', sfx: [], fx: [], emphasis: []});
+$('#btnAddSeq').onclick = () => { const c = collectContent(); const lastC = (c.sequences[c.sequences.length - 1] || {}).chapter;
+  c.sequences.push({id: c.sequences.length + 1, seconds: 6, ...(c.format === 'long' ? {chapter: lastC || 1, shots: []} : {}), vo_en: '', vo_vi: '', set: '', chars: [], props: [], action: '', camera: '', transition: 'cut', expressions: '', gag: '', sfx: [], fx: [], emphasis: []});
   S.state.content = c; renderContent(); toast('Đã thêm chuỗi (nhớ bấm Lưu)'); };
 function bindSeqs() {
   $$('#seqList .seq').forEach(el => {
@@ -487,8 +519,27 @@ $('#btnUpload').onclick = async () => {
 $('#btnRealign').onclick = () => run(P('/align'), {}, 'Canh chữ');
 
 // ---------------- 4. build ----------------
+function chapterBlocks(st) {
+  return st.chapters.map(c => `<div class="panel" style="padding:10px"><div class="row"><h3 style="margin:0;flex:1">Chương ${c.n}: ${esc(c.title)}</h3>
+    <span class="muted">${c.frames} khung (${(c.frames / 30).toFixed(0)} s) · ${c.words} chữ · ${c.story ? 'có story' : 'chưa dựng'}${c.rendered ? ' · đã render' : ''}</span>
+    <button onclick="buildChapter(${c.n})">${c.story ? 'Dựng lại chương này' : 'Dựng chương này'}</button>
+    ${c.story ? `<button onclick="previewChapter(${c.n})">Xem trước lại</button>` : ''}</div>
+    <div class="thumbs wide" data-ch="${c.n}">${c.previews.map(f => `<figure><img loading="lazy" src="${P(`/file/chapters/${String(c.n).padStart(2, '0')}/preview/` + f)}?t=${Date.now()}"><figcaption>ch ${c.n} · khung ${parseInt(f.slice(2, 6))}</figcaption></figure>`).join('') || '<span class="muted">Chưa có ảnh xem trước.</span>'}</div></div>`).join('');
+}
+window.buildChapter = n => { if (S.state.chapters.find(c => c.n === n).story && !confirm(`Dựng lại chương ${n}? Claude lên lại shot list (story cũ giữ trong lịch sử của chương).`)) return;
+  run(P('/build'), {chapters: [n]}, `Dựng chương ${n}`); };
+window.previewChapter = n => { const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {chapter: n, frames: f}, `Xem trước chương ${n}`); };
 function renderBuild() {
   const st = S.state; const s = st.story;
+  $('#fixCh').classList.toggle('hidden', st.format !== 'long');
+  if (st.format === 'long') {
+    $('#fixCh').innerHTML = (st.chapters || []).map(c => `<option value="${c.n}">chương ${c.n}</option>`).join('');
+    $('#storyInfo').innerHTML = (st.chapters || []).length ? `Video dài: ${st.chapters.length} chương, ${st.chapters.filter(c => c.story).length} chương đã có story. "Duyệt &amp; dựng" dựng lần lượt các chương chưa có.` : 'Chưa chia chương (tải giọng đọc ở bước 3).';
+    $('#previews').classList.remove('thumbs');
+    $('#previews').innerHTML = (st.chapters || []).length ? chapterBlocks(st) : '<span class="muted">Chưa có ảnh xem trước.</span>';
+    return;
+  }
+  $('#previews').classList.add('thumbs');
   $('#storyInfo').innerHTML = s ? `story.json: ${s.frames} khung (${(s.frames / 30).toFixed(1)} s) · camera ${esc(s.camera)} · ${s.sequences} chuỗi · nhân vật: ${s.chars.map(esc).join(', ')}` : 'Chưa có story.json.';
   $('#previews').innerHTML = st.previews.map(f => `<figure><img loading="lazy" src="${P('/file/preview/' + f)}?t=${Date.now()}" data-f="${esc(f)}"><figcaption>khung ${parseInt(f.slice(2, 6))}</figcaption></figure>`).join('') || '<span class="muted">Chưa có ảnh xem trước.</span>';
 }
@@ -496,14 +547,20 @@ $('#btnBuild').onclick = () => {
   if (!S.state.words) return toast('Cần tải giọng đọc ở bước 3 trước');
   run(P('/build'), {}, 'Duyệt & dựng');
 };
-$('#btnPreview').onclick = () => { const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {frames: f}, 'Xem trước'); };
+$('#btnPreview').onclick = () => { if (S.state.format === 'long') return toast('Video dài: bấm "Xem trước lại" ở từng chương');
+  const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {frames: f}, 'Xem trước'); };
 $('#btnFix').onclick = () => { const t = $('#fixText').value.trim(); if (!t) return toast('Mô tả lỗi trước');
   const f = (t.match(/khung\s*(\d+)/gi) || []).map(x => parseInt(x.replace(/\D/g, '')));
-  run(P('/fix'), {problem: t, frames: f}, 'Sửa theo ảnh xem trước'); };
+  run(P('/fix'), {problem: t, frames: f, chapter: S.state.format === 'long' ? parseInt($('#fixCh').value) : null}, 'Sửa theo ảnh xem trước'); };
 
 // ---------------- 5. render ----------------
 function renderRender() {
-  const st = S.state; const fr = st.story ? st.story.frames : st.estimate.frames;
+  const st = S.state; const L = st.format === 'long';
+  const fr = L && (st.chapters || []).length ? st.chapters.reduce((a, c) => a + c.frames, 0) : st.story ? st.story.frames : st.estimate.frames;
+  $('#rPct').options[0].text = L ? '100 % (1920x1080)' : '100 % (1080x1920)';
+  $('#rFrames').classList.toggle('hidden', L); $('#rChapters').classList.toggle('hidden', !L);
+  if (L) $('#rChapters').innerHTML = (st.chapters || []).map(c => `<span class="chip ${c.rendered ? '' : 'draft'}">ch ${c.n}: ${c.rendered ? 'đã render' : c.story ? 'chờ render' : 'chưa dựng'}</span>`).join('') +
+    ' <span class="muted">Render lần lượt các chương chưa có video (hoặc story mới hơn video), rồi ghép thành out.mp4. Bị ngắt thì bấm lại để render tiếp.</span>';
   const spf = S.status ? S.status.sec_per_frame : 1.4;
   $('#renderEst').innerHTML = `<div class="stat"><span class="muted">Số khung</span><b>${fr}</b></div><div class="stat"><span class="muted">Ước tính (100 %)</span><b>${fmtTime(fr * spf)}</b><span class="muted">${spf} s/khung + ~40 s biên dịch shader</span></div>`;
   $('#outputs').innerHTML = st.outputs.length ? st.outputs.map(o => `<div class="row" style="padding:4px 0"><b>${esc(o.file)}</b><span class="muted">${(o.size / 1e6).toFixed(1)} MB · ${esc(o.time)}</span>
@@ -514,7 +571,9 @@ window.splicePart = f => { if (S.status && !S.status.ffmpeg) return toast('Cần
   run(P('/splice'), {part: f}, 'Ghép đoạn vào video'); };
 window.play = f => { const v = $('#player'); v.src = P('/file/' + f) + '?t=' + Date.now(); v.classList.remove('hidden'); v.play(); };
 window.openFile = async f => { const r = await api(P('/open'), {body: {file: f}}); if (!r.ok) play(f); };
-$('#btnRender').onclick = () => { if (!S.state.story) return toast('Chưa có story.json (bước 4)');
+$('#btnRender').onclick = () => { if (S.state.format === 'long') { if (!(S.state.chapters || []).every(c => c.story)) return toast('Dựng đủ các chương ở bước 4 trước');
+    return run(P('/render'), {pct: parseInt($('#rPct').value)}, 'Render các chương'); }
+  if (!S.state.story) return toast('Chưa có story.json (bước 4)');
   run(P('/render'), {pct: parseInt($('#rPct').value), frames: $('#rFrames').value.trim() || null}, 'Render'); };
 
 // ---------------- library ----------------
@@ -545,7 +604,8 @@ let zoomList = [], zoomI = 0;
 function zoom(list) { zoomList = list; zoomI = 0; $('#zoom img').src = list[0]; $('#zoom').style.display = 'flex'; }
 $('#zoom').onclick = e => { if (zoomList.length > 1 && e.target.tagName === 'IMG') { zoomI = (zoomI + 1) % zoomList.length; $('#zoom img').src = zoomList[zoomI]; } else $('#zoom').style.display = 'none'; };
 document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#zoom').style.display = 'none'; });
-$('#previews').onclick = e => { if (e.target.tagName === 'IMG') zoom($$('#previews img').map(i => i.src).slice($$('#previews img').indexOf(e.target)).concat($$('#previews img').map(i => i.src).slice(0, $$('#previews img').indexOf(e.target)))); };
+$('#previews').onclick = e => { if (e.target.tagName === 'IMG' && S.state.format === 'long') { const l = $$('#previews img').map(i => i.src), k = l.indexOf(e.target.src); return zoom(l.slice(k).concat(l.slice(0, k))); }
+  if (e.target.tagName === 'IMG') zoom($$('#previews img').map(i => i.src).slice($$('#previews img').indexOf(e.target)).concat($$('#previews img').map(i => i.src).slice(0, $$('#previews img').indexOf(e.target)))); };
 
 // ---------------- start ----------------
 (async () => {

@@ -101,8 +101,15 @@ def check_story(st, lib=None, pending=()):
     ch_ids = {c["id"] for c in st.get("chars", [])}
     for g in st.get("sound", {}).get("auto", {}).get("gesture_chars", []):
         if g not in ch_ids: errs.append(f"sound.auto.gesture_chars: no character '{g}'")
+    fac_ids = {f["id"] for f in st.get("factions", [])}
+    for c in st.get("chars", []):
+        if "faction" in c and c["faction"] not in fac_ids: errs.append(f"chars.{c['id']}.faction: no faction '{c['faction']}' (have {sorted(fac_ids)})")
+    for k, cd in enumerate(st.get("cards", [])):
+        if cd["to"] < cd["from"]: errs.append(f"cards[{k}]: 'to' ({cd['to']}) before 'from' ({cd['from']})")
     N = st["meta"]["frames"]
     cam = st["camera"]
+    if cam.get("rig") == "long" and st["meta"].get("aspect", "9:16") != "16:9":
+        errs.append("camera: rig 'long' is for long-form videos, set meta.aspect to '16:9'")
     spans = [(s["a"], s["b"]) for s in (cam.get("shots") or cam.get("seqs") or [])]
     if spans:
         spans.sort()

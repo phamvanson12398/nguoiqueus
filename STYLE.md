@@ -3,10 +3,20 @@
 Bản rút gọn của skill `blender-why-shorts` v3. Định dạng dữ liệu nằm ở `STORY.md`; API viết đồ thư viện ở `library/AUTHORING.md`. Trả lời người dùng bằng tiếng Việt; lời đọc video bằng tiếng Anh.
 
 ## Video
-- Dọc 1080x1920, 30 fps. Shorts mặc định 45-75 giây (tối đa 10 phút; video dài chia chương, mỗi chương 4-7 chuỗi máy, luật bên dưới giữ nguyên).
+- Shorts: dọc 1080x1920, 30 fps, mặc định 45-75 giây (tối đa 10 phút). Video dài 16:9: xem mục riêng bên dưới.
 - Một câu hỏi "Why…" kể thành chuyện ngắn có nhân vật và xung đột; cú twist cuối chính là lời giải thích.
 - Nhân vật 2D phẳng (đầu tròn to, viền đen, tay chân là nét) đứng trong bối cảnh 3D có ánh sáng thật và viền hoạt hình.
 - Camera trôi liên tục như một cú máy dài; phụ đề từng chữ nảy lên; nhạc nền vui; mọi hành động đều có tiếng động.
+
+## Video dài YouTube 16:9 (khi content có `format: "long"`)
+- 1920x1080, 5-20 phút, chia chương 2-4 phút, mỗi chương mở bằng thẻ chương. Phong cách nhân vật/bối cảnh giữ như dưới đây.
+- Nhịp cắt kiểu phim tài liệu hoạt hình: khoảng 14 cắt/phút, phần lớn cú máy 1,5-4 giây, xen cảnh dài 10-25 giây; camera luôn trôi chậm
+  trong mỗi cú máy; cắt thẳng là chính (whoosh chỉ khi whip). Camera rig `long`, bật độ sâu trường ảnh.
+- Kiểu cảnh chọn theo lời: toàn cảnh, trung, cận mặt (cảm xúc), cận vật, bàn chiến thuật từ trên, bản đồ (địa danh, hành quân), sơ đồ
+  (cơ chế), nội cảnh, màn hình chữ ở mốc quan trọng (năm, tên trận, con số), POV.
+- Kịch bản: mở giữa cao trào → "let's go back", gieo câu hỏi sớm, cú mới mỗi 45-70 giây, giải thích chính ở khoảng 75 %, kết gọi lại tiêu đề.
+  Hài thưa hơn Shorts. Phụ đề nhỏ dưới đáy (YouTube còn có CC). Luật "Camera v3", "Nhịp hài" mỗi 4-5 giây và "Không bật DOF" bên dưới là của Shorts.
+- Nhiều quốc gia/phe: trang phục, màu, cờ đúng văn hóa và thời kỳ; không vẽ biếm họa sắc tộc; phe "địch" không bị vẽ xấu hơn.
 
 ## Ý tưởng
 - Câu hỏi thật của người Mỹ (People also ask, r/explainlikeimfive, câu hỏi trẻ con, đồ vật hằng ngày). Tránh chủ đề trừu tượng phải giải thích bằng bảng chữ.

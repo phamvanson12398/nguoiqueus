@@ -1,0 +1,289 @@
+{
+ "type": "object",
+ "properties": {
+  "title": {
+   "type": "string"
+  },
+  "title_vi": {
+   "type": "string"
+  },
+  "question": {
+   "type": "string"
+  },
+  "formula": {
+   "type": "string"
+  },
+  "minutes": {
+   "type": "number"
+  },
+  "vo_en": {
+   "type": "string",
+   "description": "full English narration, quotes for character lines, [beat] for pauses"
+  },
+  "vo_vi": {
+   "type": "string"
+  },
+  "word_count": {
+   "type": "integer"
+  },
+  "sequences": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "integer"
+     },
+     "seconds": {
+      "type": "number"
+     },
+     "vo_en": {
+      "type": "string"
+     },
+     "vo_vi": {
+      "type": "string"
+     },
+     "set": {
+      "type": "string"
+     },
+     "chars": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "props": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "action": {
+      "type": "string",
+      "description": "what happens on screen (Vietnamese)"
+     },
+     "camera": {
+      "type": "string",
+      "description": "camera path inside this sequence"
+     },
+     "transition": {
+      "enum": [
+       "cut",
+       "fade",
+       "match",
+       "none",
+       "push",
+       "whip"
+      ]
+     },
+     "expressions": {
+      "type": "string"
+     },
+     "gag": {
+      "type": "string"
+     },
+     "sfx": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "fx": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "emphasis": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "chapter": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "shots": {
+      "type": "array",
+      "description": "rough shot list for this beat: one item per shot (shot type + what is seen)",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "what_vi"
+       ],
+       "properties": {
+        "type": {
+         "enum": [
+          "wide",
+          "medium",
+          "closeup",
+          "insert",
+          "board",
+          "map",
+          "diagram",
+          "interior",
+          "card",
+          "pov"
+         ]
+        },
+        "what_vi": {
+         "type": "string"
+        },
+        "card_text": {
+         "type": "string",
+         "description": "text-screen / map label / year shown on screen, if any"
+        }
+       }
+      }
+     }
+    },
+    "required": [
+     "id",
+     "seconds",
+     "vo_en",
+     "vo_vi",
+     "set",
+     "chars",
+     "props",
+     "action",
+     "camera",
+     "transition",
+     "expressions",
+     "gag",
+     "sfx",
+     "fx",
+     "emphasis",
+     "chapter",
+     "shots"
+    ],
+    "additionalProperties": false
+   },
+   "minItems": 1
+  },
+  "sources": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "claim": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "claim",
+     "url"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "library_needs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "kind": {
+      "enum": [
+       "sets",
+       "props",
+       "chars"
+      ]
+     },
+     "name": {
+      "type": "string"
+     },
+     "brief": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "kind",
+     "name",
+     "brief"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "format": {
+   "const": "long"
+  },
+  "chapters": {
+   "type": "array",
+   "minItems": 2,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "n",
+     "title",
+     "title_vi",
+     "summary_vi"
+    ],
+    "properties": {
+     "n": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "title": {
+      "type": "string",
+      "description": "short English chapter title shown on the chapter card"
+     },
+     "title_vi": {
+      "type": "string"
+     },
+     "summary_vi": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "factions": {
+   "type": "array",
+   "description": "sides/nations/cultures that appear (empty if none)",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "culture",
+     "note_vi"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "culture": {
+      "type": "string",
+      "description": "culture + era id, e.g. roman_republic_340bc"
+     },
+     "note_vi": {
+      "type": "string",
+      "description": "trang phục, màu, vũ khí đặc trưng; chương nào xuất hiện"
+     }
+    }
+   }
+  }
+ },
+ "required": [
+  "title",
+  "title_vi",
+  "question",
+  "formula",
+  "minutes",
+  "vo_en",
+  "vo_vi",
+  "word_count",
+  "sequences",
+  "sources",
+  "library_needs",
+  "format",
+  "chapters",
+  "factions"
+ ],
+ "additionalProperties": false
+}

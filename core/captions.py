@@ -7,7 +7,7 @@ import bpy
 from . import ctx, geo
 from .geo import empty, shape
 from .look import flat
-from .timing import ease_out_back
+from .timing import ease_out_back, fcurves_of
 
 
 def clean(w): return w.replace('"', '').replace('“', '').replace('”', '')
@@ -83,3 +83,52 @@ def build_captions(CAPS, lens_by_frame, lift_ranges=(), y=-0.12, y_lift=-0.55, c
             holder.scale = (s_, s_, s_); holder.keyframe_insert("scale", frame=f)
             holder.rotation_euler = (0, 0, r_); holder.keyframe_insert("rotation_euler", frame=f)
     return cap_root
+
+
+# =====================================================================
+#  long-form subtitles (16:9): phrase lines at the bottom, no pop
+# =====================================================================
+def phrase_lines(WORDS, max_chars=42, max_sec=4.0):
+    """[(t0, t1_or_None, text)]: break after . ? ! , ; : or when the line would pass max_chars / max_sec"""
+    lines = []; cur = []; t0 = None
+    for k, (t, w) in enumerate(WORDS):
+        w = clean(w)
+        if cur and (len(" ".join(cur + [w])) > max_chars or t - t0 > max_sec):
+            lines.append([t0, t, " ".join(cur)]); cur = []
+        if not cur: t0 = t
+        cur.append(w)
+        if w.endswith((".", "?", "!", ";", ":")) or (w.endswith(",") and len(" ".join(cur)) > max_chars * 0.5):
+            nxt = WORDS[k + 1][0] if k + 1 < len(WORDS) else t + 1.5
+            lines.append([t0, nxt, " ".join(cur)]); cur = []
+    if cur: lines.append([t0, cur and WORDS[-1][0] + 1.5, " ".join(cur)])
+    return lines
+
+
+def build_subtitles(WORDS, lens_by_frame, y=-0.80, size=0.034, ref_lens=28.0, max_hold=4.5):
+    """bottom subtitle lines under the camera (white, thin ink rim).  y in screen units (-1 bottom .. 1 top)."""
+    N, FPS = ctx.N, ctx.FPS
+    hw, hh = ctx.frame_half()
+    font = bpy.data.fonts.load(ctx.FONT_PATH, check_existing=True) if ctx.FONT_PATH else None
+    root = empty("captions", ctx.cam, (0, y * hh, -1.0))
+    for f in range(1, N + 1):
+        k_ = lens_by_frame[f] / ref_lens
+        root.location = (0, y * hh * k_, -1.0 * k_); root.keyframe_insert("location", frame=f)
+    white = flat("sub_white", (0.97, 0.97, 0.95))
+    for i, (t0, t1, txt) in enumerate(phrase_lines(WORDS)):
+        a = int(t0 * FPS) + 1; b = min(int(t1 * FPS), a + int(max_hold * FPS)) if t1 else a + 45
+        b = max(b, a + 12)
+        holder = empty(f"sub{i}", root)
+        for layer, (m, off, z) in enumerate(((geo.INK, size * 0.09, -0.002), (white, 0.0, 0.0))):
+            cu = bpy.data.curves.new(f"sub{i}_{layer}", 'FONT'); cu.body = txt
+            if font: cu.font = font
+            cu.size = size; cu.align_x = 'CENTER'; cu.align_y = 'CENTER'; cu.offset = off
+            o = bpy.data.objects.new(f"sub{i}_{layer}", cu); ctx.col.objects.link(o)
+            o.parent = holder; o.location = (0, 0, z); o.data.materials.append(m)
+        holder.scale = (0, 0, 0); holder.keyframe_insert("scale", frame=1)
+        for f in (a - 1, a, b, b + 1):
+            if 1 <= f <= N:
+                s_ = 1.0 if a <= f <= b else 0.0
+                holder.scale = (s_, s_, s_); holder.keyframe_insert("scale", frame=f)
+        for fc in fcurves_of(holder):
+            for kp in fc.keyframe_points: kp.interpolation = 'CONSTANT'
+    return root
