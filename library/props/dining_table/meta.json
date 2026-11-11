@@ -1,0 +1,89 @@
+{
+  "kind": "prop",
+  "name": "dining_table",
+  "title_vi": "Bàn ăn gỗ bốn chân",
+  "description_vi": "Bàn ăn gỗ 3D: mặt bàn dày 0,08, bốn chân vuông, có khung diềm dưới mặt bàn (có thể tắt). Mép bàn chỉ bo rất nhẹ nên cạnh -X thẳng và rõ, đặt được lát bánh mì chìa ra ngoài mép. Gốc ở tâm đáy (sàn), mặt trên nằm ở z = height. Gỗ nâu ấm có vân nhẹ; chân và diềm tối hơn một chút.",
+  "dim": "3d",
+  "params": {
+    "height": {
+      "type": "number",
+      "default": 1.07,
+      "desc_vi": "Chiều cao mặt trên của bàn tính từ sàn"
+    },
+    "top_size": {
+      "type": "array",
+      "default": [
+        1.6,
+        0.9
+      ],
+      "desc_vi": "Kích thước mặt bàn [x, y]"
+    },
+    "top_thick": {
+      "type": "number",
+      "default": 0.08,
+      "desc_vi": "Độ dày mặt bàn"
+    },
+    "color": {
+      "type": "array",
+      "default": [
+        0.42,
+        0.16,
+        0.05
+      ],
+      "desc_vi": "Màu gỗ mặt bàn (linear), nâu ấm"
+    },
+    "leg_color": {
+      "type": "array",
+      "default": null,
+      "desc_vi": "Màu chân và diềm; null thì lấy màu gỗ tối hơn 30%"
+    },
+    "leg_inset": {
+      "type": "number",
+      "default": 0.1,
+      "desc_vi": "Khoảng thụt của chân so với mép bàn"
+    },
+    "leg_width": {
+      "type": "number",
+      "default": 0.09,
+      "desc_vi": "Cạnh tiết diện chân vuông"
+    },
+    "apron": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có khung diềm dưới mặt bàn hay không"
+    },
+    "grain": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Vân gỗ nhẹ; false thì dùng màu trơn"
+    }
+  },
+  "parts": [
+    "top",
+    "leg_fl",
+    "leg_fr",
+    "leg_bl",
+    "leg_br",
+    "apron"
+  ],
+  "tags": [
+    "furniture",
+    "table",
+    "wood",
+    "kitchen",
+    "indoor",
+    "3d"
+  ],
+  "notes_vi": "Mặt trên ở z = height, nên ở chiều cao mặc định 1,07 mặt bàn ngang khoảng ngực nhân vật (cao 2,5). Đặt ở loc (0.5, 4.2, 0) với top_size mặc định thì mép -X ở x = 0,5 − 0,8 = −0,3, đúng như yêu cầu. Mép mặt bàn chỉ bo 0,008 nên cạnh -X thẳng và rõ. Lát bánh đặt ở z ≈ height (+ nửa độ dày lát) và x hơi nhỏ hơn −0,3 thì sẽ chìa ra ngoài mép.\n\nTên vật liệu có gắn mã màu (dining_table_body_<rgb>), nên đổi color sẽ tạo vật liệu mới thay vì dùng lại vật liệu cũ trong bộ đệm.\n\nKhung diềm (apron) là một object duy nhất dựng bằng bmesh. Lưới tạm từ rbox được thay bằng lưới khung, để giữ viền mực giống các khối khác. Nếu khi dựng viền không bám theo lưới mới, đặt apron=false.\n\nCác phần: top, leg_fl/fr/bl/br, apron (tên object là f\"{name}_<phần>\"), có thể animate riêng, ví dụ làm mặt bàn rung khi có vật đập xuống.",
+  "status": "draft",
+  "brief_vi": "Bàn ăn gỗ 3D bốn chân, mặt bàn dày khoảng 0,08. Tham số height (mặc định 1,07), top_size [x, y] (mặc định [1.6, 0.9]), color (gỗ nâu ấm). Gốc ở tâm đáy (sàn). Cạnh mép -X thẳng và rõ để đặt lát bánh chìa ra ngoài. Đặt ở (0.5, 4.2, 0), nên mép -X nằm ở x = -0,3.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-11T04:36:05",
+  "review": {
+    "score": 8,
+    "summary_vi": "Mình đã xem cả 5 ảnh render: bàn ăn gỗ bốn chân nhận ra ngay, đứng sát sàn, cạnh -X thẳng và rõ để đặt lát bánh. Viền mực và khung diềm đều hiện đúng; bàn cao tới khoảng tay nhân vật Joe, tỉ lệ hợp lý.",
+    "problems": [
+      "Nhìn từ trên, mặt bàn hơi tối và vân hơi xỉn so với chân bàn. Lỗi nhỏ, không cần sửa; muốn sáng hơn thì tăng color hoặc đặt grain=false."
+    ]
+  }
+}
