@@ -11,8 +11,8 @@ one side.  Origin at the floor (z = 0).
 
 Parts: <name>_bread (crumb faces <name>_bread_crumb are its child), <name>_butter (empty holding the
 butter layers <name>_butter_top / _butter_bottom / _butter_puddle, pat <name>_butter_pat, droplets).
-Flat slabs are built as clean bmesh prisms (recalculated normals) instead of curve extrusions: the
-curve caps shaded wrong (grey crumb, green butter) and broke the ink hull into spikes.
+Flat slabs are bmesh prisms whose caps are fanned into triangles from the centre: big concave n-gon
+caps made the solidify ink hull triangulate wrongly (black spikes, dark grain over the top face).
 Falls / flips / splats -> 3D."""
 import math
 import random
@@ -38,7 +38,7 @@ def _tag(rgb):
 
 
 def _prism(name, pts, z0, z1, m, bevel=0.0, loc=(0, 0, 0)):
-    """closed slab: 2D outline (XY) from z0 to z1, outward normals, optional rounded edges"""
+    """closed slab: star-shaped 2D outline (XY) from z0 to z1, caps fanned from the centre"""
     area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] - pts[(i + 1) % len(pts)][0] * pts[i][1]
                for i in range(len(pts)))
     if area < 0:
@@ -47,11 +47,11 @@ def _prism(name, pts, z0, z1, m, bevel=0.0, loc=(0, 0, 0)):
     bot = [bm.verts.new((x, y, z0)) for x, y in pts]
     top = [bm.verts.new((x, y, z1)) for x, y in pts]
     n = len(pts)
-    bm.faces.new(top)
-    bm.faces.new(list(reversed(bot)))
+    caps = [bm.faces.new(top), bm.faces.new(list(reversed(bot)))]
     for i in range(n):
         j = (i + 1) % n
         bm.faces.new((bot[i], bot[j], top[j], top[i]))
+    bmesh.ops.poke(bm, faces=caps)
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     bm.to_mesh(me); bm.free()
     o = bpy.data.objects.new(name, me); ctx.col.objects.link(o)

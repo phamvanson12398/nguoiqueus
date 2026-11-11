@@ -82,5 +82,14 @@
   "status": "draft",
   "brief_vi": "Lát bánh mì 3D phóng to, khoảng 0,45 × 0,45 × 0,06: vỏ nâu, ruột vàng nhạt, nóc hơi phồng kiểu bánh sandwich. Tham số butter: 'top' | 'bottom' | 'both' (lớp bơ vàng bóng dày khoảng 0,015, mép bơ gợn sóng, có thêm một cục bơ nhỏ). Gốc ở tâm khối để xoay lật quanh trục Y. Khi splat: true, dựng lát bánh đã đáp úp mặt bơ (vỏ ngửa lên), hơi ép dẹt; vệt bơ vàng loang ra quanh viền trên sàn; gốc ở mặt sàn (z = 0). Tên con: <id>_bread, <id>_butter. parts: bread, butter",
   "designed_by": "claude_bridge",
-  "updated": "2026-11-11T04:39:22"
+  "updated": "2026-11-11T04:41:37",
+  "review": {
+    "score": 5,
+    "summary_vi": "Bản sửa trước chưa ăn thua: ruột bánh vẫn xám, bơ vẫn xanh ô liu và mép vẫn có gai đen. Mình đoán do viền mực gặp các mặt lõm của mép gợn sóng, nên bản này chia mặt trên và mặt dưới thành tam giác quạt từ tâm. Bản này chưa render lại nên chưa biết đã hết lỗi chưa.",
+    "problems": [
+      "Hai lỗi của vòng trước vẫn còn: ruột bánh vẫn xám, bơ phết vẫn xanh ô liu, mặt trên lấm tấm hạt, và quanh mép vẫn có gai đen. Như vậy pháp tuyến không phải nguyên nhân.",
+      "Nguyên nhân có thể là: viền mực SOLIDIFY dựng lớp vỏ từ các mặt n-gon lõm (mép gợn sóng, nóc phồng). Khi lớp vỏ bị chia tam giác sai, các tam giác đen dài thò ra thành gai và che lên mặt trên, làm màu bị trộn đen và có hạt. Cục bơ (rbox, chỉ có mặt tứ giác) không bị lỗi này.",
+      "Bản sửa chia mặt nắp thành hình quạt tam giác từ tâm (bmesh.ops.poke) để bỏ n-gon lõm. Bản này chưa render lại nên chưa biết đã hết lỗi chưa."
+    ]
+  }
 }
