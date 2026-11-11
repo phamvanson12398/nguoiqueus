@@ -75,15 +75,20 @@ def build(params, lib):
         anchors["label_" + maps.keyname(lb["text"])[:24]] = [ox + lb["at"][0], oy + lb["at"][1], oz]
     if p["hand"] and tips:
         tips.sort()
-        hand = geo.empty("paper_hand", root, (W * 0.6, -H * 0.6, 0.35))
+        hand = geo.empty("paper_hand", root, (W * 0.6, -H * 0.6, 0.35)); hs = p.get("hand_scale", 1.8); hand.scale = (hs, hs, hs)
         pencil = geo.empty("paper_pencil", hand, (0, 0, 0)); pencil.rotation_euler = (0, 0, math.radians(-35))
         L = 1.6; w = 0.16
         maps.poly(pencil, "paper_pen_body", [(0.18, -w / 2), (L, -w / 2), (L, w / 2), (0.18, w / 2)], flat("paper_pen", (0.98, 0.72, 0.05)), 0.02, outline=0.03)
         maps.poly(pencil, "paper_pen_wood", [(0.0, 0.0), (0.18, -w / 2), (0.18, w / 2)], flat("paper_pen_wood", (0.92, 0.75, 0.55)), 0.021, outline=0.03)
         maps.poly(pencil, "paper_pen_tip", [(0.0, 0.0), (0.06, -0.02), (0.06, 0.02)], flat("paper_pen_tip", (0.1, 0.1, 0.1)), 0.022)
         maps.poly(pencil, "paper_pen_eraser", [(L, -w / 2), (L + 0.18, -w / 2), (L + 0.18, w / 2), (L, w / 2)], flat("paper_pen_eraser", (0.95, 0.45, 0.55)), 0.02, outline=0.03)
-        maps.poly(hand, "paper_hand_palm", geo.ellipse(0.55, -0.35, 0.36, 0.32, 28), flat("paper_hand", (0.98, 0.98, 0.97)), 0.03, outline=0.04)
-        maps.poly(hand, "paper_hand_thumb", geo.ellipse(0.32, -0.05, 0.14, 0.11, 20), flat("paper_hand", (0.98, 0.98, 0.97)), 0.035, outline=0.035)
+        skin = flat("paper_hand", (0.98, 0.98, 0.97)); sleeve = flat("paper_sleeve", (0.03, 0.22, 0.55))
+        # cartoon glove hand gripping the pencil near the tip: sleeve, palm, three curled fingers, thumb on top
+        maps.poly(hand, "paper_hand_sleeve", geo.rrect(1.25, -0.95, 0.75, 0.55, 0.12), sleeve, 0.025, outline=0.04)
+        maps.poly(hand, "paper_hand_palm", geo.ellipse(0.78, -0.55, 0.42, 0.36, 28), skin, 0.03, outline=0.04)
+        for i, (fx, fy) in enumerate(((0.30, -0.42), (0.38, -0.62), (0.52, -0.80))):
+            maps.poly(hand, f"paper_hand_f{i}", geo.ellipse(fx, fy, 0.16, 0.11, 18), skin, 0.032 + 0.001 * i, outline=0.035)
+        maps.poly(hand, "paper_hand_thumb", geo.ellipse(0.42, -0.10, 0.20, 0.11, 20), skin, 0.04, outline=0.035)
         rest = (W * 0.62, -H * 0.62)
         cum = {i: maps.path_len(t[2]) for i, t in enumerate(tips)}
         last = rest

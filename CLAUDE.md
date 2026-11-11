@@ -206,3 +206,19 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   - plan_shots lại chương 1 video nắp cống (13 phút): 26/29 shot dùng `frame`, 15,7 cắt/phút, 9 kiểu, 6 màn hình chữ, `CAMERA OK`,
     cận mặt thấy trọn đầu. Ảnh: `docs/img/longform_step2.jpg`.
 
+### Bước 3 — xong (bản đồ giấy da, bàn chiến thuật, giấy sơ đồ)
+- Ba bối cảnh dựng từ dữ liệu trong story (tôi viết tay, không để Claude thiết kế lại mỗi video), dùng `core/maps.py`:
+  - `parchment_map`: bờ biển/hồ/sông thật Natural Earth 1:50m (`data/geo/`, public domain, `tools/ne_pack.py`) cho mọi khung kinh/vĩ độ;
+    thành phố, vùng theo phe hiện dần, mũi tên hành quân vẽ dần (đầu mũi tên chạy theo), quân cờ di chuyển, núi, tên biển, tiêu đề, la bàn.
+  - `tactical_board`: sa bàn (cỏ/cát/đất/tuyết, đồi, sông, rừng, đường, tường), khối quân 3D theo phe chia ô thành đội hình, có cờ, `moves`.
+  - `paper_diagram`: giấy ô/kẻ dòng/trắng/blueprint, nét/vòng tròn/mũi tên vẽ dần, tô vùng, chữ viết tay, tay đeo găng cầm bút chạy theo nét.
+- Màu theo `factions` của story (builder truyền `_factions` vào set khi story có phe). Anchor cho camera: `city_*`, `region_*`, `arrow<i>_*`, `unit_*`.
+- Framing: nhìn từ trên thì máy và điểm nhìn trượt cùng nhau (không xoay khung), nghiêng 10° để không bị xoay ngẫu nhiên; map/board nhìn vào mặt bàn.
+- Catalog gửi Claude có mô tả tham số, anchor, gợi ý camera. LONGFORM_RULES mục 6; content không đưa bản đồ/sơ đồ vào library_needs.
+- Mẫu: `projects/demo-map` (Ý 312 TCN), `projects/demo-board` (sa bàn + giấy sơ đồ). Thumbnail lấy từ ảnh xem trước (tools/thumbs.py
+  chưa khung được bối cảnh đặt xa gốc tọa độ).
+- Chạy thật: plan_shots chương 1 video La Mã (giọng espeak để thử, 172 s, 14 phút Claude): dùng 2 bản đồ (đế chế thế kỷ 2, Ý 312 TCN),
+  1 sa bàn, 5 tờ sơ đồ, 47 shot (46 dùng `frame`), 4 màn hình chữ, check_long_story sạch. Dựng riêng các shot dữ liệu: đúng địa lý,
+  mũi tên/vùng/quân cờ đúng lúc (`docs/img/longform_step3.jpg`). Còn thiếu: nhân vật, bối cảnh, đạo cụ La Mã → bước 4.
+- Còn để ý: một shot insert nhắm tâm tờ giấy trống (nên nhắm `label_*`); tay vẽ hơi nhòe do motion blur khi chạy nhanh.
+

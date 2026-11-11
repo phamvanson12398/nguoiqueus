@@ -44,6 +44,14 @@ Hàm và hằng dùng lại nhiều lần, ví dụ:
 ```
 `id` là tên vật thể trong Blender, dùng làm mục tiêu cho `tracks` và `visibility`. `on` gắn đạo cụ vào một phần của bối cảnh, ví dụ `"on": "plane"` của `diagram_board`. Thứ tự bối cảnh và đạo cụ chính là thứ tự tạo vật thể, ảnh hưởng tới số ngẫu nhiên và tên lưới.
 
+**Bối cảnh dữ liệu cho video dài** (chỉ cần điền params, mô tả đầy đủ trong `meta.json` của từng cái và `LONGFORM_RULES.md` mục 6):
+- `parchment_map` — bản đồ giấy da, bờ biển/hồ/sông thật (Natural Earth, `data/geo/`) cho khung `bounds` [lon tây, lat nam, lon đông, lat bắc];
+  `cities`, `regions` (hiện dần), `arrows` (vẽ dần `from`→`to`), `units` (quân cờ có `moves`), `mountains`, `labels`, `title`, `compass`.
+  Anchor: `center`, `city_<tên>`, `region_<tên>`, `arrow<i>_start/_mid/_end`, `unit_<id>`. Mẫu: `projects/demo-map`.
+- `tactical_board` — sa bàn: `ground`, `hills`, `rivers`, `forests`, `roads`, `walls`, `units` (khối quân theo phe, `rows`/`cols`, `moves`), `arrows`, `labels`.
+- `paper_diagram` — giấy + tay cầm bút vẽ dần: `strokes`, `circles`, `arrows`, `fills`, `labels`. Mẫu cả hai: `projects/demo-board`.
+Màu lấy từ `faction` (khai báo `factions` với `color`) hoặc `color`.
+
 ### `camera`
 - `"rig": "v3"` (dùng cho video mới): `seqs` gồm các chuỗi máy liền mạch, mỗi chuỗi có `keys` = `[khung, [vị trí máy], [điểm nhìn], lens, roll_độ]`. `trans` là chuyển cảnh tại khung đầu chuỗi sau: `{"101": ["whip", 1]}`, `push`, `match`, `cut`. `punch` = `[khung, hệ số, dur, hold]`, `shakes` = `[khung, độ mạnh, dur]`. Builder in `CAMERA OK` hoặc cảnh báo (luật skill mục 6).
 - `"rig": "long"` (video dài 16:9, cần `meta.aspect` = `"16:9"`): `shots` liền nhau, mỗi shot `{a, b, type, keys, fstop}` với `keys` giống v3 và `type` một trong `wide medium closeup insert board map diagram interior card pov`. Giữa các shot là **cắt thẳng** (không có whoosh); `trans` chỉ dùng khi cần `whip`. Hai keys = camera trôi đều suốt shot (đẩy, lia, trượt, nâng/hạ cần). Builder in `long_report`: số cắt/phút (nên 10-18, video mẫu khoảng 14), shot ngắn nhất/dài nhất (0,5-25 s), shot nào gần như đứng yên, gia tốc camera; đạt thì in `CAMERA OK`.

@@ -139,6 +139,7 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    - bối cảnh `tactical_board` (nền đất có vân, khối đơn vị theo màu phe, mũi tên vẽ dần, bụi mù);
    - bối cảnh `parchment_map` (đường bờ biển, núi, sông, nhãn địa danh, mũi tên hành quân vẽ dần, vân giấy);
    - `paper_diagram` (giấy kẻ, nét vẽ dần, tay cầm bút).
+   - **Trạng thái:** xong (CLAUDE.md, "Video dài — Bước 3").
 4. **Văn hóa, phe, trang phục, đám đông** (chi tiết ở mục 3b):
    - thư viện `cultures/` và `outfits/`, khối `factions` trong story, nhân vật/đám đông/bản đồ/thẻ lấy màu và đồ từ phe;
    - việc Claude mới `design_culture`, `design_outfit` (có tra nguồn, ảnh xếp hàng so sánh các phe);
