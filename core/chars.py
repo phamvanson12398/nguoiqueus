@@ -30,8 +30,12 @@ def make_char(name, loc, cfg):
     c.root, c.plane = billboard_root(name, loc)
     c.body = empty(name + "_body", c.plane)
     hipY, lL1, lL2 = cfg["leg"]
-    c.legL = limb(c.body, name + "_legL", (-0.15, hipY), lL1, lL2, 0.065, 0.05, "shoe")
-    c.legR = limb(c.body, name + "_legR", (0.15, hipY), lL1, lL2, 0.065, 0.05, "shoe")
+    shoe = cfg.get("shoe")
+    if shoe:                                     # custom shoes (colour/size) instead of the black ovals
+        shoe = dict(shoe); shoe["mat"] = flat(shoe["mat"], (1, 1, 1)) if isinstance(shoe["mat"], str) else shoe["mat"]
+    c.legL = limb(c.body, name + "_legL", (-0.15, hipY), lL1, lL2, 0.065, 0.05, "shoe", shoe=shoe)
+    c.legR = limb(c.body, name + "_legR", (0.15, hipY), lL1, lL2, 0.065, 0.05, "shoe", shoe=shoe)
+    c.footL, c.footR, c.foot_y = c.legL[1], c.legR[1], -lL2      # extras "on": "footL"/"footR" follow the legs
     c.torso = empty(name + "_torso", c.body, (0, hipY - 0.04, 0))
     tw, th, tcol = cfg["torso"]
     shape(c.torso, name + "_shirt", rrect(0, th / 2, tw, th, 0.3 if tw < 0.9 else 0.32), tcol, 0.12)
@@ -48,6 +52,36 @@ def make_char(name, loc, cfg):
     c.F, c.blink = faces.build_faces(c.head, name, c.skin, cfg["faces"], ey=cfg.get("eye_y", -0.02))
     c.hist = {}; c.expr_table = []
     return c
+
+
+def draw_extras(c, cid, L):
+    """draw the identity items of a character config (library/chars/*/char.json "extras").
+    on: torso | head | footL | footR (feet: coordinates relative to the foot centre, so they follow the legs)"""
+    for op in L.get("extras", []):
+        on = op["on"]; parent = getattr(c, on); nm = f"{cid}_{op['name']}"
+        m = flat(op["mat"], tuple(L["materials"][op["mat"]])) if op.get("mat") else None
+        pts = geo.points(op["pts"]) if "pts" in op else None
+        dy = c.foot_y - 0.02 if on.startswith("foot") else 0.0
+        if pts and dy: pts = [(x + 0.04, y + dy) for x, y in pts]
+        if op["op"] == "shape":
+            shape(parent, nm, pts, m, op["z"], **({"outline": op["outline"]} if "outline" in op else {}))
+        elif op["op"] == "stroke":
+            stroke(parent, nm, pts, op["w"], op["z"], m=m)
+        elif op["op"] == "disc":
+            geo.disc(parent, nm, op["c"][0] + (0.04 if dy else 0), op["c"][1] + dy, op["r"], op["z"], m)
+        else:
+            raise ValueError(f"char {cid}: unknown extras op {op['op']!r}")
+
+
+def char_cfg(L, faces_override=None):
+    """char.json -> make_char cfg (materials created, torso colour resolved); extras drawn by draw_extras"""
+    for mname, rgb in L.get("materials", {}).items():
+        flat(mname, tuple(rgb))
+    cfg = dict(L["cfg"])
+    tw, th, tmat = cfg["torso"]
+    cfg["torso"] = (tw, th, flat(tmat, tuple(L["materials"][tmat])) if isinstance(tmat, str) else tmat)
+    cfg["faces"] = faces_override or L.get("faces", ["neutral"])
+    return cfg
 
 
 # ---------------- reactions baked into the body (squash & stretch) ----------------

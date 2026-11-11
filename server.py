@@ -247,7 +247,7 @@ def job_build(job, slug, design=True, preview=True):
             job.say(f" - [{k}/{len(missing)}] {m['kind']}/{m['name']}: {m['brief']}")
             try:
                 r = bridge.design_char(m["name"], m["brief"]) if m["kind"] == "chars" else bridge.design_item(m["kind"], m["name"], m["brief"])
-                last = (r.get("rounds") or [{}])[-1]
+                last = ([x for x in r.get("rounds", []) if "score" in x] or [{}])[-1]
                 job.say(f"   -> {last.get('score', '?')}/10 {last.get('summary_vi', '')}")
                 if not r.get("ok", True): failed.append(m["name"])
             except Exception as e:

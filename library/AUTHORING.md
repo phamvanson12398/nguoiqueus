@@ -66,6 +66,13 @@ Mọi vật liệu được lưu đệm theo **tên**: đặt tên riêng theo �
 
 Màu là linear: muốn màu tươi thì dùng giá trị đậm (đỏ (0.85, 0.1, 0.08), vàng (0.95, 0.7, 0.05)).
 
+**Ánh trời nhuộm xanh mặt ngửa lên:** bầu trời là gradient xanh dương, nên mặt hướng lên trên (mặt bàn, lát bánh, sàn)
+bị pha xanh. Màu nhạt hoặc vàng sẽ ngả xám xanh hay ô liu (đã gặp ở `toast`: ruột (0.95, 0.85, 0.6) thành xám xanh,
+bơ vàng thành ô liu). Với mặt ngửa có màu nhận diện quan trọng:
+- dùng màu ấm và đậm hơn hẳn, ví dụ ruột bánh (0.95, 0.62, 0.25), bơ (1.0, 0.72, 0.08), roughness ≥ 0.6;
+- hoặc dùng `flat()` (emission, không bị nhuộm) cho mảng màu nhỏ như bơ, nhãn, đèn.
+Đây không phải lỗi pháp tuyến: dựng lại lưới sẽ không hết.
+
 ## Phong cách
 - Hình khối to, đơn giản, đọc được trên màn hình điện thoại; 3-8 phần là đủ; tránh chi tiết nhỏ hơn 2 cm.
 - Màu bão hòa, mỗi đồ vật 2-4 màu, có một màu nhận diện.

@@ -431,6 +431,9 @@ def design_item(kind, name, brief=None, dim=None, feedback=None, model=None):
         rel = "\n".join(f"- {p}" for p in imgs if os.sep + "_review" + os.sep in p)
         rv_prompt = REVIEW_PROMPT.format(what="đạo cụ" if kind == "props" else "bối cảnh", images=rel,
                                          brief_short=brief[:80], scale_note=" (đạo cụ 2D: Joe cầm trên tay)" if data.get("dim") == "2d" else "")
+        if kind == "sets":       # sets have view0..N camera shots, no scale.png
+            rv_prompt = rv_prompt.replace("Ảnh 'scale.png' đặt đồ vật cạnh nhân vật Joe (cao khoảng 2,5) để so tỉ lệ.",
+                                          "Bối cảnh không có ảnh scale.png; các ảnh view0, view1… là góc máy gợi ý (nhân vật cao khoảng 2,5).")
         rv, info3 = call("review", rv_prompt, load_schema("review"), project=f"{kind}/{name}", model=model, resume=session,
                          check=lambda x: check_build_py(x["build_py"], kind) if x.get("build_py") else [])
         cost += info3["cost_usd"]
@@ -468,7 +471,7 @@ def check_char_json(cj):
     if len(faces) < 4: probs.append("cần ít nhất 4 biểu cảm (bình thường, vui, nhếch mép/nháy mắt, tức/sốc)")
     for i, op in enumerate(cj.get("extras", [])):
         if op.get("op") not in ("shape", "stroke", "disc"): probs.append(f"extras[{i}].op phải là shape/stroke/disc")
-        if op.get("on") not in ("torso", "head"): probs.append(f"extras[{i}].on phải là torso hoặc head")
+        if op.get("on") not in ("torso", "head", "footL", "footR"): probs.append(f"extras[{i}].on phải là torso, head, footL hoặc footR")
         if op.get("mat") and op["mat"] not in mats: probs.append(f"extras[{i}].mat '{op['mat']}' không có trong materials")
         for k in ("name", "z"):
             if k not in op: probs.append(f"extras[{i}]: thiếu '{k}'")
@@ -501,8 +504,9 @@ def design_char(name, brief=None, feedback=None, model=None):
     prompt = (f"Thiết kế nhân vật 2D mới cho WhyShorts, tên '{name}'. Mô tả: {brief}\n"
               "Theo luật thiết kế nhân vật trong STYLE.md (đầu tròn, thân bo góc, một món đồ nhận diện, màu riêng đậm). "
               "char_json gồm materials (tên duy nhất có tiền tố tên nhân vật), cfg (leg [hipY, L1, L2], torso [w, h, tên vật liệu], "
-              "arm [shX, shY, L1, L2], head [y, r], tùy chọn eye_y), faces (≥ 4, chọn trong danh sách 10 biểu cảm), extras "
-              "(lệnh vẽ shape/stroke/disc lên torso/head, toạ độ 2D, z để xếp lớp; pts là danh sách điểm hoặc {rrect|ellipse|arc|ring: [...]}). "
+              "arm [shX, shY, L1, L2], head [y, r], tùy chọn eye_y, tùy chọn shoe {mat, rx, ry, dx, outline} để đổi giày "
+              "(mặc định: elip đen 0,13 × 0,065)), faces (≥ 4, chọn trong danh sách 10 biểu cảm), extras "
+              "(lệnh vẽ shape/stroke/disc lên torso/head/footL/footR — footL/footR đi theo chân, toạ độ tính từ tâm bàn chân; toạ độ 2D, z để xếp lớp; pts là danh sách điểm hoặc {rrect|ellipse|arc|ring: [...]}). "
               f"Nhân vật đã có: {', '.join(storycheck.LibIndex().list('chars'))} — phải khác hẳn về màu và món đồ.\n\n{ex}")
     if old and feedback:
         prompt += f"\n\n=== char.json hiện tại ===\n{json.dumps(old, ensure_ascii=False)}\nNgười dùng muốn sửa: {feedback}"

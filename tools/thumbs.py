@@ -107,16 +107,8 @@ def shoot(path, noline):
 
 def build_char(lib, name, loc=(0, 0, 0), cid=None):
     L = lib.json("chars", name); cid = cid or name
-    for m, rgb in L["materials"].items(): look.flat(m, tuple(rgb))
-    cfg = dict(L["cfg"]); tw, th, tm = cfg["torso"]; cfg["torso"] = (tw, th, look.MATS[tm]); cfg["faces"] = L["faces"]
-
-    def extras(c):
-        for op in L.get("extras", []):
-            par = getattr(c, op["on"]); nm = f"{cid}_{op['name']}"; m = look.MATS[op["mat"]] if op.get("mat") else None
-            if op["op"] == "shape": geo.shape(par, nm, geo.points(op["pts"]), m, op["z"], **({"outline": op["outline"]} if "outline" in op else {}))
-            elif op["op"] == "stroke": geo.stroke(par, nm, geo.points(op["pts"]), op["w"], op["z"], m=m)
-            elif op["op"] == "disc": geo.disc(par, nm, op["c"][0], op["c"][1], op["r"], op["z"], m)
-    cfg["extras"] = extras
+    cfg = chars.char_cfg(L)
+    cfg["extras"] = lambda c: chars.draw_extras(c, cid, L)
     return chars.make_char(cid, loc, cfg), L
 
 

@@ -147,28 +147,9 @@ class Builder:
     # ---------- characters ----------
     def build_char(self, cs):
         L = self.lib.json("chars", cs["type"])
-        for mname, rgb in L.get("materials", {}).items():
-            look.flat(mname, tuple(rgb))
-        cfg = dict(L["cfg"])
-        tw, th, tmat = cfg["torso"]
-        cfg["torso"] = (tw, th, look.flat(tmat, tuple(L["materials"][tmat])) if isinstance(tmat, str) else tmat)
-        cfg["faces"] = cs.get("faces", L.get("faces", ["neutral"]))
         cid = cs["id"]
-
-        def extras(c):
-            for op in L.get("extras", []):
-                parent = getattr(c, op["on"]); nm = f"{cid}_{op['name']}"
-                m = look.MATS[op["mat"]] if op.get("mat") else None
-                if op["op"] == "shape":
-                    kw = {"outline": op["outline"]} if "outline" in op else {}
-                    geo.shape(parent, nm, geo.points(op["pts"]), m, op["z"], **kw)
-                elif op["op"] == "stroke":
-                    geo.stroke(parent, nm, geo.points(op["pts"]), op["w"], op["z"], m=m)
-                elif op["op"] == "disc":
-                    geo.disc(parent, nm, op["c"][0], op["c"][1], op["r"], op["z"], m)
-                else:
-                    raise StoryError(f"char {cs['type']}: unknown extras op {op['op']!r}")
-        cfg["extras"] = extras
+        cfg = chars.char_cfg(L, cs.get("faces"))
+        cfg["extras"] = lambda c: chars.draw_extras(c, cid, L)
         c = chars.make_char(cid, tuple(self.env.const(cs.get("loc", [0, 0, 0]))), cfg)
         for hp in cs.get("props", []):
             parent = getattr(c, hp.get("on", "torso"))
