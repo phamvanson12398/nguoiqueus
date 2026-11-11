@@ -1,0 +1,530 @@
+{
+ "name": "roman_centurion_50ad",
+ "culture": "roman_empire_50ad",
+ "role": "officer",
+ "title_vi": "Bách phu trưởng La Mã (~năm 50)",
+ "description_vi": "Tunic đỏ (màu phe) và áo choàng đỏ sẫm sau lưng; giáp lá lorica segmentata thép, miếng vai, 3 huân chương phalerae vàng trước ngực; thắt lưng da, kiếm gladius bên TRÁI (kiểu sĩ quan), dao pugio bên phải; mũ đồng Imperial Gallic có gờ che gáy, miếng che má và mào lông ngang (crista transversa) màu phe; gậy nho (vitis) cong cầm chéo ở tay phải; dép caligae. Không khiên, không giáo.",
+ "silhouette_vi": "nhận ra ngay nhờ: mào lông ngang hình quạt rộng hơn cả đầu + gậy ngắn cầm chéo ra ngoài ở tay phải; không có khiên chữ nhật và giáo dài như lính lê dương",
+ "sources": [
+  {
+   "claim": "Bách phu trưởng đội mào ngang (transversis cassidum cristis)",
+   "source": "Vegetius, Epitoma rei militaris 2.13"
+  },
+  {
+   "claim": "Bia mộ Marcus Favonius Facilis (Camulodunum, khoảng năm 43-49): áo choàng, gậy vitis tay phải, kiếm bên trái",
+   "source": "Colchester Castle Museum; Bishop & Coulston, Roman Military Equipment (2006)"
+  },
+  {
+   "claim": "Phalerae, vitis trên bia mộ Q. Sertorius Festus (Verona, giữa thế kỷ 1)",
+   "source": "Goldsworthy, The Complete Roman Army (2003)"
+  },
+  {
+   "claim": "Lorica segmentata dùng từ đầu thế kỷ 1 (Kalkriese)",
+   "source": "Bishop & Coulston (2006)"
+  }
+ ],
+ "torso": "$team",
+ "hair": "none",
+ "beard": "none",
+ "palette": {
+  "bronze": [
+   0.72,
+   0.4,
+   0.08
+  ],
+  "bronze_dark": [
+   0.36,
+   0.18,
+   0.04
+  ],
+  "wood": [
+   0.4,
+   0.22,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak",
+   "pts": [
+    [
+     -0.4,
+     0.76
+    ],
+    [
+     0.4,
+     0.76
+    ],
+    [
+     0.52,
+     -0.2
+    ],
+    [
+     -0.52,
+     -0.2
+    ]
+   ],
+   "mat": "$team_dark",
+   "z": -0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "skirt",
+   "pts": {
+    "rrect": [
+     0,
+     -0.04,
+     0.86,
+     0.2,
+     0.05
+    ]
+   },
+   "mat": "$team",
+   "z": 0.11,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "lorica",
+   "pts": {
+    "rrect": [
+     0,
+     0.45,
+     0.84,
+     0.6,
+     0.12
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.15,
+   "outline": 0.028
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "band1",
+   "pts": [
+    [
+     -0.38,
+     0.26
+    ],
+    [
+     0.38,
+     0.26
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$metal_dark",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "band2",
+   "pts": [
+    [
+     -0.38,
+     0.62
+    ],
+    [
+     0.38,
+     0.62
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$metal_dark",
+   "z": 0.16
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoulderL",
+   "pts": {
+    "ellipse": [
+     -0.3,
+     0.72,
+     0.17,
+     0.1,
+     20
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.17,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoulderR",
+   "pts": {
+    "ellipse": [
+     0.3,
+     0.72,
+     0.17,
+     0.1,
+     20
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.17,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "harness",
+   "pts": {
+    "rrect": [
+     0,
+     0.44,
+     0.5,
+     0.3,
+     0.06
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.17,
+   "outline": 0.02
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "phalera1",
+   "c": [
+    -0.14,
+    0.5
+   ],
+   "r": 0.07,
+   "mat": "$trim",
+   "z": 0.18
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "phalera2",
+   "c": [
+    0.14,
+    0.5
+   ],
+   "r": 0.07,
+   "mat": "$trim",
+   "z": 0.18
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "phalera3",
+   "c": [
+    0,
+    0.37
+   ],
+   "r": 0.07,
+   "mat": "$trim",
+   "z": 0.18
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.13,
+     0.88,
+     0.08,
+     0.02
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.19,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "gladius",
+   "pts": {
+    "rrect": [
+     -0.38,
+     0.02,
+     0.08,
+     0.34,
+     0.03
+    ]
+   },
+   "mat": "$trim",
+   "z": 0.2,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pugio",
+   "pts": {
+    "rrect": [
+     0.36,
+     0.05,
+     0.07,
+     0.2,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.2,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "crest",
+   "pts": {
+    "ellipse": [
+     0,
+     0.52,
+     0.74,
+     0.38,
+     30,
+     0,
+     3.141592653589793
+    ]
+   },
+   "mat": "$team",
+   "z": 0.07,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "crest_line",
+   "pts": {
+    "arc": [
+     0,
+     0.52,
+     0.5,
+     0.22,
+     20,
+     160,
+     12
+    ]
+   },
+   "w": 0.03,
+   "mat": "$team_dark",
+   "z": 0.075
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "neckguard",
+   "pts": {
+    "rrect": [
+     0,
+     0.06,
+     1.22,
+     0.16,
+     0.06
+    ]
+   },
+   "mat": "$bronze",
+   "z": -0.03,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "helmet",
+   "pts": {
+    "ellipse": [
+     0,
+     0.2,
+     0.54,
+     0.42,
+     30,
+     0,
+     3.141592653589793
+    ]
+   },
+   "mat": "$bronze",
+   "z": 0.08,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "brow",
+   "pts": [
+    [
+     -0.5,
+     0.21
+    ],
+    [
+     0.5,
+     0.21
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$bronze_dark",
+   "z": 0.09
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekL",
+   "pts": {
+    "ellipse": [
+     -0.44,
+     -0.08,
+     0.09,
+     0.22,
+     16
+    ]
+   },
+   "mat": "$bronze",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekR",
+   "pts": {
+    "ellipse": [
+     0.44,
+     -0.08,
+     0.09,
+     0.22,
+     16
+    ]
+   },
+   "mat": "$bronze",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "vitis_outline",
+   "pts": [
+    [
+     -0.06,
+     -0.22
+    ],
+    [
+     0.06,
+     0.04
+    ],
+    [
+     0.1,
+     0.3
+    ],
+    [
+     0.2,
+     0.52
+    ],
+    [
+     0.24,
+     0.78
+    ]
+   ],
+   "w": 0.1,
+   "mat": "$ink",
+   "z": -0.03
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "vitis",
+   "pts": [
+    [
+     -0.06,
+     -0.22
+    ],
+    [
+     0.06,
+     0.04
+    ],
+    [
+     0.1,
+     0.3
+    ],
+    [
+     0.2,
+     0.52
+    ],
+    [
+     0.24,
+     0.78
+    ]
+   ],
+   "w": 0.065,
+   "mat": "$wood",
+   "z": -0.02
+  },
+  {
+   "op": "disc",
+   "on": "handR",
+   "name": "vitis_knob",
+   "c": [
+    0.24,
+    0.8
+   ],
+   "r": 0.075,
+   "mat": "$wood",
+   "z": -0.015
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  }
+ ],
+ "kind": "outfit",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Bách phu trưởng năm ~50 (vai officer của văn hóa): tunic đỏ, giáp lá lorica segmentata xám thép, mũ đồng có mào ngang đỏ (crista transversa), gậy nho (vitis) cầm ở handR. Không râu.",
+ "created": "2026-11-11T17:17:16",
+ "review": {
+  "score": 7,
+  "summary_vi": "Mũ đồng có mào ngang đỏ rất rõ, bóng đen khác hẳn lính lê dương và người đo đạc. Mắt và miệng không bị che. Chỉ cần sửa gậy vitis: nghiêng ra ngoài, to hơn và có núm tròn để không bị cánh tay che.",
+  "accuracy_vi": "Trang phục hợp với khoảng năm 50: mào ngang, phalerae, kiếm bên trái, áo choàng, vitis đều có nguồn (Vegetius, bia mộ Facilis). Không lẫn đồ thời kỳ khác. Giáp segmentata cho bách phu trưởng là cách chọn cho dễ nhìn; bia mộ Facilis cho thấy giáp xích hoặc vảy.",
+  "problems": [
+   "Gậy vitis nằm sau tay và gần song song với cánh tay nên bị che gần hết; trong bóng đen gần như không thấy (vitis là món nhận diện của bách phu trưởng).",
+   "Đường viền mào (crest_line) khá mờ, nhưng chấp nhận được."
+  ]
+ }
+}

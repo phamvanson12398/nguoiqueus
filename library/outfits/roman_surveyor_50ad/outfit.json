@@ -1,0 +1,583 @@
+{
+ "name": "roman_surveyor_50ad",
+ "culture": "roman_empire_50ad",
+ "role": "soldier",
+ "title_vi": "Trắc địa viên La Mã (agrimensor, ~năm 50)",
+ "description_vi": "Marcus là trắc địa viên trẻ đi theo quân đoàn. Anh mặc tunic len màu kem dài tới gối, có hai sọc dọc clavi màu phe. Áo choàng sagum màu nâu đỏ ($team_dark) khoác sau lưng, một vạt vắt qua vai, cài ghim fibula đồng ở vai phải. Dây lưng da có khóa đồng. Bảng sáp gỗ (mặt sáp sẫm, có vài nét chữ) treo bằng dây da ở hông trái, bút stylus kim loại giắt chéo bên cạnh. Chân đi dép caligae quai da. Không giáp, không mũ, không vũ khí; tóc đen cắt ngắn, mặt cạo nhẵn.",
+ "silhouette_vi": "Đầu trần có mảng tóc ngắn, không có gờ mũ chìa ra; không khiên, không giáo, hai tay trống; áo choàng xòe ra hai bên hông thành hình thang. Tunic kem sáng tương phản với áo đỏ và giáp xám của lính lê dương; khối bảng sáp nâu vuông ở hông trái.",
+ "sources": [
+  {
+   "claim": "Agrimensores (người đo đất) làm việc cho quân đội và thuộc địa",
+   "source": "O. A. W. Dilke, The Roman Land Surveyors (1971)"
+  },
+  {
+   "claim": "Bia mộ trắc địa viên Lucius Aebutius Faustus (Ivrea, thế kỷ 1) có khắc groma",
+   "source": "Dilke 1971; CIL V 6786"
+  },
+  {
+   "claim": "Bảng sáp gỗ và bút stylus dùng phổ biến ở Britannia khoảng năm 50-80",
+   "source": "R. S. O. Tomlin, Roman London's First Voices (2016)"
+  },
+  {
+   "claim": "Tunic len màu tự nhiên có clavi, áo choàng sagum cài fibula ở vai phải",
+   "source": "G. Sumner, Roman Military Dress (2009)"
+  },
+  {
+   "claim": "Dép caligae quân đội thế kỷ 1",
+   "source": "Bishop & Coulston, Roman Military Equipment (2006)"
+  }
+ ],
+ "torso": "$cloth2",
+ "hair": "none",
+ "beard": "none",
+ "palette": {
+  "cloth2": [
+   0.82,
+   0.72,
+   0.5
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "hair_back",
+   "pts": {
+    "ellipse": [
+     0,
+     0.02,
+     0.53,
+     0.53,
+     32
+    ]
+   },
+   "mat": "$hair",
+   "z": -0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "hair_cap",
+   "pts": [
+    [
+     -0.5,
+     0.2
+    ],
+    [
+     -0.46,
+     0.32
+    ],
+    [
+     -0.36,
+     0.43
+    ],
+    [
+     -0.2,
+     0.5
+    ],
+    [
+     0,
+     0.53
+    ],
+    [
+     0.2,
+     0.5
+    ],
+    [
+     0.36,
+     0.43
+    ],
+    [
+     0.46,
+     0.32
+    ],
+    [
+     0.5,
+     0.2
+    ],
+    [
+     0.38,
+     0.25
+    ],
+    [
+     0.26,
+     0.21
+    ],
+    [
+     0.13,
+     0.27
+    ],
+    [
+     0,
+     0.22
+    ],
+    [
+     -0.13,
+     0.27
+    ],
+    [
+     -0.26,
+     0.21
+    ],
+    [
+     -0.38,
+     0.25
+    ]
+   ],
+   "mat": "$hair",
+   "z": 0.06,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak_back",
+   "pts": [
+    [
+     -0.34,
+     0.8
+    ],
+    [
+     0.34,
+     0.8
+    ],
+    [
+     0.5,
+     -0.18
+    ],
+    [
+     0.42,
+     -0.27
+    ],
+    [
+     -0.42,
+     -0.27
+    ],
+    [
+     -0.5,
+     -0.18
+    ]
+   ],
+   "mat": "$team_dark",
+   "z": -0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tunic_hem",
+   "pts": {
+    "rrect": [
+     0,
+     -0.06,
+     0.84,
+     0.22,
+     0.05
+    ]
+   },
+   "mat": "$cloth2",
+   "z": 0.11,
+   "outline": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "clavus_L",
+   "pts": [
+    [
+     -0.17,
+     -0.12
+    ],
+    [
+     -0.17,
+     0.62
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$team",
+   "z": 0.13
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "clavus_R",
+   "pts": [
+    [
+     0.17,
+     -0.12
+    ],
+    [
+     0.17,
+     0.62
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$team",
+   "z": 0.13
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "neckline",
+   "pts": [
+    [
+     -0.12,
+     0.8
+    ],
+    [
+     0,
+     0.72
+    ],
+    [
+     0.12,
+     0.8
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$ink",
+   "z": 0.135
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak_drape",
+   "pts": [
+    [
+     -0.41,
+     0.76
+    ],
+    [
+     -0.22,
+     0.83
+    ],
+    [
+     0.34,
+     0.8
+    ],
+    [
+     0.41,
+     0.68
+    ],
+    [
+     0.3,
+     0.6
+    ],
+    [
+     -0.05,
+     0.64
+    ],
+    [
+     -0.4,
+     0.6
+    ]
+   ],
+   "mat": "$team_dark",
+   "z": 0.14,
+   "outline": 0.025
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "fibula",
+   "c": [
+    0.3,
+    0.7
+   ],
+   "r": 0.055,
+   "mat": "$trim",
+   "z": 0.15
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.24,
+     0.86,
+     0.07,
+     0.02
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.18,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "buckle",
+   "pts": {
+    "rrect": [
+     0.08,
+     0.24,
+     0.08,
+     0.09,
+     0.015
+    ]
+   },
+   "mat": "$trim",
+   "z": 0.185,
+   "outline": 0.015
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "tablet_strap",
+   "pts": [
+    [
+     -0.17,
+     0.26
+    ],
+    [
+     -0.15,
+     0.18
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$leather",
+   "z": 0.185
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "wax_tablet",
+   "pts": {
+    "rrect": [
+     -0.15,
+     0.04,
+     0.27,
+     0.3,
+     0.03
+    ]
+   },
+   "mat": [
+    0.6,
+    0.36,
+    0.13
+   ],
+   "z": 0.19,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "wax_face",
+   "pts": {
+    "rrect": [
+     -0.15,
+     0.04,
+     0.19,
+     0.22,
+     0.02
+    ]
+   },
+   "mat": [
+    0.1,
+    0.07,
+    0.05
+   ],
+   "z": 0.195,
+   "outline": 0
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "wax_line1",
+   "pts": [
+    [
+     -0.21,
+     0.1
+    ],
+    [
+     -0.09,
+     0.1
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$cloth2",
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "wax_line2",
+   "pts": [
+    [
+     -0.21,
+     0.04
+    ],
+    [
+     -0.11,
+     0.04
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$cloth2",
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "wax_line3",
+   "pts": [
+    [
+     -0.21,
+     -0.02
+    ],
+    [
+     -0.13,
+     -0.02
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$cloth2",
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "stylus",
+   "pts": [
+    [
+     0,
+     0.36
+    ],
+    [
+     0.06,
+     0
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$metal",
+   "z": 0.2
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "stylus_tip",
+   "pts": [
+    [
+     0.045,
+     0.01
+    ],
+    [
+     0.075,
+     0.01
+    ],
+    [
+     0.065,
+     -0.07
+    ]
+   ],
+   "mat": "$metal_dark",
+   "z": 0.2,
+   "outline": 0.012
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "stylus_head",
+   "pts": {
+    "rrect": [
+     0,
+     0.37,
+     0.07,
+     0.04,
+     0.01
+    ]
+   },
+   "mat": "$metal_dark",
+   "z": 0.205,
+   "outline": 0.012
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "strap1",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.022,
+   "mat": "$leather",
+   "z": 0.01
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "strap2",
+   "pts": [
+    [
+     -0.04,
+     0.09
+    ],
+    [
+     0.06,
+     -0.04
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.012
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "strap1",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.022,
+   "mat": "$leather",
+   "z": 0.01
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "strap2",
+   "pts": [
+    [
+     -0.04,
+     0.09
+    ],
+    [
+     0.06,
+     -0.04
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.012
+  }
+ ],
+ "kind": "outfit",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Marcus, trắc địa viên (agrimensor) trẻ năm ~50: tunic len màu kem, áo choàng nâu đỏ sau lưng, dây lưng da, dép caligae, không giáp, không mũ (tóc đen ngắn lộ). Món nhận diện: bảng sáp + bút sáp đeo bên hông.",
+ "created": "2026-11-11T17:14:43",
+ "review": {
+  "score": 8,
+  "summary_vi": "Đạt. Mảng tóc ngắn đã thấy rõ và không che mắt. Áo choàng nâu đỏ (`$team_dark`) tách màu khỏi tunic đỏ của lính, hai sọc clavi giữ màu phe. Bảng sáp và bút stylus nhìn rõ ở hông, không bị tay che. Khối hình to, rõ, các mảnh đúng chỗ.",
+  "accuracy_vi": "Đúng thời kỳ: tunic len kem có clavi, sagum cài fibula ở vai phải, dây lưng da, caligae, mặt cạo nhẵn, bảng sáp và stylus; không có giáp, mũ hay vũ khí. Không lẫn đồ thời kỳ hay nước khác.",
+  "problems": [
+   "Tóc ra màu nâu vừa, không phải đen như mô tả, vì màu lấy từ hair_colors của văn hóa. Muốn đen hẳn thì đặt look.hair_color cho Marcus trong story; không cần sửa trang phục.",
+   "Bóng đen cỡ nhỏ: thân hình thang của Marcus khá giống thân của Joe. Vẫn phân biệt được với lính lê dương nhờ không mũ, không khiên, không giáo."
+  ]
+ }
+}

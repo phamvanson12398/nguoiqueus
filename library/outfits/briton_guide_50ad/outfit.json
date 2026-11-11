@@ -1,0 +1,601 @@
+{
+ "name": "briton_guide_50ad",
+ "culture": "iron_age_britons_50ad",
+ "role": "soldier",
+ "title_vi": "Bran: người dẫn đường Briton (~năm 50)",
+ "description_vi": "Người dẫn đường Briton, không mặc giáp, không đội mũ, không cầm vũ khí. Áo tunic len có tay, nhuộm vàng weld, thắt dây lưng da. Áo choàng len vuông kẻ ô hai màu ($team nền, ô $team_dark) xòe rộng sau lưng, vạt trước vắt chéo từ vai phải, cài trâm đồng tròn trên vai phải. Cổ đeo vòng torc vàng mở ở trước ngực, hai đầu có núm tròn. Quần len braccae kẻ ô xanh lá và nâu, giày da mềm. Tay phải cầm gậy gỗ dài, nghiêng ra ngoài, cao quá đầu, đầu gậy có núm tròn và dải da quấn. Tóc dài buộc và ria mép theo look của story. Vẽ ngang hàng với nhân vật La Mã: cùng tỉ lệ, cùng độ chăm chút.",
+ "silhouette_vi": "Nhận ra ngay nhờ: đầu trần, áo choàng hình thang xòe rộng hai bên thân, gậy cao quá đầu có núm tròn (không có mũi sắt như giáo pilum), tay trái không cầm khiên, torc vàng ở cổ.",
+ "sources": [
+  {
+   "claim": "Đàn ông Briton để tóc dài, cạo râu cằm, giữ ria mép",
+   "source": "Julius Caesar, De Bello Gallico 5.14"
+  },
+  {
+   "claim": "Người Celt mặc quần bracae và áo choàng sọc hoặc kẻ ô cài trâm. Diodorus tả người Gaul, áp sang người Briton là suy diễn",
+   "source": "Diodorus Siculus, Bibliotheca historica 5.30"
+  },
+  {
+   "claim": "Vải thời đồ sắt dệt sọc hoặc kẻ ô ít nhất hai màu",
+   "source": "British Museum / Teaching History 100, 'Clothes tools'; vải ô ở Vindolanda"
+  },
+  {
+   "claim": "Torc vàng là dấu hiệu địa vị",
+   "source": "British Museum, Great Torc from Snettisham"
+  },
+  {
+   "claim": "Trâm đồng cài áo choàng ở Britannia thế kỷ 1",
+   "source": "Mackreth, Brooches in Late Iron Age and Roman Britain (2011)"
+  }
+ ],
+ "torso": "$cloth2",
+ "hair": "auto",
+ "beard": null,
+ "palette": {},
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak_back",
+   "pts": [
+    [
+     -0.44,
+     0.8
+    ],
+    [
+     0.44,
+     0.8
+    ],
+    [
+     0.62,
+     -0.12
+    ],
+    [
+     -0.62,
+     -0.12
+    ]
+   ],
+   "mat": "$team",
+   "z": -0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_back_check",
+   "pts": [
+    [
+     -0.58,
+     0.1
+    ],
+    [
+     0.58,
+     0.1
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$team_dark",
+   "z": -0.045
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tunic_hem",
+   "pts": {
+    "rrect": [
+     0,
+     -0.05,
+     0.84,
+     0.18,
+     0.05
+    ]
+   },
+   "mat": "$cloth2",
+   "z": 0.11,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.18,
+     0.86,
+     0.07,
+     0.02
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.13,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak_front",
+   "pts": [
+    [
+     -0.42,
+     0.8
+    ],
+    [
+     0.3,
+     0.8
+    ],
+    [
+     -0.05,
+     0.3
+    ],
+    [
+     -0.42,
+     0.15
+    ]
+   ],
+   "mat": "$team",
+   "z": 0.14,
+   "outline": 0.028
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_check_h1",
+   "pts": [
+    [
+     -0.4,
+     0.66
+    ],
+    [
+     0.18,
+     0.66
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$team_dark",
+   "z": 0.145
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_check_h2",
+   "pts": [
+    [
+     -0.4,
+     0.48
+    ],
+    [
+     0.05,
+     0.48
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$team_dark",
+   "z": 0.145
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_check_v1",
+   "pts": [
+    [
+     -0.22,
+     0.78
+    ],
+    [
+     -0.22,
+     0.26
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$team_dark",
+   "z": 0.145
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_check_v2",
+   "pts": [
+    [
+     0,
+     0.78
+    ],
+    [
+     0,
+     0.4
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$team_dark",
+   "z": 0.145
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "torc_left",
+   "pts": {
+    "ellipse": [
+     0,
+     0.8,
+     0.2,
+     0.12,
+     12,
+     3.1416,
+     4.462
+    ]
+   },
+   "w": 0.06,
+   "mat": "$trim",
+   "z": 0.2
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "torc_right",
+   "pts": {
+    "ellipse": [
+     0,
+     0.8,
+     0.2,
+     0.12,
+     12,
+     4.963,
+     6.2832
+    ]
+   },
+   "w": 0.06,
+   "mat": "$trim",
+   "z": 0.2
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "torc_end_L",
+   "c": [
+    -0.049,
+    0.684
+   ],
+   "r": 0.042,
+   "mat": "$trim",
+   "z": 0.21
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "torc_end_R",
+   "c": [
+    0.049,
+    0.684
+   ],
+   "r": 0.042,
+   "mat": "$trim",
+   "z": 0.21
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "brooch",
+   "c": [
+    0.3,
+    0.74
+   ],
+   "r": 0.075,
+   "mat": "$metal",
+   "z": 0.22
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "brooch_center",
+   "c": [
+    0.3,
+    0.74
+   ],
+   "r": 0.03,
+   "mat": "$trim",
+   "z": 0.23
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "brooch_pin",
+   "pts": [
+    [
+     0.2,
+     0.69
+    ],
+    [
+     0.4,
+     0.79
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.225
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "staff_shaft",
+   "pts": [
+    [
+     -0.02,
+     -0.8
+    ],
+    [
+     0.04,
+     0.5
+    ],
+    [
+     0.12,
+     1.5
+    ],
+    [
+     0.18,
+     2.05
+    ]
+   ],
+   "w": 0.065,
+   "mat": [
+    0.42,
+    0.24,
+    0.08
+   ],
+   "z": -0.02
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "staff_wrap",
+   "pts": [
+    [
+     0.15,
+     1.78
+    ],
+    [
+     0.17,
+     1.92
+    ]
+   ],
+   "w": 0.09,
+   "mat": "$leather",
+   "z": -0.015
+  },
+  {
+   "op": "disc",
+   "on": "handR",
+   "name": "staff_knob",
+   "c": [
+    0.19,
+    2.1
+   ],
+   "r": 0.085,
+   "mat": [
+    0.3,
+    0.16,
+    0.05
+   ],
+   "z": -0.01
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "shoe",
+   "pts": {
+    "ellipse": [
+     0,
+     0,
+     0.14,
+     0.07,
+     18
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.01,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "braccae_leg",
+   "pts": {
+    "rrect": [
+     0,
+     0.19,
+     0.14,
+     0.3,
+     0.04
+    ]
+   },
+   "mat": [
+    0.06,
+    0.3,
+    0.08
+   ],
+   "z": 0.02,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "braccae_check1",
+   "pts": [
+    [
+     -0.065,
+     0.13
+    ],
+    [
+     0.065,
+     0.13
+    ]
+   ],
+   "w": 0.03,
+   "mat": [
+    0.3,
+    0.15,
+    0.05
+   ],
+   "z": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "braccae_check2",
+   "pts": [
+    [
+     -0.065,
+     0.25
+    ],
+    [
+     0.065,
+     0.25
+    ]
+   ],
+   "w": 0.03,
+   "mat": [
+    0.3,
+    0.15,
+    0.05
+   ],
+   "z": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "braccae_check3",
+   "pts": [
+    [
+     0,
+     0.06
+    ],
+    [
+     0,
+     0.32
+    ]
+   ],
+   "w": 0.03,
+   "mat": [
+    0.3,
+    0.15,
+    0.05
+   ],
+   "z": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "footR",
+   "name": "shoe",
+   "pts": {
+    "ellipse": [
+     0,
+     0,
+     0.14,
+     0.07,
+     18
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.01,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "footR",
+   "name": "braccae_leg",
+   "pts": {
+    "rrect": [
+     0,
+     0.19,
+     0.14,
+     0.3,
+     0.04
+    ]
+   },
+   "mat": [
+    0.06,
+    0.3,
+    0.08
+   ],
+   "z": 0.02,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "braccae_check1",
+   "pts": [
+    [
+     -0.065,
+     0.13
+    ],
+    [
+     0.065,
+     0.13
+    ]
+   ],
+   "w": 0.03,
+   "mat": [
+    0.3,
+    0.15,
+    0.05
+   ],
+   "z": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "braccae_check2",
+   "pts": [
+    [
+     -0.065,
+     0.25
+    ],
+    [
+     0.065,
+     0.25
+    ]
+   ],
+   "w": 0.03,
+   "mat": [
+    0.3,
+    0.15,
+    0.05
+   ],
+   "z": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "braccae_check3",
+   "pts": [
+    [
+     0,
+     0.06
+    ],
+    [
+     0,
+     0.32
+    ]
+   ],
+   "w": 0.03,
+   "mat": [
+    0.3,
+    0.15,
+    0.05
+   ],
+   "z": 0.025
+  }
+ ],
+ "kind": "outfit",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Bran, người dẫn đường Briton: quần len braccae kẻ ô xanh lá–nâu, áo choàng kẻ ô ghim trâm đồng tròn ở vai, vòng cổ torc vàng, gậy gỗ dài cầm ở handR (để tựa). Tóc dài buộc, ria (look của story). Vẽ tôn trọng, ngang hàng.",
+ "created": "2026-11-11T17:20:14",
+ "review": {
+  "score": 7,
+  "summary_vi": "Vòng 2 đã khác rõ: áo choàng hình thang xòe rộng, gậy cao quá đầu có núm tròn, torc vàng nổi rõ. Chỉ còn lỗi đuôi tóc lòi dưới cằm, bản sửa đã bỏ hai mảnh này. Bóng đen vẫn rõ nhờ áo choàng và gậy.",
+  "accuracy_vi": "Tunic len, áo choàng kẻ ô 2 màu cài trâm đồng tròn, torc vàng, quần len, ria mép đều đúng thời kỳ. Không lẫn đồ La Mã hay đồ của thời kỳ khác. Quần braccae và vải kẻ ô áp từ mô tả người Gaul là suy diễn, đã ghi trong nguồn.",
+  "problems": [
+   "Đuôi tóc `hair_tail` gắn vào đầu nhưng lòi ra dưới cằm thành tam giác nâu, trông như râu dê hoặc cổ. Bản sửa bỏ `hair_tail` và `hair_tie`, để tóc buộc theo look của story."
+  ]
+ }
+}
