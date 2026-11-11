@@ -211,7 +211,8 @@ small.err{color:var(--bad)}
     <div class="panel">
       <h2>Thiết kế đồ mới</h2>
       <div class="row">
-        <select id="dKind"><option value="props">Đạo cụ</option><option value="sets">Bối cảnh</option><option value="chars">Nhân vật</option></select>
+        <select id="dKind"><option value="props">Đạo cụ</option><option value="sets">Bối cảnh</option><option value="chars">Nhân vật</option><option value="cultures">Văn hóa (dân tộc + thời kỳ)</option><option value="outfits">Trang phục</option></select>
+        <input type="text" id="dCulture" class="hidden" placeholder="văn hóa, vd roman_empire_50ad" style="width:190px">
         <select id="dDim"><option value="3d">3D (rơi, lăn, đặt đất)</option><option value="2d">2D (cầm tay, sơ đồ)</option></select>
         <input type="text" id="dName" placeholder="ten_khong_dau" style="width:170px">
         <input type="text" id="dBrief" placeholder="Mô tả: hình dáng, màu, dùng trong cảnh nào…" style="flex:1;min-width:260px">
@@ -579,8 +580,8 @@ $('#btnRender').onclick = () => { if (S.state.format === 'long') { if (!(S.state
 // ---------------- library ----------------
 async function loadLibrary() {
   const L = await api('/api/library');
-  const names = {props: 'Đạo cụ', sets: 'Bối cảnh', chars: 'Nhân vật'};
-  $('#libList').innerHTML = ['props', 'sets', 'chars'].map(k => `<div class="panel"><h2>${names[k]} (${L[k].length})</h2><div class="grid lib">${L[k].slice().sort((a, b) => (b.status === 'draft') - (a.status === 'draft')).map(it => `
+  const names = {props: 'Đạo cụ', sets: 'Bối cảnh', chars: 'Nhân vật', cultures: 'Văn hóa', outfits: 'Trang phục'};
+  $('#libList').innerHTML = ['props', 'sets', 'chars', 'cultures', 'outfits'].filter(k => L[k]).map(k => `<div class="panel"><h2>${names[k]} (${L[k].length})</h2><div class="grid lib">${L[k].slice().sort((a, b) => (b.status === 'draft') - (a.status === 'draft')).map(it => `
     <div class="card"><img src="${it.thumb ? it.thumb + '?t=' + Date.now() : ''}" data-views='${esc(JSON.stringify(it.views))}' title="Bấm để xem các góc">
       <h3 style="margin-top:6px">${esc(it.title_vi)} ${it.status === 'draft' ? '<span class="chip draft">nháp</span>' : ''}</h3>
       <div class="muted">${esc(it.kind)}/${esc(it.name)}${it.dim ? ' · ' + it.dim : ''}${it.review && it.review.score ? ' · Claude tự chấm ' + it.review.score + '/10' : ''}</div>
@@ -596,8 +597,10 @@ window.feedback = (k, n) => { const t = $(`#fb-${k}-${n}`).value.trim(); if (!t)
   run('/api/library/design', {kind: k, name: n, feedback: t}, `Sửa ${k}/${n}`); };
 $('#btnDesign').onclick = () => { const n = $('#dName').value.trim(), b = $('#dBrief').value.trim();
   if (!/^[a-z][a-z0-9_]{1,40}$/.test(n)) return toast('Tên: chữ thường không dấu, số, gạch dưới'); if (!b) return toast('Nhập mô tả');
-  run('/api/library/design', {kind: $('#dKind').value, name: n, brief: b, dim: $('#dKind').value === 'props' ? $('#dDim').value : null}, `Thiết kế ${n}`); };
-$('#dKind').onchange = () => $('#dDim').classList.toggle('hidden', $('#dKind').value !== 'props');
+  if ($('#dKind').value === 'outfits' && !$('#dCulture').value.trim()) return toast('Trang phục cần tên văn hóa');
+  run('/api/library/design', {kind: $('#dKind').value, name: n, brief: b, dim: $('#dKind').value === 'props' ? $('#dDim').value : null,
+      culture: $('#dCulture').value.trim() || null}, `Thiết kế ${n}`); };
+$('#dKind').onchange = () => { $('#dDim').classList.toggle('hidden', $('#dKind').value !== 'props'); $('#dCulture').classList.toggle('hidden', $('#dKind').value !== 'outfits'); };
 
 // ---------------- zoom ----------------
 let zoomList = [], zoomI = 0;

@@ -274,6 +274,52 @@ def job_build_long(job, slug, design=True, preview=True, chapters=None):
     return {"chapters": list(out)}
 
 
+def _story_people(d):
+    st = jload(os.path.join(d, "story.json")) or {}
+    facs = {f["id"]: f for f in st.get("factions", [])}
+    for x in st.get("chars", []) + st.get("crowds", []):
+        cul = (facs.get(x.get("faction")) or {}).get("culture")
+        refs = [x.get("outfit") or x.get("role")] + [c[1] for c in x.get("outfit_changes", [])]
+        for ref in refs:
+            if ref: yield ref, cul
+
+
+def _resolve_outfit(ref, cul):
+    lib = storycheck.LibIndex()
+    if lib.exists("outfits", ref): return ref, None
+    if cul and lib.exists("cultures", cul):
+        c = lib.json("cultures", cul); oid = c.get("roles", {}).get(ref)
+        if oid: return oid, c.get("role_briefs_vi", {}).get(oid) or f"vai {ref} của {cul}"
+    return None, None
+
+
+def needed_outfits(d):
+    """[(outfit id, culture, brief)] the story needs and the library does not have yet"""
+    out, seen = [], set()
+    lib = storycheck.LibIndex()
+    for ref, cul in _story_people(d):
+        oid, brief = _resolve_outfit(ref, cul)
+        if oid and oid not in seen and not lib.exists("outfits", oid):
+            seen.add(oid); out.append((oid, cul, brief))
+    return out
+
+
+def story_outfits(d, exclude=None):
+    """outfits of the story (with faction colours) the new one must be told apart from, at most 3"""
+    st = jload(os.path.join(d, "story.json")) or {}
+    facs = {f["id"]: f for f in st.get("factions", [])}
+    lib = storycheck.LibIndex(); out = []
+    for x in st.get("chars", []) + st.get("crowds", []):
+        cul = (facs.get(x.get("faction")) or {}).get("culture"); ref = x.get("outfit") or x.get("role")
+        if not ref: continue
+        oid, _ = _resolve_outfit(ref, cul)
+        col = (facs.get(x.get("faction")) or {}).get("color")
+        if oid and oid != exclude and lib.exists("outfits", oid):
+            tag = oid + (":" + ",".join(f"{c:.3f}" for c in col) if col else "")
+            if tag not in out: out.append(tag)
+    return out[:3]
+
+
 def job_build(job, slug, design=True, preview=True, chapters=None):
     """'Duyệt & dựng': plan shots -> design missing library items -> check -> build + preview, with automatic fix rounds"""
     if "/chapters/" not in slug and is_long(slug): return job_build_long(job, slug, design, preview, chapters)
@@ -284,6 +330,8 @@ def job_build(job, slug, design=True, preview=True, chapters=None):
     missing = res.get("missing", [])
     job.say(f"   story.json xong. Đồ mới cần thiết kế: {', '.join(m['kind'] + '/' + m['name'] for m in missing) or 'không'}")
     failed = []
+    order = {"cultures": 0, "outfits": 1}
+    missing = sorted(missing, key=lambda m: order.get(m["kind"], 2))
     if missing and design:
         job.say("2/4 Thiết kế đồ còn thiếu (mỗi món vài phút)…")
         for k, m in enumerate(missing, 1):
@@ -291,13 +339,31 @@ def job_build(job, slug, design=True, preview=True, chapters=None):
                 job.say(f" - [{k}/{len(missing)}] {m['kind']}/{m['name']}: đã có trong thư viện, bỏ qua"); continue
             job.say(f" - [{k}/{len(missing)}] {m['kind']}/{m['name']}: {m['brief']}")
             try:
-                r = bridge.design_char(m["name"], m["brief"]) if m["kind"] == "chars" else bridge.design_item(m["kind"], m["name"], m["brief"])
+                if m["kind"] == "cultures":
+                    r = bridge.design_culture(m["name"], m["brief"])
+                    job.say(f"   -> văn hóa xong ({r['seconds']} s), vai: {r['roles']}")
+                    continue
+                if m["kind"] == "outfits":
+                    r = bridge.design_outfit(m["name"], m["brief"], culture=m.get("culture"), compare=story_outfits(d, m["name"]))
+                elif m["kind"] == "chars": r = bridge.design_char(m["name"], m["brief"])
+                else: r = bridge.design_item(m["kind"], m["name"], m["brief"])
                 last = ([x for x in r.get("rounds", []) if "score" in x] or [{}])[-1]
                 job.say(f"   -> {last.get('score', '?')}/10 {last.get('summary_vi', '')}")
                 if not r.get("ok", True): failed.append(m["name"])
             except Exception as e:
                 if job.cancelled: raise
                 failed.append(m["name"]); job.say(f"   -> LỖI: {e}")
+        # outfits of the roles the story uses (known only once the cultures exist)
+        for oid, cul, brief in needed_outfits(d):
+            job.say(f" - trang phục {oid} (văn hóa {cul}): {brief[:160]}")
+            try:
+                r = bridge.design_outfit(oid, brief, culture=cul, compare=story_outfits(d, oid))
+                last = (r.get("rounds") or [{}])[-1]
+                job.say(f"   -> {last.get('score', '?')}/10 {last.get('summary_vi', '')} | sử liệu: {last.get('accuracy_vi', '')}")
+                if not r.get("ok", True): failed.append(oid)
+            except Exception as e:
+                if job.cancelled: raise
+                failed.append(oid); job.say(f"   -> LỖI: {e}")
     if failed: raise ValueError("thiết kế chưa xong: " + ", ".join(failed) + " (xem log; có thể thiết kế lại ở tab Thư viện rồi bấm 'Chỉ render lại xem trước')")
     errs = storycheck.check_story(jload(os.path.join(d, "story.json")))
     if errs: raise ValueError("story.json còn lỗi: " + "; ".join(errs[:5]))
@@ -374,8 +440,10 @@ def job_splice(job, slug, part):
     return {"file": os.path.basename(out)}
 
 
-def job_design(job, kind, name, brief, dim, feedback):
+def job_design(job, kind, name, brief, dim, feedback, culture=None):
     if kind == "chars": return bridge.design_char(name, brief, feedback=feedback)
+    if kind == "cultures": return bridge.design_culture(name, brief, feedback=feedback)
+    if kind == "outfits": return bridge.design_outfit(name, brief, culture=culture, feedback=feedback)
     return bridge.design_item(kind, name, brief, dim=dim, feedback=feedback)
 
 
@@ -570,9 +638,9 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(bridge.approve(self.jbody()["item"]))
         if api[:2] == ["library", "design"]:
             b = self.jbody(); kind = b["kind"]; name = b["name"]
-            if kind not in ("props", "sets", "chars"): raise ValueError("kind phải là props/sets/chars")
+            if kind not in ("props", "sets", "chars", "cultures", "outfits"): raise ValueError("kind phải là props/sets/chars/cultures/outfits")
             return self.send_json(start_job("design", f"lib:{kind}/{name}", job_design, kind, name, b.get("brief"), b.get("dim"),
-                                            b.get("feedback")).to_json())
+                                            b.get("feedback"), b.get("culture")).to_json())
         return self.send_json({"error": "not found"}, 404)
 
     def status(self):
@@ -588,7 +656,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def library(self):
         lib = storycheck.LibIndex(); out = {}
-        for kind in ("sets", "props", "chars"):
+        for kind in ("sets", "props", "chars", "cultures", "outfits"):
             rows = []
             for n in lib.list(kind):
                 m = lib.meta(kind, n)

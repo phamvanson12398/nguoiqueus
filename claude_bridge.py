@@ -22,7 +22,7 @@ python that has the `bpy` module), WHYSHORTS_MODEL (optional model for every job
 WHYSHORTS_KEEP_API_KEY=1 to pass ANTHROPIC_API_KEY through (otherwise it is removed so the CLI uses
 the Pro/Max subscription).
 """
-import ast, datetime, json, os, re, shutil, subprocess, sys, threading, time
+import ast, datetime, json, math, os, re, shutil, subprocess, sys, threading, time
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 if ROOT not in sys.path: sys.path.insert(0, ROOT)
@@ -38,6 +38,7 @@ READ_TOOLS = ["Read", "Glob", "Grep"]
 WEB_TOOLS = ["WebSearch", "WebFetch"]
 JOB_TOOLS = {"ideas": WEB_TOOLS, "write_content": WEB_TOOLS + ["Read"], "rewrite_seq": [], "plan_shots": READ_TOOLS,
              "design_prop": READ_TOOLS, "design_set": READ_TOOLS, "design_char": READ_TOOLS, "review": READ_TOOLS,
+             "design_culture": WEB_TOOLS + ["Read"], "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
              "fix_from_preview": READ_TOOLS}
 
 
@@ -540,9 +541,151 @@ def design_char(name, brief=None, feedback=None, model=None):
     return report
 
 
+# =====================================================================
+#  cultures + outfits (long-form, several nations)
+# =====================================================================
+OUTFIT_ONS = {"torso", "head", "footL", "footR", "handL", "handR"}
+SLOTS = {"team", "team_dark", "cloth", "cloth2", "metal", "metal_dark", "leather", "trim", "hair", "accent", "ink", "white", "skin"}
+
+
+def _pts_ok(pts):
+    if isinstance(pts, dict):
+        if len(pts) != 1: return False
+        (k, a), = pts.items()
+        return k in ("rrect", "ellipse", "arc", "ring") and isinstance(a, list) and all(isinstance(x, (int, float)) for x in a) and len(a) >= 4
+    return isinstance(pts, list) and len(pts) >= 2 and all(isinstance(q, list) and len(q) == 2 for q in pts)
+
+
+def check_outfit_json(o):
+    e = []
+    if not re.fullmatch(r"[a-z][a-z0-9_]{1,50}", o.get("name", "")): e.append("name: chữ thường, số, gạch dưới")
+    for i, op in enumerate(o.get("items", [])):
+        w = f"items[{i}] ({op.get('name')})"
+        if op.get("on") not in OUTFIT_ONS: e.append(f"{w}: on phải là {sorted(OUTFIT_ONS)}")
+        m = op.get("mat", "$cloth")
+        if isinstance(m, str) and (not m.startswith("$") or m[1:] not in SLOTS) and m[1:] not in (o.get("palette") or {}):
+            e.append(f"{w}: mat '{m}' không phải ô màu ({', '.join('$' + x for x in sorted(SLOTS))}) hay [r,g,b]")
+        if op["op"] in ("shape", "stroke") and not _pts_ok(op.get("pts")): e.append(f"{w}: pts sai dạng")
+        if op["op"] == "stroke" and not op.get("w"): e.append(f"{w}: stroke cần w")
+        if op["op"] == "disc" and not (isinstance(op.get("c"), list) and len(op["c"]) == 2 and op.get("r")): e.append(f"{w}: disc cần c [x,y] và r")
+        if op.get("on") == "head" and op["op"] == "shape" and op.get("z", 0.18) > 0.0 and isinstance(op.get("pts"), dict):
+            (k, a), = op["pts"].items()
+            upper_half = k == "ellipse" and len(a) >= 7 and a[5] >= -0.01 and a[6] <= math.pi + 0.01
+            lo = a[1] if upper_half else a[1] - (a[3] if k == "ellipse" else a[3] / 2)
+            hi = a[1] + (a[3] if k == "ellipse" else a[3] / 2)
+            if k in ("ellipse", "rrect") and abs(a[0]) < 0.25 and lo < -0.05 and hi > -0.35:
+                e.append(f"{w}: che mắt/miệng (mắt y≈-0,02, miệng y≈-0,3); đặt mũ/mặt nạ cao hơn hoặc z âm")
+    if o.get("torso") and (not o["torso"].startswith("$") or o["torso"][1:] not in SLOTS): e.append("torso: phải là ô màu $...")
+    return e
+
+
+def _write_lib_json(kind, name, fname, data, brief, review=None):
+    d = os.path.join(LIB, kind, name); os.makedirs(d, exist_ok=True)
+    p = os.path.join(d, fname); old = json.load(open(p, encoding="utf-8")) if os.path.exists(p) else {}
+    data = dict(data, kind=kind[:-1], name=name, status="draft", designed_by="claude_bridge", brief_vi=brief,
+                created=old.get("created") or datetime.datetime.now().isoformat(timespec="seconds"))
+    if review: data["review"] = review
+    json.dump(data, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return p
+
+
+def design_culture(name, brief=None, feedback=None, model=None):
+    """research + write library/cultures/<name>/culture.json (draft); -> report with the outfits its roles need"""
+    if not re.fullmatch(r"[a-z][a-z0-9_]{1,50}", name): raise BridgeError("tên chỉ gồm chữ thường, số, gạch dưới")
+    p = os.path.join(LIB, "cultures", name, "culture.json")
+    old = json.load(open(p, encoding="utf-8")) if os.path.exists(p) else None
+    brief = brief or (old or {}).get("brief_vi") or name
+    doc = _read("library/OUTFITS.md")
+    prompt = (f"Nghiên cứu (dùng web, ưu tiên nguồn học thuật/bảo tàng) và viết hồ sơ VĂN HÓA '{name}' cho thư viện WhyShorts: {brief}\n"
+              "Mục đích: vẽ trang phục, màu, cờ, kiến trúc đúng sử liệu cho video hoạt hình 2D. Ghi nguồn cho các điểm chính và nói rõ điểm còn tranh cãi.\n"
+              "roles: các vai sẽ xuất hiện (soldier, officer, commoner, noble, priest... chỉ các vai có thật ở văn hóa này) → id trang phục dạng "
+              f"'<tên ngắn>_<vai>_<thời kỳ>' (ví dụ roman_legionary_50ad); role_briefs_vi: mỗi id một mô tả trang phục chi tiết, đúng sử liệu, đủ để vẽ.\n"
+              "Màu là emission tuyến tính: phải đậm, bão hòa. skin_tones là dải màu da thật (chỉ dùng khi story bật), hair_colors thật.\n"
+              f"Văn hóa đã có: {', '.join(storycheck.LibIndex().list('cultures'))}\n\n=== library/OUTFITS.md ===\n{doc}\n\n"
+              f"=== Ví dụ: library/cultures/roman_empire_50ad/culture.json ===\n{_read('library/cultures/roman_empire_50ad/culture.json')}")
+    if old and feedback: prompt += f"\n\n=== culture.json hiện tại ===\n{json.dumps(old, ensure_ascii=False)}\nNgười dùng muốn sửa: {feedback}"
+    t0 = time.time()
+    data, info = call("design_culture", prompt, load_schema("design_culture"), project=f"cultures/{name}", model=model)
+    cj = dict(data["culture_json"], name=name)
+    _write_lib_json("cultures", name, "culture.json", cj, brief)
+    need = [o for o in cj["roles"].values() if not os.path.exists(os.path.join(LIB, "outfits", o, "outfit.json"))]
+    return {"item": f"cultures/{name}", "ok": True, "roles": cj["roles"], "outfits_needed": need,
+            "role_briefs_vi": cj.get("role_briefs_vi", {}), "seconds": round(time.time() - t0, 1), "cost_usd_list_price": info["cost_usd"]}
+
+
+def render_lineup(name, compare=(), tag="r1"):
+    out = os.path.join(LIB, "outfits", name, "_review", tag)
+    code, log = run_blender(os.path.join(ROOT, "tools", "lineup.py"), [out, name] + list(compare))
+    imgs = [os.path.join(out, f) for f in ("lineup.png", "silhouette.png") if os.path.exists(os.path.join(out, f))]
+    if "LINEUP ->" not in log or len(imgs) < 2:
+        tb = log[log.rfind("Traceback"):] if "Traceback" in log else log[-2500:]
+        return imgs, tb[-2500:]
+    return imgs, None
+
+
+def design_outfit(name, brief=None, culture=None, compare=(), feedback=None, model=None):
+    """write library/outfits/<name>/outfit.json, render a line-up next to Joe and the outfits it must differ from
+    (compare = other outfit ids in the video), let Claude look and fix (max MAX_FIX rounds)"""
+    if not re.fullmatch(r"[a-z][a-z0-9_]{1,50}", name): raise BridgeError("tên chỉ gồm chữ thường, số, gạch dưới")
+    p = os.path.join(LIB, "outfits", name, "outfit.json")
+    old = json.load(open(p, encoding="utf-8")) if os.path.exists(p) else None
+    culture = culture or (old or {}).get("culture")
+    if not culture: raise BridgeError("cần culture (văn hóa) cho trang phục")
+    cul_p = os.path.join(LIB, "cultures", culture, "culture.json")
+    if not os.path.exists(cul_p): raise BridgeError(f"chưa có văn hóa {culture} (thiết kế văn hóa trước)")
+    cul = json.load(open(cul_p, encoding="utf-8"))
+    brief = brief or (old or {}).get("brief_vi") or cul.get("role_briefs_vi", {}).get(name) or name
+    role = next((r for r, o in cul.get("roles", {}).items() if o == name), (old or {}).get("role") or "soldier")
+    compare = [c for c in compare if c != name and os.path.exists(os.path.join(LIB, "outfits", c.split(":")[0], "outfit.json"))]
+    prompt = (f"Thiết kế TRANG PHỤC '{name}' (vai '{role}' của văn hóa '{culture}') cho nhân vật 2D WhyShorts: {brief}\n"
+              "Đúng sử liệu theo culture.json bên dưới (không lẫn đồ thời kỳ/nước khác); khối to rõ, ít chi tiết vụn; phần nhận diện phe dùng $team. "
+              + (f"Phải khác rõ (bóng đen, dáng mũ/khiên/vũ khí) với: {', '.join(compare)}.\n" if compare else "\n")
+              + f"=== library/OUTFITS.md ===\n{_read('library/OUTFITS.md')}\n\n=== culture.json ===\n{json.dumps(cul, ensure_ascii=False)}\n\n"
+              f"=== Ví dụ: library/outfits/roman_legionary_50ad/outfit.json ===\n{_read('library/outfits/roman_legionary_50ad/outfit.json')}")
+    if old and feedback: prompt += f"\n\n=== outfit.json hiện tại ===\n{json.dumps(old, ensure_ascii=False)}\nNgười dùng muốn sửa: {feedback}"
+    report = {"item": f"outfits/{name}", "rounds": []}; t0 = time.time()
+    chk = lambda x: check_outfit_json(dict(x["outfit_json"], name=name))
+    data, info = call("design_outfit", prompt, load_schema("design_outfit"), project=f"outfits/{name}", model=model, check=chk)
+    session, cost = info["session"], info["cost_usd"]
+    oj = dict(data["outfit_json"], name=name, culture=culture, role=role)
+    _write_lib_json("outfits", name, "outfit.json", oj, brief)
+    for rnd in range(MAX_FIX + 1):
+        imgs, err = render_lineup(name, compare, tag=f"r{rnd + 1}")
+        if err:
+            d2, i2 = call("design_outfit", f"Dựng trang phục lỗi trong Blender:\n{err}\nSửa và trả lại JSON đầy đủ.", load_schema("design_outfit"),
+                          project=f"outfits/{name}", model=model, resume=session, check=chk)
+            cost += i2["cost_usd"]; oj = dict(d2["outfit_json"], name=name, culture=culture, role=role)
+            _write_lib_json("outfits", name, "outfit.json", oj, brief); continue
+        report["images"] = [os.path.relpath(x, ROOT) for x in imgs]
+        if rnd == MAX_FIX: break
+        rv, i3 = call("review_outfit", "Ảnh render trang phục bạn vừa thiết kế (dùng Read để xem):\n"
+                      + "\n".join(f"- {x}" for x in imgs)
+                      + "\nlineup.png: Joe (thước đo) rồi trang phục này" + (", rồi " + ", ".join(compare) if compare else "")
+                      + ". silhouette.png: bóng đen cỡ nhỏ.\nKiểm tra: (1) đúng sử liệu, (2) bóng đen phân biệt được với các trang phục khác, "
+                      "(3) đúng phong cách (khối to, rõ), (4) các mảnh đúng chỗ, không che mắt/miệng, đồ cầm theo tay. Nếu cần sửa: ok=false và "
+                      "outfit_json ĐẦY ĐỦ đã sửa; nếu đạt: outfit_json=null.", load_schema("review_outfit"), project=f"outfits/{name}",
+                      model=model, resume=session, check=lambda x: check_outfit_json(dict(x["outfit_json"], name=name)) if x.get("outfit_json") else [])
+        cost += i3["cost_usd"]
+        report["rounds"].append({k: rv[k] for k in ("score", "ok", "problems", "summary_vi", "accuracy_vi", "silhouette_ok")})
+        say(f"  [review {rnd + 1}] {rv['score']}/10 ok={rv['ok']} silhouette={rv['silhouette_ok']}: {rv['summary_vi']}")
+        if rv["ok"] or not rv.get("outfit_json"): break
+        oj = dict(rv["outfit_json"], name=name, culture=culture, role=role); _write_lib_json("outfits", name, "outfit.json", oj, brief)
+    final = (report["rounds"] or [{}])[-1]
+    _write_lib_json("outfits", name, "outfit.json", oj, brief, review={k: final.get(k) for k in ("score", "summary_vi", "accuracy_vi", "problems")})
+    if report.get("images"):
+        try:
+            from PIL import Image  # optional: square thumbnail from the line-up
+            im = Image.open(os.path.join(ROOT, report["images"][0])); w, h = im.size; x = int(w * (1.5 / (2 + len(compare))))
+            im.crop((max(0, x - h // 2), 0, max(0, x - h // 2) + h, h)).resize((512, 512)).save(os.path.join(LIB, "outfits", name, "thumb.png"))
+        except Exception:
+            shutil.copy(os.path.join(ROOT, report["images"][0]), os.path.join(LIB, "outfits", name, "thumb.png"))
+    report.update(ok="images" in report, seconds=round(time.time() - t0, 1), cost_usd_list_price=round(cost, 3))
+    return report
+
+
 def approve(item):
     kind, name = item.split("/")
-    p = os.path.join(LIB, kind, name, "char.json" if kind == "chars" else "meta.json")
+    p = os.path.join(LIB, kind, name, {"chars": "char.json", "cultures": "culture.json", "outfits": "outfit.json"}.get(kind, "meta.json"))
     m = json.load(open(p, encoding="utf-8")); m["status"] = "approved"
     m["approved"] = datetime.datetime.now().isoformat(timespec="seconds")
     json.dump(m, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
@@ -696,6 +839,11 @@ Luật khi viết story.json:
   thì đặt một tên mới (ví dụ gary_sneakers) rồi đưa vào missing. Không đưa tên đã có vào missing.
   Giữ số món mới ít nhất có thể: gộp đồ trang trí vào bối cảnh, bỏ đồ phụ không cần cho gag.
 - Biểu cảm chỉ dùng mặt có trong faces của nhân vật đó (xem catalog).
+- Người của các dân tộc/thời kỳ (lính, dân, nhân vật lịch sử): chars type "person" + faction + role (hoặc outfit), look (hair, beard,
+  accent cho nhân vật chính, seed); đổi trang phục bằng outfit_changes. Đám đông, đội hình quân: `crowds` (formation block/line/column/
+  wedge/scatter/circle, count, cols, spacing, moves, march). Văn hóa chưa có → missing kind "cultures" (brief: dân tộc, nơi, năm, các vai);
+  trang phục của vai sẽ được thiết kế sau văn hóa (không cần liệt kê). Trang phục lẻ (nhân vật lịch sử riêng) → kind "outfits" + culture.
+  Xem library/OUTFITS.md.
 """
 
 
@@ -757,7 +905,8 @@ def plan_shots(slug, model=None):
     schema = {"type": "object", "$defs": defs, "additionalProperties": False, "required": ["story", "missing"],
               "properties": {"story": story_schema, "missing": {"type": "array", "items": {
                   "type": "object", "required": ["kind", "name", "brief"], "additionalProperties": False,
-                  "properties": {"kind": {"enum": ["sets", "props", "chars"]}, "name": {"type": "string"}, "brief": {"type": "string"}}}}}}
+                  "properties": {"kind": {"enum": ["sets", "props", "chars", "cultures", "outfits"]}, "name": {"type": "string"}, "brief": {"type": "string"},
+                                 "culture": {"type": "string", "description": "outfits: the culture it belongs to"}}}}}}
     frames = int(round((words["duration"] + 1.2) * 30)) if "duration" in words else None
     if long_ and "frames" in words: frames = words["frames"]
     prompt = (f"Chuyển content đã duyệt thành story.json (đọc STORY.md; mẫu: "

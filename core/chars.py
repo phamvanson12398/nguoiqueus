@@ -38,6 +38,7 @@ def make_char(name, loc, cfg):
     c.footL, c.footR, c.foot_y = c.legL[1], c.legR[1], -lL2      # extras "on": "footL"/"footR" follow the legs
     c.torso = empty(name + "_torso", c.body, (0, hipY - 0.04, 0))
     tw, th, tcol = cfg["torso"]
+    c.torso_h = th
     shape(c.torso, name + "_shirt", rrect(0, th / 2, tw, th, 0.3 if tw < 0.9 else 0.32), tcol, 0.12)
     shX, shY, aL1, aL2 = cfg["arm"]
     c.sh = {"L": (-shX, shY), "R": (shX, shY)}; c.aL = (aL1, aL2)

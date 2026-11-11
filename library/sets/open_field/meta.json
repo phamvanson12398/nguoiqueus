@@ -1,0 +1,6 @@
+{"kind": "set", "name": "open_field", "title_vi": "Cánh đồng rộng (cho quân đội, đám đông)", "status": "approved",
+ "description_vi": "Đồng cỏ (hoặc đồng khô, tuyết) rộng 160 × 120, đồi xa nhiều lớp, cây và đá rải rác, tùy chọn một con đường đất. Giữa cảnh để trống cho đội hình 100+ người (crowds).",
+ "space": "origin mặc định [0, 0, 0]; mặt đất kéo từ y -20 tới y +100",
+ "params": {"origin": {"default": [0.0, 0.0, 0.0]}, "size": {"default": [160.0, 120.0]}, "ground": {"default": "meadow", "desc_vi": "meadow | dry | snow"},
+  "hills": {"default": true}, "trees": {"default": 18}, "rocks": {"default": 10}, "road": {"default": null, "desc_vi": "{from:[x,y], to:[x,y], width}"}, "seed": {"default": 5}},
+ "anchors": {"center": "tâm"}, "tags": ["outdoor", "battle", "longform"]}

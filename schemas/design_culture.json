@@ -1,0 +1,190 @@
+{
+ "type": "object",
+ "required": [
+  "culture_json"
+ ],
+ "properties": {
+  "culture_json": {
+   "type": "object",
+   "required": [
+    "name",
+    "title_vi",
+    "years",
+    "region",
+    "description_vi",
+    "sources",
+    "uncertain_vi",
+    "palette",
+    "hair_styles",
+    "hair_colors",
+    "beard_prob",
+    "beard_styles",
+    "skin_tones",
+    "roles",
+    "emblem_vi",
+    "architecture_vi",
+    "map_color",
+    "music_vi"
+   ],
+   "properties": {
+    "name": {
+     "type": "string"
+    },
+    "title_vi": {
+     "type": "string"
+    },
+    "years": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     },
+     "minItems": 2,
+     "maxItems": 2
+    },
+    "region": {
+     "type": "string"
+    },
+    "description_vi": {
+     "type": "string"
+    },
+    "sources": {
+     "type": "array",
+     "minItems": 2,
+     "items": {
+      "type": "object",
+      "required": [
+       "claim",
+       "source"
+      ],
+      "properties": {
+       "claim": {
+        "type": "string"
+       },
+       "source": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "uncertain_vi": {
+     "type": "string"
+    },
+    "palette": {
+     "type": "object",
+     "required": [
+      "cloth",
+      "cloth2",
+      "metal",
+      "metal_dark",
+      "leather",
+      "trim"
+     ],
+     "additionalProperties": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1
+      },
+      "minItems": 3,
+      "maxItems": 3
+     }
+    },
+    "hair_styles": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "enum": [
+       "none",
+       "short",
+       "long",
+       "tied",
+       "curly",
+       "topknot",
+       "braids",
+       "bald_sides"
+      ]
+     }
+    },
+    "hair_colors": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1
+      },
+      "minItems": 3,
+      "maxItems": 3
+     }
+    },
+    "beard_prob": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 1
+    },
+    "beard_styles": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "mustache",
+       "full",
+       "goatee"
+      ]
+     }
+    },
+    "skin_tones": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1
+      },
+      "minItems": 3,
+      "maxItems": 3
+     }
+    },
+    "roles": {
+     "type": "object",
+     "minProperties": 1,
+     "additionalProperties": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,50}$"
+     },
+     "description": "role -> outfit id (<culture>_<role> style ids; may not exist yet)"
+    },
+    "role_briefs_vi": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "string"
+     },
+     "description": "outfit id -> what to design (for design_outfit)"
+    },
+    "emblem_vi": {
+     "type": "string"
+    },
+    "architecture_vi": {
+     "type": "string"
+    },
+    "map_color": {
+     "type": "array",
+     "items": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+     },
+     "minItems": 3,
+     "maxItems": 3
+    },
+    "music_vi": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,112 @@
+{
+ "kind": "culture",
+ "name": "roman_empire_50ad",
+ "title_vi": "La Mã thời Đế chế (khoảng năm 50)",
+ "years": [
+  -27,
+  200
+ ],
+ "region": "Địa Trung Hải, Britannia, Gaul",
+ "status": "approved",
+ "description_vi": "Quân đội La Mã thời đầu Đế chế: lính lê dương chuyên nghiệp mặc tunic len đỏ đất, giáp lá lorica segmentata, mũ sắt kiểu 'Imperial Gallic' có gờ che gáy rộng và miếng che má, khiên scutum chữ nhật cong, giáo pilum, kiếm gladius. Dân thường mặc tunic len màu tự nhiên, công dân mặc toga trắng.",
+ "sources": [
+  {
+   "claim": "Lorica segmentata dùng từ khoảng đầu thế kỷ 1 (hiện vật Kalkriese, năm 9)",
+   "source": "Bishop & Coulston, Roman Military Equipment (2006)"
+  },
+  {
+   "claim": "Mũ Imperial Gallic, scutum cong chữ nhật, pilum",
+   "source": "Goldsworthy, The Complete Roman Army (2003)"
+  },
+  {
+   "claim": "Màu tunic quân đội: đỏ/trắng ngà còn tranh cãi",
+   "source": "Sumner, Roman Military Dress (2009)"
+  }
+ ],
+ "uncertain_vi": "Màu tunic (đỏ hay trắng ngà) và màu khiên theo từng quân đoàn không chắc chắn; dùng đỏ cho dễ nhận.",
+ "palette": {
+  "cloth": [
+   0.62,
+   0.08,
+   0.05
+  ],
+  "cloth2": [
+   0.78,
+   0.7,
+   0.52
+  ],
+  "metal": [
+   0.55,
+   0.57,
+   0.62
+  ],
+  "metal_dark": [
+   0.24,
+   0.25,
+   0.29
+  ],
+  "leather": [
+   0.32,
+   0.17,
+   0.07
+  ],
+  "trim": [
+   0.95,
+   0.72,
+   0.12
+  ]
+ },
+ "hair_styles": [
+  "short"
+ ],
+ "hair_colors": [
+  [
+   0.12,
+   0.07,
+   0.04
+  ],
+  [
+   0.2,
+   0.12,
+   0.06
+  ],
+  [
+   0.07,
+   0.05,
+   0.04
+  ]
+ ],
+ "beard_prob": 0.12,
+ "beard_styles": [
+  "full"
+ ],
+ "skin_tones": [
+  [
+   0.93,
+   0.74,
+   0.58
+  ],
+  [
+   0.84,
+   0.62,
+   0.46
+  ],
+  [
+   0.72,
+   0.52,
+   0.38
+  ]
+ ],
+ "roles": {
+  "soldier": "roman_legionary_50ad",
+  "officer": "roman_centurion_50ad"
+ },
+ "emblem_vi": "khiên đỏ có tia sét và cánh vàng, cờ vexillum đỏ, đại bàng aquila",
+ "architecture_vi": "đá và gạch, mái ngói đỏ, cột, vòm; đồn lũy hình chữ nhật có hào và hàng rào gỗ",
+ "map_color": [
+  0.62,
+  0.08,
+  0.05
+ ],
+ "music_vi": "kèn đồng cornu, trống"
+}

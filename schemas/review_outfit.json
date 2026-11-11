@@ -1,0 +1,191 @@
+{
+ "type": "object",
+ "required": [
+  "ok",
+  "score",
+  "problems",
+  "summary_vi",
+  "accuracy_vi",
+  "silhouette_ok"
+ ],
+ "properties": {
+  "ok": {
+   "type": "boolean"
+  },
+  "score": {
+   "type": "integer",
+   "minimum": 1,
+   "maximum": 10
+  },
+  "problems": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "summary_vi": {
+   "type": "string"
+  },
+  "accuracy_vi": {
+   "type": "string",
+   "description": "đúng sử liệu? lẫn đồ thời kỳ/nước khác?"
+  },
+  "silhouette_ok": {
+   "type": "boolean",
+   "description": "bóng đen nhỏ có phân biệt được với các phe khác không"
+  },
+  "outfit_json": {
+   "anyOf": [
+    {
+     "type": "object",
+     "required": [
+      "name",
+      "culture",
+      "role",
+      "title_vi",
+      "description_vi",
+      "silhouette_vi",
+      "items"
+     ],
+     "properties": {
+      "name": {
+       "type": "string"
+      },
+      "culture": {
+       "type": "string"
+      },
+      "role": {
+       "type": "string"
+      },
+      "title_vi": {
+       "type": "string"
+      },
+      "description_vi": {
+       "type": "string"
+      },
+      "silhouette_vi": {
+       "type": "string"
+      },
+      "sources": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "claim": {
+          "type": "string"
+         },
+         "source": {
+          "type": "string"
+         }
+        }
+       }
+      },
+      "torso": {
+       "type": "string"
+      },
+      "hair": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "beard": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "palette": {
+       "type": "object",
+       "additionalProperties": {
+        "type": "array",
+        "items": {
+         "type": "number",
+         "minimum": 0,
+         "maximum": 1
+        },
+        "minItems": 3,
+        "maxItems": 3
+       }
+      },
+      "items": {
+       "type": "array",
+       "minItems": 3,
+       "items": {
+        "type": "object",
+        "required": [
+         "op",
+         "on",
+         "name"
+        ],
+        "properties": {
+         "op": {
+          "enum": [
+           "shape",
+           "stroke",
+           "disc"
+          ]
+         },
+         "on": {
+          "enum": [
+           "torso",
+           "head",
+           "footL",
+           "footR",
+           "handL",
+           "handR"
+          ]
+         },
+         "name": {
+          "type": "string"
+         },
+         "pts": {
+          "description": "[[x,y],...] or {rrect|ellipse|arc|ring: [...]}"
+         },
+         "mat": {
+          "anyOf": [
+           {
+            "type": "string"
+           },
+           {
+            "type": "array",
+            "items": {
+             "type": "number",
+             "minimum": 0,
+             "maximum": 1
+            },
+            "minItems": 3,
+            "maxItems": 3
+           }
+          ]
+         },
+         "z": {
+          "type": "number"
+         },
+         "w": {
+          "type": "number"
+         },
+         "outline": {
+          "type": "number"
+         },
+         "c": {
+          "type": "array",
+          "items": {
+           "type": "number"
+          }
+         },
+         "r": {
+          "type": "number"
+         }
+        }
+       }
+      }
+     }
+    },
+    {
+     "type": "null"
+    }
+   ]
+  }
+ }
+}

@@ -21,6 +21,8 @@ class LibIndex:
     def exists(self, kind, name):
         if kind == "motions": return os.path.exists(os.path.join(self.root, "motions", name + ".json"))
         if kind == "chars": return os.path.exists(self.path("chars", name, "char.json"))
+        if kind == "cultures": return os.path.exists(self.path("cultures", name, "culture.json"))
+        if kind == "outfits": return os.path.exists(self.path("outfits", name, "outfit.json"))
         return os.path.exists(self.path(kind, name, "build.py"))
 
     def list(self, kind):
@@ -32,14 +34,15 @@ class LibIndex:
     def json(self, kind, name):
         key = (kind, name)
         if key not in self._json:
-            p = os.path.join(self.root, "motions", name + ".json") if kind == "motions" else self.path(kind, name, "char.json")
+            p = os.path.join(self.root, "motions", name + ".json") if kind == "motions" else \
+                self.path(kind, name, {"cultures": "culture.json", "outfits": "outfit.json"}.get(kind, "char.json"))
             if not os.path.exists(p):
                 raise KeyError(f"library {kind}/{name} not found (have: {', '.join(self.list(kind))})")
             self._json[key] = json.load(open(p, encoding="utf-8"))
         return self._json[key]
 
     def meta(self, kind, name):
-        p = self.path(kind, name, "char.json" if kind == "chars" else "meta.json")
+        p = self.path(kind, name, {"chars": "char.json", "cultures": "culture.json", "outfits": "outfit.json"}.get(kind, "meta.json"))
         return json.load(open(p, encoding="utf-8")) if os.path.exists(p) else {}
 
     def catalog(self):
@@ -62,6 +65,10 @@ class LibIndex:
                 if m.get("status") == "draft": d["status"] = "draft"
                 items.append(d)
             out[kind] = items
+        out["cultures"] = [{"name": n, "title_vi": self.json("cultures", n).get("title_vi", ""), "years": self.json("cultures", n).get("years"),
+                             "roles": self.json("cultures", n).get("roles", {})} for n in self.list("cultures")]
+        out["outfits"] = [{"name": n, "title_vi": self.json("outfits", n).get("title_vi", ""), "culture": self.json("outfits", n).get("culture"),
+                            "role": self.json("outfits", n).get("role")} for n in self.list("outfits")]
         out["motions"] = [{"name": n, "params": self.json("motions", n).get("params", {}),
                            "description_vi": self.json("motions", n).get("description_vi", "")} for n in self.list("motions")]
         return out
@@ -105,6 +112,27 @@ def check_story(st, lib=None, pending=()):
     for g in st.get("sound", {}).get("auto", {}).get("gesture_chars", []):
         if g not in ch_ids: errs.append(f"sound.auto.gesture_chars: no character '{g}'")
     fac_ids = {f["id"] for f in st.get("factions", [])}
+    facs = {f["id"]: f for f in st.get("factions", [])}
+
+    def check_outfit(w, ref, fid):
+        cul = (facs.get(fid) or {}).get("culture")
+        if known("outfits", ref): return
+        if cul and lib.exists("cultures", cul) and ref in lib.json("cultures", cul).get("roles", {}):
+            o = lib.json("cultures", cul)["roles"][ref]
+            if not known("outfits", o): errs.append(f"{w}: role '{ref}' of culture '{cul}' uses outfit '{o}', which does not exist (add to missing)")
+            return
+        if cul and (("cultures", cul) in pend): return
+        if cul and not lib.exists("cultures", cul):
+            errs.append(f"{w}: faction culture '{cul}' is not in the library (have {lib.list('cultures')}; add it to missing as kind cultures)"); return
+        errs.append(f"{w}: '{ref}' is neither an outfit (have {lib.list('outfits')}) nor a role of culture '{cul}'")
+    for k, c in enumerate(st.get("chars", [])):
+        if c.get("outfit"): check_outfit(f"chars[{k}].outfit", c["outfit"], c.get("faction"))
+        elif c.get("role"): check_outfit(f"chars[{k}].role", c["role"], c.get("faction"))
+        for j, ch in enumerate(c.get("outfit_changes", [])):
+            check_outfit(f"chars[{k}].outfit_changes[{j}]", ch[1], ch[2] if len(ch) > 2 else c.get("faction"))
+    for k, cr in enumerate(st.get("crowds", [])):
+        if cr.get("faction") and cr["faction"] not in fac_ids: errs.append(f"crowds[{k}].faction: no faction '{cr['faction']}'")
+        if cr.get("outfit") or cr.get("role"): check_outfit(f"crowds[{k}]", cr.get("outfit") or cr["role"], cr.get("faction"))
     for c in st.get("chars", []):
         if "faction" in c and c["faction"] not in fac_ids: errs.append(f"chars.{c['id']}.faction: no faction '{c['faction']}' (have {sorted(fac_ids)})")
     for k, cd in enumerate(st.get("cards", [])):

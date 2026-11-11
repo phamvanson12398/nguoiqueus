@@ -19,7 +19,7 @@ for _m in [m for m in sys.modules if m == "core" or m.startswith("core.") or m.s
     del sys.modules[_m]
 
 import core
-from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards, overlay
+from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards, overlay, outfits
 from core.expr import Env, ExprError
 from core import framing
 import storycheck
@@ -58,7 +58,8 @@ class Library(LibIndex):
     def json(self, kind, name):
         key = (kind, name)
         if key not in self._json:
-            p = os.path.join(self.root, "motions", name + ".json") if kind == "motions" else self.path(kind, name, "char.json")
+            p = os.path.join(self.root, "motions", name + ".json") if kind == "motions" else \
+                self.path(kind, name, {"cultures": "culture.json", "outfits": "outfit.json"}.get(kind, "char.json"))
             if not os.path.exists(p):
                 raise StoryError(f"library {kind}/{name} not found (have: {', '.join(self.list(kind))})")
             self._json[key] = json.load(open(p, encoding="utf-8"))
@@ -96,6 +97,9 @@ class Builder:
         self.anchors = {}
         self.report = {"warnings": []}
         self.dof_on = False
+        self.outfit_vis = []          # (group empty, [(a, b)]) for outfit changes
+        self.crowds = {}              # id -> crowd root
+        self.crowd_tpl = []           # (collection, template char root, location)
 
     # ---------- helpers ----------
     def obj(self, name, where=""):
@@ -147,11 +151,52 @@ class Builder:
         return o
 
     # ---------- characters ----------
+    def outfit_for(self, cs, ref=None, faction_id=None):
+        """(outfit json, faction, culture) for a character spec; ref = outfit id or role name (outfit changes)"""
+        fac = next((f for f in self.st.get("factions", []) if f["id"] == (faction_id or cs.get("faction"))), None)
+        cul = outfits.load("cultures", fac["culture"]) if fac and fac.get("culture") and outfits.exists("cultures", fac["culture"]) else None
+        oid = ref or cs.get("outfit")
+        if oid and not outfits.exists("outfits", oid) and cul and oid in cul.get("roles", {}): oid = cul["roles"][oid]
+        if not oid and cs.get("role"):
+            oid = (cul or {}).get("roles", {}).get(cs["role"])
+            if not oid: raise StoryError(f"chars.{cs['id']}: culture '{(fac or {}).get('culture')}' has no role '{cs['role']}'")
+        return (outfits.load("outfits", oid) if oid else None), fac, cul
+
     def build_char(self, cs):
         L = self.lib.json("chars", cs["type"])
         cid = cs["id"]
         cfg = chars.char_cfg(L, cs.get("faces"))
-        cfg["extras"] = lambda c: chars.draw_extras(c, cid, L)
+        of, fac, cul = self.outfit_for(cs) if (cs.get("outfit") or cs.get("role")) else (None, None, None)
+        changes = cs.get("outfit_changes", [])
+        if of or changes:
+            lk = outfits.resolve_look(cs, fac, cul, of, self.st["meta"].get("seed", 7))
+            if of and of.get("torso"):
+                tw, th, _ = cfg["torso"]; cfg["torso"] = (tw, th, outfits.mat("torso", lk["slots"], of["torso"]))
+            hr = cfg["head"][1]
+            variants = [(1, of, fac, cul, lk)]
+            for ch in changes:
+                o2, f2, c2 = self.outfit_for(cs, ch[1], ch[2] if len(ch) > 2 else None)
+                variants.append((int(ch[0]), o2, f2, c2, outfits.resolve_look(cs, f2, c2, o2, self.st["meta"].get("seed", 7))))
+
+            def extras(c):
+                chars.draw_extras(c, cid, L)
+                groups = []
+                for k, (f0, o_, f_, c_, lk_) in enumerate(variants):
+                    g = []
+                    if len(variants) > 1 and o_ and o_.get("torso"):     # changed outfits repaint the shirt
+                        tw, th, _ = cfg["torso"]
+                        o_ = dict(o_, items=[{"op": "shape", "on": "torso", "name": "shirt_cover", "pts": {"rrect": [0, th / 2, tw, th, 0.3]},
+                                              "mat": o_["torso"], "z": 0.125}] + list(o_.get("items", [])))
+                    if o_: g = outfits.dress(c, cid, o_, lk_, hr, prefix=f"{cid}_of{k}")
+                    groups.append((f0, g))
+                if len(groups) > 1:
+                    for k, (f0, g) in enumerate(groups):
+                        f1 = groups[k + 1][0] - 1 if k + 1 < len(groups) else 10 ** 6
+                        for e in g: self.outfit_vis.append((e, [(f0, f1)]))
+                outfits.apply_skin(c, cid, lk)
+            cfg["extras"] = extras
+        else:
+            cfg["extras"] = lambda c: chars.draw_extras(c, cid, L)
         c = chars.make_char(cid, tuple(self.env.const(cs.get("loc", [0, 0, 0]))), cfg)
         for hp in cs.get("props", []):
             parent = getattr(c, hp.get("on", "torso"))
@@ -166,6 +211,38 @@ class Builder:
         self.chars[cid] = c
         self.char_specs.append(cs)
         return c
+
+    def build_crowd(self, cr, k):
+        """a formation of soldiers/people: a few template characters (variants) instanced at every member position"""
+        cid = cr["id"]; rnd = random.Random(cr.get("seed", 11 + k))
+        at = tuple(self.env.const(cr.get("at", [0, 0, 0]), f"crowds[{k}].at"))
+        nv = max(1, min(6, int(cr.get("variants", 3))))
+        march = [tuple(r) for r in cr.get("march", [])]
+        tpls = []
+        face_pool = cr.get("faces") or ([cr["face"]] if cr.get("face") else ["neutral", "focus", "grumpy", "neutral", "worried", "smirk"])
+        for v in range(nv):
+            spec = {"id": f"{cid}_t{v}", "type": cr.get("type", "person"), "loc": list(at), "look": dict(cr.get("look", {}), seed=v),
+                    "expressions": [[1, face_pool[v % len(face_pool)]]], "blinks": [30 + 17 * v, 120 + 23 * v]}
+            for key in ("faction", "role", "outfit"):
+                if key in cr: spec[key] = cr[key]
+            pose = {"default": dict(cr.get("pose", {}))}
+            if march: pose["segments"] = [{"ranges": [list(r) for r in march], "legs": f"walk_legs(f * 0.30 + {v * 1.7:.2f})"}]
+            spec["pose"] = pose
+            c = self.build_char(spec)
+            coll = bpy.data.collections.new(f"tpl_{cid}_{v}")
+            self.crowd_tpl.append((coll, c.root, at)); tpls.append((coll, at))
+        offs = outfits.formation_offsets(cr, rnd)
+        root, members = outfits.instance_crowd(cid, tpls, offs, at, cr.get("rot", 0), rnd)
+        if cr.get("moves"):
+            for (f0, p0), (f1, p1) in zip(cr["moves"], cr["moves"][1:]):
+                for f in range(int(f0), int(f1) + 1, 2):
+                    u = timing.ease((f - f0) / max(1, f1 - f0)) if cr.get("ease", True) else (f - f0) / max(1, f1 - f0)
+                    root.location = (p0[0] + (p1[0] - p0[0]) * u, p0[1] + (p1[1] - p0[1]) * u, at[2]); root.keyframe_insert("location", frame=f)
+                root.location = (p1[0], p1[1], at[2]); root.keyframe_insert("location", frame=int(f1))
+        if "from" in cr or "to" in cr:
+            self.outfit_vis.append((root, [(int(cr.get("from", 1)), int(cr.get("to", 10 ** 6)))]))
+        self.crowds[cid] = root
+        return root
 
     def arm(self, spec, ns, where):
         if spec is None: return None
@@ -278,6 +355,8 @@ class Builder:
         """ground point of a shot subject at frame f: [x,y,z], a character id, '<set id>.<anchor>' or an object name"""
         if isinstance(subj, (list, tuple)): return tuple(self.env.const(subj, where))
         if subj in self.anchors: return tuple((list(self.anchors[subj]) + [0.0, 0.0, 0.0])[:3])
+        if subj in self.crowds:
+            ctx.sc.frame_set(f); return tuple(self.crowds[subj].matrix_world.translation)
         if subj in self.chars or bpy.data.objects.get(subj) is not None:    # animated already: evaluate the scene at f
             ctx.sc.frame_set(f)
             o = self.chars[subj].root if subj in self.chars else bpy.data.objects[subj]
@@ -339,6 +418,8 @@ class Builder:
         self.build_camera_object()
         for cs in st.get("chars", []):
             self.build_char(cs)
+        for k, cr in enumerate(st.get("crowds", [])):
+            self.build_crowd(cr, k)
         for c in self.chars.values():
             fx.add_reaction_fx(c)
         for cs in self.char_specs:
@@ -347,6 +428,7 @@ class Builder:
         long_rig = st["camera"].get("rig") == "long"
         if not long_rig: self.bake_camera()
 
+        for e, rng in self.outfit_vis: geo.vis_track(e, rng)
         for name, ranges in st.get("visibility", {}).items():
             geo.vis_track(self.obj(name, f"visibility.{name}"), [tuple(r) for r in ranges])
         moved = set()
@@ -406,6 +488,8 @@ class Builder:
         for r in self.noline_roots: noline += look.descendants(r)
         for p_ in fx.PUFF_POOL: noline += look.descendants(p_)
         look.setup_look(noline)
+        for coll, troot, loc in self.crowd_tpl:          # crowd templates leave the scene: only their instances render
+            outfits.to_template_collection(coll, troot, loc)
         if self.dof_on:                       # DOF would blur captions/cards near the lens: render them in an overlay scene
             overlay.make_overlay([cap_root, cards_root], samples=max(4, meta.get("samples", 32) // 4))
 

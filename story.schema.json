@@ -548,6 +548,173 @@
      }
     }
    }
+  },
+  "crowds": {
+   "type": "array",
+   "description": "formations of soldiers/people: a few template characters instanced at every position",
+   "items": {
+    "type": "object",
+    "required": [
+     "id"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "type": {
+      "type": "string"
+     },
+     "faction": {
+      "type": "string"
+     },
+     "role": {
+      "type": "string"
+     },
+     "outfit": {
+      "type": "string"
+     },
+     "count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 400
+     },
+     "formation": {
+      "enum": [
+       "block",
+       "line",
+       "column",
+       "wedge",
+       "scatter",
+       "circle"
+      ]
+     },
+     "cols": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "spacing": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2
+     },
+     "stagger": {
+      "type": "boolean"
+     },
+     "jitter": {
+      "type": "number"
+     },
+     "radius": {
+      "type": "number"
+     },
+     "area": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2
+     },
+     "at": {
+      "$ref": "#/$defs/vec3"
+     },
+     "rot": {
+      "type": "number",
+      "description": "degrees around Z; members stand in rows along +Y (away from a camera on -Y)"
+     },
+     "variants": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 6
+     },
+     "seed": {
+      "type": "integer"
+     },
+     "look": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+       "seed": {
+        "type": "integer"
+       },
+       "hair": {
+        "enum": [
+         "none",
+         "short",
+         "long",
+         "tied",
+         "curly",
+         "topknot",
+         "braids",
+         "bald_sides"
+        ]
+       },
+       "beard": {
+        "enum": [
+         "none",
+         "mustache",
+         "full",
+         "goatee"
+        ]
+       },
+       "hair_color": {
+        "$ref": "#/$defs/rgb"
+       },
+       "accent": {
+        "$ref": "#/$defs/rgb"
+       },
+       "skin_mode": {
+        "enum": [
+         "cartoon",
+         "tones"
+        ]
+       },
+       "skin": {
+        "$ref": "#/$defs/rgb"
+       }
+      }
+     },
+     "face": {
+      "type": "string"
+     },
+     "pose": {
+      "type": "object",
+      "description": "default pose of every member (armL/armR/legs/tilt ...)"
+     },
+     "moves": {
+      "type": "array",
+      "items": {
+       "type": "array"
+      },
+      "description": "[[frame, [x, y]], ...] the whole formation moves"
+     },
+     "ease": {
+      "type": "boolean"
+     },
+     "march": {
+      "$ref": "#/$defs/ranges"
+     },
+     "from": {
+      "type": "integer"
+     },
+     "to": {
+      "type": "integer"
+     },
+     "note": {
+      "type": "string"
+     },
+     "faces": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "expressions spread over the variants"
+     }
+    }
+   }
   }
  },
  "$defs": {
@@ -1040,11 +1207,74 @@
     },
     "faction": {
      "type": "string",
-     "description": "(planned) id in factions"
+     "description": "id in factions: outfit colours ($team) and culture come from it"
     },
     "role": {
      "type": "string",
-     "description": "(planned) role in the faction's culture: soldier, officer, commoner..."
+     "description": "role in the faction's culture (culture.roles): soldier, officer, commoner..."
+    },
+    "outfit": {
+     "type": "string",
+     "description": "library/outfits id (overrides role)"
+    },
+    "look": {
+     "type": "object",
+     "additionalProperties": false,
+     "properties": {
+      "seed": {
+       "type": "integer"
+      },
+      "hair": {
+       "enum": [
+        "none",
+        "short",
+        "long",
+        "tied",
+        "curly",
+        "topknot",
+        "braids",
+        "bald_sides"
+       ]
+      },
+      "beard": {
+       "enum": [
+        "none",
+        "mustache",
+        "full",
+        "goatee"
+       ]
+      },
+      "hair_color": {
+       "$ref": "#/$defs/rgb"
+      },
+      "accent": {
+       "$ref": "#/$defs/rgb"
+      },
+      "skin_mode": {
+       "enum": [
+        "cartoon",
+        "tones"
+       ]
+      },
+      "skin": {
+       "$ref": "#/$defs/rgb"
+      }
+     }
+    },
+    "outfit_changes": {
+     "type": "array",
+     "description": "[[frame, outfit id or role, faction id?], ...] change of clothes (disguise, new era/country)",
+     "items": {
+      "type": "array",
+      "items": {
+       "type": [
+        "integer",
+        "string"
+       ]
+      },
+      "minItems": 2,
+      "maxItems": 3
+     }
     }
    }
   },

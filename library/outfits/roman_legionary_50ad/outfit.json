@@ -1,0 +1,447 @@
+{
+ "kind": "outfit",
+ "name": "roman_legionary_50ad",
+ "culture": "roman_empire_50ad",
+ "role": "soldier",
+ "status": "approved",
+ "title_vi": "Lính lê dương La Mã (~năm 50)",
+ "description_vi": "Tunic đỏ (màu phe), giáp lá lorica segmentata thép có 3 dải, miếng vai, thắt lưng da và kiếm gladius bên phải; mũ sắt Imperial Gallic có gờ trán, gờ che gáy rộng, miếng che má và núm đỉnh; khiên scutum chữ nhật cong màu phe với viền và tia sét vàng, núm sắt ở giữa (tay trái); giáo pilum đầu sắt dài (tay phải); dép caligae.",
+ "silhouette_vi": "mũ tròn có gờ che gáy chìa ra hai bên + khiên chữ nhật cao + giáo dài",
+ "sources": [
+  {
+   "claim": "Lorica segmentata dùng từ khoảng đầu thế kỷ 1 (hiện vật Kalkriese, năm 9)",
+   "source": "Bishop & Coulston, Roman Military Equipment (2006)"
+  },
+  {
+   "claim": "Mũ Imperial Gallic, scutum cong chữ nhật, pilum",
+   "source": "Goldsworthy, The Complete Roman Army (2003)"
+  }
+ ],
+ "torso": "$team",
+ "hair": "none",
+ "beard": null,
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "skirt",
+   "pts": {
+    "rrect": [
+     0,
+     -0.04,
+     0.86,
+     0.2,
+     0.05
+    ]
+   },
+   "mat": "$team",
+   "z": 0.11,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "lorica",
+   "pts": {
+    "rrect": [
+     0,
+     0.45,
+     0.84,
+     0.6,
+     0.12
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.15,
+   "outline": 0.028
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "band1",
+   "pts": [
+    [
+     -0.38,
+     0.3
+    ],
+    [
+     0.38,
+     0.3
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$metal_dark",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "band2",
+   "pts": [
+    [
+     -0.38,
+     0.42
+    ],
+    [
+     0.38,
+     0.42
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$metal_dark",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "band3",
+   "pts": [
+    [
+     -0.38,
+     0.54
+    ],
+    [
+     0.38,
+     0.54
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$metal_dark",
+   "z": 0.16
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoulderL",
+   "pts": {
+    "ellipse": [
+     -0.3,
+     0.72,
+     0.17,
+     0.1,
+     20
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.17,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shoulderR",
+   "pts": {
+    "ellipse": [
+     0.3,
+     0.72,
+     0.17,
+     0.1,
+     20
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.17,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.13,
+     0.88,
+     0.08,
+     0.02
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.18,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "gladius",
+   "pts": {
+    "rrect": [
+     0.38,
+     0.02,
+     0.08,
+     0.34,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.19,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "neckguard",
+   "pts": {
+    "rrect": [
+     0,
+     0.06,
+     1.22,
+     0.16,
+     0.06
+    ]
+   },
+   "mat": "$metal",
+   "z": -0.03,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "helmet",
+   "pts": {
+    "ellipse": [
+     0,
+     0.2,
+     0.54,
+     0.46,
+     30,
+     0,
+     3.141592653589793
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.08,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "brow",
+   "pts": [
+    [
+     -0.5,
+     0.21
+    ],
+    [
+     0.5,
+     0.21
+    ]
+   ],
+   "w": 0.06,
+   "mat": "$metal_dark",
+   "z": 0.09
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekL",
+   "pts": {
+    "ellipse": [
+     -0.44,
+     -0.08,
+     0.09,
+     0.22,
+     16
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekR",
+   "pts": {
+    "ellipse": [
+     0.44,
+     -0.08,
+     0.09,
+     0.22,
+     16
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "knob",
+   "c": [
+    0,
+    0.68
+   ],
+   "r": 0.055,
+   "mat": "$trim",
+   "z": 0.085
+  },
+  {
+   "op": "shape",
+   "on": "handL",
+   "name": "scutum",
+   "pts": {
+    "rrect": [
+     0.02,
+     0.02,
+     0.64,
+     0.98,
+     0.07
+    ]
+   },
+   "mat": "$team",
+   "z": 0.05,
+   "outline": 0.035
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "scutum_rim",
+   "pts": {
+    "ring": [
+     0.02,
+     0.02,
+     0.27,
+     0.44,
+     40
+    ]
+   },
+   "w": 0.025,
+   "mat": "$trim",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "bolt1",
+   "pts": [
+    [
+     -0.16,
+     0.3
+    ],
+    [
+     0.02,
+     0.12
+    ],
+    [
+     -0.08,
+     0.04
+    ],
+    [
+     0.16,
+     -0.24
+    ]
+   ],
+   "w": 0.03,
+   "mat": "$trim",
+   "z": 0.06
+  },
+  {
+   "op": "disc",
+   "on": "handL",
+   "name": "boss",
+   "c": [
+    0.02,
+    0.02
+   ],
+   "r": 0.1,
+   "mat": "$metal",
+   "z": 0.065
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "pilum_shaft",
+   "pts": [
+    [
+     0,
+     -0.55
+    ],
+    [
+     0,
+     1.55
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$leather",
+   "z": -0.02
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "pilum_iron",
+   "pts": [
+    [
+     0,
+     1.55
+    ],
+    [
+     0,
+     2.15
+    ]
+   ],
+   "w": 0.024,
+   "mat": "$metal_dark",
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "handR",
+   "name": "pilum_tip",
+   "pts": [
+    [
+     -0.05,
+     2.13
+    ],
+    [
+     0.05,
+     2.13
+    ],
+    [
+     0,
+     2.32
+    ]
+   ],
+   "mat": "$metal_dark",
+   "z": -0.02,
+   "outline": 0.015
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  }
+ ]
+}
