@@ -30,9 +30,10 @@ def _fade_mat(name, rgb, emission=True):
 
 
 def _ico(name, loc, r, m, sub=2):
-    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=sub, radius=r, location=loc)
-    o = bpy.context.active_object; o.name = name; o.data.materials.append(m)
-    for p in o.data.polygons: p.use_smooth = True
+    import bmesh
+    me = bpy.data.meshes.new(name); bm = bmesh.new(); bmesh.ops.create_icosphere(bm, subdivisions=sub, radius=r); bm.to_mesh(me); bm.free()
+    for p in me.polygons: p.use_smooth = True
+    o = bpy.data.objects.new(name, me); ctx.col.objects.link(o); o.location = loc; o.data.materials.append(m)
     try: o.visible_shadow = False
     except Exception: pass
     return o
@@ -158,8 +159,9 @@ def banner(k, spec, rnd, factions):
     f = (factions or {}).get(spec.get("faction")) or {}
     rgb = tuple(spec.get("color") or f.get("color") or (0.7, 0.06, 0.04))
     pole = geo.cyl(f"vfx_banner{k}_pole", (x0, y0, z0 + h / 2), 0.04, h, pbr("vfx_pole", (0.32, 0.18, 0.08)), 10)
-    bpy.ops.mesh.primitive_grid_add(x_subdivisions=24, y_subdivisions=8, size=1.0, location=(0, 0, 0))
-    fl = bpy.context.active_object; fl.name = f"vfx_banner{k}_flag"
+    import bmesh
+    me = bpy.data.meshes.new(f"vfx_banner{k}_flag"); bm = bmesh.new(); bmesh.ops.create_grid(bm, x_segments=24, y_segments=8, size=0.5); bm.to_mesh(me); bm.free()
+    fl = bpy.data.objects.new(f"vfx_banner{k}_flag", me); ctx.col.objects.link(fl)
     fl.scale = (w, fh, 1); fl.rotation_euler = (math.pi / 2, 0, math.radians(spec.get("rot", 0)))
     fl.location = (x0 + w / 2 * math.cos(math.radians(spec.get("rot", 0))), y0 + w / 2 * math.sin(math.radians(spec.get("rot", 0))), z0 + h - fh / 2)
     fl.data.materials.append(pbr(f"vfx_flag{tuple(round(c, 3) for c in rgb)}", rgb, rough=0.8))
@@ -222,7 +224,13 @@ def weather_overlay(k, spec, cam):
     Ln.new(mul.outputs[0], mx.inputs[0]); Ln.new(tr.outputs[0], mx.inputs[1]); Ln.new(e.outputs[0], mx.inputs[2]); Ln.new(mx.outputs[0], o_.inputs[0])
     fc = mp.inputs["Location"].driver_add("default_value", 1); fc.driver.expression = f"frame*{speed:.4f}"
     fcx = mp.inputs["Location"].driver_add("default_value", 0); fcx.driver.expression = f"frame*{speed * (0.1 if kind == 'rain' else 0.15):.4f}"
-    bpy.ops.mesh.primitive_plane_add(size=1.0); pl = bpy.context.active_object; pl.name = f"vfx_{kind}{k}_plane"
+    import bmesh
+    me = bpy.data.meshes.new(f"vfx_{kind}{k}_plane"); bm = bmesh.new(); bmesh.ops.create_grid(bm, x_segments=1, y_segments=1, size=0.5)
+    uv = bm.loops.layers.uv.new()
+    for fa in bm.faces:
+        for lp in fa.loops: lp[uv].uv = (lp.vert.co.x + 0.5, lp.vert.co.y + 0.5)
+    bm.to_mesh(me); bm.free()
+    pl = bpy.data.objects.new(f"vfx_{kind}{k}_plane", me); ctx.col.objects.link(pl)
     pl.data.materials.append(m); pl.parent = cam; pl.location = (0, 0, -0.9); pl.scale = (6.0, 6.0 * hh / hw, 1)   # covers any lens >= 10 mm
     geo.vis_track(pl, [(a, b)])
     return [pl]

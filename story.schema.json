@@ -74,6 +74,10 @@
        "description": "where this chapter starts in the project's full voice.wav"
       }
      }
+    },
+    "fast_build": {
+     "type": "boolean",
+     "description": "long-form: buffered keys + bmesh primitives (default true; false = original slow path, same result)"
     }
    }
   },

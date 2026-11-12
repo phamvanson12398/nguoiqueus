@@ -20,7 +20,20 @@ import longform
 PROJECTS = os.path.join(ROOT, "projects")
 UI = os.path.join(ROOT, "ui")
 WPM = 190                       # AI voice words/minute: measured 198 (reference channel) and 201 (user's OmniVoice); 150 was too slow
-SEC_PER_FRAME = 1.4             # measured render speed on the user's GPU (toolkit v2)
+SEC_PER_FRAME = 1.4             # measured render speed on the user's GPU (toolkit v2); replaced by "Đo tốc độ máy"
+LOCAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "local_settings.json")   # this machine only (not in git)
+QUALITY_FACTOR = {"fast": 0.3, "normal": 1.0, "high": 1.45}   # fast = on twos + 12 samples (vs 32)
+
+
+def local_settings():
+    try: return json.load(open(LOCAL, encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError): return {}
+
+
+def spf_for(fmt="short"):
+    """seconds per frame at 100 %, quality normal: measured on this machine if available"""
+    m = local_settings().get("spf", {})
+    return m.get("long" if fmt == "long" else "short") or (SEC_PER_FRAME * 1.15 if fmt == "long" else SEC_PER_FRAME)
 FPS = 30
 
 
@@ -117,11 +130,13 @@ def estimate(minutes, wpm=None, fmt="short"):
     if fmt == "long":
         frames = int(round(minutes * 60 * FPS)); n_ch = max(2, round(minutes / 3))
         return {"minutes": minutes, "words": words, "sequences": max(n_ch * 3, round(minutes * 60 / 35)), "chapters": n_ch,
-                "shots": round(minutes * 14), "frames": frames, "render_seconds": round(frames * SEC_PER_FRAME), "wpm": wpm, "format": "long"}
+                "shots": round(minutes * 14), "frames": frames, "render_seconds": round(frames * spf_for("long")), "wpm": wpm, "format": "long",
+                "render_by_quality": {q: round(frames * spf_for("long") * k) for q, k in QUALITY_FACTOR.items()}}
     seqs = max(4, min(7, int(round(minutes * 6)))) if minutes <= 1.25 else int(round(minutes * 5.5))
     frames = int(round(minutes * 60 * FPS))
     return {"minutes": minutes, "words": words, "sequences": seqs, "chapters": 0 if minutes <= 1.25 else max(2, round(seqs / 5.5)),
-            "frames": frames, "render_seconds": round(frames * SEC_PER_FRAME), "wpm": wpm}
+            "frames": frames, "render_seconds": round(frames * spf_for("short")), "wpm": wpm,
+            "render_by_quality": {q: round(frames * spf_for("short") * k) for q, k in QUALITY_FACTOR.items()}}
 
 
 def project_state(slug):
@@ -218,17 +233,20 @@ def run_builder(job, slug, args, progress_total=None):
     job.say("$ " + " ".join(os.path.basename(c) if i < 2 else c for i, c in enumerate(cmd)))
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     job.procs.append(p)
-    a0 = None; t0 = time.time(); last = []
+    a0 = None; t0 = time.time(); last = []; n_img = 0; step = 1
     for line in p.stdout:
         line = line.rstrip()
         if line.startswith("Fra:") or "EGL Error" in line or line.startswith("DeprecationWarning") or "Video append frame" in line: continue
         if line.startswith("RENDER START"):
-            _, _, a, b_, *_ = line.split(); a0, b1 = int(a), int(b_); job.progress = {"done": 0, "total": b1 - a0 + 1, "eta": None}
+            w = line.split(); a0, b1 = int(w[2]), int(w[3]); step = int(w[5]) if len(w) > 5 and w[4] == "step" else 1
+            n_img = 0; job.progress = {"done": 0, "total": b1 - a0 + 1, "eta": None}
         if line.startswith("RENDER FRAME"):
             f, a, b_, el = line.split()[2:6]; f, a, b_, el = int(f), int(a), int(b_), float(el)
-            done = f - a + 1; total = b_ - a + 1; rate = el / max(1, done)
-            job.progress = {"done": done, "total": total, "eta": round(rate * (total - done)), "sec_per_frame": round(rate, 2), "frame": f}
-            if done % 10 and done != total: continue
+            n_img += 1
+            done = f - a + 1; total = b_ - a + 1; rate = el / n_img          # seconds per rendered image (resume-safe)
+            job.progress = {"done": done, "total": total, "eta": round(rate * max(0, total - done) / step), "sec_per_frame": round(rate / step, 2),
+                            "frame": f}
+            if n_img % 10 and done < total - step: continue
         job.say(line); last.append(line)
     p.wait(); job.procs.remove(p)
     if job.cancelled: raise ValueError("đã hủy")
@@ -400,7 +418,7 @@ def job_fix(job, slug, problem, frames):
     return {"changes": len(data["changes"])}
 
 
-def job_render_long(job, slug, pct=100, samples=None):
+def job_render_long(job, slug, pct=100, samples=None, quality="normal"):
     """render every chapter whose mp4 is missing or older than its story.json, then join them"""
     st = longform.status(slug)
     if not st or not all(c["story"] for c in st): raise ValueError("chưa dựng đủ các chương (bấm Duyệt & dựng)")
@@ -408,15 +426,39 @@ def job_render_long(job, slug, pct=100, samples=None):
     job.say(f"Render {len(todo)}/{len(st)} chương" + (f" (đã có: {[c['n'] for c in st if c['rendered']]})" if len(todo) < len(st) else "") + "…")
     for c in todo:
         job.say(f"===== Render chương {c['n']:02d} «{c['title']}» ({c['frames']} khung) =====")
-        job_render(job, longform.chapter_slug(slug, c["n"]), pct, None, samples)
+        job_render(job, longform.chapter_slug(slug, c["n"]), pct, None, samples, quality)
     if int(pct or 100) != 100: job.say("(render thử dưới 100 %: vẫn ghép để xem)")
     out = longform.concat(slug, log=job.say)
     return {"file": os.path.basename(out)}
 
 
-def job_render(job, slug, pct=100, frames=None, samples=None):
-    if "/chapters/" not in slug and is_long(slug) and not frames: return job_render_long(job, slug, pct, samples)
+def job_bench(job, slug, pct=100, quality="normal"):
+    """render a few frames of the current story and remember seconds/frame for estimates"""
+    t = slug
+    if is_long(slug):
+        st = longform.status(slug); c = next((c for c in st if c["story"]), None)
+        if not c: raise ValueError("chưa có chương nào dựng xong để đo")
+        t = longform.chapter_slug(slug, c["n"])
+    samples = {"fast": 12, "normal": 32, "high": 48}.get(quality, 32)
+    out = run_builder(job, t, ["--bench", "3", "--pct", str(int(pct)), "--samples", str(samples)])
+    m = re.search(r"BENCH sec_per_frame ([0-9.]+)", out)
+    if not m: raise ValueError("không đo được tốc độ")
+    st = jload(os.path.join(pdir(t), "story.json")) or {}
+    kind = "long" if st.get("meta", {}).get("aspect") == "16:9" else "short"
+    if int(pct) == 100 and quality == "normal":                  # only a full-size, normal-quality measurement is stored
+        ls = local_settings(); ls.setdefault("spf", {})[kind] = round(float(m.group(1)), 2)
+        json.dump(ls, open(LOCAL, "w", encoding="utf-8"), indent=1)
+        job.say(f"Tốc độ đo được: {m.group(1)} s/khung (video {'dài 16:9' if kind == 'long' else 'Shorts'}, 100 %, {samples} mẫu). Đã lưu để ước tính.")
+    else:
+        job.say(f"Tốc độ đo được: {m.group(1)} s/khung ở {pct} %, {samples} mẫu (chỉ lưu khi đo ở 100 %, chất lượng Chuẩn).")
+    return {"sec_per_frame": float(m.group(1))}
+
+
+def job_render(job, slug, pct=100, frames=None, samples=None, quality="normal"):
+    if "/chapters/" not in slug and is_long(slug) and not frames: return job_render_long(job, slug, pct, samples, quality)
     args = ["--render"]
+    if shutil.which("ffmpeg") and quality:                     # image sequence: resumable, 'on twos' in fast mode
+        args += ["--seq", "--quality", quality]
     if pct and int(pct) != 100: args += ["--pct", str(int(pct))]
     if frames: args += ["--frames", frames]
     if samples: args += ["--samples", str(int(samples))]
@@ -621,7 +663,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(start_job("fix", slug, job_fix, t, b["problem"], [int(f) for f in b.get("frames", [])]).to_json())
             if act == ["render"]:
                 b = self.jbody(); t = sub_target(slug, b.get("chapter"))
-                return self.send_json(start_job("render", slug, job_render, t, b.get("pct", 100), b.get("frames"), b.get("samples")).to_json())
+                return self.send_json(start_job("render", slug, job_render, t, b.get("pct", 100), b.get("frames"), b.get("samples"),
+                                                b.get("quality", "normal")).to_json())
+            if act == ["bench"]:
+                b = self.jbody()
+                return self.send_json(start_job("bench", slug, job_bench, slug, int(b.get("pct", 100)), b.get("quality", "normal")).to_json())
             if act == ["concat"]:
                 return self.send_json(start_job("concat", slug, lambda job, s: {"file": os.path.basename(longform.concat(s, log=job.say))}, slug).to_json())
             if act == ["splice"]:                      # put a re-rendered part (parts/*_AAAA-BBBB.mp4) into the full video
@@ -653,7 +699,7 @@ class Handler(BaseHTTPRequestHandler):
         return {"api_key_warning": bridge.api_key_warning(), "claude": claude_ok, "claude_note": None if claude_ok else h,
                 "json_schema": bool(claude_ok and "--json-schema" in h), "blender": b,
                 "blender_found": bool(shutil.which(b) or os.path.exists(b)), "usage": bridge.usage(),
-                "wpm": WPM, "sec_per_frame": SEC_PER_FRAME, "ffmpeg": bool(shutil.which("ffmpeg")),
+                "wpm": WPM, "sec_per_frame": spf_for("short"), "sec_per_frame_long": spf_for("long"), "ffmpeg": bool(shutil.which("ffmpeg")),
                 "jobs": [j.to_json(10 ** 9) for j in JOBS.values() if j.status == "running"]}
 
     def library(self):

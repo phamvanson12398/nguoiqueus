@@ -15,3 +15,10 @@ projects/*/chapters/*/parts/
 projects/*/chapters/concat.txt
 projects/why-manholes-round-long/**/*.wav
 projects/why-manholes-round-long/*.wav
+local_settings.json
+projects/*/mix.wav
+projects/*/chapters/*/mix.wav
+projects/*/frames/
+projects/*/chapters/*/frames/
+projects/*/_bench/
+projects/*/chapters/*/_bench/

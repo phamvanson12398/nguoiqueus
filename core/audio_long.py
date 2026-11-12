@@ -481,7 +481,7 @@ def master(parts, target_lufs=-14.0, ceiling_db=-2.0, true_peak_max=-1.0):
     for p in parts: mix[:len(p)] += p
     before = lufs(mix); g = 10 ** ((target_lufs - before) / 20) if before > -69 else 1.0
     out = limit(mix * g, ceiling_db)
-    for _ in range(6):                             # the limiter shaves loudness and lets inter-sample peaks through: correct
+    for _ in range(10):                            # the limiter shaves loudness and lets inter-sample peaks through: correct
         err = target_lufs - lufs(out); tp = true_peak_db(out)
         if tp > true_peak_max: ceiling_db -= (tp - true_peak_max) + 0.1
         if (abs(err) < 0.1 and tp <= true_peak_max) or before <= -69: break

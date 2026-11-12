@@ -4,6 +4,7 @@ import math
 from . import ctx, geo, faces
 from .geo import empty, shape, stroke, ellipse, rrect, limb, billboard_root, set_visible, vis_track
 from .look import flat
+from . import timing
 from .timing import ease, ease_out_elastic, noise1
 
 
@@ -121,23 +122,23 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
         v = a1 - c.prev.get(side, a1); c.vel[side] = 0.55 * c.vel.get(side, 0.0) + 0.45 * v; c.prev[side] = a1
         a2 = a2 - max(-0.5, min(0.5, 1.6 * c.vel[side]))            # forearm drags behind
         lp[0].rotation_euler = (0, 0, a1); lp[1].rotation_euler = (0, 0, a2)
-        lp[0].keyframe_insert("rotation_euler", frame=f); lp[1].keyframe_insert("rotation_euler", frame=f)
+        timing.key(lp[0], "rotation_euler", f); timing.key(lp[1], "rotation_euler", f)
         c.hist.setdefault(side, []).append((f, a1 + 0.5 * a2))
     for spec, lp in ((legL, c.legL), (legR, c.legR)):
         lp[0].rotation_euler = (0, 0, spec[0]); lp[1].rotation_euler = (0, 0, spec[1])
-        lp[0].keyframe_insert("rotation_euler", frame=f); lp[1].keyframe_insert("rotation_euler", frame=f)
+        timing.key(lp[0], "rotation_euler", f); timing.key(lp[1], "rotation_euler", f)
     t = f / ctx.FPS
     dy, sy, rlean = react_offsets(c, f)
     b = (1 + (0.014 * math.sin(t * 2.4 + len(c.name)) if breath else 0)) * sy
     sway = 0.02 * noise1(t * 0.8, len(c.name))                      # idle weight shift
     c.body.scale = (1 / math.sqrt(b), b, 1); c.body.location = (body[0], body[1] + dy, 0)
     c.body.rotation_euler = (0, 0, lean + rlean + sway)
-    c.body.keyframe_insert("scale", frame=f); c.body.keyframe_insert("location", frame=f); c.body.keyframe_insert("rotation_euler", frame=f)
+    timing.key(c.body, "scale", f); timing.key(c.body, "location", f); timing.key(c.body, "rotation_euler", f)
     lag = getattr(c, "lag_tilt", 0.0)
     c.lag_tilt = lag + 0.35 * (-(lean + rlean) * 0.6 - lag)                # head follows the lean a few frames late
     talk = getattr(c, "amp_now", 0.0)
     c.head.rotation_euler = (0, 0, head_tilt + 0.03 * math.sin(t * 1.7) + c.lag_tilt + 0.05 * talk * math.sin(f * 0.9))
-    c.head.location = (0, c.head.location[1], c.head.location[2]); c.head.keyframe_insert("rotation_euler", frame=f)
+    c.head.location = (0, c.head.location[1], c.head.location[2]); timing.key(c.head, "rotation_euler", f)
 
 
 def walk_legs(ph, amp=0.42):
@@ -162,7 +163,7 @@ def apply_expressions(c, blinks=()):
                 set_visible(g, f, vis)
         bl = any(b_ <= f < b_ + 4 for b_ in blinks)
         for e_ in c.blink:
-            e_.scale = (e_.scale[0], 0.012 if bl else 0.085, 1); e_.keyframe_insert("scale", frame=f)
+            e_.scale = (e_.scale[0], 0.012 if bl else 0.085, 1); timing.key(e_, "scale", f)
 
 
 # ---------------- talking mouth (lip flap from the voice) ----------------
@@ -181,7 +182,7 @@ def bake_talk(c, ranges, amp):
     for f in range(1, ctx.N + 1):
         on = any(a <= f <= b for a, b in ranges)
         o = 0.18 + 0.82 * amp[f] if on else 0.2
-        c.talk_piv.scale = (0.9 + 0.15 * o, o, 1); c.talk_piv.keyframe_insert("scale", frame=f)
+        c.talk_piv.scale = (0.9 + 0.15 * o, o, 1); timing.key(c.talk_piv, "scale", f)
 
 
 # ---------------- 2D hand props (child of the torso so they stay upright) ----------------

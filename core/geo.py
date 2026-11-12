@@ -18,19 +18,50 @@ def init():
 
 
 # ---------------- 3D primitives ----------------
+FAST = False      # long-form builds: primitives from bmesh (no bpy.ops: an op costs 0.1-1.3 s in a 6.000-object scene)
+
+
+def _fast_obj(name, fill, loc, rot=(0, 0, 0), smooth=False):
+    import bmesh
+    me = bpy.data.meshes.new(name); bm = bmesh.new(); fill(bm); bm.to_mesh(me); bm.free()
+    if smooth:
+        for p in me.polygons: p.use_smooth = True
+    o = bpy.data.objects.new(name, me); ctx.col.objects.link(o)
+    o.location = loc; o.rotation_euler = rot
+    vl = bpy.context.view_layer
+    try:
+        for x in bpy.context.selected_objects: x.select_set(False)
+        o.select_set(True); vl.objects.active = o
+    except Exception:
+        pass
+    return o
+
+
 def cube(name, loc, size, m):
+    if FAST:
+        import bmesh
+        o = _fast_obj(name, lambda bm: bmesh.ops.create_cube(bm, size=1.0), loc); o.scale = size
+        return setmat(o, m)
     bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
     o = bpy.context.object; o.name = name; o.scale = size
     return setmat(o, m)
 
 
 def cyl(name, loc, r, depth, m, verts=32, rot=(0, 0, 0)):
+    if FAST:
+        import bmesh
+        o = _fast_obj(name, lambda bm: bmesh.ops.create_cone(bm, cap_ends=True, cap_tris=False, segments=verts, radius1=r, radius2=r, depth=depth), loc, rot)
+        return setmat(o, m)
     bpy.ops.mesh.primitive_cylinder_add(vertices=verts, radius=r, depth=depth, location=loc, rotation=rot)
     o = bpy.context.object; o.name = name
     return setmat(o, m)
 
 
 def sphere(name, loc, r, m, scale=(1, 1, 1)):
+    if FAST:
+        import bmesh
+        o = _fast_obj(name, lambda bm: bmesh.ops.create_uvsphere(bm, u_segments=24, v_segments=12, radius=r), loc, smooth=True); o.scale = scale
+        return setmat(o, m)
     bpy.ops.mesh.primitive_uv_sphere_add(segments=24, ring_count=12, radius=r, location=loc)
     o = bpy.context.object; o.name = name; o.scale = scale
     bpy.ops.object.shade_smooth()
@@ -226,6 +257,10 @@ def rbox(name, loc, size, m, radius=0.03, segments=3):
 
 
 def cone(name, loc, r1, r2, depth, m, verts=32, rot=(0, 0, 0)):
+    if FAST:
+        import bmesh
+        o = _fast_obj(name, lambda bm: bmesh.ops.create_cone(bm, cap_ends=True, cap_tris=False, segments=verts, radius1=r1, radius2=r2, depth=depth), loc, rot)
+        return setmat(o, m)
     bpy.ops.mesh.primitive_cone_add(vertices=verts, radius1=r1, radius2=r2, depth=depth, location=loc, rotation=rot)
     o = bpy.context.object; o.name = name
     return setmat(o, m)

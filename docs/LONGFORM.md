@@ -160,6 +160,7 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    - **Trạng thái:** xong (CLAUDE.md, "Video dài — Bước 5").
 6. **Render nhanh:** hàng đợi render theo chương, render tiếp từ khung đang dở, đo tốc độ trên máy người dùng
    (20 phút ≈ 36.000 khung × 1,4 s ≈ 14 giờ; cần tối ưu số mẫu, độ sâu trường ảnh, đám đông instance).
+   - **Trạng thái:** xong (CLAUDE.md, "Video dài — Bước 6").
 7. **Thumbnail 1280x720 + gói YouTube** (tiêu đề "Why…", mô tả có mốc chương, nguồn).
 8. Làm trọn một video 10 phút; ghi lỗi, sửa; cập nhật skill.
 

@@ -81,3 +81,47 @@ def add_teleport_holds(objs, thr=0.6):
                 if f1 - f0 >= 0.99 and abs(v1 - v0) > thr:
                     fc.keyframe_points.insert(f0 + 0.98, v0, options={'FAST'})
             fc.update()
+
+
+# ---------------- buffered keyframes (long-form speed-up) ----------------
+class KeyBuffer:
+    """collects per-frame keys and writes each F-curve in one go (keyframe_insert is ~0.25 ms and dominates long builds).
+    Same values, same default interpolation/handles as keyframe_insert, so curves evaluate identically."""
+    def __init__(self):
+        self.keys = {}                                   # (object, data_path) -> {frame: value tuple}
+
+    def add(self, obj, path, frame):
+        v = getattr(obj, path)
+        self.keys.setdefault((obj, path), {})[frame] = tuple(v) if hasattr(v, "__len__") else (v,)
+
+    def flush(self):
+        n_keys = 0
+        for (obj, path), d in self.keys.items():
+            frames = sorted(d); first = frames[0]
+            old = tuple(getattr(obj, path)) if hasattr(getattr(obj, path), "__len__") else getattr(obj, path)
+            setattr(obj, path, d[first] if len(d[first]) > 1 else d[first][0])
+            obj.keyframe_insert(path, frame=first)        # creates action/slot/F-curves the standard way
+            setattr(obj, path, old)
+            fcs = {fc.array_index: fc for fc in fcurves_of(obj) if fc.data_path == path}
+            for idx, fc in fcs.items():
+                existing = {round(k.co[0], 4): k.co[1] for k in fc.keyframe_points}
+                pts = dict(existing); pts.update({float(f): d[f][idx] for f in frames})
+                fr = sorted(pts)
+                fc.keyframe_points.clear(); fc.keyframe_points.add(len(fr))
+                co = [x for f in fr for x in (f, pts[f])]
+                fc.keyframe_points.foreach_set("co", co)
+                fc.keyframe_points.foreach_set("interpolation", [2] * len(fr))          # BEZIER
+                fc.keyframe_points.foreach_set("handle_left_type", [4] * len(fr))       # AUTO_CLAMPED (FREE ALIGNED VECTOR AUTO AUTO_CLAMPED)
+                fc.keyframe_points.foreach_set("handle_right_type", [4] * len(fr))
+                fc.update(); n_keys += len(fr)
+        self.keys = {}
+        return n_keys
+
+
+KEYBUF = None
+
+
+def key(obj, path, frame):
+    """keyframe_insert, or buffered when a KeyBuffer is active"""
+    if KEYBUF is None: obj.keyframe_insert(path, frame=frame)
+    else: KEYBUF.add(obj, path, frame)

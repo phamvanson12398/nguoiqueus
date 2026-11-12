@@ -258,3 +258,22 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   → đo ×4 và hạ trần; Bright/Contrast dùng thang −100..100 (grade gần như không thấy); `role` của nhân vật thư viện (Joe) không đòi trang phục.
 - Còn để ý: cột khói trông như chồng đĩa (thêm biến thể); giọng espeak nhỏ nên phải tăng 9-15 dB khi chuẩn hóa.
 
+### Bước 6 — xong (dựng và render nhanh)
+- Đo bằng cProfile chương 1 La Mã (642 s, 6.542 object): 338 s là `keyframe_insert` (1,35 triệu lần, chủ yếu tư thế nhân vật),
+  ~230 s là `bpy.ops` tạo khối (chậm dần theo số object; quả cầu khói 1,27 s/cái).
+- Chế độ nhanh cho video dài (`meta.fast_build`, mặc định bật với 16:9; Shorts giữ đường cũ, fingerprint giống hệt):
+  - `timing.KeyBuffer` + `timing.key()`: chars.py ghi keyframe vào bộ đệm, cuối cùng mỗi F-curve ghi một lần (foreach_set, BEZIER,
+    AUTO_CLAMPED như keyframe_insert) — 3,47 triệu key trong 2,5 s;
+  - `geo.FAST`: cube/cyl/sphere/cone bằng bmesh (không bpy.ops); fx_long tạo icosphere/lưới/mặt phẳng bằng bmesh.
+  - Kết quả: demo-legion 40 s → 4 s, render giống từng điểm ảnh với chế độ cũ (lỗi đầu tiên: mã kiểu tay cầm 3 = ALIGNED, đúng là 4);
+    chương 1 La Mã 642 s → 97 s.
+- Render chuỗi ảnh (`builder.py --render --seq [--quality fast|normal|high] [--step 2]`): PNG vào `frames/`, `use_overwrite=False` +
+  placeholder → bấm lại là render tiếp; xóa file rỗng của khung đang dở; đổi story/chất lượng thì xóa ảnh cũ; âm thanh = `mix.wav`
+  (video dài) hoặc `sound.mixdown` (Shorts); `tools/encode.py` ghép bằng ffmpeg (concat có thời lượng, khung thiếu giữ ảnh trước).
+  Chất lượng: fast = on twos + 12 mẫu (~30 % thời gian), normal = mẫu của story, high = 48 mẫu.
+- Server/UI: chọn chất lượng ở tab Render (video dài render từng chương bằng chuỗi ảnh rồi ghép), tiến độ tính theo ảnh thật đã render
+  (đúng cả khi render tiếp), nút "Đo tốc độ máy" (`--bench 3`, lưu s/khung ở 100 % vào `local_settings.json`, ước tính theo 3 mức chất lượng).
+- Thử: demo-long 25 % fast, ngắt ở ảnh 29 (để lại placeholder rỗng khung 59), chạy lại → render nốt 151 ảnh, ghép 360 khung 12,0 s có tiếng.
+  Container ~13 s/ảnh ở 25 % (CPU, đang chạy song song); số thật trên máy người dùng: bấm "Đo tốc độ máy".
+- Âm thanh: vòng bù độ lớn 10 lần (giọng nhỏ cần tăng 13-15 dB vẫn ra −14,1 LUFS, đỉnh thật −1,1 dB).
+

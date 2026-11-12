@@ -395,6 +395,8 @@ class Builder:
         t0 = time.time()
         self.aspect = meta.get("aspect", "9:16")
         sc = core.start(N, FPS, self.out, meta.get("samples", 32), aspect=self.aspect)
+        fast = self.aspect != "9:16" and meta.get("fast_build", True)      # Shorts keep the exact original path
+        geo.FAST = fast; timing.KEYBUF = timing.KeyBuffer() if fast else None
         random.seed(meta.get("seed", 7))
         geo.init(); fx.init(); faces.init()
         self.env = Env(FPS, N, st.get("defs"), st.get("consts"))
@@ -452,6 +454,8 @@ class Builder:
                 self.pose_frame(self.chars[cs["id"]], cs, segs[cs["id"]], f, amp)
         for cs in self.char_specs:
             chars.apply_expressions(self.chars[cs["id"]], blinks=tuple(cs.get("blinks", ())))
+        if timing.KEYBUF is not None:
+            t_k = time.time(); nk = timing.KEYBUF.flush(); print(f"KEYS {nk} buffered keys written in {time.time() - t_k:.1f} s")
 
         cp = st.get("captions", {})
         cstyle = cp.get("style", "pop" if self.aspect == "9:16" else "bottom")
@@ -478,6 +482,7 @@ class Builder:
         for cs in self.char_specs:
             if cs.get("talk"): chars.bake_talk(self.chars[cs["id"]], [tuple(r) for r in cs["talk"]], amp)
 
+        if timing.KEYBUF is not None: timing.KEYBUF.flush()
         holds = st.get("teleport_holds")
         if holds is None:
             holds = [c.root.name for c in self.chars.values()] + sorted(n for n in moved if n in self.story_props)
@@ -499,6 +504,7 @@ class Builder:
             overlay.make_overlay([cap_root, cards_root], samples=max(4, meta.get("samples", 32) // 4))
 
         self.build_sound()
+        geo.FAST = False; timing.KEYBUF = None
         mixer.set_video_output(os.path.join(self.out, meta.get("output", "out.mp4")))
         sc.frame_set(1)
         self.report["build_seconds"] = round(time.time() - t0, 1)
@@ -608,13 +614,68 @@ class Builder:
 # =====================================================================
 #  CLI
 # =====================================================================
+QUALITY = {"fast": dict(samples=12, step=2), "normal": dict(step=1), "high": dict(samples=48, step=1)}   # normal = meta.samples
+
+
+def render_sequence(B, sc, opt):
+    """render PNG frames into <out>/frames (skipping frames already there), mix the audio, encode the mp4 with ffmpeg.
+    --step 2 renders every other frame and holds it for two ('on twos', half the render time); --quality fast|normal|high"""
+    q = QUALITY.get(opt.get("quality", ""), {})
+    step = int(opt.get("step", q.get("step", 1)))
+    if "samples" not in opt and q.get("samples"): sc.eevee.taa_render_samples = q["samples"]
+    overlay.sync(sc.render.resolution_percentage, sc.eevee.taa_render_samples)
+    fdir = os.path.join(B.out, "frames"); os.makedirs(fdir, exist_ok=True)
+    stamp = os.path.join(fdir, "_settings.json")
+    want = {"pct": sc.render.resolution_percentage, "samples": sc.eevee.taa_render_samples, "step": step,
+            "story_mtime": os.path.getmtime(B.path)}
+    old = json.load(open(stamp)) if os.path.exists(stamp) else None
+    if old and old != want:                              # settings or story changed: old frames are stale
+        for f in os.listdir(fdir):
+            if f.startswith("f_"): os.remove(os.path.join(fdir, f))
+        print("RENDER frames cleared (settings or story changed)", flush=True)
+    for f in os.listdir(fdir):                           # placeholders of a frame that was interrupted
+        if f.startswith("f_") and os.path.getsize(os.path.join(fdir, f)) == 0: os.remove(os.path.join(fdir, f))
+    json.dump(want, open(stamp, "w"))
+    a, b = sc.frame_start, sc.frame_end
+    if "frames" in opt:
+        a, b = [int(x) for x in opt["frames"].replace("-", ",").split(",")]
+    sc.frame_start, sc.frame_end, sc.frame_step = max(1, a), min(sc.frame_end, b), step
+    ims = sc.render.image_settings; ims.media_type = 'IMAGE'; ims.file_format = 'PNG'; ims.color_mode = 'RGB'; ims.compression = 15
+    sc.render.use_overwrite = False; sc.render.use_placeholder = True
+    sc.render.filepath = os.path.join(fdir, "f_####")
+    have = len([f for f in os.listdir(fdir) if f.startswith("f_")])
+    T0 = time.time()
+
+    def _progress(scene, *_):
+        print(f"RENDER FRAME {scene.frame_current} {scene.frame_start} {scene.frame_end} {time.time() - T0:.1f}", flush=True)
+    bpy.app.handlers.render_write.append(_progress)
+    print(f"RENDER START {sc.frame_start} {sc.frame_end} step {step} (already {have} frames) -> {fdir}", flush=True)
+    bpy.ops.render.render(animation=True)
+    bpy.app.handlers.render_write.remove(_progress)
+    audio = os.path.join(B.out, "mix.wav")
+    if not os.path.exists(audio) or B.aspect == "9:16" and "master" not in B.st.get("sound", {}):
+        audio = os.path.join(fdir, "audio.wav")
+        sc.frame_start, sc.frame_end, sc.frame_step = 1, B.st["meta"]["frames"], 1
+        bpy.ops.sound.mixdown(filepath=audio, container='WAV', codec='PCM', format='S16', mixrate=44100)
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import encode
+    out = os.path.join(B.out, B.st["meta"].get("output", "out.mp4"))
+    if "frames" in opt:
+        base, ext = os.path.splitext(os.path.basename(out)); pdir = os.path.join(B.out, "parts"); os.makedirs(pdir, exist_ok=True)
+        out = os.path.join(pdir, f"{base}_{a:04d}-{b:04d}{ext}")
+    encode.encode(fdir, audio if "frames" not in opt else "-", out, fps=B.st["meta"]["fps"], first=max(1, a),
+                  last=min(B.st["meta"]["frames"], b), log=lambda m: print(m, flush=True))
+    print("RENDERED ->", out, flush=True)
+    return 0
+
+
 def main(argv):
     if not argv: print(__doc__); return 1
     story = argv[0]
     opt = {}; i = 1
     while i < len(argv):
         a = argv[i]
-        if a in ("--render", "--check"): opt[a[2:]] = True; i += 1
+        if a in ("--render", "--check", "--seq"): opt[a[2:]] = True; i += 1
         else: opt[a[2:]] = argv[i + 1]; i += 2
     if opt.get("check"):
         errs = check_story(json.load(open(story, encoding="utf-8")), Library())
@@ -633,9 +694,26 @@ def main(argv):
         for fr in [int(x) for x in opt["preview"].split(",")]:
             t1 = time.time(); sc.frame_set(fr); sc.render.filepath = os.path.join(pdir, f"p_{fr:04d}.png")
             bpy.ops.render.render(write_still=True); print("FRAME", fr, round(time.time() - t1, 1), "s")
+    if "bench" in opt:                                 # measure seconds/frame on this machine (first frame compiles shaders)
+        n = int(opt["bench"]); a = int(opt.get("at", max(1, sc.frame_end // 3)))
+        sc.render.resolution_percentage = int(opt.get("pct", 100))
+        sc.eevee.taa_render_samples = int(opt.get("samples", sc.eevee.taa_render_samples))
+        overlay.sync(sc.render.resolution_percentage, sc.eevee.taa_render_samples)
+        sc.render.image_settings.media_type = 'IMAGE'; sc.render.image_settings.file_format = 'PNG'
+        bdir = os.path.join(B.out, "_bench"); os.makedirs(bdir, exist_ok=True); times = []
+        for k in range(n + 1):
+            t1 = time.time(); sc.frame_set(min(sc.frame_end, a + k)); sc.render.filepath = os.path.join(bdir, f"b_{k}.png")
+            bpy.ops.render.render(write_still=True); times.append(time.time() - t1)
+            print(f"BENCH FRAME {k} {times[-1]:.2f}", flush=True)
+        spf = sum(times[1:]) / max(1, len(times) - 1)
+        print(f"BENCH sec_per_frame {spf:.2f} first {times[0]:.1f} pct {sc.render.resolution_percentage} samples {sc.eevee.taa_render_samples} "
+              f"res {sc.render.resolution_x}x{sc.render.resolution_y}", flush=True)
+        return 0
     if opt.get("render"):
         if "pct" in opt: sc.render.resolution_percentage = int(opt["pct"])
         if "samples" in opt: sc.eevee.taa_render_samples = int(opt["samples"])
+        if opt.get("seq"):                                 # image sequence: resumable, 'on twos', then ffmpeg
+            return render_sequence(B, sc, opt)
         overlay.sync(sc.render.resolution_percentage, sc.eevee.taa_render_samples)
         if "frames" in opt:                      # partial render A-B into parts/ (re-render one sequence)
             a, b = [int(x) for x in opt["frames"].replace("-", ",").split(",")]

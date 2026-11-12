@@ -15,7 +15,8 @@ Bấm đúp `start_studio.bat` rồi mở http://127.0.0.1:8765 nếu trình duy
 2. **Content**: chọn số phút → "Viết content" → sửa từng chuỗi, "Viết lại đoạn này" → Lưu.
 3. **Giọng đọc**: sao chép lời đọc cho phần mềm giọng → tạo giọng → tải .wav lên.
 4. **Duyệt & dựng**: chờ Claude dựng cảnh và thiết kế đồ còn thiếu → xem ảnh → "Nhờ Claude sửa" nếu thấy lỗi.
-5. **Render**: 100 % → Render (khoảng 1,4 giây/khung) → xem hoặc tải mp4.
+5. **Render**: chọn chất lượng (Nhanh = "on twos", khoảng 1/3 thời gian; Chuẩn; Cao) → Render → xem hoặc tải mp4.
+   Bấm "Đo tốc độ máy" một lần để ước tính đúng thời gian. Bị ngắt (tắt máy, bấm Hủy) thì bấm Render lại: tool làm tiếp từ khung đang dở.
 
 ### Video dài YouTube 16:9
 Bấm "+ Dự án mới" rồi chọn **OK = video dài** (hoặc đổi "Khổ video" ở bước 2). Các bước giống hệt Shorts, khác ở chỗ:
