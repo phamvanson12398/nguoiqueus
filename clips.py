@@ -76,6 +76,7 @@ def make_clip(slug, k, pick):
     hook = (pick.get("hook_text") or "").upper()
     for cd in keep:                                   # nothing on top of the hook
         if hook and cd.get("from", 0) < A + 75: cd["from"] = max(cd.get("from", 0), A + 76)
+        if cd.get("to", 0) > B - 61: cd["to"] = B - 61   # ... nor on top of the "full video" end label
     keep = [cd for cd in keep if cd.get("to", 0) >= cd.get("from", 1)]
     if hook: keep.append({"style": "title", "text": hook, "from": A, "to": A + 75, "pos": [0, 0.62], "size": 0.075})
     keep.append({"style": "label", "text": pick.get("end_text") or "FULL VIDEO ON THE CHANNEL", "from": max(A, B - 60), "to": B,
