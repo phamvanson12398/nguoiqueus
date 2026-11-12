@@ -38,7 +38,7 @@ READ_TOOLS = ["Read", "Glob", "Grep"]
 WEB_TOOLS = ["WebSearch", "WebFetch"]
 JOB_TOOLS = {"ideas": WEB_TOOLS, "write_content": WEB_TOOLS + ["Read"], "rewrite_seq": [], "plan_shots": READ_TOOLS,
              "design_prop": READ_TOOLS, "design_set": READ_TOOLS, "design_char": READ_TOOLS, "review": READ_TOOLS,
-             "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "thumb_prompts": READ_TOOLS, "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
+             "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "thumb_prompts": READ_TOOLS, "retention_review": [], "translate_subs": [], "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
              "fix_from_preview": READ_TOOLS}
 
 
@@ -901,6 +901,77 @@ def write_content_long(slug, idea, minutes, model=None, wpm=190):
         return e
     data, info = call("write_content", prompt, load_schema("content_long"), project=slug, model=model, check=check)
     _save_versioned(slug, "content.json", data)
+    return data
+
+
+RETENTION_RULES = """
+Bạn là biên tập viên YouTube chuyên tối ưu thời gian xem (retention). Soát content theo từng chuỗi, với mốc thời gian đã cho:
+- 15 giây đầu (quan trọng nhất): 3 giây đầu có câu móc cụ thể (tình huống lạ, con số, câu hỏi gây tò mò) và hình gây chú ý
+  ngay (không mở bằng giới thiệu chậm, không màn đen dài); đến giây 15 người xem phải biết video hứa trả lời điều gì.
+- Đoạn dễ tụt người xem: giải thích dài mà hình không đổi; hơn 30 giây (Shorts: 8 giây) không có cú mới (tiết lộ, đảo chiều,
+  con số, gag); tiết lộ đáp án quá sớm (mất lý do xem tiếp); thuật ngữ khó không giải thích; không có rủi ro/cái giá (no stakes);
+  chuyển ý không có câu nối/câu treo; kết thúc hụt (không gọi lại câu hỏi, không cú chốt).
+- Chỉ nêu vấn đề THẬT, cụ thể, xếp theo mức nghiêm trọng (3 = nặng). fix_vi viết như một yêu cầu sửa cho đúng chuỗi đó
+  (sẽ được gửi nguyên văn cho bước "Viết lại đoạn này"): nói rõ thêm/đổi câu nào, chèn câu treo nào, đổi hình gì.
+- Đừng đề xuất kéo dài video; giữ tổng thời lượng.
+"""
+
+
+def retention_review(slug, model=None):
+    """an editor's pass on the script before voicing/building: hook score and the places viewers would leave"""
+    import youtube
+    d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+    starts = {int(s.get("id", 0)): round(t, 1) for t, s in youtube.sequence_starts(slug)}
+    t = 0.0; seqs = []
+    for s in content["sequences"]:
+        at = starts.get(int(s.get("id", 0)), round(t, 1)); t += float(s.get("seconds") or 0)
+        seqs.append({"id": s.get("id"), "at_sec": at, "seconds": s.get("seconds"), "vo_en": s.get("vo_en"), "action": s.get("action"),
+                     "shots": [{"type": x.get("type"), "what": x.get("what_vi"), "card": x.get("card_text")} for x in s.get("shots", [])][:20],
+                     "gag": s.get("gag"), "emphasis": s.get("emphasis")})
+    kind = "video dài 16:9" if content.get("format") == "long" else "Shorts dọc"
+    prompt = (f"Soát giữ chân người xem cho {kind} '{content.get('title')}' (câu hỏi: {content.get('question')}).\n{RETENTION_RULES}\n"
+              f"Các chuỗi theo thứ tự, at_sec = giây bắt đầu:\n{json.dumps(seqs, ensure_ascii=False)}")
+    ids = {s.get("id") for s in content["sequences"]}
+
+    def check(x):
+        return [f"issues[{i}].seq_id {it['seq_id']} không có" for i, it in enumerate(x["issues"]) if it["seq_id"] not in ids]
+    data, info = call("retention_review", prompt, load_schema("retention_review"), project=slug, model=model, check=check)
+    data["issues"].sort(key=lambda it: (-it["severity"], it["at_sec"]))
+    json.dump(data, open(os.path.join(d, "retention_review.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return data
+
+
+LANG_NAMES = {"es": "Spanish (Latin America)", "pt": "Portuguese (Brazil)", "hi": "Hindi", "id": "Indonesian", "fr": "French",
+              "de": "German", "ja": "Japanese", "ko": "Korean", "vi": "Vietnamese", "ar": "Arabic", "ru": "Russian", "it": "Italian",
+              "tr": "Turkish", "th": "Thai", "zh": "Chinese (Simplified)"}
+
+
+def translate_subs(slug, lang, lines, model=None):
+    """one language: subtitle lines (same count, same order) + a natural dubbing script per sequence"""
+    d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+    name = LANG_NAMES.get(lang, lang)
+    seqs = [{"id": s.get("id"), "vo_en": s.get("vo_en", "")} for s in content["sequences"]]
+    schema = {"type": "object", "additionalProperties": False, "required": ["lines", "dub", "title"],
+              "properties": {"title": {"type": "string"},
+                             "lines": {"type": "array", "items": {"type": "string"}, "minItems": len(lines), "maxItems": len(lines)},
+                             "dub": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": ["id", "text"],
+                                                                "properties": {"id": {"type": "integer"}, "text": {"type": "string"}}}}}}
+    prompt = (f"Translate a YouTube video into {name}.\n"
+              f"1) title: the video title '{content.get('title')}' as a catchy native {name} title (<= 70 characters).\n"
+              f"2) lines: translate these {len(lines)} subtitle lines one by one (exactly {len(lines)} items, same order; each short "
+              "enough to read in its time; keep names, numbers and units right; natural, not word-for-word).\n"
+              "3) dub: for every sequence, a natural spoken dubbing script in that language with about the same speaking time as the "
+              "English (for a voice actor / TTS); keep jokes and hooks working in the target culture; no stage directions.\n"
+              f"Subtitle lines (JSON): {json.dumps([x for _a, _b, x in lines], ensure_ascii=False)}\n"
+              f"Sequences (JSON): {json.dumps(seqs, ensure_ascii=False)}")
+    ids = [s.get("id") for s in content["sequences"]]
+
+    def check(x):
+        e = []
+        if len(x["lines"]) != len(lines): e.append(f"lines phải có đúng {len(lines)} dòng (đang có {len(x['lines'])})")
+        if sorted(s["id"] for s in x["dub"]) != sorted(ids): e.append(f"dub phải có đủ các chuỗi {ids}")
+        return e
+    data, info = call("translate_subs", prompt, schema, project=slug, model=model, check=check)
     return data
 
 

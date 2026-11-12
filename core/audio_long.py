@@ -345,6 +345,40 @@ def load_audio(path):
     return x
 
 
+MUSIC_EXT = (".wav", ".mp3", ".ogg", ".flac", ".m4a")
+
+
+def library_tracks(mood):
+    """real tracks the user dropped into library/music/<mood>/ (sorted)"""
+    d = os.path.join(MUSIC_DIR, mood)
+    if not os.path.isdir(d): return []
+    return sorted(os.path.join(d, f) for f in os.listdir(d) if f.lower().endswith(MUSIC_EXT))
+
+
+def library_music(mood, total_sec, seed=0, xfade=3.0):
+    """a real track for this mood (same choice for the same mood and seed, so parts of one video agree), looped with
+    crossfades to total_sec; None when the folder is empty or nothing can be read"""
+    tracks = library_tracks(mood)
+    if not tracks: return None
+    order = sorted(tracks, key=lambda p: zlib.crc32(f"{seed}:{os.path.basename(p)}".encode()))
+    for p in order:
+        try:
+            x = load_audio(p)
+        except Exception:
+            continue
+        if x is None or len(x) < SR * 4: continue
+        n = int(total_sec * SR) + SR; f = min(int(xfade * SR), len(x) // 4)
+        out = np.zeros(n); i = 0; ramp_in = np.linspace(0, 1, f); ramp_out = ramp_in[::-1]
+        while i < n:
+            seg = x.copy()
+            if i > 0: seg[:f] *= ramp_in
+            seg[-f:] *= ramp_out
+            j = min(n, i + len(seg)); out[i:j] += seg[:j - i]
+            i += len(seg) - f
+        return out
+    return None
+
+
 def user_sfx(name):
     for ext in (".wav", ".ogg", ".flac", ".mp3"):
         p = os.path.join(SFX_DIR, name + ext)

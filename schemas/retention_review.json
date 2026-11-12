@@ -1,0 +1,21 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object", "additionalProperties": false,
+ "required": ["hook_score", "hook_vi", "overall_vi", "issues"],
+ "properties": {
+  "hook_score": {"type": "integer", "minimum": 1, "maximum": 10},
+  "hook_vi": {"type": "string", "description": "đánh giá 15 giây đầu: câu móc 3 giây, hình mở đầu, lời hứa của video"},
+  "overall_vi": {"type": "string"},
+  "issues": {"type": "array", "maxItems": 12, "items": {
+   "type": "object", "additionalProperties": false,
+   "required": ["seq_id", "at_sec", "kind", "severity", "problem_vi", "fix_vi"],
+   "properties": {
+    "seq_id": {"type": "integer"},
+    "at_sec": {"type": "number"},
+    "kind": {"enum": ["hook", "slow", "early_reveal", "no_visual_change", "confusing", "no_stakes", "weak_ending", "other"]},
+    "severity": {"type": "integer", "minimum": 1, "maximum": 3},
+    "problem_vi": {"type": "string"},
+    "fix_vi": {"type": "string", "description": "yêu cầu sửa cụ thể, dùng được nguyên văn làm yêu cầu 'Viết lại đoạn này'"}
+   }}}
+ }
+}

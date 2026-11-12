@@ -1,0 +1,63 @@
+{
+ "hook_score": 6,
+ "hook_vi": "Tình huống mở hay: người lính trẻ, bóng đen trong sương, hóa ra là con dê, rồi kẻ \"xâm lược\" lại gõ cửa. Nhưng 3 giây đầu yếu. Câu đầu \"It's a freezing night in northern Britain.\" chỉ tả không khí, chưa có gì lạ hay con số nào. Hình mở là toàn cảnh tường ban đêm trong sương, máy trôi chậm, nên dễ thành một khung tối và tĩnh. Lời hứa của video (\"tường của đội quân mạnh nhất lại có cửa, khoảng 80 cái\") đến giây 24-27, muộn hơn mốc 15 giây. Từ giây 0 đến 15 người xem chỉ biết \"có ai đó đang tới\", chưa biết video sẽ trả lời câu gì. Cách sửa: đưa nghịch lý \"bức tường có cửa mỗi dặm\" lên câu đầu, mở bằng cận mặt Atto có đuốc sáng (không mở bằng toàn cảnh tối), và rút gọn phần đứng chờ trong sương.",
+ "overall_vi": "Kịch bản đúng khung video dài: mở giữa cao trào, \"let's go back\", câu hỏi nhắc lại ở giây ~56-80, một giả thuyết sai ở 61 %, đáp án thật ở 74 % (428/581 s), kết gọi lại tiêu đề. Gag con dê chạy dọc video và có tag cuối. Lời giải thích hiện ra qua hành động: bò không leo thang, giơ con dê làm hành lý. Câu treo cuối các chuỗi 3, 6, 9, 11, 13 làm tốt. Có ba vùng dễ mất người xem. (1) Hook chậm, lời hứa đến sau giây 15. (2) Đoạn 28-147 s toàn bối cảnh: năm, dân số, râu Hadrian, Agricola, Stanegate. Phần này nhiều thuật ngữ và ngày tháng, ít rủi ro, và hai chuỗi không có câu nối về bí ẩn cái cổng. (3) Sau đáp án (467-545 s), hai chuỗi 15-16 kể thêm thông điệp và lịch sử về sau, dày ngày tháng, không có câu treo. Cả ba chỗ sửa được bằng cách thay câu, không cần kéo dài video. Chuỗi 8 liệt kê thông số liền 38 giây, nên gắn các thông số đó vào bí ẩn cái cổng.",
+ "issues": [
+  {
+   "seq_id": 1,
+   "at_sec": 0,
+   "kind": "hook",
+   "severity": 3,
+   "problem_vi": "3 giây đầu chỉ là câu tả không khí (\"It's a freezing night in northern Britain.\") trên toàn cảnh đêm sương tối, trôi chậm. Lời hứa \"tường có cửa, khoảng 80 cái\" mãi tới giây ~25 mới có, nên đến giây 15 người xem chưa biết video trả lời điều gì.",
+   "fix_vi": "Viết lại đoạn mở, giữ tổng ~31 giây. Câu đầu tiên đổi thành một nghịch lý cụ thể, ví dụ: \"The most powerful army on Earth built a seventy-three-mile wall across Britain. Then it put a door in it. Every single mile.\" Sau đó mới vào \"Picture it: you're nineteen, freezing, standing on top of that wall.\" Rút phần sương mù/bóng đen còn 2 câu (bỏ \"You squint into the dark.\") để giữ thời lượng. Giữ nguyên gag dê và tiếng gõ cửa. Câu chốt đổi thành \"He knocks. [beat] So why would an empire build a wall… with a front door?\" để gieo câu hỏi trước giây 15. Hình: shot 1 đổi thành cận mặt Atto sáng ánh đuốc cam, hơi thở thành khói (không mở bằng toàn cảnh tối). Đưa toàn cảnh tường dài tít có cổng milecastle lặp lại lên giây 3-6, khớp câu \"every single mile\", có thẻ \"73 MILES · A DOOR EVERY MILE\"."
+  },
+  {
+   "seq_id": 2,
+   "at_sec": 28,
+   "kind": "no_stakes",
+   "severity": 2,
+   "problem_vi": "29 giây liền năm, quy mô đế chế, dân số, độ dài tường, chỉ có bản đồ và thẻ số. Không có rủi ro hay câu treo nào nối về bí ẩn cái cửa vừa gieo, nên người xem đến vì con dê gõ cửa dễ thấy đây là bài giảng.",
+   "fix_vi": "Bỏ câu \"Britain has been a Roman province for almost eighty years.\" và thay bằng một câu có rủi ro, ví dụ: \"And everywhere Rome went, the rule was simple: conquer, then keep going.\" Đổi câu cuối thành câu treo: \"Seventy-three miles of it, coast to coast… and Rome deliberately punched holes in it.\" Hình: khi nói \"sixty million\", cho bản đồ phủ đỏ nhanh kèm punch-in. Shot cuối (công trường) đổi thành cận một cổng milecastle đang dựng dở để nhắc bí ẩn cái cửa."
+  },
+  {
+   "seq_id": 4,
+   "at_sec": 82.2,
+   "kind": "slow",
+   "severity": 2,
+   "problem_vi": "Gần nửa chuỗi (~12 giây) nói về bộ râu của Hadrian, không liên quan gì đến bức tường. Đây là đoạn lạc đề giữa phần bối cảnh vốn đã dài, dễ tụt người xem ở phút 1:30.",
+   "fix_vi": "Rút phần râu còn 2 câu: giữ \"He had a beard.\" và gag tượng mọc râu, bỏ câu \"Before him… After him, almost every emperor for a century grew one.\" Thời gian còn lại dùng nối về chủ đề, ví dụ: \"He was the emperor who changed what emperors looked like. And he was about to change what an empire looked like.\" Đổi câu kết thành câu treo có rủi ro: \"In his mind, the borders were finally done. [beat] Britain didn't agree.\" để dẫn sang chuỗi 5."
+  },
+  {
+   "seq_id": 5,
+   "at_sec": 114.9,
+   "kind": "confusing",
+   "severity": 2,
+   "problem_vi": "Dồn dập tên và năm: Agricola, Caledonians, Mons Graupius, \"83 or 84\", Highlands, Stanegate, kèm thẻ trích dẫn dài. \"Caledonians\" không được giải thích. Rủi ro (\"Britons could not be kept under Roman control\") nằm tận cuối chuỗi.",
+   "fix_vi": "Bỏ \"In the year 83 or 84,\" (đã có trên thẻ), viết \"He crushed the Caledonians, the tribes of the far north, at a battle called Mons Graupius.\" Đưa rủi ro lên sớm hơn sau \"Instead, it pulled back.\", ví dụ: \"And the tribes it left behind did not forget.\" Rút thẻ trích dẫn còn \"\\\"The Britons could not be kept under Roman control.\\\" — Historia Augusta\". Câu cuối thêm một vế treo: \"…could not be kept under Roman control. Hadrian decided to see why with his own eyes.\""
+  },
+  {
+   "seq_id": 8,
+   "at_sec": 212.2,
+   "kind": "slow",
+   "severity": 2,
+   "problem_vi": "38 giây liệt kê thông số kỹ thuật (bề dày, chiều cao, mương, Whin Sill, milecastle, turret, con số) và 4/9 shot là giấy sơ đồ. Người xem không biết vì sao phải nhớ các con số này, cho tới chi tiết hai cổng ở giây ~240.",
+   "fix_vi": "Mở chuỗi bằng một câu treo nối các thông số với bí ẩn: \"On paper, it looks like the ultimate fortress. Keep an eye on one detail, because it doesn't fit.\" Bỏ \"probably\" và gộp hai câu milecastle/turret cho ngắn để bù thời gian. Hình: ít nhất một trong hai shot sơ đồ đầu đổi sang cảnh thật (lính dựng thước đo đứng cạnh tường 15 bộ, lính bé xíu). Chèn thẻ dấu hỏi nhỏ \"?\" nhấp nháy trên ô cổng milecastle khi vẽ chuỗi hạt."
+  },
+  {
+   "seq_id": 15,
+   "at_sec": 467.7,
+   "kind": "slow",
+   "severity": 2,
+   "problem_vi": "Ngay sau đáp án chính là 37 giây \"thông điệp\" toàn ý trừu tượng (separate, period at the end of a sentence), nhiều toàn cảnh tĩnh. Không có câu treo giữ người xem qua mốc sau đáp án, đây là chỗ người xem hay rời đi nhất.",
+   "fix_vi": "Câu mở đổi thành câu treo: \"But a checkpoint was only half the plan. The wall had a second audience, and it wasn't in Britain.\" Rút \"Roads, taxes, baths, law. That side is not.\" còn \"This side is Rome. That side is not.\" (thẻ chữ đã liệt kê). Đổi câu kết để dẫn sang chuỗi 16: \"Thousands of busy soldiers are builders. [beat] So… did any of it actually work?\" Hình: bỏ một trong hai toàn cảnh nam/bắc, thay bằng một cú máy trượt ngang qua tường từ phía nam (đường lát, nhà tắm) sang phía bắc (đồi hoang) trong một shot liền."
+  },
+  {
+   "seq_id": 16,
+   "at_sec": 502.4,
+   "kind": "confusing",
+   "severity": 2,
+   "problem_vi": "Chuỗi dồn quá nhiều mốc thời gian sau đáp án: 138, Antoninus Pius, 142, 39 dặm, 20 năm, ba thế kỷ, 410, 1750s. Người xem đã có đáp án nên ngưỡng kiên nhẫn thấp, dễ tụt.",
+   "fix_vi": "Bỏ \"Hadrian died in 138, and\" và \"about thirty-nine miles long\" (để trên thẻ). Viết gọn: \"His successor tried pushing north again, with a new turf wall across Scotland. It lasted about twenty years. Then Rome came straight back to Hadrian's line.\" Dùng thời gian tiết kiệm được cho một câu chốt hài ở cảnh nông dân khiêng đá, ví dụ: \"The wall finally let people through without a fee. [beat] One stone at a time.\" Giữ cảnh con dê trên đống đá làm câu nối sang chuỗi 17."
+  }
+ ]
+}

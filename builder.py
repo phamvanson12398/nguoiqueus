@@ -671,8 +671,12 @@ class Builder:
                 x = A.load_audio(os.path.join(A.MUSIC_DIR, mu["file"])); x = np.tile(x, int(np.ceil(sec * A.SR / max(1, len(x)))))
             else:
                 mood = mu.get("mood", "epic"); mood = {"sneaky": "mystery"}.get(mood, mood)
-                x = on_timeline(("m", mood, mu.get("intensity", 1.0)), lambda L, mood=mood, k=k: A.music(
-                    L, mood, seed=seed + (0 if part_off is not None else k), intensity=mu.get("intensity", 1.0)), a, sec)
+                def gen(L, mood=mood, k=k):           # a real track from library/music/<mood>/ if there is one
+                    real = A.library_music(mood, L, seed=seed)
+                    if real is not None: return real
+                    return A.music(L, mood, seed=seed + (0 if part_off is not None else k), intensity=mu.get("intensity", 1.0))
+                x = on_timeline(("m", mood, mu.get("intensity", 1.0)), gen, a, sec)
+                if A.library_tracks(mood): rep.setdefault("real_music", []).append(mood)
             x = place(at_level(A.fit(x, int(sec * A.SR)), mu.get("gain_db", -4.0)), a, b)
             if duck is not None: x = x * duck ** (mu.get("duck_db", -10.0) / -13.0)
             parts.append(x); rep.setdefault("music", []).append(mu.get("file") or mu.get("mood"))
@@ -700,7 +704,7 @@ class Builder:
         parts.append(fx_)
         mix, mrep = A.master(parts, M.get("lufs", -14.0))
         rep.update(mrep); self.report["audio"] = rep
-        print(f"AUDIO {mrep['lufs']} LUFS (gain {mrep['gain_db']} dB) peak {mrep['peak_db']} dBFS  music={rep.get('music')}")
+        print(f"AUDIO {mrep['lufs']} LUFS (gain {mrep['gain_db']} dB) peak {mrep['peak_db']} dBFS  music={rep.get('music')}" + (f"  real tracks for {sorted(set(rep['real_music']))}" if rep.get('real_music') else ''))
         wav = A.write_wav(os.path.join(self.out, "mix.wav"), mix)
         mixer.attach_audio(wav, None, sfx_volume=1.0)
 

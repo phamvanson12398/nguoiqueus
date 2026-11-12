@@ -187,6 +187,34 @@ def thumb_story(slug, concept):
     return st
 
 
+def sub_lines(slug, max_chars=42, max_sec=5.0):
+    """subtitle lines [(start, end, text)] from the real word timing of the full voice (words.json at the project root)"""
+    W = (_j(os.path.join(PROJECTS, slug, "words.json")) or {}).get("words") or []
+    lines, cur, t0 = [], [], None
+    for k, w in enumerate(W):
+        t, word = float(w[0]), str(w[1])
+        if not cur: t0 = t
+        cur.append(word)
+        nxt = float(W[k + 1][0]) if k + 1 < len(W) else t + 0.6
+        txt = " ".join(cur)
+        brk = word.endswith((".", "?", "!")) or (word.endswith((",", ";", ":")) and len(txt) > max_chars * 0.5) \
+            or len(txt) >= max_chars or nxt - t0 > max_sec or nxt - t > 0.7
+        if brk or k + 1 == len(W):
+            lines.append((t0, min(nxt, t + 0.6 + 0.08 * len(word)) if nxt - t > 0.7 else nxt, txt)); cur = []
+    return [(a, max(b, a + 0.4), x) for a, b, x in lines]
+
+
+def srt_time(t):
+    ms = int(round(t * 1000)); h, ms = divmod(ms, 3600000); m, ms = divmod(ms, 60000); s, ms = divmod(ms, 1000)
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
+def write_srt(path, lines):
+    with open(path, "w", encoding="utf-8") as f:
+        for i, (a, b, x) in enumerate(lines, 1):
+            f.write(f"{i}\n{srt_time(a)} --> {srt_time(b)}\n{x}\n\n")
+
+
 def ref_story(slug, char_id, expression="happy"):
     """reference picture of ONE character for outside image AIs (attach it so they draw the same person): full body,
     front, plain bright background, no text, 3D style of the video"""

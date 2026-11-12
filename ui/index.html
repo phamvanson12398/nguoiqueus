@@ -139,6 +139,10 @@ small.err{color:var(--bad)}
         <div id="cSources" class="muted" style="margin-top:6px"></div>
         <div id="cNeeds" style="margin-top:6px"></div>
       </div>
+      <div class="panel" style="padding:10px"><div class="row"><h2 style="margin:0;flex:1;font-size:15px">Soát giữ chân người xem</h2>
+        <button id="btnRetention">Soát kịch bản</button></div>
+        <p class="muted" style="margin:4px 0">Claude soi như biên tập viên YouTube: câu móc 15 giây đầu và những chỗ người xem dễ bỏ đi. Nên soát trước khi làm giọng đọc.</p>
+        <div id="retBox"></div></div>
       <div class="row" style="margin-bottom:8px"><h2 style="margin:0;flex:1;font-size:15px">Chuỗi máy <span class="muted" style="font-weight:400">(kéo ☰ để đổi thứ tự)</span></h2><button id="btnAddSeq">+ Thêm chuỗi</button></div>
       <div id="seqList"></div>
     </div>
@@ -236,6 +240,10 @@ small.err{color:var(--bad)}
       <p class="muted">Thumbnail tool dựng chưa đủ đẹp? Dán prompt vào ChatGPT, Gemini (Nano Banana), Midjourney, Ideogram… và <b>đính kèm ảnh
         tham chiếu nhân vật</b> để AI vẽ đúng người. Chữ tiêu đề: dùng bản "có chữ" với Ideogram/ChatGPT, hoặc tự thêm bằng Canva.</p>
       <div id="aiRefs" class="thumbs"></div><div id="aiPrompts"></div></div>
+    <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Phụ đề và lồng tiếng nhiều thứ tiếng</h2><button id="btnSubs">Tạo phụ đề</button></div>
+      <p class="muted">Phụ đề tiếng Anh lấy đúng thời gian giọng đọc; Claude dịch sang các thứ tiếng chọn dưới đây (giữ thời gian) và viết kịch bản
+        lồng tiếng tự nhiên (làm giọng rồi tải lên YouTube Studio → Phụ đề / Lồng tiếng). Mỗi thứ tiếng khoảng 1-3 phút.</p>
+      <div id="subLangs" class="row" style="flex-wrap:wrap;gap:10px"></div><div id="subFiles" style="margin-top:8px"></div></div>
   </section>
 
   <!-- LIBRARY -->
@@ -424,7 +432,27 @@ function seqCard(s, i) {
       <button class="del" title="Xóa chuỗi">🗑</button></div>
     <div class="fields">${f}</div></div>`;
 }
+function renderRetention() {
+  const r = S.state.retention; if (!r) { $('#retBox').innerHTML = ''; return; }
+  const kinds = {hook: 'câu móc', slow: 'chậm', early_reveal: 'lộ đáp án sớm', no_visual_change: 'hình đứng yên', confusing: 'khó hiểu',
+                 no_stakes: 'thiếu rủi ro', weak_ending: 'kết yếu', other: 'khác'};
+  const mmss = t => `${Math.floor(t / 60)}:${String(Math.round(t % 60)).padStart(2, '0')}`;
+  $('#retBox').innerHTML = `<div><b>Câu móc: ${r.hook_score}/10</b> — ${esc(r.hook_vi)}</div><div class="muted" style="margin:4px 0 8px">${esc(r.overall_vi)}</div>` +
+    r.issues.map((it, k) => `<div class="row" style="align-items:flex-start;padding:4px 0;border-top:1px solid #0001">
+      <span class="chip" style="background:${['', '#fff3c4', '#ffd9a8', '#ffb3a8'][it.severity]}">${'!'.repeat(it.severity)} ${kinds[it.kind] || it.kind}</span>
+      <div style="flex:1"><b>${mmss(it.at_sec)} · chuỗi ${it.seq_id}</b>: ${esc(it.problem_vi)}<br><span class="muted">Sửa: ${esc(it.fix_vi)}</span></div>
+      <button data-ret="${k}">Áp dụng</button></div>`).join('');
+  $$('#retBox button[data-ret]').forEach(b => b.onclick = async () => {
+    const it = r.issues[+b.dataset.ret];
+    await api(P('/content'), {body: {content: collectContent()}});
+    run(P('/content/rewrite'), {id: it.seq_id, request: it.fix_vi}, `Sửa chuỗi ${it.seq_id} theo góp ý`);
+  });
+}
+$('#btnRetention').onclick = async () => { if (!S.state.content) return toast('Viết content trước');
+  await api(P('/content'), {body: {content: collectContent()}}); run(P('/content/review'), {}, 'Soát giữ chân người xem'); };
+
 function renderContent() {
+  renderRetention();
   const st = S.state; const c = st.content;
   $('#fmt').value = st.format || 'short'; fmtLimits();
   $('#minutes').value = (st.settings || {}).minutes || 1; updateEst();
@@ -636,7 +664,7 @@ function renderYT() {
   $('#ytTags').innerHTML = (y.tags || []).map(t => `<span class="chip">${esc(t)}</span>`).join('') + ' ' +
     (y.hashtags || []).map(h => `<span class="chip">#${esc(h.replace(/^#/, ''))}</span>`).join('');
   $('#ytPinned').textContent = y.pinned_comment || '';
-  renderAIPrompts(y);
+  renderAIPrompts(y); renderSubs(y);
 }
 $('#btnYT').onclick = () => { if (!S.state.content) return toast('Cần có content trước'); run(P('/youtube'), {thumbs: true}, 'Tạo gói YouTube'); };
 $('#ytCopyDesc').onclick = () => copyText($('#ytDesc').value);
@@ -656,6 +684,15 @@ function renderAIPrompts(y) {
     <div class="muted">Mẹo: ${esc(p.tips_vi)}</div></div>`).join('');
   $$('#aiPrompts button[data-copy]').forEach(b => b.onclick = () => copyText(decodeURIComponent(b.dataset.copy)));
 }
+const SUB_LANGS = {es: 'Tây Ban Nha', pt: 'Bồ Đào Nha (Brazil)', hi: 'Hindi', id: 'Indonesia', fr: 'Pháp', de: 'Đức', ja: 'Nhật',
+                   ko: 'Hàn', vi: 'Việt', ar: 'Ả Rập', ru: 'Nga', it: 'Ý', tr: 'Thổ Nhĩ Kỳ', th: 'Thái', zh: 'Trung'};
+$('#subLangs').innerHTML = Object.entries(SUB_LANGS).map(([k, v]) => `<label><input type="checkbox" value="${k}" ${['es', 'pt', 'hi', 'id'].includes(k) ? 'checked' : ''}> ${v}</label>`).join('');
+function renderSubs(y) {
+  const f = (y && y.subs) || [];
+  $('#subFiles').innerHTML = f.length ? f.map(n => `<a href="${P('/file/youtube/subs/' + n)}" download>${esc(n)}</a>`).join(' · ') : '<span class="muted">Chưa có.</span>';
+}
+$('#btnSubs').onclick = () => { if (!S.state.content) return toast('Cần có content và giọng đọc trước');
+  const langs = $$('#subLangs input:checked').map(i => i.value); run(P('/youtube/subs'), {langs}, 'Phụ đề + lồng tiếng'); };
 $('#btnAIP').onclick = () => { if (!S.state.content) return toast('Cần có content trước'); run(P('/youtube/prompts'), {}, 'Viết prompt thumbnail AI'); };
 $('#aiRefs').onclick = e => { if (e.target.tagName === 'IMG') zoom([e.target.src]); };
 

@@ -238,8 +238,10 @@ def project_state(slug):
                          if os.path.exists(os.path.join(yd, "description.txt")) else None,
                          thumbs=sorted(f for f in os.listdir(yd) if re.fullmatch(r"thumb_\d(_v1)?\.png", f)),
                          ai_prompts=jload(os.path.join(yd, "ai_prompts.json")),
+                         subs=sorted(os.listdir(os.path.join(yd, "subs"))) if os.path.isdir(os.path.join(yd, "subs")) else [],
                          refs=sorted(f for f in os.listdir(os.path.join(yd, "refs")) if f.endswith(".png")) if os.path.isdir(os.path.join(yd, "refs")) else []) if os.path.isdir(yd) else None
     st["chapters"] = longform.status(slug) if st["format"] == "long" else None
+    st["retention"] = jload(os.path.join(d, "retention_review.json"))
     cur = BUSY.get(slug); st["job"] = JOBS[cur].to_json(10 ** 9) if cur and cur in JOBS else None
     return st
 
@@ -571,6 +573,35 @@ def job_youtube(job, slug, thumbs=True):
     return {"titles": len(pkg["titles"]), "timestamps": len(stamps)}
 
 
+def job_subs(job, slug, langs):
+    """English SRT from the real word timing; translated SRT + dubbing script for each language (youtube/subs/)"""
+    import youtube
+    sd = os.path.join(pdir(slug), "youtube", "subs"); os.makedirs(sd, exist_ok=True)
+    lines = youtube.sub_lines(slug)
+    if not lines: raise ValueError("chưa có giọng đọc đã canh chữ (words.json)")
+    youtube.write_srt(os.path.join(sd, "en.srt"), lines)
+    job.say(f"Phụ đề tiếng Anh: {len(lines)} dòng -> youtube/subs/en.srt")
+    for lang in langs:
+        job.say(f"Claude dịch sang {bridge.LANG_NAMES.get(lang, lang)}…")
+        try:
+            r = bridge.translate_subs(slug, lang, lines)
+        except Exception as e:
+            if job.cancelled or bridge.is_usage_limit(e): raise
+            job.say(f"   -> lỗi: {e}"); continue
+        youtube.write_srt(os.path.join(sd, f"{lang}.srt"), [(a, b, t) for (a, b, _x), t in zip(lines, r["lines"])])
+        with open(os.path.join(sd, f"dub_{lang}.txt"), "w", encoding="utf-8") as f:
+            f.write(r["title"] + "\n\n" + "\n\n".join(x["text"] for x in sorted(r["dub"], key=lambda x: x["id"])) + "\n")
+        job.say(f"   -> {lang}.srt + dub_{lang}.txt ({r['title']})")
+    return {"files": sorted(os.listdir(sd))}
+
+
+def job_retention(job, slug):
+    job.say("Claude soát giữ chân người xem (câu móc 15 giây đầu, đoạn dễ tụt người xem)…")
+    r = bridge.retention_review(slug)
+    job.say(f"   Câu móc: {r['hook_score']}/10. {len(r['issues'])} chỗ cần sửa (xem ở bước 2, bấm 'Áp dụng' từng chỗ).")
+    return {"hook_score": r["hook_score"], "issues": len(r["issues"])}
+
+
 def job_thumb_prompts(job, slug):
     """prompts for outside image AIs + reference pictures of the characters they show (youtube/ai_prompts.json, refs/<id>.png)"""
     import youtube
@@ -871,6 +902,11 @@ class Handler(BaseHTTPRequestHandler):
             if act == ["splice"]:                      # put a re-rendered part (parts/*_AAAA-BBBB.mp4) into the full video
                 part = self.safe_join(d, self.jbody()["part"])
                 return self.send_json(start_job("splice", slug, job_splice, slug, part).to_json())
+            if act == ["youtube", "subs"] and method == "POST":
+                langs = [x for x in self.jbody().get("langs", []) if x in bridge.LANG_NAMES]
+                return self.send_json(start_job("subs", slug, job_subs, slug, langs).to_json())
+            if act == ["content", "review"] and method == "POST":
+                return self.send_json(start_job("review", slug, job_retention, slug).to_json())
             if act == ["clean"] and method == "POST":
                 return self.send_json(clean_project(slug))
             if act == ["delete"] and method == "POST":
