@@ -1,0 +1,131 @@
+{
+  "kind": "prop",
+  "name": "care_package",
+  "title_vi": "Gói đồ gửi từ nhà (lính La Mã)",
+  "description_vi": "Đạo cụ 2D cầm tay ở mặt phẳng nhân vật, màu phẳng đậm, viền mực 0,035. item='box': túi vải bố/da 0,6 × 0,4 buộc dây chữ thập có nút nơ ở giữa, miệng túi mở, lòi ra đôi tất len đỏ (cổ kem) và đôi dép da quai đế đóng đinh. item='underpants': quần lót vải lanh La Mã (subligaculum) màu trắng ngà, cạp cuộn, dây buộc hai bên, có miếng vá (tùy chọn), cỡ 0,35 × 0,25, gốc ở tâm để story cho bay và xoay quanh trục Z. item='socks' / 'sandals': từng đôi riêng. Nếu có parent (torso) thì đặt ở at = [0, 0.5, 0.42].",
+  "dim": "2d",
+  "params": {
+    "item": {
+      "type": "string",
+      "default": "box",
+      "enum": [
+        "box",
+        "underpants",
+        "socks",
+        "sandals"
+      ],
+      "desc_vi": "Món cần dựng; chỉ tạo các part ứng với món này (box = bundle + socks + sandals)"
+    },
+    "at": {
+      "type": "array",
+      "default": [
+        0,
+        0.5,
+        0.42
+      ],
+      "desc_vi": "Vị trí trong hệ tọa độ thân khi có parent (x ngang, y lên, z ra trước)"
+    },
+    "scale2d": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Hệ số phóng to/thu nhỏ (đặt lên từng part)"
+    },
+    "bag_color": {
+      "type": "array",
+      "default": [
+        0.5,
+        0.29,
+        0.1
+      ],
+      "desc_vi": "Màu túi vải bố/da"
+    },
+    "cord_color": {
+      "type": "array",
+      "default": [
+        0.93,
+        0.74,
+        0.38
+      ],
+      "desc_vi": "Màu dây buộc chữ thập"
+    },
+    "sock_color": {
+      "type": "array",
+      "default": [
+        0.78,
+        0.04,
+        0.03
+      ],
+      "desc_vi": "Màu tất len (đỏ)"
+    },
+    "sock_cuff_color": {
+      "type": "array",
+      "default": [
+        0.95,
+        0.85,
+        0.62
+      ],
+      "desc_vi": "Màu cổ tất"
+    },
+    "leather_color": {
+      "type": "array",
+      "default": [
+        0.55,
+        0.26,
+        0.07
+      ],
+      "desc_vi": "Màu quai dép da"
+    },
+    "sole_color": {
+      "type": "array",
+      "default": [
+        0.17,
+        0.08,
+        0.03
+      ],
+      "desc_vi": "Màu đế dép"
+    },
+    "underpants_color": {
+      "type": "array",
+      "default": [
+        0.93,
+        0.84,
+        0.62
+      ],
+      "desc_vi": "Màu vải lanh trắng ngà của quần lót"
+    },
+    "patch": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có miếng vá trên quần lót (gag)"
+    },
+    "tag_text": {
+      "type": "string",
+      "default": "",
+      "desc_vi": "Chữ trên thẻ treo ở túi (rỗng = không có thẻ), ví dụ 'MARCVS'"
+    }
+  },
+  "parts": [
+    "bundle",
+    "socks",
+    "sandals",
+    "underpants"
+  ],
+  "tags": [
+    "roman",
+    "2d",
+    "handheld",
+    "care_package",
+    "socks",
+    "sandals",
+    "underpants",
+    "subligaculum",
+    "gift",
+    "military",
+    "comedy"
+  ],
+  "notes_vi": "Tôi đã viết xong build.py nhưng chưa chạy thử trong Blender. Bước dựng và chụp ảnh xem lại của bridge sẽ là lần chạy đầu tiên.\n\nCách dựng:\n- Gốc là một empty. Có parent (torso) thì gốc đặt ở at = [0, 0.5, 0.42].\n- Mỗi part là một empty con, tên đúng f\"{name}_bundle|socks|sandals|underpants\". Bên trong có các empty nhỏ hơn (`_sock0/1`, `_sandal0/1`) để xoay hoặc lật từng chiếc.\n- Chỉ tạo part ứng với item: box tạo bundle + socks + sandals; underpants chỉ tạo underpants; socks và sandals chỉ tạo đúng món đó.\n\nHình vẽ:\n- **box:**\n  - Túi rộng 0,6, cao khoảng 0,41 tính cả vành miệng phía sau.\n  - Dây buộc chữ thập màu sáng, có nơ và nút ở giữa.\n  - Lòi ra khỏi miệng túi: một chiếc tất vắt qua mép trái, một chiếc dựng đứng, hai chiếc dép chĩa mũi lên phía phải. Phần dưới của tất và dép bị mặt trước túi che.\n  - tag_text khác rỗng thì có thêm thẻ tên treo ở góc dưới phải.\n- **underpants:** quần lót 0,35 × 0,25, gốc ở tâm, gồm cạp cuộn, hai dây buộc có nút ở hai bên và miếng vá (tắt bằng `patch=false`). Story chỉ cần xoay rotation_euler.z của `{name}_underpants`, hoặc của gốc khi item='underpants'.\n\nKỹ thuật:\n- Các lớp cách nhau 0,02 hoặc hơn theo trục z, vì ống viền mực có độ dày; khi cả túi chồng lên nhau, phần sâu nhất khoảng 0,4.\n- Đường nét có viền dùng helper `_ostroke`: một ống mực to nằm sau, ống màu nằm trước 0,02.\n- Vật liệu đều là `flat` (emission), tên `care_package_<loại>_<màu>_<hệ số>`, nên không bị ánh trời nhuộm xanh.\n- `scale2d` gán vào scale của từng part. Nếu story animate scale của part thì giá trị này sẽ bị ghi đè.\n\nCần xem kỹ trên ảnh thumbnail:\n- Tất và dép trong túi có bị chồng rối không.\n- Đinh đế dép (r 0,011) có quá nhỏ trên màn hình điện thoại không.",
+  "status": "draft",
+  "brief_vi": "Gói đồ gửi từ nhà cho lính La Mã, 2D cầm tay trong mặt phẳng nhân vật (viền mực 0,035, màu phẳng đậm). Param item: 'box' = gói vải bố/da buộc dây chéo hình chữ thập, cỡ 0,6 × 0,4, miệng mở có đôi tất len đỏ và đôi dép da quai lòi ra; 'underpants' = một chiếc quần lót vải lanh kiểu La Mã (subligaculum) trắng ngà có dây buộc hai bên, cỡ 0,35 × 0,25, gốc ở tâm (story cho bay lên và xoay quanh trục Z cục bộ); 'socks' và 'sandals' = từng món riêng. Gắn torso ở loc [0, 0.5, 0.42] (x ngang, y lên, z ra trước). parts: bundle, socks, sandals, underpants (chỉ tạo part theo item).",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T11:25:51"
+}
