@@ -1,12 +1,12 @@
 """Care package from home for a Roman soldier - 2D hand-held prop in the character plane (flat colours, ink outline 0.035).
 
 item='box'        : canvas/leather bundle 0.6 x 0.4 tied with a cord cross (bow knot in the middle), open mouth with a pair of
-                    red wool socks and a pair of strappy hobnailed leather sandals poking out.
+                    red wool socks and a pair of strappy leather sandals (seen from above, toes up) poking out.
                     Parts: {name}_bundle, {name}_socks, {name}_sandals.
 item='underpants' : linen Roman subligaculum (ivory), rolled waistband, side ties, optional darned patch; 0.35 x 0.25,
                     origin at its centre (story flies it up and spins it around local Z). Part: {name}_underpants.
 item='socks'      : the pair of socks alone. Part: {name}_socks.
-item='sandals'    : the pair of sandals alone. Part: {name}_sandals.
+item='sandals'    : the pair of sandals alone (side view, hobnailed soles). Part: {name}_sandals.
 With a parent (torso) the root sits at `at` = [0, 0.5, 0.42] (x right, y up, z forward).
 Only the parts of the chosen item are created. Layers are spaced 0.02+ in z because outline tubes have depth."""
 from core.look import flat
@@ -79,6 +79,19 @@ def _sandal(par, nm, z, M):
         disc(par, f"{nm}_n{k}", -0.11 + 0.055 * k, 0.02, 0.011, z + 0.03, M["nail"])
 
 
+def _sandal_top(par, nm, z, M):
+    """one sandal seen from above (footprint silhouette, toe toward +y), origin at the heel end.
+    Reads instantly as a sandal even when half hidden in the sack."""
+    sole = arc(0.0, 0.045, 0.044, 0.045, 180, 360, n=8) + arc(0.012, 0.2, 0.058, 0.062, 0, 180, n=10)
+    shape(par, nm + "_sole", sole, M["sole"], z)
+    insole = arc(0.0, 0.05, 0.03, 0.033, 180, 360, n=8) + arc(0.012, 0.2, 0.043, 0.047, 0, 180, n=10)
+    shape(par, nm + "_insole", insole, M["insole"], z + 0.015, outline=0)
+    for i, (y, hw) in enumerate(((0.075, 0.058), (0.15, 0.068), (0.215, 0.07))):
+        _ostroke(par, f"{nm}_s{i}", [(-hw + 0.006 * i, y - 0.01), (0.0, y + 0.008), (hw + 0.008 * i, y - 0.01)],
+                 0.026, z + 0.03, M["leather"])
+    _ostroke(par, nm + "_mid", [(0.004, 0.075), (0.008, 0.15), (0.012, 0.215)], 0.02, z + 0.03, M["leather"], ol=0.025)
+
+
 def _bundle(g, name, M, tag_text):
     # back rim of the sack + dark open mouth
     shape(g, f"{name}_rim", ellipse(0, 0.14, 0.245, 0.07, 32), M["bag_back"], -0.04)
@@ -99,10 +112,9 @@ def _bundle(g, name, M, tag_text):
     hpts = [(x, -0.045 - 0.018 * (1 - (x / 0.3) ** 2)) for x in [-0.3 + 0.6 * i / 12 for i in range(13)]]
     _ostroke(g, f"{name}_cordh", hpts, 0.028, zc, M["cord"])
     # bow knot
-    _ostroke(g, f"{name}_bowL", ellipse(-0.05, -0.04, 0.04, 0.022, 20) + [ellipse(-0.05, -0.04, 0.04, 0.022, 20)[0]],
-             0.02, zc + 0.02, M["cord"])
-    _ostroke(g, f"{name}_bowR", ellipse(0.05, -0.04, 0.04, 0.022, 20) + [ellipse(0.05, -0.04, 0.04, 0.022, 20)[0]],
-             0.02, zc + 0.02, M["cord"])
+    for sd, cx in (("L", -0.05), ("R", 0.05)):
+        loop = ellipse(cx, -0.04, 0.04, 0.022, 20)
+        _ostroke(g, f"{name}_bow{sd}", loop + [loop[0]], 0.02, zc + 0.02, M["cord"])
     _ostroke(g, f"{name}_tailL", [(-0.01, -0.07), (-0.022, -0.1), (-0.03, -0.125)], 0.02, zc + 0.02, M["cord"])
     _ostroke(g, f"{name}_tailR", [(0.01, -0.07), (0.028, -0.095), (0.04, -0.12)], 0.02, zc + 0.02, M["cord"])
     shape(g, f"{name}_knot", ellipse(0, -0.055, 0.032, 0.028, 20), M["cord"], zc + 0.07, outline=0.03)
@@ -150,6 +162,7 @@ def build(params, lib):
         sock=_mat("sock", p["sock_color"]), sock_dark=_mat("sock", p["sock_color"], 0.6),
         cuff=_mat("cuff", p["sock_cuff_color"]),
         leather=_mat("leather", p["leather_color"]), sole=_mat("sole", p["sole_color"]),
+        insole=_mat("insole", p["leather_color"], 1.6),
         nail=flat("care_package_nail", (0.55, 0.55, 0.58)),
         linen=_mat("linen", p["underpants_color"]), linen_dark=_mat("linen", p["underpants_color"], 0.72),
         linen_band=_mat("linen", p["underpants_color"], 0.88), patch=_mat("patch", (0.62, 0.42, 0.2)),
@@ -180,8 +193,9 @@ def build(params, lib):
         _bundle(bundle, name, M, p["tag_text"])
         _sock(sub(socks, "sock1", (-0.07, 0.06, 0.03), -0.05), f"{name}_sk1", 0.0, M)
         _sock(sub(socks, "sock0", (-0.15, 0.05, 0.07), 0.35, mirror=True), f"{name}_sk0", 0.0, M)
-        _sandal(sub(sandals, "sandal1", (0.06, 0.09, 0.12), 1.45), f"{name}_sd1", 0.0, M)
-        _sandal(sub(sandals, "sandal0", (0.14, 0.07, 0.18), 1.05), f"{name}_sd0", 0.0, M)
+        # sandals from above, toes up, fanned to the right: the footprint silhouette reads at a glance
+        _sandal_top(sub(sandals, "sandal1", (0.07, 0.0, 0.12), -0.12), f"{name}_sd1", 0.0, M)
+        _sandal_top(sub(sandals, "sandal0", (0.16, -0.02, 0.17), -0.42), f"{name}_sd0", 0.0, M)
     elif item == "socks":
         socks = part("socks")
         _sock(sub(socks, "sock0", (-0.11, -0.11, 0.0)), f"{name}_sk0", 0.0, M)
