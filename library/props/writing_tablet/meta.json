@@ -1,0 +1,123 @@
+{
+  "kind": "prop",
+  "name": "writing_tablet",
+  "title_vi": "Thư gỗ Vindolanda (lá gỗ viết mực)",
+  "description_vi": "Lá gỗ mỏng màu sáng kiểu thư Vindolanda, phóng to cỡ 0,6 × 0,25. Có nếp gấp dọc ở giữa, mép sứt ngẫu nhiên. Chữ viết tay nghiêng bằng mực đen xếp thành hai cột, mỗi cột nằm trên một nửa lá. dim '2d': vẽ phẳng có viền mực để nhân vật hai tay cầm đọc trước ngực, có parent thì đặt ở `at` = [0, 0.6, 0.42] trong hệ tọa độ thân. Khi gấp, chỉ thấy một nửa lá, phía sau lộ lá thứ hai và có hai dòng địa chỉ ở mặt ngoài. dim '3d': hai nửa lá đùn khối dày 0,02 nằm trên bàn, gốc ở tâm đáy. Nửa phải là nắp gắn bản lề ở nếp gấp: xoay `_flap` quanh trục Y từ 0 đến −π là gấp lại.",
+  "dim": "2d",
+  "params": {
+    "dim": {
+      "type": "string",
+      "default": "2d",
+      "enum": [
+        "2d",
+        "3d"
+      ],
+      "desc_vi": "2d: cầm đọc trước ngực (vẽ phẳng, viền mực); 3d: khối gỗ nằm trên bàn"
+    },
+    "folded": {
+      "type": "bool",
+      "default": false,
+      "desc_vi": "Gấp đôi theo nếp giữa. 2d: chỉ còn nửa lá, có lá sau và dòng địa chỉ; 3d: nắp _flap xoay −π đè lên nửa trái"
+    },
+    "text_lines": {
+      "type": "int",
+      "default": 4,
+      "desc_vi": "Số dòng chữ mỗi cột (1-12); dòng cuối ngắn hơn"
+    },
+    "size": {
+      "type": "list",
+      "default": [
+        0.6,
+        0.25
+      ],
+      "desc_vi": "Rộng × cao của cả lá khi mở"
+    },
+    "thickness": {
+      "type": "float",
+      "default": 0.02,
+      "desc_vi": "Độ dày lá gỗ (3d), đã phóng đại so với gỗ thật 2-3 mm"
+    },
+    "chip": {
+      "type": "float",
+      "default": 1,
+      "desc_vi": "Mức sứt mép, 0 = mép thẳng, 1 = sứt rõ"
+    },
+    "wood_color": {
+      "type": "list",
+      "default": [
+        0.93,
+        0.7,
+        0.4
+      ],
+      "desc_vi": "Màu gỗ sáng (2d dùng thẳng; 3d tự làm ấm, đậm hơn để chống ánh trời xanh)"
+    },
+    "ink_color": {
+      "type": "list",
+      "default": [
+        0.03,
+        0.025,
+        0.02
+      ],
+      "desc_vi": "Màu mực"
+    },
+    "address": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "Hai dòng địa chỉ ở mặt ngoài (thấy khi gấp)"
+    },
+    "seed": {
+      "type": "int",
+      "default": 11,
+      "desc_vi": "Hạt ngẫu nhiên cho mép sứt và nét chữ"
+    },
+    "at": {
+      "type": "list",
+      "default": [
+        0,
+        0.6,
+        0.42
+      ],
+      "desc_vi": "Vị trí trong hệ tọa độ thân khi có parent (2d)"
+    },
+    "scale2d": {
+      "type": "float",
+      "default": 1,
+      "desc_vi": "Hệ số phóng to bản 2d"
+    }
+  },
+  "parts": [
+    "leaf",
+    "fold",
+    "text",
+    "back",
+    "leaf2",
+    "flap",
+    "text2",
+    "address"
+  ],
+  "tags": [
+    "roman",
+    "vindolanda",
+    "letter",
+    "writing",
+    "wood",
+    "tablet",
+    "handheld",
+    "2d",
+    "3d",
+    "history"
+  ],
+  "notes_vi": "Mình đã viết `library/props/writing_tablet/build.py` nhưng **chưa chạy thử trong Blender và chưa render thumbnail**. Bước dựng thử và tự xem lại ảnh của bridge sẽ kiểm tra hình dạng thật.\n\n**Cách dùng trong story**\n- Cầm đọc: `dim: \"2d\"`, đặt parent là torso. Gốc tự đặt ở `at` = [0, 0.6, 0.42]; nếu story có `loc` thì `loc` được ưu tiên.\n- Gấp hoặc mở bằng animation (chỉ bản 3D): key `rotation_euler.y` của `<id>_flap` từ 0 đến −π. Nắp nhấc lên rồi lật đè lên nửa trái. Khi gấp, dòng địa chỉ ở mặt ngoài sẽ ngửa lên và đọc đúng chiều.\n- Bản 2D đổi trạng thái bằng hai object (một mở, một `folded: true`) rồi bật/tắt hiện ngay ở khung hành động.\n\n**Các chỗ mình chọn khác với mô tả**\n- Bản 3D đặt gốc ở tâm đáy (z = 0 nằm sát mặt bàn), theo quy ước 3D của AUTHORING. Lá chỉ dày 0,02 nên gốc chỉ lệch 1 cm so với tâm khối. Khi gấp, phần còn lại nằm ở nửa trái (x từ −0,3 đến 0) chứ không ở giữa gốc.\n- Độ dày đã phóng đại lên 0,02 (gỗ thật dày 2-3 mm) để viền mực đọc được.\n- Bản 3D tự làm màu gỗ ấm và đậm hơn, kèm `warm_top`, để mặt ngửa không bị ánh trời nhuộm xám xanh. Bản 2D dùng emission nên giữ đúng `wood_color`.\n\n**Chữ và tên phần con**\n- Chữ là nét nghệch ngoạc nghiêng kiểu chữ thảo La Mã, không đọc được thành chữ thật. Mỗi từ là một nét mực riêng.\n- Các phần chính: `_leaf`, `_fold`, `_text` (có ở cả hai chế độ); `_back` (2D khi gấp); `_leaf2`, `_flap`, `_text2`, `_address` (chỉ 3D).\n- Dòng địa chỉ của bản 2D nằm trong `_text`; muốn ẩn thì đặt `address: false`.",
+  "status": "draft",
+  "brief_vi": "Thư gỗ Vindolanda: lá gỗ mỏng màu sáng, phóng to cỡ 0,6 × 0,25, chữ mực đen nét nghiêng xếp hai cột, nếp gấp giữa, mép sứt. Params: dim '2d' (vẽ phẳng có viền mực để nhân vật hai tay cầm đọc trước ngực, gắn torso tại [0, 0.6, 0.42]) | '3d' (nằm trên bàn); folded (bool); text_lines (số dòng). Gốc ở tâm.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T06:55:14",
+  "review": {
+    "score": 8,
+    "summary_vi": "Mình mới xem ảnh của bản 2D mở ra (mặt trước và ảnh Joe cầm). Lá gỗ màu sáng có viền mực dày, mép sứt, nếp gấp giữa và hai cột chữ nghiêng, nhìn một giây là nhận ra thư gỗ; Joe cầm trước ngực vừa tay. Bản 3D và trạng thái gấp chưa có ảnh nên chưa kiểm tra được bằng mắt.",
+    "problems": [
+      "Ở khoảng cách toàn thân (scale.png), chữ mực khá mảnh, nhìn trên điện thoại chỉ thấy là các vệt. Muốn đọc rõ hơn khi quay cận thì tăng `scale2d` khoảng 1.2-1.3; không cần sửa code.",
+      "Nét chữ trông giống răng cưa hơn chữ thảo, nhưng vẫn đọc được là chữ viết tay nên giữ nguyên."
+    ]
+  }
+}
