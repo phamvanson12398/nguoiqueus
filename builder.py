@@ -23,6 +23,7 @@ import core
 from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards, overlay, outfits, audio_long, fx_long
 from core.expr import Env, ExprError
 from core import framing
+from mathutils import Vector
 import storycheck
 from storycheck import LibIndex
 
@@ -326,6 +327,7 @@ class Builder:
             self.lens = camera.bake_camera(self.cam, self.cam_d, res, set(trans))
             self.cuts = sorted(trans)
             self.bake_dof(res, cs, cs["shots"])
+            if not self.check_line_of_sight(res, cs["shots"]): self.report["camera_ok"] = False
         else:
             seqs = []
             for s in cs["seqs"]:
@@ -342,6 +344,29 @@ class Builder:
             self.lens = camera.bake_camera(self.cam, self.cam_d, res, set(trans))
             self.cuts = sorted(trans)
             self.bake_dof(res, cs, cs["seqs"])
+
+    def check_line_of_sight(self, res, shots):
+        """framing places the camera by distance only: a wall, a tree or the inside of a building can end up between the
+        camera and the subject (seen: a low orbit around a centurion ended inside the milecastle wall). Cast a ray from the
+        camera to the look point in the middle of every framed shot of a character/crowd/object and warn when it is blocked."""
+        ok = True; dg = None
+        for k, s in enumerate(shots):
+            subj = (s.get("frame") or {}).get("subject")
+            if not isinstance(subj, str) or "." in subj: continue
+            own = self.chars[subj].root if subj in self.chars else self.crowds.get(subj) or bpy.data.objects.get(subj)
+            if own is None: continue
+            f = (s["a"] + s["b"]) // 2
+            if f not in res: continue
+            ctx.sc.frame_set(f); dg = bpy.context.evaluated_depsgraph_get()
+            cam, look = Vector(res[f][0]), Vector(res[f][1]); d = (look - cam).length
+            if d < 0.3: continue
+            mine = {own.name} | {c.name for c in own.children_recursive}
+            hit, loc, _n, _i, ob, _m = ctx.sc.ray_cast(dg, cam, (look - cam).normalized(), distance=d * 0.92)
+            if hit and ob is not None and ob.name not in mine and not ob.name.startswith(("vfx_", "Overlay", "cap_", "card_")):
+                ok = False
+                print(f"WARN shot {s['a']}-{s['b']} (camera.shots[{k}]): view of '{subj}' blocked by '{ob.name}' at frame {f} "
+                      f"({(loc - cam).length:.1f} of {d:.1f} from the camera): change frame.angle/height/x/move or move the subject")
+        return ok
 
     def value_at(self, segs, default, f, prop, where):
         """value of one property of a track/blocking spec at frame f (None if nothing sets it)"""
