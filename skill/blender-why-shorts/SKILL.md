@@ -54,6 +54,8 @@ bảng lời → kiểu cảnh, âm thanh, hiệu ứng); định dạng ở `ST
 | 4. Duyệt & dựng | Làm lần lượt từng chương: plan_shots (camera rig `long`, shot `frame` đặt máy theo chủ thể) → văn hóa mới (tra web, có nguồn) → trang phục từng vai (xem ảnh xếp hàng + bóng đen, chấm sử liệu) → đồ mới → dựng, `CAMERA OK`. Bấm lại thì **làm tiếp** từ chỗ dở (story đã lập được dùng lại, chỉ thiết kế đồ còn thiếu); "Dựng lại chương này" mới lập story lại. |
 | 5. Render | Chọn chất lượng: fast (on twos, 12 mẫu, ~30 % thời gian, để duyệt), normal, high. Render chuỗi ảnh PNG từng chương rồi ghép; tắt giữa chừng bấm lại là render tiếp. Bấm **"Đo tốc độ máy"** một lần để ước tính đúng. |
 | 6. YouTube | Claude viết 8-12 tiêu đề, mô tả có mốc chương (tool tính từ giọng thật), nguồn, tag, bình luận ghim; tool render 3 thumbnail bằng nhân vật/bối cảnh của video, Claude chấm và sửa cái tốt nhất. |
+- Lượt Claude: video 10 phút tốn nhiều lượt (mỗi chương ~12 phút lập story + 3-10 món mới × 3-5 phút); đo thật ở video Tường Hadrian:
+  chạm giới hạn 5 giờ của gói hai lần. Dựng từng chương ("Dựng chương này"), rải qua nhiều khung 5 giờ; hết lượt thì bấm lại sau giờ mở.
 - Bản đồ (`parchment_map`, bờ biển thật), sa bàn (`tactical_board`) và giấy sơ đồ (`paper_diagram`) dựng từ dữ liệu trong story, không thiết kế lại mỗi video.
 - Đám đông (`crowds`) nhân bản vài lính mẫu theo đội hình; nhân vật `type: person` mặc trang phục theo `faction` + `role`.
 - Âm thanh tự trộn ra −14 LUFS, đỉnh thật ≤ −1 dB (`mix.wav`); nhạc/tiếng động/nền tự tổng hợp, file CC0 trong `library/music|sfx/` được ưu tiên.
