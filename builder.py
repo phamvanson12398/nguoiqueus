@@ -22,7 +22,7 @@ for _m in [m for m in sys.modules if m == "core" or m.startswith("core.") or m.s
 import core
 from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards, overlay, outfits, audio_long, fx_long
 from core.expr import Env, ExprError
-from core import framing
+from core import framing, body3d
 from mathutils import Vector
 import storycheck
 from storycheck import LibIndex
@@ -511,6 +511,11 @@ class Builder:
             fx.add_reaction_fx(c)
         for cs in self.char_specs:
             if cs.get("talk"): chars.add_talk_mouth(self.chars[cs["id"]])
+        self.char_style = body3d.style(meta)
+        if self.char_style == "3d":
+            t3 = time.time()
+            for c in self.chars.values(): body3d.convert(c)
+            print(f"CHARS 3D {len(self.chars)} characters in {time.time() - t3:.1f} s")
 
         long_rig = st["camera"].get("rig") == "long"
         if not long_rig: self.bake_camera()
