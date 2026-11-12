@@ -28,8 +28,9 @@ TORSO_DEPTH = 0.55       # torso depth / half its smaller side
 FREE_DEPTH = 0.55        # hands, shoes, shields, props
 LAYER = 0.35             # 2D layer gaps (z) are squeezed by this much on top of the surface
 LIMB_W = 1.7             # stick limbs get this much thicker
+CORNER = 0.035           # corner rounding radius (scene units) for every character piece
 EDGE = 0.065             # target edge length when subdividing flat pieces
-HULL = 0.016             # ink shell thickness around solids
+HULL = 0.010             # ink shell thickness around solids (the rim tube draws the main outline)
 LIGHT = (-0.45, 0.6, -0.66)  # toon light direction in Blender camera space (x right, y up, -z towards the viewer)
 SHADE_AT = 0.52          # (dot + 1) / 2 below this is the shade band
 
@@ -134,6 +135,36 @@ class Pillow:
         return self.ratio * math.sqrt(max(0.0, d * (2 * self.R - d)))
 
 
+def round_corners(pts, r, steps=4, max_angle=150.0):
+    """replace every corner sharper than max_angle by a small arc (quadratic Bezier) of radius ~r: angular cloaks,
+    belts and plates read soft and round instead of spiky"""
+    n = len(pts)
+    if n < 3 or r <= 0: return pts
+    out = []
+    for i in range(n):
+        p0, p1, p2 = Vector(pts[i - 1]), Vector(pts[i]), Vector(pts[(i + 1) % n])
+        a, b = p0 - p1, p2 - p1
+        la, lb = a.length, b.length
+        if la < 1e-9 or lb < 1e-9: continue
+        ang = math.degrees(a.angle(b))
+        if ang > max_angle: out.append(tuple(p1)); continue
+        d = min(r, 0.45 * la, 0.45 * lb)
+        q0, q2 = p1 + a / la * d, p1 + b / lb * d
+        for k in range(steps + 1):
+            t = k / steps
+            q = (1 - t) ** 2 * q0 + 2 * (1 - t) * t * p1 + t * t * q2
+            out.append((q.x, q.y))
+    return out
+
+
+def _set_poly(ob, pts):
+    """rewrite a curve object's first spline as a POLY spline through pts (keeps cyclic / 2D-3D / bevel settings)"""
+    cu = ob.data; cyc = cu.splines[0].use_cyclic_u
+    cu.splines.clear(); sp = cu.splines.new('POLY'); sp.points.add(len(pts) - 1)
+    for q, (x, y) in zip(sp.points, pts): q.co = (x, y, 0, 1)
+    sp.use_cyclic_u = cyc
+
+
 def _curve_poly(ob):
     """first spline of a curve object as 2D points (object-local)"""
     sp = ob.data.splines[0]
@@ -212,7 +243,7 @@ class _Ref:
         side = [z for z in self.layers if (z >= self.base_z) == (zc >= self.base_z)]
         side = sorted(set(round(z, 4) for z in side), key=lambda z: abs(z - self.base_z))
         k = side.index(round(zc, 4)) if round(zc, 4) in side else len(side)
-        return 0.005 + 0.007 * k
+        return 0.008 + 0.012 * k
 
 
 def _apply(M, co):
@@ -247,6 +278,14 @@ def convert(c):
         for o in (v if isinstance(v, (list, tuple)) else [v]):
             if o is not None and hasattr(o, "children_recursive"): skip |= {o} | set(o.children_recursive)
     objs = [o for o in c.root.children_recursive if o.type == 'CURVE' and o not in skip]
+    # soft corners: every filled piece and its outline tube get the same rounded outline
+    for o in objs:
+        if o.data.dimensions != '2D' or not o.data.splines: continue
+        sc = max(1e-6, (abs(o.matrix_world.to_scale().x) + abs(o.matrix_world.to_scale().y)) / 2)
+        pts = round_corners(_curve_poly(o), CORNER / sc)
+        _set_poly(o, pts)
+        ol = bpy.data.objects.get(o.name + "_ol")
+        if ol is not None and ol.type == 'CURVE': _set_poly(ol, pts)
     # thicker stick limbs (bevel tubes on the limb pivots)
     for o in objs:
         if o.name.endswith(("_s1", "_s2")) and any(a in free_roots for a in _ancestors(o)):
@@ -290,15 +329,19 @@ def convert(c):
             P = poly_in_par(o)
             if P and _inside(sum(p[0] for p in P) / len(P), sum(p[1] for p in P) / len(P), polys[base]):
                 free_ref[o] = r; r.layers.append((inv @ o.matrix_world).translation.z)
+    # all bevel tubes to meshes with ONE scene evaluation (one per tube took ~1 s each in a 6,000-object chapter)
+    dg = bpy.context.evaluated_depsgraph_get()
+    tube_mesh = {o.name: bpy.data.meshes.new_from_object(o.evaluated_get(dg)) for o in objs if o.data.dimensions != '2D'}
     for o in objs:
         nm = o.name
         anc = _ancestors(o)
         on_limb = any(a in free_roots for a in anc)
         ref = head if (c.head in anc or o is face) else torso if ((c.torso in anc and not on_limb) or o is shirt) else free_ref.get(o)
         is_fill = o.data.dimensions == '2D'
-        if nm.endswith("_ol") and (nm[:-3] in solids or (ref is None and nm[:-3] in fills)):
-            o.hide_render = o.hide_viewport = True; o["why_keep_hidden"] = True   # solids get a shell outline instead
-            continue
+        # outlines of solids stay as round tubes on the rim (an even, smooth line); the thin shell only adds the
+        # silhouette seen from above/below
+        if nm.endswith("_ol") and (nm[:-3] in solids or nm[:-3] in fills) and (nm[:-3] in solids or ref is None):
+            pass
         M = (ref.inv @ o.matrix_world) if ref is not None else Matrix.Identity(4)
         if is_fill:
             poly = _curve_poly(o)
@@ -332,8 +375,7 @@ def convert(c):
             new = _swap_to_mesh(o, me)
             if solid and max(new.dimensions) > 0.05: _hull(new)
         else:                                                      # bevel tube (stroke, outline): convert, then bend
-            dg = bpy.context.evaluated_depsgraph_get()
-            me = bpy.data.meshes.new_from_object(o.evaluated_get(dg))
+            me = tube_mesh[nm]
             if ref is not None and len(me.vertices):
                 co = np.empty(len(me.vertices) * 3); me.vertices.foreach_get("co", co); co = co.reshape(-1, 3)
                 P = _apply(M, co); zc = M.translation.z; behind = zc < ref.base_z - 1e-6

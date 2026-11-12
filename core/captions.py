@@ -126,7 +126,11 @@ def build_subtitles(WORDS, lens_by_frame, y=-0.80, size=0.034, ref_lens=28.0, ma
         for layer, (m, off, z) in enumerate(((geo.INK, size * 0.09, -0.002), (white, 0.0, 0.0))):
             cu = bpy.data.curves.new(f"sub{i}_{layer}", 'FONT'); cu.body = txt
             if font: cu.font = font
-            cu.size = size; cu.align_x = 'CENTER'; cu.align_y = 'CENTER'; cu.offset = off
+            cu.size = size; cu.align_x = 'CENTER'; cu.align_y = 'CENTER'
+            if layer == 0:        # rim = a round tube along the glyph edges (offset rims grew miter spikes at sharp corners)
+                cu.bevel_depth = off; cu.bevel_resolution = 3
+            else:
+                cu.offset = off
             o = bpy.data.objects.new(f"sub{i}_{layer}", cu); ctx.col.objects.link(o)
             o.parent = holder; o.location = (0, 0, z); o.data.materials.append(m)
         holder.scale = (0, 0, 0); holder.keyframe_insert("scale", frame=1)
