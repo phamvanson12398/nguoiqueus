@@ -1,0 +1,119 @@
+{
+  "kind": "prop",
+  "name": "centurial_stone",
+  "title_vi": "Đá khắc tên đơn vị La Mã (centurial stone)",
+  "description_vi": "Khối đá cát màu vàng xám ấm, cỡ khoảng 0,5 × 0,3 × 0,32, cạnh vát, các góc hơi méo như đẽo tay. Mặt trước (-Y) có khung chữ nhật nổi bao quanh một ô lõm tối hơn. Trong ô là chữ La-tinh khắc màu nâu đen, mặc định hai dòng '> COH III | LEG II AVG'. Dấu '>' được vẽ thành ký hiệu centuria hình góc nhọn. Chữ được tự canh cho vừa ô: hẹp chữ lại trước, rồi mới thu nhỏ. Chữ cao khoảng 7 cm nên vẫn đọc được khi khung hình chỉ cao 0,9.\n\nChế độ wonky=true là gag \"khắc chiều thứ Sáu\". Chữ to nhỏ lệch nhau và nghiêng ngả, dòng chữ trĩu xuống, ba chữ cuối nhỏ dần như hết chỗ, một chữ khắc ngược (ưu tiên chữ C) và khung lõm bị xoay lệch. Hình khối đá giữ nguyên như bản thẳng nên đặt hai bản cạnh nhau là thấy khác biệt ngay.\n\ndim='2d' là bản vẽ phẳng có viền mực để nhân vật ôm trước ngực, cùng bố cục chữ với bản 3D.",
+  "dim": "3d",
+  "params": {
+    "text": {
+      "type": "string",
+      "default": "> COH III | LEG II AVG",
+      "desc_vi": "Chữ khắc, '|' là xuống dòng, '>' là dấu centuria (vẽ thành góc nhọn). Tự viết hoa, tự canh cho vừa ô."
+    },
+    "wonky": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "true = gag 'khắc chiều thứ Sáu': chữ xiêu vẹo, to nhỏ, dòng nghiêng, chữ cuối co lại vì hết chỗ, một chữ khắc ngược, khung lệch."
+    },
+    "dim": {
+      "type": "string",
+      "default": "3d",
+      "enum": [
+        "3d",
+        "2d"
+      ],
+      "desc_vi": "'3d': khối đá, gốc ở tâm đáy (đặt z=0). '2d': bản vẽ phẳng có viền mực để nhân vật cầm."
+    },
+    "stone_color": {
+      "type": "array",
+      "default": [
+        0.64,
+        0.5,
+        0.31
+      ],
+      "desc_vi": "Màu đá cát (linear). Nên giữ màu ấm, đậm vì ánh trời làm mặt trên ngả xanh."
+    },
+    "groove_color": {
+      "type": "array",
+      "default": [
+        0.1,
+        0.06,
+        0.035
+      ],
+      "desc_vi": "Màu chữ khắc (nâu đen)."
+    },
+    "letter_height": {
+      "type": "number",
+      "default": 0.075,
+      "desc_vi": "Chiều cao chữ hoa tối đa (m); tự thu nhỏ nếu không vừa ô."
+    },
+    "size": {
+      "type": "array",
+      "default": [
+        0.5,
+        0.3,
+        0.32
+      ],
+      "desc_vi": "Kích thước khối đá x, y, z."
+    },
+    "chamfer": {
+      "type": "number",
+      "default": 0.03,
+      "desc_vi": "Độ vát cạnh."
+    },
+    "rough": {
+      "type": "number",
+      "default": 0.01,
+      "desc_vi": "Độ méo góc kiểu đẽo tay."
+    },
+    "seed": {
+      "type": "integer",
+      "default": 5,
+      "desc_vi": "Hạt ngẫu nhiên (hình khối đá và kiểu xiêu vẹo)."
+    },
+    "at": {
+      "type": "array",
+      "default": [
+        0,
+        0.62,
+        0.42
+      ],
+      "desc_vi": "Vị trí bản 2D trong hệ thân nhân vật khi có parent."
+    },
+    "scale2d": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Hệ số tỉ lệ cho bản 2D."
+    }
+  },
+  "parts": [
+    "body",
+    "text",
+    "frame"
+  ],
+  "tags": [
+    "roman",
+    "stone",
+    "inscription",
+    "wall",
+    "hadrian",
+    "legion",
+    "carved",
+    "gag",
+    "3d",
+    "2d"
+  ],
+  "notes_vi": "Mình chưa chạy file này. Ở đây không có Blender, nên bước dựng và ảnh xem lại của bridge (`tools/thumbs.py --views`) sẽ là lần chạy thử đầu tiên. Khi duyệt ảnh, nên dựng cả hai bản `wonky=false` và `wonky=true` đặt cạnh nhau.\n\n**Cách dựng**\n- **body:** dùng `rbox` vát cạnh (segments=1). Bốn góc được dịch ngẫu nhiên một chút cho giống đá đẽo tay. Mặt trước giữ phẳng để gắn khung, mặt trên hơi thu vào.\n- **frame:** một mesh tự dựng bằng bmesh, gồm vành nổi 2 cm trước mặt đá và đáy ô lõm dùng vật liệu đá tối hơn (slot 1). Viền mực tự động vẽ quanh khung giúp ô chữ nổi rõ.\n- **text:** mỗi ký tự là một `text3d` riêng (dấu '>' là một hình chevron đùn khối). Sau khi xếp chữ, tất cả được gộp thành một mesh `{name}_text`. Mặt chữ nhô 3 mm trước đáy ô, phần sau chìm vào đá.\n- **Chữ không có viền mực:** mesh chữ được đặt `use_fake_user`, nên core coi là mesh dùng chung và bỏ qua lớp viền. Nếu có viền 1,2 cm, lỗ trong các chữ như C, O, G sẽ bị lấp. Đây là một mẹo dựa vào cách core hiện bỏ qua mesh dùng chung; nếu core đổi điều kiện đó thì chữ sẽ có viền trở lại.\n\n**Cỡ chữ và gag**\n- **Cỡ chữ:** chữ hoa cao tối đa 0,075. Với mặc định, dòng \"LEG II AVG\" bị hẹp chữ lại khoảng 0,8 cho vừa ô 0,38 m. Chữ chiếm khoảng 8 % chiều cao khi khung hình cao 0,9.\n- **wonky:**\n  - Kiểu xiêu vẹo dùng một luồng ngẫu nhiên riêng, nên khối đá giống hệt bản thẳng.\n  - Mỗi chữ có cỡ 0,8–1,25 và nghiêng ±14°. Cả hai dòng trĩu cùng một hướng nhưng lệch nhau 3,5–6,5° để không đè lên nhau.\n  - Ba chữ cuối nhỏ dần còn 0,86 → 0,68 → 0,52, như người thợ khắc hết chỗ.\n  - Chữ C trong \"COH\" bị khắc ngược.\n  - Khung bị xoay 3–4°, viền dày mỏng không đều, chữ lệch khỏi tâm ô.\n\n**Bản 2D**\n- Gồm `{name}_body` (hình bát giác vát, viền 0,035), `{name}_frame` (một empty chứa vành sáng, đáy ô tối và một nét bóng ở mép trên-trái) và `{name}_text` (mesh phẳng màu nâu đen).\n- Khi có parent, bản 2D gắn ở `at` = [0, 0.62, 0.42]. Bố cục chữ giống bản 3D.\n\n**Màu:** đá [0.64, 0.50, 0.31] có bọc `warm_top` để mặt trên không bị ánh trời nhuộm xanh.\n\n**Nếu muốn chỉnh**\n- Chữ còn nhỏ: tăng `letter_height` hoặc dùng chữ ngắn hơn (ví dụ \"> COH III | LEG II\").\n- Viết hơn hai dòng: chữ tự thu nhỏ cho vừa chiều cao ô.",
+  "status": "draft",
+  "brief_vi": "Đá xây ghi tên đơn vị La Mã (centurial stone) 3D: khối đá cát vàng xám ấm ~0,5 (x) × 0,3 (y) × 0,32 (z), cạnh vát, mặt hơi méo đẽo tay; mặt trước (-Y) có khung chữ nhật lõm và chữ La-tinh khắc lõm tối (hai dòng, '|' ngắt dòng). Params: text (mặc định '> COH III | LEG II AVG'; '>' là dấu centuria, vẽ thành ký hiệu góc nhọn), wonky (false: chữ thẳng hàng đều; true: chữ xiêu vẹo, to nhỏ không đều, dòng nghiêng, một chữ khắc ngược (ví dụ chữ C quay ngược) và khung lõm lệch — gag 'khắc chiều thứ Sáu', phải thấy khác biệt rõ khi so với bản thẳng), dim ('3d' mặc định, gốc ở tâm đáy để đặt trên đất z = 0; '2d' vẽ phẳng có viền mực để nhân vật cầm, gắn torso ở [0, 0.62, 0.42]), stone_color. Chữ phải to, đọc được khi khung hình cao 0,9 đơn vị. parts: body, text, frame.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T11:22:11",
+  "review": {
+    "score": 8,
+    "summary_vi": "Đá khắc tên đơn vị La Mã đã đạt: khối đá cát màu ấm, có khung lõm và hai dòng chữ '> COH III / LEG II AVG' to, tối, đọc rõ; viền mực có đủ và khối đá đứng đúng trên mặt đất. Bản xiêu vẹo (wonky) và bản 2D chưa có ảnh nên chưa kiểm chứng, nên dựng thử trước khi dùng.",
+    "problems": [
+      "Mặt trên vẫn hơi ngả vàng ô liu khi nhìn từ trên xuống, nhưng nhìn ngang và nhìn chéo thì đá đã ra màu cát ấm, cùng tông với wall_stone. Không cần sửa thêm.",
+      "Bản wonky=true và bản 2D chưa có ảnh nên chưa kiểm chứng; nên dựng thử trước khi dùng cho gag 'khắc chiều thứ Sáu'."
+    ]
+  }
+}
