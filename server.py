@@ -557,6 +557,14 @@ def job_bench(job, slug, pct=100, quality="normal"):
     out = run_builder(job, t, ["--bench", "3", "--pct", str(int(pct)), "--samples", str(samples)])
     m = re.search(r"BENCH sec_per_frame ([0-9.]+)", out)
     if not m: raise ValueError("không đo được tốc độ")
+    g = re.search(r"^GPU (.+?)  compositor (\S+)", out, re.M)
+    if g:
+        name = g.group(1)
+        job.say(f"Card đồ họa Blender đang dùng: {name} (compositor: {g.group(2)})")
+        if not re.search(r"nvidia|geforce|rtx|gtx|radeon rx|quadro", name, re.I):
+            job.say("   CẢNH BÁO: Blender không chạy bằng card NVIDIA. Windows → Cài đặt → Hệ thống → Màn hình → Đồ họa → thêm blender.exe → "
+                    "Hiệu năng cao (hoặc NVIDIA Control Panel → Manage 3D settings → blender.exe → High-performance NVIDIA processor), rồi đo lại.")
+        ls = local_settings(); ls["gpu"] = name; json.dump(ls, open(LOCAL, "w", encoding="utf-8"), indent=1)
     st = jload(os.path.join(pdir(t), "story.json")) or {}
     kind = "long" if st.get("meta", {}).get("aspect") == "16:9" else "short"
     if int(pct) == 100 and quality == "normal":                  # only a full-size, normal-quality measurement is stored

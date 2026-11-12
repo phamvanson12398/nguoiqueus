@@ -738,6 +738,15 @@ class Builder:
 # =====================================================================
 #  CLI
 # =====================================================================
+def gpu_name():
+    """the graphics chip EEVEE renders on (a laptop may hand Blender the weak integrated chip instead of the NVIDIA card)"""
+    try:
+        import gpu
+        return f"{gpu.platform.vendor_get()} | {gpu.platform.renderer_get()}"
+    except Exception as e:
+        return f"unknown ({e})"
+
+
 QUALITY = {"fast": dict(samples=8, step=2), "normal": dict(samples=16, step=1), "high": dict(samples=32, step=1)}   # 16 vs 24 samples: PSNR 47 dB, -13 % time
 
 
@@ -837,6 +846,7 @@ def main(argv):
         spf = sum(times[1:]) / max(1, len(times) - 1)
         print(f"BENCH sec_per_frame {spf:.2f} first {times[0]:.1f} pct {sc.render.resolution_percentage} samples {sc.eevee.taa_render_samples} "
               f"res {sc.render.resolution_x}x{sc.render.resolution_y}", flush=True)
+        print("GPU " + gpu_name() + "  compositor " + str(getattr(sc.render, "compositor_device", "?")), flush=True)
         return 0
     if opt.get("render"):
         if "pct" in opt: sc.render.resolution_percentage = int(opt["pct"])
