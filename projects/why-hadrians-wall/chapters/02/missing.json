@@ -1,0 +1,17 @@
+[
+ {
+  "kind": "sets",
+  "name": "barrack_room",
+  "brief": "Nội thất phòng doanh trại La Mã (contubernium) ban đêm, mở về -Y để camera đứng phía -Y nhìn vào. Param origin [x, y] (story dùng [1300, 0]); mọi vị trí dưới đây tính từ origin. Tường đá quét vôi ố vàng (Principled, màu ấm để ánh trời không nhuộm xám), xà gỗ trên trần (z 4,5), sàn đất nện. Tường sau ở y = 7, tường trái ở x = -4, tường phải ở x = 4. Bàn gỗ thô 1,6 × 0,8, tâm ở (0, 3,6), mặt bàn z = 0,9; trên bàn có đèn dầu đất nung ở (-0,5, 3,7, 0,9) (kèm đèn điểm ấm thật), cốc gốm úp ngược ở (0,55, 3,75, 0,9) (part cup), vò gốm, chồng thư gỗ nhỏ. Hai giường tầng gỗ phủ chăn len kẻ ô dọc tường phải (x 2,5..3,8, y 5..6,8). Giá treo khiên bầu dục, giáo, mũ sắt trên tường sau. Lò sưởi than hồng nhỏ ở (2,6, 5,2) (than phát sáng nhẹ; story thêm fx lửa ở z 0,35). Cửa gỗ mở ra sân ở tường trái, tâm (-4, 4,2), cao 2,6; ngoài cửa là màu xanh trăng. Khoảng diễn trống quanh (0, 3) cho 2-3 nhân vật cao 2,5 (Atto đứng ở (-0,9, 2,9) trước bàn bên trái, bách phu trưởng ở (1,5, 3,3)). Anchors: table (tâm mặt bàn, z 0,9), bunk, hearth, door, cup, center. parts: walls, table, lamp, cup, bunks, rack, hearth, door. Camera: cảnh rộng lens 28-32 ở (0,5, -3, 1,8) nhìn (0, 3,6, 1,3); không thấy trần ở góc này."
+ },
+ {
+  "kind": "props",
+  "name": "centurial_stone",
+  "brief": "Đá xây ghi tên đơn vị La Mã (centurial stone) 3D: khối đá cát vàng xám ấm ~0,5 (x) × 0,3 (y) × 0,32 (z), cạnh vát, mặt hơi méo đẽo tay; mặt trước (-Y) có khung chữ nhật lõm và chữ La-tinh khắc lõm tối (hai dòng, '|' ngắt dòng). Params: text (mặc định '> COH III | LEG II AVG'; '>' là dấu centuria, vẽ thành ký hiệu góc nhọn), wonky (false: chữ thẳng hàng đều; true: chữ xiêu vẹo, to nhỏ không đều, dòng nghiêng, một chữ khắc ngược (ví dụ chữ C quay ngược) và khung lõm lệch — gag 'khắc chiều thứ Sáu', phải thấy khác biệt rõ khi so với bản thẳng), dim ('3d' mặc định, gốc ở tâm đáy để đặt trên đất z = 0; '2d' vẽ phẳng có viền mực để nhân vật cầm, gắn torso ở [0, 0.62, 0.42]), stone_color. Chữ phải to, đọc được khi khung hình cao 0,9 đơn vị. parts: body, text, frame."
+ },
+ {
+  "kind": "props",
+  "name": "care_package",
+  "brief": "Gói đồ gửi từ nhà cho lính La Mã, 2D cầm tay trong mặt phẳng nhân vật (viền mực 0,035, màu phẳng đậm). Param item: 'box' = gói vải bố/da buộc dây chéo hình chữ thập, cỡ 0,6 × 0,4, miệng mở có đôi tất len đỏ và đôi dép da quai lòi ra; 'underpants' = một chiếc quần lót vải lanh kiểu La Mã (subligaculum) trắng ngà có dây buộc hai bên, cỡ 0,35 × 0,25, gốc ở tâm (story cho bay lên và xoay quanh trục Z cục bộ); 'socks' và 'sandals' = từng món riêng. Gắn torso ở loc [0, 0.5, 0.42] (x ngang, y lên, z ra trước). parts: bundle, socks, sandals, underpants (chỉ tạo part theo item)."
+ }
+]
