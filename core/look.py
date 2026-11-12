@@ -39,7 +39,7 @@ def pbr(name, rgb, rough=0.8, metal=0.0):
     return m
 
 
-def warm_top(m, tint=(1.22, 1.0, 0.68)):
+def warm_top(m, tint=(1.34, 1.0, 0.58)):
     """cancel the blue sky tint on faces that look up (stone tops, table tops, bread): multiply the base colour by a warm
     tint weighted by the world normal's Z. Works on pbr/ramp_mat materials; safe to call twice. Shorts never call it."""
     if m is None or not m.use_nodes or m.get("warm_top"): return m

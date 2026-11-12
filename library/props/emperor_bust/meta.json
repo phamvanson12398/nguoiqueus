@@ -91,5 +91,13 @@
   "status": "draft",
   "brief_vi": "Tượng bán thân hoàng đế bằng cẩm thạch trắng ngà ấm (màu ấm để ánh trời không nhuộm xám) trên bệ đá vuông cao 1,2; tổng cao khoảng 2,1; mặt quay về -Y; gốc ở tâm đáy bệ. Đầu tóc ngắn, mặt khái quát (không phải chân dung thật). Params: beard none|full, seed (đổi nhẹ kiểu tóc/mũi/tai để các tượng trong hàng khác nhau). Part 'beard' là lưới riêng tên '<id>_beard', gốc đặt ở cằm, để story scale từ 0 lên 1 (gag râu mọc 'pop'); beard none thì không tạo part này. Story đặt hàng 6 tượng cách nhau 2 đơn vị.",
   "designed_by": "claude_bridge",
-  "updated": "2026-11-12T06:47:45"
+  "updated": "2026-11-12T06:51:22",
+  "review": {
+    "score": 8,
+    "summary_vi": "Bản sửa đã đạt 8/10: nhìn một giây là nhận ra tượng bán thân La Mã màu ngà ấm, đầu to vừa (phóng ×1,4), tóc xoăn trước trán, vai rộng có nếp áo, trên bệ đá có biển trơn, đáy ở z=0 và cao vừa tới vai Joe. Mình mới xem tượng mặc định (seed 1, không râu); bản có râu (beard=full) và các seed khác chưa được render để xem.",
+    "problems": [
+      "Nhỏ: nhìn ngang, tai và lọn tóc sau gáy hơi giống bong bóng tròn.",
+      "Nhỏ: nhìn từ trên, mặt bệ và đỉnh đầu vẫn hơi ngả xám xanh vì ánh trời; nhìn từ trước và nhìn chéo thì màu ngà ấm vẫn giữ được."
+    ]
+  }
 }

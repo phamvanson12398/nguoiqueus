@@ -1,9 +1,10 @@
 """3D marble bust of a generic (non-portrait) Roman emperor on a tall square stone pedestal.
 Origin = centre of the bottom of the pedestal; face looks toward -Y.  Pedestal 1.2 high, total about 2.1.
 Parts: pedestal (group: plinth, shaft, cap), plaque (blank front plate), bust (group: socle, chest, drape,
-neck, head), head (group pivoting at the neck, z=1.72: skull, jaw, hair, nose, ears, brow, eyes, mouth, beard),
+neck, head), head (group pivoting at the neck, z=1.58: skull, jaw, hair, nose, ears, brow, eyes, mouth, beard),
 hair, nose, beard (only when beard='full': ONE mesh '<name>_beard' with its origin at the chin so a story can
 scale it 0 -> 1 for a 'beard pops out' gag).
+The head is cartoon-large (x1.4, baked into the meshes, object scales stay 1).
 seed varies hair style (3 lock patterns), hairline, nose, ears, brow and head width so a row of busts differs.
 Marble is warm ivory on purpose: the blue sky gradient tints upward faces, neutral white turns grey-blue."""
 import math
@@ -14,10 +15,12 @@ from core.look import ramp_mat, pbr
 from core.geo import group3d, attach, rbox, lathe, cyl, sphere
 
 DEFAULTS = dict(beard="none", seed=1, eyes="drilled", plaque=True,
-                marble_color=[0.90, 0.76, 0.56], pedestal_color=[0.50, 0.38, 0.27],
+                marble_color=[0.90, 0.76, 0.56], pedestal_color=[0.56, 0.39, 0.23],
                 pupil_color=[0.36, 0.25, 0.15])
 
-HZ = 1.72          # head pivot (top of neck)
+HZ = 1.72          # neck pivot in the head design coordinates
+HP = 1.58          # real neck pivot height
+HS = 1.4           # head enlargement (baked into the meshes)
 
 
 def _clamp(c, k):
@@ -70,7 +73,7 @@ def _add_balls(o, balls, segs=(12, 8)):
 
 
 def _to_head(o, head):
-    """re-parent a part built in world coordinates under the head group (pivot at z=HZ)"""
+    """re-parent a part built in head design coordinates under the head group (pivot at z=HZ)"""
     o.location = (o.location[0], o.location[1], o.location[2] - HZ)
     o.parent = head
     return o
@@ -109,20 +112,21 @@ def build(params, lib):
     socle = lathe(f"{name}_socle", (0, 0, 0),
                   [(0.0, 1.2), (0.20, 1.2), (0.20, 1.235), (0.16, 1.26), (0.11, 1.30), (0.13, 1.32), (0.0, 1.335)],
                   m_marble, segments=40)
-    CH = (0.0, 0.0, 1.52); CR = (0.40, 0.22, 0.24)
+    CH = (0.0, 0.0, 1.43); CR = (0.40, 0.20, 0.17)          # broad, shallow shoulders
     chest = _ell(f"{name}_chest", CH, CR, m_marble)
     zcut = 1.33 - CH[2]
     for v in chest.data.vertices:            # flat bottom like a real bust
         if v.co.z < zcut: v.co.z = zcut
     chest.data.update()
     chest_front = _ell_front(CH[0], CH[1], CH[2], *CR)
-    drape = _ell(f"{name}_drape", (0.04, 0.0, 1.50), (0.26, 0.04, 0.065), m_marble, rot=(0, math.radians(-35), 0))
-    _hug(drape, chest_front, out=0.015, fallback=0.0)
-    neck = cyl(f"{name}_neck", (0, 0, 1.70), 0.085, 0.20, m_marble, verts=28)
+    # thin diagonal toga fold lying on the chest
+    drape = _ell(f"{name}_drape", (0.03, 0.0, 1.45), (0.24, 0.03, 0.035), m_marble, rot=(0, math.radians(-28), 0))
+    _hug(drape, chest_front, out=0.004, fallback=-0.12)
+    neck = cyl(f"{name}_neck", (0, 0, 1.56), 0.10, 0.18, m_marble, verts=28)
     attach(bust, socle, chest, drape, neck)
 
     # ---------------- head (group pivots at the neck) ----------------
-    head = group3d(f"{name}_head", (0, 0, HZ)); attach(bust, head)
+    head = group3d(f"{name}_head", (0, 0, HP)); attach(bust, head)
     hw = rng.uniform(0.97, 1.03)
     HC = (0.0, 0.0, 1.90); HR = (0.15 * hw, 0.165, 0.19)
     JC = (0.0, -0.05, 1.77); JR = (0.12 * hw, 0.12, 0.09)
@@ -160,7 +164,6 @@ def build(params, lib):
         x = (HR[0] * s + 0.008) * math.sin(a); y = -(HR[1] * s + 0.008) * math.cos(a)
         k = rng.uniform(0.9, 1.12)
         balls.append(((x, y - hy, z - hcz), (rr[0] * k, rr[1] * k, rr[2] * k)))
-    # a few locks on the crown and the back so the silhouette is not a plain egg
     for a in (110, 150, 180, 210, 250):
         a = math.radians(a + rng.uniform(-10, 10))
         z = hcz + 0.05 + rng.uniform(-0.02, 0.02)
@@ -173,15 +176,14 @@ def build(params, lib):
     nl = rng.uniform(0.85, 1.2); nw = rng.uniform(0.9, 1.15)
     nose = _ell(f"{name}_nose", (0, -0.168, 1.862), (0.028 * nw, 0.04 * nl, 0.062), m_marble,
                 rot=(math.radians(-12), 0, 0))
-    # ears
-    es = rng.uniform(0.85, 1.15)
-    ear_l = _ell(f"{name}_ear_l", (0.152 * hw + 0.006, 0.0, 1.868), (0.022, 0.042 * es, 0.06 * es), m_marble)
-    ear_r = _ell(f"{name}_ear_r", (-0.152 * hw - 0.006, 0.0, 1.868), (0.022, 0.042 * es, 0.06 * es), m_marble)
+    # ears (small, close to the head)
+    es = rng.uniform(0.85, 1.1)
+    ear_l = _ell(f"{name}_ear_l", (0.150 * hw, 0.005, 1.87), (0.018, 0.032 * es, 0.046 * es), m_marble)
+    ear_r = _ell(f"{name}_ear_r", (-0.150 * hw, 0.005, 1.87), (0.018, 0.032 * es, 0.046 * es), m_marble)
     # brow ridge bent around the face
     bz = 1.928 + rng.uniform(-0.008, 0.008)
     brow = _ell(f"{name}_brow", (0, 0, bz), (0.115 * hw, 0.022, 0.022), m_marble)
     _hug(brow, face_front, out=0.008, fallback=-0.12)
-    # eyelids + optional drilled pupils
     parts_face = [brow]
     for sx, side in ((1, "l"), (-1, "r")):
         ex = 0.058 * hw * sx
@@ -192,7 +194,6 @@ def build(params, lib):
             pu = _ell(f"{name}_pupil_{side}", (ex, 0, 1.893), (0.013, 0.008, 0.015), m_dark)
             _hug(pu, face_front, out=0.017, fallback=-0.15)
             parts_face.append(pu)
-    # mouth (a short dark line on the face; the beard leaves a window for it)
     mouth = _ell(f"{name}_mouth", (0, 0, 1.79), (0.042, 0.008, 0.009), m_dark)
     _hug(mouth, face_front, out=0.002, fallback=-0.16)
     parts_face.append(mouth)
@@ -206,8 +207,7 @@ def build(params, lib):
         bc = (0.0, -0.06, 1.765); br = (0.17 * hw, 0.14, 0.115)
         bo = _ell(f"{name}_beard", chin, br, m_hair)
         bo.data.transform(Matrix.Translation((bc[0] - chin[0], bc[1] - chin[1], bc[2] - chin[2])))
-        # window for the mouth: pull front vertices near the lips back behind the face
-        for v in bo.data.vertices:
+        for v in bo.data.vertices:           # window for the mouth
             xw = chin[0] + v.co.x; yw = chin[1] + v.co.y; zw = chin[2] + v.co.z
             wx = min(1.0, max(0.0, (0.07 - abs(xw)) / 0.03))
             wz = min(1.0, max(0.0, (zw - 1.765) / 0.025))
@@ -227,5 +227,12 @@ def build(params, lib):
             curls.append(((x - chin[0], y - chin[1], z - chin[2]), (r, r * 0.85, r)))
         _add_balls(bo, curls)
         _to_head(bo, head)
+
+    # ---------------- enlarge the head (baked: object scales stay 1, origins scale with it) ----------------
+    S = Matrix.Scale(HS, 4)
+    for o in list(head.children):
+        o.data.transform(S)
+        o.data.update()
+        o.location = Vector(o.location) * HS
 
     return root
