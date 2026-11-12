@@ -1,0 +1,649 @@
+{
+ "title": "Why Did Rome Build a Wall Across Britain?",
+ "title_vi": "Vì sao La Mã xây một bức tường chắn ngang Britannia? (Tường Hadrian)",
+ "question": "Why did the most powerful empire on Earth build a 73-mile wall across Britain, and why did it have a gate every mile?",
+ "formula": "điều tra hiện trường: mở bằng cảnh vô lý (tường có cửa, có người gõ cửa), loại dần giả thuyết \"pháo đài chống xâm lược\", cú lật ở 74 %: tường là trạm kiểm soát ra vào, đồng thời là lời tuyên bố \"La Mã dừng ở đây\"",
+ "minutes": 10,
+ "format": "long",
+ "factions": [
+  {
+   "id": "rome",
+   "culture": "roman_empire_50ad",
+   "note_vi": "La Mã thời Hadrian (~122; văn hóa roman_empire_50ad hợp lệ tới năm 200). Màu phe: đỏ thẫm + vàng đồng. Lê dương (roman_legionary_50ad: giáp lá lorica segmentata, khiên chữ nhật cong đỏ, gladius, pilum) xây tường ở chương 2 và chương 1 S3/S6. Bách phu trưởng (roman_centurion_50ad, mào ngang) ở S6, S7, S12, S15. Lính phụ trợ Tungri (vai mới auxiliary: giáp xích, khiên bầu dục phẳng màu xanh-trắng để khác lê dương, giáo, quần chẽn bracae) là Atto, có khăn cổ cam: chương 1 S1, chương 2 S10-11, chương 3 S12-17. Hadrian: râu quai nón, giáp ngực đồng, áo choàng tía (S3-S6, S15). Kỵ binh phụ trợ chỉ thể hiện bằng khối quân trên sa bàn (S13)."
+  },
+  {
+   "id": "britons_north",
+   "culture": "iron_age_britons_50ad",
+   "note_vi": "Các bộ tộc phía bắc tường năm 122 (Caledonii, Selgovae, Novantae). Dùng tạm văn hóa iron_age_britons_50ad vì đồ sắt muộn phương bắc gần như giống (năm 122 nằm ngoài khoảng năm của văn hóa: nếu tool đòi khớp năm thì nới years tới 130 hoặc nhân bản thành caledonians_122ad). KHÔNG gọi là 'Pict' (tên này chỉ xuất hiện trong sử liệu từ năm 297). Màu phe: xanh rêu + nâu; áo choàng len kẻ ô, quần, giáo, khiên vuông/bầu dục nhỏ, một số có torc; không giáp. Vepo (người chăn dê, vai commoner, khăn cổ xanh lá) + con dê: S1, S11, S14, S17. Toán cướp (briton_warrior_50ad): S12-S13. Quân Caledonia ở Mons Graupius: S5 (sa bàn + đám đông xa). Không vẽ xấu hơn phe La Mã."
+  },
+  {
+   "id": "britons_south",
+   "culture": "iron_age_britons_50ad",
+   "note_vi": "Người Briton phía nam tường đã La Mã hóa một phần (Brigantes và tỉnh Britannia). Màu phe: xanh dương nhạt + vàng đất, phân biệt rõ với phương bắc; áo tunic kiểu La Mã khoác áo choàng kẻ ô cài khuy fibula, không vũ khí. Xuất hiện: S6 (nhìn tường mọc lên với vẻ ngờ vực), S9 (cạnh Vallum), S14 (xếp hàng qua cổng), S15 (bên 'này là La Mã'). Bản đồ/sa bàn dùng màu phe, không dùng đám đông."
+  }
+ ],
+ "library_needs": [
+  {
+   "kind": "sets",
+   "name": "hadrians_wall",
+   "brief": "Một đoạn Tường Hadrian 3D dài khoảng 60 chạy theo trục X, mặt bắc quay về +Y, camera mặc định đứng phía nam (-Y) nhưng phải quay được sang phía bắc nhìn cổng bắc. Tường đá vàng xám đẽo vuông, rộng 3 (param width: broad 3 | narrow 2,4), cao 4,5, đỉnh có lan can thấp; tùy chọn crag: true đặt tường lên dải vách đá đen (Whin Sill) dốc về phía bắc. Giữa đoạn là milecastle (sân vuông ~6×7, tường thấp phía nam) có HAI cổng vòm: cổng nam (-Y) và cổng bắc (+Y) xuyên tường, cánh cửa gỗ là part riêng gate_north/gate_south để mở/đóng. Turret (tháp đá vuông có cửa sổ, đỉnh cao ~6) ở x = ±20. Mương bắc chữ V (ditch: true). Vallum tùy chọn ở phía nam: mương phẳng đáy giữa hai bờ đất, có lối đắp qua trước cổng nam. Tham số: kind stone|turf (turf = khối cỏ xanh xếp lớp như gạch, đỉnh có hàng rào gỗ), build 0-1 (chiều cao xây xong; < 1 có giàn giáo gỗ, đống đá, giỏ đá vụn, lõi lộ ra), ruin 0-1 (sụp còn vài hàng đá, cỏ mọc, đá rơi vãi), fort (pháo đài lớn có cổng đôi hai tháp nằm vắt qua tuyến), road_on_top (con đường đất/đá dăm chạy thẳng trên nền tường cho cảnh 1750s), beacon_slots (vị trí đặt beacon_fire trên đỉnh turret). Anchors: gate_north, gate_south, milecastle, turret_1, turret_2 (đỉnh), walk (đỉnh tường giữa), ditch, vallum, fort_gate. Ban đêm dùng grade night + mist từ vfx; nhân vật đứng được trên đỉnh tường (z = 4,5) và trong sân milecastle."
+  },
+  {
+   "kind": "sets",
+   "name": "barrack_room",
+   "brief": "Nội thất phòng doanh trại La Mã trong đồn (contubernium) ban đêm, mở về -Y: tường đá quét vôi ố, xà gỗ, sàn đất nện, hai giường tầng gỗ phủ chăn len, giá treo khiên/giáo/mũ, lò sưởi than hồng nhỏ, bàn gỗ thô có đèn dầu đất nung (đèn điểm ấm thật), cuộn giấy/thư gỗ và cốc gốm, vò rượu/bia úp ngược. Cửa ra sân có ánh trăng xanh. Anchors: table (mặt bàn cao ~0,9), bunk, hearth, door. Khoảng diễn quanh (0, 3) cho 2-3 nhân vật."
+  },
+  {
+   "kind": "props",
+   "name": "centurial_stone",
+   "brief": "Đá xây ghi tên đơn vị (centurial stone) 3D: khối đá cát vàng xám ~0,5×0,3×0,3, mặt trước có khung chữ nhật lõm và chữ La-tinh khắc lõm (param text, mặc định '> COH III | LEG II AVG'), param wonky: true = chữ xiêu vẹo, to nhỏ không đều, một chữ ngược (gag 'khắc chiều thứ Sáu'). Gốc ở tâm đáy. Có biến thể 2D để nhân vật cầm khoe."
+  },
+  {
+   "kind": "props",
+   "name": "writing_tablet",
+   "brief": "Thư gỗ Vindolanda: lá gỗ mỏng màu sáng cỡ phóng to 0,6×0,25, chữ mực đen nét nghiêng xếp hai cột, nếp gấp giữa (param folded), mép sứt. dim 2d để cầm tay đọc; param dim 3d để nằm trên bàn hoặc vùi trong lớp bùn (có thể kèm lớp bùn nâu mặt cắt). param text_lines để đổi số dòng."
+  },
+  {
+   "kind": "props",
+   "name": "wall_stone",
+   "brief": "Viên đá mặt tường La Mã đẽo thô (~0,45×0,28×0,32, đá cát vàng xám, cạnh vát) hoặc khối đất cỏ (kind turf: đất nâu, mặt cỏ xanh); 3D để đặt, rơi, chồng; param pile: N để tạo đống đá; biến thể 2D để nhân vật khiêng trên vai. Gốc ở tâm."
+  },
+  {
+   "kind": "props",
+   "name": "cornu_horn",
+   "brief": "Kèn đồng La Mã (cornu) 2D cầm tay: ống đồng cong hình chữ G lớn có thanh gỗ ngang, loa kèn rộng, viền mực dày; gắn handL/handR, miệng kèn ở đầu. Dùng khi lính thổi báo động (tiếng war_horn)."
+  },
+  {
+   "kind": "props",
+   "name": "emperor_bust",
+   "brief": "Tượng bán thân hoàng đế bằng cẩm thạch trắng ngà trên bệ đá vuông cao 1,2: đầu tóc ngắn, mặt khái quát (không chân dung thật), param beard none|full, part 'beard' là lưới riêng có gốc ở cằm để story scale từ 0 lên 1 (gag râu mọc). Màu ấm để ánh trời không nhuộm xám. Gốc tâm đáy bệ. Dùng một hàng 4-5 tượng."
+  },
+  {
+   "kind": "props",
+   "name": "coins",
+   "brief": "Đồng denarius bạc: 2D cầm tay (đồng xu to 0,12, hình đầu người nghiêng khái quát + chữ), túi tiền da 2D thắt dây; 3D đồng xu rơi/lăn và chồng xu nhỏ (param n). Không dùng chân dung thật."
+  },
+  {
+   "kind": "props",
+   "name": "ladder",
+   "brief": "Thang gỗ thô 3D buộc dây, dài 5 (param length), hai thanh dọc hơi cong, 9 bậc; gốc ở chân thang để dựng nghiêng vào tường; có thể đổ (xoay quanh gốc)."
+  },
+  {
+   "kind": "chars",
+   "name": "cow",
+   "brief": "Bò nhỏ thời đồ sắt (giống bò lông ngắn nâu đỏ, sừng ngắn cong), 2D nhìn thẳng mũm mĩm như goat: thân nâu đỏ, mõm hồng, tai to, chuông nhỏ trên dây da làm đồ nhận diện. Biểu cảm: neutral, grumpy, shock, smug_closed. Tính cách lì, không chịu leo thang (gag S13)."
+  },
+  {
+   "kind": "chars",
+   "name": "hadrian_122ad",
+   "brief": "Trang phục (outfit) cho Hadrian, văn hóa roman_empire_50ad, vai emperor: râu quai nón đầy + tóc xoăn ngắn chải về trước (đặc trưng tượng Hadrian), giáp ngực đồng kiểu cơ bắp (muscled cuirass) với dải pteruges da, tunic trắng, áo choàng tía (paludamentum) cài vai, giày da buộc dây. Màu nhấn tía. Không chép chân dung kênh khác."
+  },
+  {
+   "kind": "chars",
+   "name": "roman_auxiliary_122ad",
+   "brief": "Trang phục lính phụ trợ Tungri (văn hóa roman_empire_50ad, vai auxiliary) cho Atto: mũ sắt có che má, giáo phủ vai bằng giáp xích (lorica hamata) dài tới hông, tunic đỏ nhạt, quần chẽn bracae tới gối màu nâu, áo choàng len nâu (đêm lạnh), khiên bầu dục phẳng (màu xanh-trắng có hoa văn khác khiên lê dương), giáo hasta, kiếm ngắn. look.accent khăn cổ cam. Bóng đen phải khác lê dương (khiên bầu dục vs chữ nhật)."
+  },
+  {
+   "kind": "chars",
+   "name": "briton_farmer_50ad",
+   "brief": "Trang phục vai commoner của văn hóa iron_age_britons_50ad, dùng cho Vepo (người chăn dê phương bắc): áo choàng len kẻ ô xanh rêu-nâu cài trâm, tunic len dài, quần, giày da mềm, túi da đeo chéo, gậy chăn gia súc dài. Không giáp, không vũ khí. Râu tỉa, tóc buộc. look.accent khăn cổ xanh lá; mặt tỉnh bơ."
+  }
+ ],
+ "sources": [
+  {
+   "claim": "Tường dài 73 dặm (80 dặm La Mã) từ Tyne tới Solway, khởi công khoảng năm 122, phần lớn xong trong khoảng 6 năm; do ba quân đoàn II Augusta, VI Victrix, XX Valeria Victrix xây; milecastle mỗi dặm, hai turret giữa; tường rộng 10 bộ rồi hẹp lại; pháo đài dời lên tuyến; Vallum phía nam; nằm trọn trong nước Anh; dùng tới khoảng 410; cổng có thể là trạm hải quan",
+   "url": "https://en.wikipedia.org/wiki/Hadrian%27s_Wall"
+  },
+  {
+   "claim": "Historia Augusta, Đời Hadrian: 5.2 'người Briton không thể giữ dưới quyền La Mã'; 5.3 trả lại các tỉnh bên kia Euphrates/Tigris; 11.2 Hadrian tới Britannia và xây tường dài 80 dặm 'để tách người La Mã khỏi người man di'",
+   "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Historia_Augusta/Hadrian/1*.html"
+  },
+  {
+   "claim": "Hadrian lên ngôi năm 117, mất năm 138, hoàng đế đầu tiên để râu đầy (các hoàng đế sau theo), say mê kiến trúc, đi khắp đế chế, thăm Britannia năm 122",
+   "url": "https://en.wikipedia.org/wiki/Hadrian"
+  },
+  {
+   "claim": "Agricola thắng người Caledonia ở trận Mons Graupius năm 83 hoặc 84, sau đó La Mã rút khỏi Scotland",
+   "url": "https://en.wikipedia.org/wiki/Battle_of_Mons_Graupius"
+  },
+  {
+   "claim": "Tuyến đồn dọc đường Stanegate là biên giới trước khi có Tường Hadrian",
+   "url": "https://en.wikipedia.org/wiki/Stanegate"
+  },
+  {
+   "claim": "Đoạn tường đất cỏ từ sông Irthing (milecastle 49) tới Bowness-on-Solway; turret bằng đá; một phần được xây lại bằng đá trước năm 138",
+   "url": "https://historicengland.org.uk/images-books/publications/hadrians-wall/hadrians-wall-chap4"
+  },
+  {
+   "claim": "Tường đất cỏ ở đoạn phía tây (lý do vật liệu)",
+   "url": "https://www.visithadrianswall.co.uk/hadrians-wall/life-on-hadrians-wall/a-wall-made-of-turf"
+  },
+  {
+   "claim": "Thư Vindolanda 346: tất, hai đôi dép và hai chiếc quần lót",
+   "url": "https://romaninscriptionsofbritain.org/inscriptions/TabVindol346"
+  },
+  {
+   "claim": "Thư Vindolanda 164: báo cáo gọi dân bản xứ là 'Brittunculi'",
+   "url": "https://antigonejournal.com/2022/12/vindolanda-tablets/"
+  },
+  {
+   "claim": "Thư Vindolanda 291 (thiệp mời sinh nhật của Claudia Severa) và 628 (decurion Masclus xin gửi thêm bia); thư được giữ trong lớp đất ẩm thiếu khí",
+   "url": "https://www.mentalfloss.com/science/archaeology/vindolanda-tablets-facts"
+  },
+  {
+   "claim": "Lính phụ trợ Tungri và Batavi đóng ở Vindolanda",
+   "url": "https://en.wikipedia.org/wiki/Vindolanda"
+  },
+  {
+   "claim": "Cung thủ Hamian từ Syria đóng ở đồn Magnis (Carvoran) trên Tường Hadrian",
+   "url": "https://en.wikipedia.org/wiki/Magnis_(Carvoran)"
+  },
+  {
+   "claim": "Giới học thuật: tường là rào chắn chỉ qua được ở các điểm kiểm soát; tranh luận về kiểm soát/thu thuế người qua lại",
+   "url": "https://the-past.com/?p=32088"
+  },
+  {
+   "claim": "Tường Antonine bắt đầu khoảng năm 142 dưới thời Antoninus Pius, dài khoảng 63 km (39 dặm), bằng đất cỏ, bỏ sau khoảng 20 năm",
+   "url": "https://en.wikipedia.org/wiki/Antonine_Wall"
+  },
+  {
+   "claim": "Đường Military Road (B6318) những năm 1750 được làm ngay trên nền Tường Hadrian",
+   "url": "https://co-curate.ncl.ac.uk/resources/view/138497"
+  },
+  {
+   "claim": "Di sản Thế giới UNESCO (Frontiers of the Roman Empire, công nhận năm 1987)",
+   "url": "https://whc.unesco.org/en/list/430"
+  },
+  {
+   "claim": "Đường mòn quốc gia Hadrian's Wall Path dài 84 dặm",
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/"
+  },
+  {
+   "claim": "George R.R. Martin thăm Tường Hadrian năm 1981, cảm hứng cho bức tường băng trong A Song of Ice and Fire",
+   "url": "https://www.smartertravel.com/game-of-thrones-exclusive-george-r-r-martin-talks-season-two-the-winds-of-winter-and-real-world-influences-for-a-song-of-ice-and-fire/"
+  },
+  {
+   "claim": "Dân số đế chế La Mã thế kỷ 2 ước khoảng 50-70 triệu",
+   "url": "https://en.wikipedia.org/wiki/Demography_of_the_Roman_Empire"
+  }
+ ],
+ "chapter": {
+  "n": 1,
+  "title": "The Edge of the World",
+  "of": 3,
+  "start_sec": 0.0,
+  "frames": 5464,
+  "previous": null,
+  "next": {
+   "n": 2,
+   "title": "Eighty Miles of Stone"
+  }
+ },
+ "chapters": [
+  {
+   "n": 1,
+   "title": "The Edge of the World",
+   "title_vi": "Tận cùng thế giới",
+   "summary_vi": "Mở giữa cao trào: đêm sương trên tường, lính phụ trợ Atto thấy một con dê và một người đàn ông (Vepo) gõ cửa tường. Quay về năm 122: đế chế gần cực đại, câu hỏi lớn (sao siêu cường lại xây tường có cổng mỗi dặm?), Hadrian và bộ râu, chính sách thôi bành trướng, Agricola thắng ở Mons Graupius rồi rút, Britannia khó trị; Hadrian tới tận nơi và ra lệnh xây tường. Treo: sáu năm rất dài."
+  },
+  {
+   "n": 2,
+   "title": "Eighty Miles of Stone",
+   "title_vi": "Tám mươi dặm đá",
+   "summary_vi": "Lính lê dương ba quân đoàn tự xây và ký tên lên đá; kế hoạch: tường 10 bộ, mương bắc, vách Whin Sill, 80 milecastle mỗi cái hai cổng xuyên tường, 160 turret. Kế hoạch đổi: tường mỏng đi, đoạn tây bằng đất cỏ, pháo đài lớn lên tuyến, Vallum quay về nam. Sáu năm xây; lính phụ trợ Tungri, Batavi, Syria đến canh. Thư Vindolanda: sinh nhật, tất và quần lót, hết bia, 'Brittunculi'. Treo: cửa mỗi dặm để làm gì?"
+  },
+  {
+   "n": 3,
+   "title": "A Door, Not a Fortress",
+   "title_vi": "Cánh cửa, không phải pháo đài",
+   "summary_vi": "Loại giả thuyết pháo đài (thang, quá dài, không chắc có lối đi đỉnh, La Mã thích đánh ngoài đồng). Tường là dây báo động: bò không leo thang được, kỵ binh xuất cổng. Câu trả lời ở 74 %: trạm kiểm soát (hỏi, phí, Vallum kiểm soát cả phía nam), thông điệp 'La Mã dừng ở đây', giữ lính bận rộn. Hệ quả: Tường Antonine thất bại, dùng gần 300 năm, nông dân lấy đá, đường 1750s; ngày nay Di sản Thế giới, không phải biên giới Anh–Scotland, cảm hứng bức tường băng. Gọi lại tiêu đề: một cánh cửa, người gác và phí; con dê chưa trả tiền."
+  }
+ ],
+ "sequences": [
+  {
+   "id": 1,
+   "chapter": 1,
+   "seconds": 31,
+   "set": "hadrians_wall",
+   "chars": [
+    "atto",
+    "vepo",
+    "goat"
+   ],
+   "props": [
+    "cornu_horn",
+    "beacon_fire"
+   ],
+   "vo_en": "It's a freezing night in northern Britain. You're nineteen, you're a long way from home, and you're standing on top of a wall. [beat] Fog rolls in from the north. Somewhere out there, something is moving. You grip your spear. You squint into the dark. A shape climbs out of the mist. [beat] It's a goat. Behind the goat, a man walks right up to the wall. He doesn't climb it. He doesn't attack it. He knocks. [beat] Because this wall, built by the greatest army on Earth, has a door. Actually, it has about eighty of them.",
+   "vo_vi": "Một đêm lạnh cóng ở miền bắc Britannia. Bạn mười chín tuổi, xa nhà, và đang đứng trên đỉnh một bức tường. Sương mù tràn tới từ phía bắc. Ngoài kia có thứ gì đó đang chuyển động. Bạn nắm chặt ngọn giáo, nheo mắt nhìn vào bóng tối. Một hình bóng trèo ra khỏi màn sương. Là một con dê. Sau con dê, một người đàn ông đi thẳng tới chân tường. Ông ta không trèo, không tấn công. Ông ta gõ cửa. Bởi bức tường do đội quân hùng mạnh nhất thế giới xây này có cửa. Thật ra có khoảng tám mươi cái.",
+   "action": "Đêm, sương dày phía bắc. Atto (lính phụ trợ, khăn cam, run cầm cập, hơi thở thành khói) đứng trên đỉnh tường cạnh turret có đuốc. Bóng đen lay động trong sương; Atto nắm giáo, nheo mắt, nuốt nước bọt. Một con dê đeo chuông trèo ra khỏi sương, nhai cỏ tỉnh bơ. Vepo đi tới cổng bắc milecastle, gõ ba tiếng. Atto đứng hình. Kéo lùi hé lộ dãy tường chạy tít với cổng milecastle lặp lại.",
+   "camera": "Toàn cảnh trôi dọc tường trong sương → trung Atto trên lối đỉnh (dolly-in chậm) → POV nhìn xuống sương → cận mặt Atto đẩy vào → toàn con dê trồi ra → trung Vepo gõ cổng (máy thấp phía bắc) → kéo lùi cao hé lộ cả tuyến tường.",
+   "transition": "fade",
+   "expressions": "Atto: worried → shock (thấy dê) → neutral ngơ ngác khi nghe gõ cửa; Vepo: neutral tỉnh bơ; dê: neutral nhai.",
+   "gag": "Bóng đen đáng sợ hóa ra là con dê; kẻ 'xâm lược' lịch sự gõ cửa tường.",
+   "sfx": [
+    "wind_gust",
+    "heartbeat",
+    "bell",
+    "knock x3",
+    "gulp",
+    "scratch"
+   ],
+   "fx": [
+    "mist dày phía bắc tường",
+    "grade night",
+    "hơi thở khói (smoke nhỏ trước miệng Atto)"
+   ],
+   "emphasis": [
+    "wall",
+    "goat",
+    "knocks",
+    "door",
+    "eighty"
+   ],
+   "shots": [
+    {
+     "type": "establishing",
+     "what_vi": "Tường Hadrian ban đêm trên vách đá, sương mù cuộn từ phía bắc, đuốc trên turret; máy trôi chậm dọc tường"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Atto đứng trên đỉnh tường, run, ôm giáo, hơi thở thành khói"
+    },
+    {
+     "type": "pov",
+     "what_vi": "Từ đỉnh tường nhìn xuống màn sương phía bắc, một bóng đen lay động"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Mặt Atto nheo mắt, nuốt nước bọt, máy đẩy vào"
+    },
+    {
+     "type": "full",
+     "what_vi": "Hình bóng trèo ra khỏi sương: con dê đeo chuông, nhai cỏ"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Vepo đi tới cổng bắc milecastle, giơ tay gõ ba tiếng"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Kéo lùi lên cao: tuyến tường chạy tít vào sương, cổng milecastle lặp lại mỗi dặm"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "chapter": 1,
+   "seconds": 29,
+   "set": "parchment_map",
+   "chars": [],
+   "props": [],
+   "vo_en": "Let's go back. [beat] It's the year 122. The Roman Empire is close to the biggest it will ever be. It stretches from the deserts of Syria to the drizzle of northern Britain. Britain has been a Roman province for almost eighty years. Historians think around sixty million people live under one emperor. And at the far northwest corner of all that power, Rome does something strange. It starts building a wall. Seventy-three miles of it, coast to coast, from the River Tyne in the east to the Solway Firth in the west.",
+   "vo_vi": "Hãy quay lại từ đầu. Năm 122. Đế chế La Mã gần như rộng nhất trong lịch sử của nó, trải từ sa mạc Syria tới màn mưa phùn miền bắc Britannia. Britannia đã là tỉnh La Mã gần tám mươi năm. Các nhà sử học cho rằng khoảng sáu mươi triệu người sống dưới một hoàng đế. Và ở góc tây bắc xa nhất của khối quyền lực ấy, La Mã làm một việc kỳ lạ: bắt đầu xây một bức tường dài bảy mươi ba dặm, từ bờ biển này sang bờ biển kia, từ sông Tyne ở phía đông tới vịnh Solway ở phía tây.",
+   "action": "Màn hình chữ năm 122. Bản đồ giấy da toàn đế chế (bounds khoảng -10..45 kinh, 24..58 vĩ): vùng phe rome tô dần, máy trượt từ Syria tới Britannia. Thẻ số 60 triệu. Toàn cảnh đồng quê Britannia mưa phùn. Bản đồ Britannia cận (bounds -7..2, 53..56.5): mũi tên thẳng vẽ từ cửa sông Tyne sang Solway, nhãn 'TYNE', 'SOLWAY FIRTH'. Kết bằng toàn cảnh công trường tường ban ngày.",
+   "camera": "Thẻ năm (cảnh mờ trôi) → bản đồ nhìn từ trên, pan từ đông sang tây bắc theo vùng tô → thẻ số → toàn cảnh đồng quê drift → bản đồ Britannia push_in theo mũi tên đang vẽ → toàn cảnh tường crane_up.",
+   "transition": "whip",
+   "expressions": "Không có nhân vật cận.",
+   "gag": "Máy lia từ nắng Syria sang Britannia: mây mưa phùn che kín góc bản đồ.",
+   "sfx": [
+    "whoosh_big",
+    "paper",
+    "quill",
+    "rain"
+   ],
+   "fx": [
+    "grade sepia cho bản đồ",
+    "rain nhẹ ở cảnh đồng quê"
+   ],
+   "emphasis": [
+    "122",
+    "Syria",
+    "sixty million",
+    "wall",
+    "Seventy-three miles"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Màn hình chữ năm",
+     "card_text": "THE YEAR IS · AD 122 · Britannia"
+    },
+    {
+     "type": "map",
+     "what_vi": "Bản đồ đế chế La Mã, vùng đỏ trải từ Syria tới Britannia",
+     "card_text": "IMPERIUM ROMANUM · AD 122"
+    },
+    {
+     "type": "map",
+     "what_vi": "Máy trượt từ sa mạc Syria lên Britannia, mây mưa phùn trên góc bản đồ"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình con số dân số",
+     "card_text": "~60,000,000 · people, one emperor"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Đồng quê Britannia mưa phùn, nhà tròn mái tranh, đường La Mã thẳng"
+    },
+    {
+     "type": "map",
+     "what_vi": "Bản đồ Britannia cận: mũi tên thẳng vẽ từ sông Tyne sang vịnh Solway",
+     "card_text": "TYNE → SOLWAY · 73 MILES"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Công trường tường ban ngày dài tít qua đồi"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "chapter": 1,
+   "seconds": 30,
+   "set": "hadrians_wall",
+   "chars": [
+    "legionaries",
+    "centurion",
+    "hadrian"
+   ],
+   "props": [
+    "wall_stone"
+   ],
+   "vo_en": "Now think about that. [beat] This is the empire that conquered Gaul, Egypt, and Greece. It doesn't hide. It invades. So why would the most powerful army on the planet spend years stacking rocks at the end of the world? Was Rome scared of someone? Who lived on the other side? And if the wall was meant to keep people out, why did it have a gate every single mile? [beat] That's the question. And the answer isn't what most people think. To get there, we need to meet the man whose name is on it.",
+   "vo_vi": "Hãy nghĩ mà xem. Đây là đế chế đã chinh phục xứ Gaul, Ai Cập và Hy Lạp. Nó không trốn. Nó xâm lược. Vậy sao đội quân mạnh nhất hành tinh lại bỏ ra nhiều năm xếp đá ở tận cùng thế giới? La Mã sợ ai sao? Ai sống ở phía bên kia? Và nếu bức tường để ngăn người ta, sao cứ mỗi dặm lại có một cái cổng? Đó là câu hỏi. Câu trả lời không như phần lớn mọi người nghĩ. Để tìm ra, ta cần gặp người mang tên bức tường.",
+   "action": "Bản đồ: Gaul, Ai Cập, Hy Lạp lần lượt tô đỏ. Lê dương hành quân đội hình khối trên open_field. Cắt sang lính xếp đá lên tường, mồ hôi nhễ nhại, một viên rơi trúng chân (bonk). Một lính nhìn về phía bắc lo lắng. Phía bắc: đồi, khói bếp làng. Cận cánh cổng milecastle mở ra. Màn hình câu hỏi. Hadrian bước vào khung từ bóng tối, chỉ thấy bộ râu.",
+   "camera": "Bản đồ drift → toàn quân hành quân truck_left (giữ hướng trái→phải) → trung lính xếp đá push_in → cận lính orbit nhẹ → toàn phía bắc pan_right → cận vật cổng mở crane_down → thẻ câu hỏi → toàn Hadrian bước ra (máy thấp, push_in).",
+   "transition": "cut",
+   "expressions": "Lính: focus → shock (đá rơi chân) ; lính nhìn bắc: worried; Hadrian: smirk (chỉ thấy nửa mặt).",
+   "gag": "Đội quân xâm lược oai hùng cắt sang cảnh lính còng lưng xếp đá, rơi trúng chân.",
+   "sfx": [
+    "march",
+    "bonk",
+    "wind_gust",
+    "gate creak",
+    "war_drum"
+   ],
+   "fx": [
+    "dust dưới chân đội hình"
+   ],
+   "emphasis": [
+    "conquered",
+    "invades",
+    "stacking rocks",
+    "scared",
+    "gate every single mile",
+    "question"
+   ],
+   "shots": [
+    {
+     "type": "map",
+     "what_vi": "Gaul, Ai Cập, Hy Lạp tô đỏ lần lượt trên bản đồ",
+     "card_text": "GALLIA · AEGYPTUS · GRAECIA"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Lê dương hành quân đội hình khối, bụi bốc, máy trượt ngang"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Lính còng lưng xếp đá lên tường, một viên rơi trúng chân"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Một lính dừng tay nhìn về phía bắc lo lắng"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Phía bắc tường: đồi trùng điệp, khói bếp của một làng xa"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cánh cổng gỗ milecastle mở ra kẽo kẹt"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình câu hỏi",
+     "card_text": "WHY WOULD ROME BUILD A WALL?"
+    },
+    {
+     "type": "full",
+     "what_vi": "Hadrian bước ra từ bóng tối, chỉ thấy bộ râu và áo choàng tía"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "chapter": 1,
+   "seconds": 29,
+   "set": "roman_countryside",
+   "chars": [
+    "hadrian"
+   ],
+   "props": [
+    "emperor_bust"
+   ],
+   "vo_en": "Publius Aelius Hadrianus. Hadrian, for short. He became emperor in 117, and he looked different from the emperors before him. [beat] He had a beard. A real, full beard. Before him, Roman emperors were almost always clean-shaven. After him, almost every emperor for a century grew one. But the beard wasn't the biggest change. His predecessor, Trajan, had pushed the empire all the way into Mesopotamia. Hadrian looked at the map and gave those new provinces back. He wanted an empire that stopped growing and started holding. In his mind, the borders were finally done.",
+   "vo_vi": "Publius Aelius Hadrianus, gọi tắt là Hadrian. Ông lên ngôi năm 117 và trông khác hẳn các hoàng đế trước. Ông để râu. Râu quai nón hẳn hoi. Trước ông, hoàng đế La Mã hầu như đều cạo nhẵn. Sau ông, gần như mọi hoàng đế suốt một thế kỷ đều để râu. Nhưng bộ râu chưa phải thay đổi lớn nhất. Người tiền nhiệm Trajan đã đẩy đế chế tới tận Lưỡng Hà. Hadrian nhìn bản đồ rồi trả lại các tỉnh mới đó. Ông muốn một đế chế thôi bành trướng mà giữ lấy những gì đang có. Với ông, biên giới đã xong.",
+   "action": "Thẻ tên Hadrian. Hadrian đứng trên sân hiên vùng quê Ý (region italy) vuốt râu tự mãn. Hàng tượng bán thân hoàng đế mặt nhẵn phía trước; đến tượng cuối là Hadrian có râu. Rồi các tượng phía sau (đời sau) lần lượt 'pop' mọc râu. Bản đồ phía đông: Lưỡng Hà tô đỏ rồi mờ đi. Hadrian gật đầu dứt khoát, gõ tay xuống mép bản đồ.",
+   "camera": "Thẻ tên → trung Hadrian push_in góc thấp → cận vật lia ngang dọc hàng tượng (truck_right) → toàn hàng tượng đời sau pull_out khi râu mọc → bản đồ push_in Lưỡng Hà → bản đồ drift khi vùng mờ → cận mặt Hadrian orbit nhẹ.",
+   "transition": "cut",
+   "expressions": "Hadrian: smug_closed (vuốt râu) → focus (nhìn bản đồ) → smirk (trả tỉnh).",
+   "gag": "Hàng tượng hoàng đế lần lượt mọc râu 'pop pop pop' theo Hadrian.",
+   "sfx": [
+    "pop x5",
+    "ding",
+    "paper"
+   ],
+   "fx": [
+    "grade warm (Ý)",
+    "light_shafts sân hiên"
+   ],
+   "emphasis": [
+    "Hadrian",
+    "117",
+    "beard",
+    "Trajan",
+    "Mesopotamia",
+    "gave those new provinces back",
+    "done"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Màn hình tên nhân vật lịch sử",
+     "card_text": "HADRIAN · Emperor, AD 117–138"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Hadrian vuốt râu tự mãn trên sân hiên, nắng Ý"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Hàng tượng bán thân hoàng đế mặt nhẵn, cuối hàng là tượng Hadrian có râu"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Các tượng đời sau lần lượt mọc râu 'pop'"
+    },
+    {
+     "type": "map",
+     "what_vi": "Bản đồ đế chế Trajan, Lưỡng Hà tô đỏ",
+     "card_text": "MESOPOTAMIA"
+    },
+    {
+     "type": "map",
+     "what_vi": "Vùng Lưỡng Hà mờ dần, biên giới lùi về sông Euphrates"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Hadrian gật đầu dứt khoát, mắt sắc"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "chapter": 1,
+   "seconds": 33,
+   "set": "parchment_map",
+   "chars": [
+    "hadrian",
+    "legionaries"
+   ],
+   "props": [],
+   "vo_en": "And Britain was the messiest border of all. Forty years earlier, a Roman general named Agricola had marched deep into what is now Scotland. In the year 83 or 84, he crushed the Caledonians at a battle called Mons Graupius. Rome could have taken the whole island. [beat] Instead, it pulled back. The army was needed elsewhere, and the Highlands were cold, wet, and hard to tax. The frontier slid south, to a line of forts along a road called the Stanegate. And when Hadrian took power, his own biography says the Britons could not be kept under Roman control.",
+   "vo_vi": "Và Britannia là đường biên lộn xộn nhất. Bốn mươi năm trước, tướng La Mã Agricola đã tiến sâu vào vùng nay là Scotland. Năm 83 hoặc 84, ông đè bẹp người Caledonia ở trận Mons Graupius. La Mã đã có thể chiếm cả hòn đảo. Thay vào đó, họ rút lui. Quân đội cần ở nơi khác, còn Cao nguyên thì lạnh, ướt và khó thu thuế. Biên giới trượt về nam, tới một dãy đồn dọc con đường tên Stanegate. Và khi Hadrian lên ngôi, chính tiểu sử của ông viết rằng người Briton không thể giữ dưới quyền La Mã.",
+   "action": "Bản đồ Britannia + Scotland (bounds -8..1, 53..58.8): mũi tên đỏ Agricola từ York lên đông bắc Scotland. Thẻ địa danh Mons Graupius. Sa bàn: khối quân La Mã đẩy khối Caledonia trên sườn đồi lùi lại. Toàn cảnh cao nguyên sương mưa, quân Caledonia tan vào sương. Bản đồ: mũi tên rút về nam, dãy chấm đồn dọc Stanegate (Corbridge–Carlisle) hiện ra. Lính La Mã ướt sũng trong mưa ngang. Thẻ trích dẫn. Hadrian cau mày đọc thư.",
+   "camera": "Bản đồ push theo mũi tên đang vẽ → thẻ địa danh → sa bàn nhìn từ trên rồi orbit_right height high → toàn cảnh cao nguyên pan_left → bản đồ pull_out theo mũi tên rút → toàn lính ướt crane_down → thẻ trích dẫn → cận Hadrian push_in.",
+   "transition": "cut",
+   "expressions": "Lính: grumpy ướt sũng; Hadrian: grumpy → focus.",
+   "gag": "Lính La Mã đứng nghiêm trong mưa tạt ngang, mũ đầy nước chảy thành vòi.",
+   "sfx": [
+    "war_horn",
+    "crowd_roar",
+    "march",
+    "rain",
+    "wind_gust",
+    "paper"
+   ],
+   "fx": [
+    "rain (cảnh cao nguyên)",
+    "grade storm cao nguyên, grade sepia bản đồ"
+   ],
+   "emphasis": [
+    "messiest",
+    "Agricola",
+    "Mons Graupius",
+    "pulled back",
+    "Stanegate",
+    "could not be kept"
+   ],
+   "shots": [
+    {
+     "type": "map",
+     "what_vi": "Mũi tên đỏ Agricola vẽ dần từ York lên Scotland",
+     "card_text": "AGRICOLA · AD 77–84"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình địa danh trận đánh",
+     "card_text": "MONS GRAUPIUS · AD 83 or 84 · Caledonia"
+    },
+    {
+     "type": "board",
+     "what_vi": "Sa bàn: khối quân La Mã đỏ đẩy khối Caledonia xanh rêu lùi khỏi sườn đồi"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Cao nguyên mưa sương, quân Caledonia rút vào sương"
+    },
+    {
+     "type": "map",
+     "what_vi": "Mũi tên rút về nam, dãy đồn dọc Stanegate hiện ra",
+     "card_text": "STANEGATE"
+    },
+    {
+     "type": "full",
+     "what_vi": "Lính La Mã đứng nghiêm trong mưa tạt ngang, mũ tràn nước"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình trích dẫn",
+     "card_text": "\"The Britons could not be kept under Roman control.\" — Historia Augusta, Life of Hadrian 5.2"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Hadrian cau mày đọc thư báo cáo"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "chapter": 1,
+   "seconds": 37,
+   "set": "roman_countryside",
+   "chars": [
+    "hadrian",
+    "centurion",
+    "legionaries",
+    "britons_south_villagers"
+   ],
+   "props": [
+    "groma"
+   ],
+   "vo_en": "So in 122, Hadrian did something emperors rarely did. He came to see it himself. He crossed the sea, rode north, and walked the land between the Tyne and the Solway, one of the narrowest necks of the whole island. Out there, beyond the hills, were tribes Rome had never fully conquered. To the south were Britons Rome had conquered, but didn't completely trust. Hadrian was a serious amateur architect, and many historians think the basic plan came from him. He stood in the middle and made a decision. He didn't order a war. [beat] He ordered a wall. And the soldiers who had to build it were about to have a very long six years.",
+   "vo_vi": "Thế nên năm 122, Hadrian làm điều hiếm hoàng đế nào làm: tự mình tới xem. Ông vượt biển, đi lên phía bắc, rảo bộ trên vùng đất giữa sông Tyne và vịnh Solway, một trong những chỗ hẹp nhất của hòn đảo. Ngoài kia, sau những ngọn đồi, là các bộ tộc La Mã chưa bao giờ chinh phục hẳn. Phía nam là những người Briton đã bị chinh phục nhưng chưa hoàn toàn đáng tin. Hadrian là một kiến trúc sư nghiệp dư nghiêm túc, và nhiều nhà sử học cho rằng bản phác thảo đầu tiên là của ông. Ông đứng ở giữa và ra quyết định. Không ra lệnh đánh. Ông ra lệnh xây tường. Và những người lính phải xây nó sắp có sáu năm rất dài.",
+   "action": "Bình minh: thuyền La Mã cập bờ. Hadrian sải bước băng đồng (region britain, outcrop), cận vệ và bách phu trưởng thở hồng hộc phía sau. Bản đồ dải hẹp Tyne–Solway, mũi tên đo bề ngang. Hadrian đứng trên mỏm đá nhìn bắc (đồi, khói làng) rồi quay nhìn nam (làng Briton đã La Mã hóa, dân làng nhìn lên ngờ vực). Giấy sơ đồ: tay vẽ một đường thẳng dài có ô vuông đều. Hadrian chỉ tay xuống đất. Bách phu trưởng và lính nhìn nhau, mặt méo.",
+   "camera": "Establishing biển crane_down → toàn Hadrian đi truck_right (giữ hướng trái→phải) → bản đồ push_in → toàn từ sau lưng Hadrian nhìn bắc → toàn ngược nhìn nam (giữ trục 180°, Hadrian một bên khung) → sơ đồ nhìn từ trên → cận Hadrian góc thấp push_in nhanh ở 'wall' → cận hai mặt lính pull_out.",
+   "transition": "whip",
+   "expressions": "Hadrian: focus → smug_closed khi quyết định; bách phu trưởng: worried thở dốc → shock; lính: worried; dân làng nam: grumpy ngờ vực.",
+   "gag": "Hoàng đế đi bộ khỏe, đoàn tùy tùng bò lê phía sau; mặt lính méo khi nghe 'wall'.",
+   "sfx": [
+    "sea waves",
+    "step",
+    "gulp",
+    "quill",
+    "stamp_hit",
+    "sad_trombone nhẹ"
+   ],
+   "fx": [
+    "grade dawn cảnh cập bờ",
+    "banner phe rome trên thuyền",
+    "mist xa phía bắc"
+   ],
+   "emphasis": [
+    "122",
+    "himself",
+    "Tyne",
+    "Solway",
+    "architect",
+    "war",
+    "wall",
+    "six years"
+   ],
+   "shots": [
+    {
+     "type": "establishing",
+     "what_vi": "Bình minh, thuyền La Mã cập bờ Britannia, cờ đỏ bay"
+    },
+    {
+     "type": "full",
+     "what_vi": "Hadrian sải bước băng đồng, cận vệ thở dốc lê phía sau"
+    },
+    {
+     "type": "map",
+     "what_vi": "Dải hẹp Tyne–Solway, mũi tên đo bề ngang",
+     "card_text": "~73 MILES · coast to coast"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Từ sau lưng Hadrian trên mỏm đá nhìn bắc: đồi, khói làng xa"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Nhìn nam: làng Briton đã La Mã hóa, dân làng ngước nhìn ngờ vực"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Tay vẽ một đường thẳng dài có ô vuông đều trên giấy"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Hadrian góc thấp chỉ tay xuống đất, máy đẩy nhanh ở chữ 'wall'"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Bách phu trưởng và lính nhìn nhau, mặt méo"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Kéo lùi: cả nhóm nhỏ xíu giữa đồi trống dài tít, cờ hiệu lắc"
+    }
+   ]
+  }
+ ],
+ "vo_en": "It's a freezing night in northern Britain. You're nineteen, you're a long way from home, and you're standing on top of a wall. [beat] Fog rolls in from the north. Somewhere out there, something is moving. You grip your spear. You squint into the dark. A shape climbs out of the mist. [beat] It's a goat. Behind the goat, a man walks right up to the wall. He doesn't climb it. He doesn't attack it. He knocks. [beat] Because this wall, built by the greatest army on Earth, has a door. Actually, it has about eighty of them. Let's go back. [beat] It's the year 122. The Roman Empire is close to the biggest it will ever be. It stretches from the deserts of Syria to the drizzle of northern Britain. Britain has been a Roman province for almost eighty years. Historians think around sixty million people live under one emperor. And at the far northwest corner of all that power, Rome does something strange. It starts building a wall. Seventy-three miles of it, coast to coast, from the River Tyne in the east to the Solway Firth in the west. Now think about that. [beat] This is the empire that conquered Gaul, Egypt, and Greece. It doesn't hide. It invades. So why would the most powerful army on the planet spend years stacking rocks at the end of the world? Was Rome scared of someone? Who lived on the other side? And if the wall was meant to keep people out, why did it have a gate every single mile? [beat] That's the question. And the answer isn't what most people think. To get there, we need to meet the man whose name is on it. Publius Aelius Hadrianus. Hadrian, for short. He became emperor in 117, and he looked different from the emperors before him. [beat] He had a beard. A real, full beard. Before him, Roman emperors were almost always clean-shaven. After him, almost every emperor for a century grew one. But the beard wasn't the biggest change. His predecessor, Trajan, had pushed the empire all the way into Mesopotamia. Hadrian looked at the map and gave those new provinces back. He wanted an empire that stopped growing and started holding. In his mind, the borders were finally done. And Britain was the messiest border of all. Forty years earlier, a Roman general named Agricola had marched deep into what is now Scotland. In the year 83 or 84, he crushed the Caledonians at a battle called Mons Graupius. Rome could have taken the whole island. [beat] Instead, it pulled back. The army was needed elsewhere, and the Highlands were cold, wet, and hard to tax. The frontier slid south, to a line of forts along a road called the Stanegate. And when Hadrian took power, his own biography says the Britons could not be kept under Roman control. So in 122, Hadrian did something emperors rarely did. He came to see it himself. He crossed the sea, rode north, and walked the land between the Tyne and the Solway, one of the narrowest necks of the whole island. Out there, beyond the hills, were tribes Rome had never fully conquered. To the south were Britons Rome had conquered, but didn't completely trust. Hadrian was a serious amateur architect, and many historians think the basic plan came from him. He stood in the middle and made a decision. He didn't order a war. [beat] He ordered a wall. And the soldiers who had to build it were about to have a very long six years.",
+ "vo_vi": "Một đêm lạnh cóng ở miền bắc Britannia. Bạn mười chín tuổi, xa nhà, và đang đứng trên đỉnh một bức tường. Sương mù tràn tới từ phía bắc. Ngoài kia có thứ gì đó đang chuyển động. Bạn nắm chặt ngọn giáo, nheo mắt nhìn vào bóng tối. Một hình bóng trèo ra khỏi màn sương. Là một con dê. Sau con dê, một người đàn ông đi thẳng tới chân tường. Ông ta không trèo, không tấn công. Ông ta gõ cửa. Bởi bức tường do đội quân hùng mạnh nhất thế giới xây này có cửa. Thật ra có khoảng tám mươi cái. Hãy quay lại từ đầu. Năm 122. Đế chế La Mã gần như rộng nhất trong lịch sử của nó, trải từ sa mạc Syria tới màn mưa phùn miền bắc Britannia. Britannia đã là tỉnh La Mã gần tám mươi năm. Các nhà sử học cho rằng khoảng sáu mươi triệu người sống dưới một hoàng đế. Và ở góc tây bắc xa nhất của khối quyền lực ấy, La Mã làm một việc kỳ lạ: bắt đầu xây một bức tường dài bảy mươi ba dặm, từ bờ biển này sang bờ biển kia, từ sông Tyne ở phía đông tới vịnh Solway ở phía tây. Hãy nghĩ mà xem. Đây là đế chế đã chinh phục xứ Gaul, Ai Cập và Hy Lạp. Nó không trốn. Nó xâm lược. Vậy sao đội quân mạnh nhất hành tinh lại bỏ ra nhiều năm xếp đá ở tận cùng thế giới? La Mã sợ ai sao? Ai sống ở phía bên kia? Và nếu bức tường để ngăn người ta, sao cứ mỗi dặm lại có một cái cổng? Đó là câu hỏi. Câu trả lời không như phần lớn mọi người nghĩ. Để tìm ra, ta cần gặp người mang tên bức tường. Publius Aelius Hadrianus, gọi tắt là Hadrian. Ông lên ngôi năm 117 và trông khác hẳn các hoàng đế trước. Ông để râu. Râu quai nón hẳn hoi. Trước ông, hoàng đế La Mã hầu như đều cạo nhẵn. Sau ông, gần như mọi hoàng đế suốt một thế kỷ đều để râu. Nhưng bộ râu chưa phải thay đổi lớn nhất. Người tiền nhiệm Trajan đã đẩy đế chế tới tận Lưỡng Hà. Hadrian nhìn bản đồ rồi trả lại các tỉnh mới đó. Ông muốn một đế chế thôi bành trướng mà giữ lấy những gì đang có. Với ông, biên giới đã xong. Và Britannia là đường biên lộn xộn nhất. Bốn mươi năm trước, tướng La Mã Agricola đã tiến sâu vào vùng nay là Scotland. Năm 83 hoặc 84, ông đè bẹp người Caledonia ở trận Mons Graupius. La Mã đã có thể chiếm cả hòn đảo. Thay vào đó, họ rút lui. Quân đội cần ở nơi khác, còn Cao nguyên thì lạnh, ướt và khó thu thuế. Biên giới trượt về nam, tới một dãy đồn dọc con đường tên Stanegate. Và khi Hadrian lên ngôi, chính tiểu sử của ông viết rằng người Briton không thể giữ dưới quyền La Mã. Thế nên năm 122, Hadrian làm điều hiếm hoàng đế nào làm: tự mình tới xem. Ông vượt biển, đi lên phía bắc, rảo bộ trên vùng đất giữa sông Tyne và vịnh Solway, một trong những chỗ hẹp nhất của hòn đảo. Ngoài kia, sau những ngọn đồi, là các bộ tộc La Mã chưa bao giờ chinh phục hẳn. Phía nam là những người Briton đã bị chinh phục nhưng chưa hoàn toàn đáng tin. Hadrian là một kiến trúc sư nghiệp dư nghiêm túc, và nhiều nhà sử học cho rằng bản phác thảo đầu tiên là của ông. Ông đứng ở giữa và ra quyết định. Không ra lệnh đánh. Ông ra lệnh xây tường. Và những người lính phải xây nó sắp có sáu năm rất dài.",
+ "word_count": 598
+}

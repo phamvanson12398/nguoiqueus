@@ -1,0 +1,28 @@
+{
+ "chapters": [
+  {
+   "n": 1,
+   "title": "The Edge of the World",
+   "start": 0.0,
+   "end": 182.12,
+   "frames": 5464,
+   "words": 589
+  },
+  {
+   "n": 2,
+   "title": "Eighty Miles of Stone",
+   "start": 182.12,
+   "end": 353.86,
+   "frames": 5153,
+   "words": 540
+  },
+  {
+   "n": 3,
+   "title": "A Door, Not a Fortress",
+   "start": 353.86,
+   "end": 581.35,
+   "frames": 6825,
+   "words": 726
+  }
+ ]
+}

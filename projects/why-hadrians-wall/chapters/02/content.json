@@ -1,0 +1,607 @@
+{
+ "title": "Why Did Rome Build a Wall Across Britain?",
+ "title_vi": "Vì sao La Mã xây một bức tường chắn ngang Britannia? (Tường Hadrian)",
+ "question": "Why did the most powerful empire on Earth build a 73-mile wall across Britain, and why did it have a gate every mile?",
+ "formula": "điều tra hiện trường: mở bằng cảnh vô lý (tường có cửa, có người gõ cửa), loại dần giả thuyết \"pháo đài chống xâm lược\", cú lật ở 74 %: tường là trạm kiểm soát ra vào, đồng thời là lời tuyên bố \"La Mã dừng ở đây\"",
+ "minutes": 10,
+ "format": "long",
+ "factions": [
+  {
+   "id": "rome",
+   "culture": "roman_empire_50ad",
+   "note_vi": "La Mã thời Hadrian (~122; văn hóa roman_empire_50ad hợp lệ tới năm 200). Màu phe: đỏ thẫm + vàng đồng. Lê dương (roman_legionary_50ad: giáp lá lorica segmentata, khiên chữ nhật cong đỏ, gladius, pilum) xây tường ở chương 2 và chương 1 S3/S6. Bách phu trưởng (roman_centurion_50ad, mào ngang) ở S6, S7, S12, S15. Lính phụ trợ Tungri (vai mới auxiliary: giáp xích, khiên bầu dục phẳng màu xanh-trắng để khác lê dương, giáo, quần chẽn bracae) là Atto, có khăn cổ cam: chương 1 S1, chương 2 S10-11, chương 3 S12-17. Hadrian: râu quai nón, giáp ngực đồng, áo choàng tía (S3-S6, S15). Kỵ binh phụ trợ chỉ thể hiện bằng khối quân trên sa bàn (S13)."
+  },
+  {
+   "id": "britons_north",
+   "culture": "iron_age_britons_50ad",
+   "note_vi": "Các bộ tộc phía bắc tường năm 122 (Caledonii, Selgovae, Novantae). Dùng tạm văn hóa iron_age_britons_50ad vì đồ sắt muộn phương bắc gần như giống (năm 122 nằm ngoài khoảng năm của văn hóa: nếu tool đòi khớp năm thì nới years tới 130 hoặc nhân bản thành caledonians_122ad). KHÔNG gọi là 'Pict' (tên này chỉ xuất hiện trong sử liệu từ năm 297). Màu phe: xanh rêu + nâu; áo choàng len kẻ ô, quần, giáo, khiên vuông/bầu dục nhỏ, một số có torc; không giáp. Vepo (người chăn dê, vai commoner, khăn cổ xanh lá) + con dê: S1, S11, S14, S17. Toán cướp (briton_warrior_50ad): S12-S13. Quân Caledonia ở Mons Graupius: S5 (sa bàn + đám đông xa). Không vẽ xấu hơn phe La Mã."
+  },
+  {
+   "id": "britons_south",
+   "culture": "iron_age_britons_50ad",
+   "note_vi": "Người Briton phía nam tường đã La Mã hóa một phần (Brigantes và tỉnh Britannia). Màu phe: xanh dương nhạt + vàng đất, phân biệt rõ với phương bắc; áo tunic kiểu La Mã khoác áo choàng kẻ ô cài khuy fibula, không vũ khí. Xuất hiện: S6 (nhìn tường mọc lên với vẻ ngờ vực), S9 (cạnh Vallum), S14 (xếp hàng qua cổng), S15 (bên 'này là La Mã'). Bản đồ/sa bàn dùng màu phe, không dùng đám đông."
+  }
+ ],
+ "library_needs": [
+  {
+   "kind": "sets",
+   "name": "hadrians_wall",
+   "brief": "Một đoạn Tường Hadrian 3D dài khoảng 60 chạy theo trục X, mặt bắc quay về +Y, camera mặc định đứng phía nam (-Y) nhưng phải quay được sang phía bắc nhìn cổng bắc. Tường đá vàng xám đẽo vuông, rộng 3 (param width: broad 3 | narrow 2,4), cao 4,5, đỉnh có lan can thấp; tùy chọn crag: true đặt tường lên dải vách đá đen (Whin Sill) dốc về phía bắc. Giữa đoạn là milecastle (sân vuông ~6×7, tường thấp phía nam) có HAI cổng vòm: cổng nam (-Y) và cổng bắc (+Y) xuyên tường, cánh cửa gỗ là part riêng gate_north/gate_south để mở/đóng. Turret (tháp đá vuông có cửa sổ, đỉnh cao ~6) ở x = ±20. Mương bắc chữ V (ditch: true). Vallum tùy chọn ở phía nam: mương phẳng đáy giữa hai bờ đất, có lối đắp qua trước cổng nam. Tham số: kind stone|turf (turf = khối cỏ xanh xếp lớp như gạch, đỉnh có hàng rào gỗ), build 0-1 (chiều cao xây xong; < 1 có giàn giáo gỗ, đống đá, giỏ đá vụn, lõi lộ ra), ruin 0-1 (sụp còn vài hàng đá, cỏ mọc, đá rơi vãi), fort (pháo đài lớn có cổng đôi hai tháp nằm vắt qua tuyến), road_on_top (con đường đất/đá dăm chạy thẳng trên nền tường cho cảnh 1750s), beacon_slots (vị trí đặt beacon_fire trên đỉnh turret). Anchors: gate_north, gate_south, milecastle, turret_1, turret_2 (đỉnh), walk (đỉnh tường giữa), ditch, vallum, fort_gate. Ban đêm dùng grade night + mist từ vfx; nhân vật đứng được trên đỉnh tường (z = 4,5) và trong sân milecastle."
+  },
+  {
+   "kind": "sets",
+   "name": "barrack_room",
+   "brief": "Nội thất phòng doanh trại La Mã trong đồn (contubernium) ban đêm, mở về -Y: tường đá quét vôi ố, xà gỗ, sàn đất nện, hai giường tầng gỗ phủ chăn len, giá treo khiên/giáo/mũ, lò sưởi than hồng nhỏ, bàn gỗ thô có đèn dầu đất nung (đèn điểm ấm thật), cuộn giấy/thư gỗ và cốc gốm, vò rượu/bia úp ngược. Cửa ra sân có ánh trăng xanh. Anchors: table (mặt bàn cao ~0,9), bunk, hearth, door. Khoảng diễn quanh (0, 3) cho 2-3 nhân vật."
+  },
+  {
+   "kind": "props",
+   "name": "centurial_stone",
+   "brief": "Đá xây ghi tên đơn vị (centurial stone) 3D: khối đá cát vàng xám ~0,5×0,3×0,3, mặt trước có khung chữ nhật lõm và chữ La-tinh khắc lõm (param text, mặc định '> COH III | LEG II AVG'), param wonky: true = chữ xiêu vẹo, to nhỏ không đều, một chữ ngược (gag 'khắc chiều thứ Sáu'). Gốc ở tâm đáy. Có biến thể 2D để nhân vật cầm khoe."
+  },
+  {
+   "kind": "props",
+   "name": "writing_tablet",
+   "brief": "Thư gỗ Vindolanda: lá gỗ mỏng màu sáng cỡ phóng to 0,6×0,25, chữ mực đen nét nghiêng xếp hai cột, nếp gấp giữa (param folded), mép sứt. dim 2d để cầm tay đọc; param dim 3d để nằm trên bàn hoặc vùi trong lớp bùn (có thể kèm lớp bùn nâu mặt cắt). param text_lines để đổi số dòng."
+  },
+  {
+   "kind": "props",
+   "name": "wall_stone",
+   "brief": "Viên đá mặt tường La Mã đẽo thô (~0,45×0,28×0,32, đá cát vàng xám, cạnh vát) hoặc khối đất cỏ (kind turf: đất nâu, mặt cỏ xanh); 3D để đặt, rơi, chồng; param pile: N để tạo đống đá; biến thể 2D để nhân vật khiêng trên vai. Gốc ở tâm."
+  },
+  {
+   "kind": "props",
+   "name": "cornu_horn",
+   "brief": "Kèn đồng La Mã (cornu) 2D cầm tay: ống đồng cong hình chữ G lớn có thanh gỗ ngang, loa kèn rộng, viền mực dày; gắn handL/handR, miệng kèn ở đầu. Dùng khi lính thổi báo động (tiếng war_horn)."
+  },
+  {
+   "kind": "props",
+   "name": "emperor_bust",
+   "brief": "Tượng bán thân hoàng đế bằng cẩm thạch trắng ngà trên bệ đá vuông cao 1,2: đầu tóc ngắn, mặt khái quát (không chân dung thật), param beard none|full, part 'beard' là lưới riêng có gốc ở cằm để story scale từ 0 lên 1 (gag râu mọc). Màu ấm để ánh trời không nhuộm xám. Gốc tâm đáy bệ. Dùng một hàng 4-5 tượng."
+  },
+  {
+   "kind": "props",
+   "name": "coins",
+   "brief": "Đồng denarius bạc: 2D cầm tay (đồng xu to 0,12, hình đầu người nghiêng khái quát + chữ), túi tiền da 2D thắt dây; 3D đồng xu rơi/lăn và chồng xu nhỏ (param n). Không dùng chân dung thật."
+  },
+  {
+   "kind": "props",
+   "name": "ladder",
+   "brief": "Thang gỗ thô 3D buộc dây, dài 5 (param length), hai thanh dọc hơi cong, 9 bậc; gốc ở chân thang để dựng nghiêng vào tường; có thể đổ (xoay quanh gốc)."
+  },
+  {
+   "kind": "chars",
+   "name": "cow",
+   "brief": "Bò nhỏ thời đồ sắt (giống bò lông ngắn nâu đỏ, sừng ngắn cong), 2D nhìn thẳng mũm mĩm như goat: thân nâu đỏ, mõm hồng, tai to, chuông nhỏ trên dây da làm đồ nhận diện. Biểu cảm: neutral, grumpy, shock, smug_closed. Tính cách lì, không chịu leo thang (gag S13)."
+  },
+  {
+   "kind": "chars",
+   "name": "hadrian_122ad",
+   "brief": "Trang phục (outfit) cho Hadrian, văn hóa roman_empire_50ad, vai emperor: râu quai nón đầy + tóc xoăn ngắn chải về trước (đặc trưng tượng Hadrian), giáp ngực đồng kiểu cơ bắp (muscled cuirass) với dải pteruges da, tunic trắng, áo choàng tía (paludamentum) cài vai, giày da buộc dây. Màu nhấn tía. Không chép chân dung kênh khác."
+  },
+  {
+   "kind": "chars",
+   "name": "roman_auxiliary_122ad",
+   "brief": "Trang phục lính phụ trợ Tungri (văn hóa roman_empire_50ad, vai auxiliary) cho Atto: mũ sắt có che má, giáo phủ vai bằng giáp xích (lorica hamata) dài tới hông, tunic đỏ nhạt, quần chẽn bracae tới gối màu nâu, áo choàng len nâu (đêm lạnh), khiên bầu dục phẳng (màu xanh-trắng có hoa văn khác khiên lê dương), giáo hasta, kiếm ngắn. look.accent khăn cổ cam. Bóng đen phải khác lê dương (khiên bầu dục vs chữ nhật)."
+  },
+  {
+   "kind": "chars",
+   "name": "briton_farmer_50ad",
+   "brief": "Trang phục vai commoner của văn hóa iron_age_britons_50ad, dùng cho Vepo (người chăn dê phương bắc): áo choàng len kẻ ô xanh rêu-nâu cài trâm, tunic len dài, quần, giày da mềm, túi da đeo chéo, gậy chăn gia súc dài. Không giáp, không vũ khí. Râu tỉa, tóc buộc. look.accent khăn cổ xanh lá; mặt tỉnh bơ."
+  }
+ ],
+ "sources": [
+  {
+   "claim": "Tường dài 73 dặm (80 dặm La Mã) từ Tyne tới Solway, khởi công khoảng năm 122, phần lớn xong trong khoảng 6 năm; do ba quân đoàn II Augusta, VI Victrix, XX Valeria Victrix xây; milecastle mỗi dặm, hai turret giữa; tường rộng 10 bộ rồi hẹp lại; pháo đài dời lên tuyến; Vallum phía nam; nằm trọn trong nước Anh; dùng tới khoảng 410; cổng có thể là trạm hải quan",
+   "url": "https://en.wikipedia.org/wiki/Hadrian%27s_Wall"
+  },
+  {
+   "claim": "Historia Augusta, Đời Hadrian: 5.2 'người Briton không thể giữ dưới quyền La Mã'; 5.3 trả lại các tỉnh bên kia Euphrates/Tigris; 11.2 Hadrian tới Britannia và xây tường dài 80 dặm 'để tách người La Mã khỏi người man di'",
+   "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Historia_Augusta/Hadrian/1*.html"
+  },
+  {
+   "claim": "Hadrian lên ngôi năm 117, mất năm 138, hoàng đế đầu tiên để râu đầy (các hoàng đế sau theo), say mê kiến trúc, đi khắp đế chế, thăm Britannia năm 122",
+   "url": "https://en.wikipedia.org/wiki/Hadrian"
+  },
+  {
+   "claim": "Agricola thắng người Caledonia ở trận Mons Graupius năm 83 hoặc 84, sau đó La Mã rút khỏi Scotland",
+   "url": "https://en.wikipedia.org/wiki/Battle_of_Mons_Graupius"
+  },
+  {
+   "claim": "Tuyến đồn dọc đường Stanegate là biên giới trước khi có Tường Hadrian",
+   "url": "https://en.wikipedia.org/wiki/Stanegate"
+  },
+  {
+   "claim": "Đoạn tường đất cỏ từ sông Irthing (milecastle 49) tới Bowness-on-Solway; turret bằng đá; một phần được xây lại bằng đá trước năm 138",
+   "url": "https://historicengland.org.uk/images-books/publications/hadrians-wall/hadrians-wall-chap4"
+  },
+  {
+   "claim": "Tường đất cỏ ở đoạn phía tây (lý do vật liệu)",
+   "url": "https://www.visithadrianswall.co.uk/hadrians-wall/life-on-hadrians-wall/a-wall-made-of-turf"
+  },
+  {
+   "claim": "Thư Vindolanda 346: tất, hai đôi dép và hai chiếc quần lót",
+   "url": "https://romaninscriptionsofbritain.org/inscriptions/TabVindol346"
+  },
+  {
+   "claim": "Thư Vindolanda 164: báo cáo gọi dân bản xứ là 'Brittunculi'",
+   "url": "https://antigonejournal.com/2022/12/vindolanda-tablets/"
+  },
+  {
+   "claim": "Thư Vindolanda 291 (thiệp mời sinh nhật của Claudia Severa) và 628 (decurion Masclus xin gửi thêm bia); thư được giữ trong lớp đất ẩm thiếu khí",
+   "url": "https://www.mentalfloss.com/science/archaeology/vindolanda-tablets-facts"
+  },
+  {
+   "claim": "Lính phụ trợ Tungri và Batavi đóng ở Vindolanda",
+   "url": "https://en.wikipedia.org/wiki/Vindolanda"
+  },
+  {
+   "claim": "Cung thủ Hamian từ Syria đóng ở đồn Magnis (Carvoran) trên Tường Hadrian",
+   "url": "https://en.wikipedia.org/wiki/Magnis_(Carvoran)"
+  },
+  {
+   "claim": "Giới học thuật: tường là rào chắn chỉ qua được ở các điểm kiểm soát; tranh luận về kiểm soát/thu thuế người qua lại",
+   "url": "https://the-past.com/?p=32088"
+  },
+  {
+   "claim": "Tường Antonine bắt đầu khoảng năm 142 dưới thời Antoninus Pius, dài khoảng 63 km (39 dặm), bằng đất cỏ, bỏ sau khoảng 20 năm",
+   "url": "https://en.wikipedia.org/wiki/Antonine_Wall"
+  },
+  {
+   "claim": "Đường Military Road (B6318) những năm 1750 được làm ngay trên nền Tường Hadrian",
+   "url": "https://co-curate.ncl.ac.uk/resources/view/138497"
+  },
+  {
+   "claim": "Di sản Thế giới UNESCO (Frontiers of the Roman Empire, công nhận năm 1987)",
+   "url": "https://whc.unesco.org/en/list/430"
+  },
+  {
+   "claim": "Đường mòn quốc gia Hadrian's Wall Path dài 84 dặm",
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/"
+  },
+  {
+   "claim": "George R.R. Martin thăm Tường Hadrian năm 1981, cảm hứng cho bức tường băng trong A Song of Ice and Fire",
+   "url": "https://www.smartertravel.com/game-of-thrones-exclusive-george-r-r-martin-talks-season-two-the-winds-of-winter-and-real-world-influences-for-a-song-of-ice-and-fire/"
+  },
+  {
+   "claim": "Dân số đế chế La Mã thế kỷ 2 ước khoảng 50-70 triệu",
+   "url": "https://en.wikipedia.org/wiki/Demography_of_the_Roman_Empire"
+  }
+ ],
+ "chapter": {
+  "n": 2,
+  "title": "Eighty Miles of Stone",
+  "of": 3,
+  "start_sec": 182.12,
+  "frames": 5153,
+  "previous": {
+   "n": 1,
+   "title": "The Edge of the World"
+  },
+  "next": {
+   "n": 3,
+   "title": "A Door, Not a Fortress"
+  }
+ },
+ "chapters": [
+  {
+   "n": 1,
+   "title": "The Edge of the World",
+   "title_vi": "Tận cùng thế giới",
+   "summary_vi": "Mở giữa cao trào: đêm sương trên tường, lính phụ trợ Atto thấy một con dê và một người đàn ông (Vepo) gõ cửa tường. Quay về năm 122: đế chế gần cực đại, câu hỏi lớn (sao siêu cường lại xây tường có cổng mỗi dặm?), Hadrian và bộ râu, chính sách thôi bành trướng, Agricola thắng ở Mons Graupius rồi rút, Britannia khó trị; Hadrian tới tận nơi và ra lệnh xây tường. Treo: sáu năm rất dài."
+  },
+  {
+   "n": 2,
+   "title": "Eighty Miles of Stone",
+   "title_vi": "Tám mươi dặm đá",
+   "summary_vi": "Lính lê dương ba quân đoàn tự xây và ký tên lên đá; kế hoạch: tường 10 bộ, mương bắc, vách Whin Sill, 80 milecastle mỗi cái hai cổng xuyên tường, 160 turret. Kế hoạch đổi: tường mỏng đi, đoạn tây bằng đất cỏ, pháo đài lớn lên tuyến, Vallum quay về nam. Sáu năm xây; lính phụ trợ Tungri, Batavi, Syria đến canh. Thư Vindolanda: sinh nhật, tất và quần lót, hết bia, 'Brittunculi'. Treo: cửa mỗi dặm để làm gì?"
+  },
+  {
+   "n": 3,
+   "title": "A Door, Not a Fortress",
+   "title_vi": "Cánh cửa, không phải pháo đài",
+   "summary_vi": "Loại giả thuyết pháo đài (thang, quá dài, không chắc có lối đi đỉnh, La Mã thích đánh ngoài đồng). Tường là dây báo động: bò không leo thang được, kỵ binh xuất cổng. Câu trả lời ở 74 %: trạm kiểm soát (hỏi, phí, Vallum kiểm soát cả phía nam), thông điệp 'La Mã dừng ở đây', giữ lính bận rộn. Hệ quả: Tường Antonine thất bại, dùng gần 300 năm, nông dân lấy đá, đường 1750s; ngày nay Di sản Thế giới, không phải biên giới Anh–Scotland, cảm hứng bức tường băng. Gọi lại tiêu đề: một cánh cửa, người gác và phí; con dê chưa trả tiền."
+  }
+ ],
+ "sequences": [
+  {
+   "id": 7,
+   "chapter": 2,
+   "seconds": 30,
+   "set": "hadrians_wall",
+   "chars": [
+    "legionaries",
+    "centurion"
+   ],
+   "props": [
+    "centurial_stone",
+    "wall_stone"
+   ],
+   "vo_en": "Here's the thing most people get wrong. Rome didn't hire builders. Its soldiers were the builders. Men from three legions did most of the work: the Second Augusta, the Sixth Victrix, and the Twentieth Valeria Victrix. A legionary had to march, fight, dig, quarry, and lay stone. Each team built its own stretch. And when they finished, they carved a stone with their unit's name on it, like signing a homework assignment. Archaeologists have found many of these building stones. Some are neat. [beat] Some look like they were carved on a Friday afternoon.",
+   "vo_vi": "Đây là điều nhiều người hiểu sai: La Mã không thuê thợ. Lính chính là thợ xây. Người của ba quân đoàn làm phần lớn công việc: Quân đoàn II Augusta, VI Victrix và XX Valeria Victrix. Một lính lê dương phải hành quân, chiến đấu, đào đất, khai đá và xây. Mỗi đội xây một đoạn riêng. Xong việc, họ khắc một hòn đá ghi tên đơn vị, như ký tên vào bài tập về nhà. Các nhà khảo cổ đã tìm thấy nhiều hòn đá như vậy. Có hòn rất đẹp. Có hòn trông như khắc vào chiều thứ Sáu.",
+   "action": "Thẻ chương 2. Công trường (build 0,4): lê dương đào móng, khiêng đá, giàn giáo. Thẻ tên ba quân đoàn kèm ba cờ hiệu. Một lính làm liên tục: hành quân → đánh kiếm → đào → đập đá → đặt đá (montage nhanh). Đục khắc 'COH III' lên đá. Bách phu trưởng gật gù. Hòn thứ hai chữ xiêu vẹo, một chữ ngược; lính khắc cười trừ, giấu cái đục.",
+   "camera": "Thẻ chương → toàn công trường crane_down → thẻ tên → trung montage truck_left liên tục → cận vật đục khắc push_in → cận bách phu trưởng → cận vật hòn đá xiêu vẹo, snap zoom.",
+   "transition": "fade",
+   "expressions": "Lính: focus → happy (khoe đá) → smirk ngượng (đá xiêu); bách phu trưởng: smug_closed → grumpy.",
+   "gag": "So sánh hai hòn đá khắc: một chuẩn, một xiêu vẹo như làm cho xong chiều thứ Sáu.",
+   "sfx": [
+    "dig",
+    "hammer",
+    "sword_clash",
+    "march",
+    "hammer x3",
+    "scratch"
+   ],
+   "fx": [
+    "dust khi đập đá",
+    "sparks nhỏ ở mũi đục"
+   ],
+   "emphasis": [
+    "soldiers",
+    "three legions",
+    "quarry",
+    "signing",
+    "Friday afternoon"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Thẻ chương",
+     "card_text": "CHAPTER 2 · EIGHTY MILES OF STONE"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Công trường: lê dương đào móng, khiêng đá, giàn giáo gỗ"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình tên ba quân đoàn",
+     "card_text": "LEGIO II AUGUSTA · VI VICTRIX · XX VALERIA VICTRIX"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Montage một lính: hành quân, đánh, đào, đập đá, đặt đá"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Đục khắc tên đơn vị lên hòn đá",
+     "card_text": "COH III"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Bách phu trưởng gật gù hãnh diện"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Hòn đá khắc xiêu vẹo, một chữ ngược; lính cười trừ giấu đục"
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "chapter": 2,
+   "seconds": 38,
+   "set": "paper_diagram",
+   "chars": [
+    "legionaries"
+   ],
+   "props": [],
+   "vo_en": "The plan looked simple on paper. A stone wall, ten Roman feet thick, and probably around fifteen feet tall. In front of it, facing north, a deep ditch. In the middle section, the builders set the wall right on top of a line of cliffs called the Whin Sill, so the ground did half the work. Every Roman mile, a small fort called a milecastle, with room for a small squad of soldiers. Between each pair of milecastles, two stone watchtowers called turrets. That's eighty milecastles and about a hundred and sixty turrets, lined up like beads on a string. [beat] And here's the detail that matters most. Every milecastle had two gates. One facing south. One facing north. Straight through the wall.",
+   "vo_vi": "Trên giấy, kế hoạch rất đơn giản. Một bức tường đá dày mười bộ La Mã, có lẽ cao khoảng mười lăm bộ. Phía trước, hướng bắc, là một con mương sâu. Ở đoạn giữa, thợ xây đặt tường ngay trên dải vách đá Whin Sill, để địa hình gánh một nửa việc. Mỗi dặm La Mã có một đồn nhỏ gọi là milecastle, đủ chỗ cho một tiểu đội. Giữa hai milecastle là hai tháp canh đá gọi là turret. Tổng cộng tám mươi milecastle và khoảng một trăm sáu mươi turret, xếp hàng như hạt trên sợi dây. Và đây là chi tiết quan trọng nhất: mỗi milecastle có hai cổng, một quay về nam, một quay về bắc, xuyên thẳng qua tường.",
+   "action": "Giấy blueprint: tay vẽ mặt cắt tường (nhãn '10 FT THICK', '~15 FT'), rồi mương chữ V phía bắc ('DITCH', mũi tên 'NORTH'). Cảnh thật: lính nhảy xuống mương thử độ sâu, mất hút chỉ còn mũ. Toàn cảnh tường bám đỉnh vách Whin Sill. Giấy kẻ: đường tường dài, ô vuông milecastle mỗi dặm, hai chấm turret giữa, vẽ lặp nhanh như hạt chuỗi. Thẻ số 80. Cận cổng nam, cận cổng bắc; máy xuyên qua cổng từ nam sang bắc.",
+   "camera": "Sơ đồ nhìn từ trên push theo bút → sơ đồ pan_right sang mương → toàn mương (máy thấp ở mép mương) crane_down theo lính nhảy → toàn vách Whin Sill orbit_left → sơ đồ truck_right theo dãy hạt → thẻ số → cận vật cổng nam → cận vật cổng bắc (đối xứng, match) → full: máy đẩy xuyên qua cổng (push).",
+   "transition": "match",
+   "expressions": "Lính nhảy mương: happy → shock (mất hút).",
+   "gag": "Lính nhảy xuống thử độ sâu mương, chỉ còn chiếc mũ nổi lên.",
+   "sfx": [
+    "quill",
+    "paper",
+    "boing",
+    "thud",
+    "ding",
+    "gate creak x2"
+   ],
+   "fx": [
+    "dust khi lính rơi xuống mương"
+   ],
+   "emphasis": [
+    "ten Roman feet",
+    "fifteen feet",
+    "ditch",
+    "Whin Sill",
+    "milecastle",
+    "turrets",
+    "eighty",
+    "two gates",
+    "Straight through"
+   ],
+   "shots": [
+    {
+     "type": "diagram",
+     "what_vi": "Tay vẽ mặt cắt tường đá, nhãn bề dày và chiều cao",
+     "card_text": "10 FT THICK · ~15 FT TALL"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Vẽ thêm mương chữ V phía bắc, mũi tên NORTH",
+     "card_text": "DITCH → NORTH"
+    },
+    {
+     "type": "full",
+     "what_vi": "Lính nhảy xuống mương thử độ sâu, mất hút chỉ còn mũ"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Tường bám đỉnh vách đá đen Whin Sill, dốc đứng phía bắc",
+     "card_text": "WHIN SILL"
+    },
+    {
+     "type": "board",
+     "what_vi": "Giấy nhìn từ trên: dãy milecastle mỗi dặm và hai turret giữa, vẽ lặp như hạt chuỗi"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình con số",
+     "card_text": "80 milecastles · ~160 turrets"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cổng nam của milecastle"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Cổng bắc của milecastle, cùng bố cục (match)"
+    },
+    {
+     "type": "full",
+     "what_vi": "Máy đẩy xuyên qua cổng từ sân milecastle ra phía bắc"
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "chapter": 2,
+   "seconds": 34,
+   "set": "hadrians_wall",
+   "chars": [
+    "legionaries",
+    "centurion",
+    "goat",
+    "britons_south_villagers"
+   ],
+   "props": [
+    "wall_stone"
+   ],
+   "vo_en": "Then the plan started changing. Partway through, the wall got thinner. The builders cut it from ten feet down to about eight, probably to save time and stone. In the west there was no good limestone for mortar, so the western third of the wall was built from turf. Basically, a wall of stacked grass bricks. [beat] Then Rome decided milecastles weren't enough, and moved big forts right onto the wall, each holding hundreds of soldiers. And then came the strangest addition of all. Behind the wall, on the Roman side, they dug a second giant ditch between two earth banks. It's called the Vallum. It faced south. [beat] Toward their own province.",
+   "vo_vi": "Rồi kế hoạch bắt đầu thay đổi. Giữa chừng, tường mỏng đi: từ mười bộ còn khoảng tám, có lẽ để tiết kiệm thời gian và đá. Ở phía tây không có đá vôi tốt để làm vữa, nên một phần ba phía tây của tường làm bằng đất cỏ, tức là một bức tường xếp từ những viên gạch cỏ. Rồi La Mã thấy milecastle chưa đủ, bèn dời các pháo đài lớn lên ngay tuyến tường, mỗi pháo đài chứa hàng trăm lính. Rồi tới phần kỳ quặc nhất: sau tường, ngay phía La Mã, họ đào thêm một con mương khổng lồ thứ hai kẹp giữa hai bờ đất, gọi là Vallum. Nó quay về phía nam, về phía chính tỉnh của họ.",
+   "action": "Hai lính đo tường bằng gậy 10 bộ, bách phu trưởng ra hiệu, họ lặng lẽ cưa gậy ngắn lại. Sơ đồ so sánh tường rộng/hẹp. Bản đồ: đoạn tây tô xanh lá 'TURF', đoạn đông xám 'STONE'. Tường cỏ (kind turf): lính xếp từng khối cỏ như gạch; con dê (gag chạy) gặm một khối cỏ trên tường. Pháo đài lớn mọc trên tuyến. Thẻ 'THE VALLUM'. Sơ đồ mặt cắt bắc→nam: mương – tường – … – Vallum, mũi tên 'FACES SOUTH'. Dân làng Briton phía nam đứng trước con mương chắn ngang nhà mình, nhướng mày.",
+   "camera": "Trung hai lính truck_left → sơ đồ nhìn từ trên → bản đồ drift → toàn tường cỏ push_in tới con dê → toàn pháo đài crane_up → thẻ → sơ đồ pan_right từ bắc sang nam theo mặt cắt → cận dân làng push_in nhẹ.",
+   "transition": "cut",
+   "expressions": "Lính: smirk lén; bách phu trưởng: smug_closed; dê: neutral nhai; dân làng nam: grumpy → shock.",
+   "gag": "Cưa ngắn cây thước cho 'tiết kiệm'; dê gặm tường cỏ (gag chạy dọc video).",
+   "sfx": [
+    "saw/scratch",
+    "dig",
+    "slide_down",
+    "crowd_murmur",
+    "scratch"
+   ],
+   "fx": [
+    "dust khi đổ đất Vallum"
+   ],
+   "emphasis": [
+    "thinner",
+    "eight",
+    "turf",
+    "grass bricks",
+    "forts",
+    "Vallum",
+    "south",
+    "own province"
+   ],
+   "shots": [
+    {
+     "type": "medium",
+     "what_vi": "Hai lính đo tường bằng gậy, rồi lén cưa gậy ngắn lại"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Sơ đồ so sánh tường rộng 10 bộ và hẹp 8 bộ",
+     "card_text": "BROAD 10 FT · NARROW ~8 FT"
+    },
+    {
+     "type": "map",
+     "what_vi": "Đoạn tây tô xanh lá, đoạn đông xám",
+     "card_text": "TURF · STONE"
+    },
+    {
+     "type": "full",
+     "what_vi": "Lính xếp khối cỏ như gạch; con dê gặm một khối trên tường"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Pháo đài lớn có cổng hai tháp mọc ngay trên tuyến tường"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình tên công trình",
+     "card_text": "THE VALLUM"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Mặt cắt bắc→nam: mương, tường, Vallum giữa hai bờ đất, mũi tên chỉ nam",
+     "card_text": "FACES SOUTH"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Dân làng Briton phía nam nhìn con mương chắn trước nhà, nhướng mày"
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "chapter": 2,
+   "seconds": 30,
+   "set": "hadrians_wall",
+   "chars": [
+    "legionaries",
+    "auxiliaries",
+    "atto"
+   ],
+   "props": [
+    "wall_stone"
+   ],
+   "vo_en": "Most of the wall went up in about six years. Day after day: quarry the stone, haul it, fill the middle with rubble and clay, set the facing blocks, repeat. Seventy-three miles. [beat] And once it was finished, the legions marched back to their bases. The men who actually lived on the wall were auxiliaries, soldiers recruited from conquered peoples across the empire. Tungrians and Batavians from what's now Belgium and the Netherlands. Later, even archers from Syria. So the guard staring north into the British fog often wasn't British, and wasn't from Rome either. Just like you.",
+   "vo_vi": "Phần lớn bức tường mọc lên trong khoảng sáu năm. Ngày qua ngày: khai đá, chở đá, lấp lõi bằng đá vụn và đất sét, xếp đá mặt, lặp lại. Bảy mươi ba dặm. Xây xong, các quân đoàn hành quân về căn cứ. Những người thật sự sống trên tường là lính phụ trợ, tuyển từ các dân tộc bị chinh phục khắp đế chế: người Tungri và Batavi từ vùng nay là Bỉ và Hà Lan, về sau có cả cung thủ từ Syria. Vậy người lính canh nhìn về phía bắc vào màn sương Britannia thường chẳng phải người Briton, cũng chẳng phải người La Mã. Giống như bạn.",
+   "action": "Montage có thẻ 'YEAR 1… YEAR 3… YEAR 6': khai đá, kéo đá, đổ đá vụn vào lõi, đặt đá mặt; tường cao dần (build 0,2 → 1) và dài ra hai phía chân trời. Lê dương xếp hàng hành quân rời đi, vẫy tay. Lính phụ trợ đến với đủ kiểu khiên bầu dục. Bản đồ đế chế: mũi tên từ Bỉ/Hà Lan và Syria hội tụ về Britannia. Kết cận Atto trên tường, khăn cam, run.",
+   "camera": "Thẻ năm (cảnh mờ) → trung montage cắt theo nhịp truck_left → toàn tường dài pull_out lên cao → toàn lê dương rời đi truck_right (giữ hướng) → toàn lính phụ trợ đến drift → bản đồ pull_out thấy mũi tên hội tụ → cận Atto push_in (callback cảnh mở).",
+   "transition": "whip",
+   "expressions": "Lê dương: happy vẫy tay; lính phụ trợ: neutral/worried; Atto: worried run.",
+   "gag": "Montage 'YEAR 1… YEAR 6'; lê dương vừa xong việc vẫy tay vui vẻ giao lại cho lính phụ trợ ngơ ngác.",
+   "sfx": [
+    "dig",
+    "hammer",
+    "thud",
+    "march",
+    "war_horn",
+    "wind_gust"
+   ],
+   "fx": [
+    "dust montage",
+    "grade cold cho cảnh Atto cuối"
+   ],
+   "emphasis": [
+    "six years",
+    "repeat",
+    "Seventy-three miles",
+    "auxiliaries",
+    "Tungrians",
+    "Batavians",
+    "Syria",
+    "Just like you"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Thẻ montage năm thứ nhất",
+     "card_text": "YEAR 1"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Montage: khai đá, kéo đá, đổ đá vụn vào lõi, đặt đá mặt",
+     "card_text": "YEAR 3"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Tường hoàn chỉnh chạy tới hai phía chân trời",
+     "card_text": "YEAR 6"
+    },
+    {
+     "type": "full",
+     "what_vi": "Lê dương hành quân rời đi, vẫy tay"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Lính phụ trợ đến với đủ kiểu khiên bầu dục"
+    },
+    {
+     "type": "map",
+     "what_vi": "Mũi tên từ Bỉ, Hà Lan, Syria hội tụ về Britannia",
+     "card_text": "TUNGRI · BATAVI · SYRIA"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Atto trên tường, khăn cam, run trong sương (callback cảnh mở)"
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "chapter": 2,
+   "seconds": 37,
+   "set": "barrack_room",
+   "chars": [
+    "atto",
+    "centurion",
+    "vepo"
+   ],
+   "props": [
+    "writing_tablet"
+   ],
+   "vo_en": "And we know what their lives were like, because they wrote things down. At Vindolanda, a fort just behind the wall line, archaeologists found hundreds of thin wooden letters, preserved in wet, airless mud. One is a birthday party invitation from an officer's wife. One mentions a package of socks, sandals, and two pairs of underpants. [beat] One officer writes that his men have run out of beer, and could someone please send more. One report sneers at the locals as 'Brittunculi.' Little Brits. Life on the frontier was cold, boring, and full of paperwork. Which brings us back to that knock on the gate. If this wall had a door every mile... what was it actually for?",
+   "vo_vi": "Ta biết đời họ ra sao vì họ có viết lại. Ở Vindolanda, một đồn ngay sau tuyến tường, các nhà khảo cổ tìm thấy hàng trăm lá thư gỗ mỏng, được giữ nguyên trong lớp bùn ướt thiếu không khí. Một lá là thiệp mời sinh nhật của vợ một sĩ quan. Một lá nhắc tới gói đồ gồm tất, dép và hai chiếc quần lót. Một sĩ quan viết rằng lính của ông hết bia, nhờ ai đó gửi thêm. Một bản báo cáo gọi dân bản xứ là 'Brittunculi', tức 'bọn Briton nhãi nhép'. Đời nơi biên ải lạnh, chán và đầy giấy tờ. Và điều đó đưa ta về tiếng gõ cửa kia. Nếu bức tường cứ mỗi dặm có một cái cửa, thì rốt cuộc nó dùng để làm gì?",
+   "action": "Doanh trại đêm, đèn dầu: Atto viết lên lá thư gỗ. Cận lá thư chữ mực. Mặt cắt lớp bùn ẩm giữ các lá thư. Bong bóng tưởng tượng thiệp sinh nhật. Atto mở gói đồ: tất, dép, rồi hai chiếc quần lót bay ra; Atto giơ lên ngượng. Bách phu trưởng viết thư, cốc bia úp ngược nhỏ giọt cuối. Thẻ trích dẫn 'Brittunculi'. Ngoài cổng, Vepo như nghe thấy, nhìn tỉnh bơ. Tiếng gõ cổng; Atto ngẩng lên nhìn ra cửa. Màn hình câu hỏi.",
+   "camera": "Nội cảnh dolly-in tới bàn → cận vật lá thư push_in → cận vật mặt cắt bùn crane_down → trung Atto mở gói đồ (punch-in khi quần lót bay) → trung bách phu trưởng và cốc úp, orbit nhẹ → thẻ trích dẫn → cận Vepo ngoài cổng (đêm) → toàn Atto quay ra cửa, máy pull_out → thẻ câu hỏi.",
+   "transition": "cut",
+   "expressions": "Atto: focus → shock ngượng (quần lót) → worried (nghe gõ cửa); bách phu trưởng: sad/grumpy (hết bia); Vepo: neutral tỉnh bơ.",
+   "gag": "Quần lót bay ra từ gói đồ; cốc bia úp ngược chỉ rơi một giọt; Vepo tỉnh bơ trước chữ 'Little Brits'.",
+   "sfx": [
+    "quill",
+    "paper",
+    "boing",
+    "slide_down",
+    "knock x3",
+    "heartbeat"
+   ],
+   "fx": [
+    "grade night ấm trong phòng",
+    "light_shafts ánh trăng qua cửa"
+   ],
+   "emphasis": [
+    "wrote",
+    "Vindolanda",
+    "birthday",
+    "underpants",
+    "beer",
+    "Brittunculi",
+    "paperwork",
+    "knock",
+    "for"
+   ],
+   "shots": [
+    {
+     "type": "interior",
+     "what_vi": "Doanh trại đêm, đèn dầu, Atto cặm cụi viết thư gỗ"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Lá thư gỗ mỏng với chữ mực nghiêng",
+     "card_text": "VINDOLANDA TABLETS"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Mặt cắt lớp bùn ướt giữ nguyên các lá thư"
+    },
+    {
+     "type": "card",
+     "what_vi": "Bong bóng tưởng tượng: thiệp mời sinh nhật",
+     "card_text": "BIRTHDAY INVITATION"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Atto mở gói đồ: tất, dép, hai chiếc quần lót bay ra"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Bách phu trưởng viết thư xin bia, cốc úp ngược rơi một giọt"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình trích dẫn",
+     "card_text": "\"Brittunculi\" · little Brits — Vindolanda tablet 164"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Vepo ngoài cổng trong đêm, mặt tỉnh bơ"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình câu hỏi treo cuối chương",
+     "card_text": "A DOOR EVERY MILE. WHY?"
+    }
+   ]
+  }
+ ],
+ "vo_en": "Here's the thing most people get wrong. Rome didn't hire builders. Its soldiers were the builders. Men from three legions did most of the work: the Second Augusta, the Sixth Victrix, and the Twentieth Valeria Victrix. A legionary had to march, fight, dig, quarry, and lay stone. Each team built its own stretch. And when they finished, they carved a stone with their unit's name on it, like signing a homework assignment. Archaeologists have found many of these building stones. Some are neat. [beat] Some look like they were carved on a Friday afternoon. The plan looked simple on paper. A stone wall, ten Roman feet thick, and probably around fifteen feet tall. In front of it, facing north, a deep ditch. In the middle section, the builders set the wall right on top of a line of cliffs called the Whin Sill, so the ground did half the work. Every Roman mile, a small fort called a milecastle, with room for a small squad of soldiers. Between each pair of milecastles, two stone watchtowers called turrets. That's eighty milecastles and about a hundred and sixty turrets, lined up like beads on a string. [beat] And here's the detail that matters most. Every milecastle had two gates. One facing south. One facing north. Straight through the wall. Then the plan started changing. Partway through, the wall got thinner. The builders cut it from ten feet down to about eight, probably to save time and stone. In the west there was no good limestone for mortar, so the western third of the wall was built from turf. Basically, a wall of stacked grass bricks. [beat] Then Rome decided milecastles weren't enough, and moved big forts right onto the wall, each holding hundreds of soldiers. And then came the strangest addition of all. Behind the wall, on the Roman side, they dug a second giant ditch between two earth banks. It's called the Vallum. It faced south. [beat] Toward their own province. Most of the wall went up in about six years. Day after day: quarry the stone, haul it, fill the middle with rubble and clay, set the facing blocks, repeat. Seventy-three miles. [beat] And once it was finished, the legions marched back to their bases. The men who actually lived on the wall were auxiliaries, soldiers recruited from conquered peoples across the empire. Tungrians and Batavians from what's now Belgium and the Netherlands. Later, even archers from Syria. So the guard staring north into the British fog often wasn't British, and wasn't from Rome either. Just like you. And we know what their lives were like, because they wrote things down. At Vindolanda, a fort just behind the wall line, archaeologists found hundreds of thin wooden letters, preserved in wet, airless mud. One is a birthday party invitation from an officer's wife. One mentions a package of socks, sandals, and two pairs of underpants. [beat] One officer writes that his men have run out of beer, and could someone please send more. One report sneers at the locals as 'Brittunculi.' Little Brits. Life on the frontier was cold, boring, and full of paperwork. Which brings us back to that knock on the gate. If this wall had a door every mile... what was it actually for?",
+ "vo_vi": "Đây là điều nhiều người hiểu sai: La Mã không thuê thợ. Lính chính là thợ xây. Người của ba quân đoàn làm phần lớn công việc: Quân đoàn II Augusta, VI Victrix và XX Valeria Victrix. Một lính lê dương phải hành quân, chiến đấu, đào đất, khai đá và xây. Mỗi đội xây một đoạn riêng. Xong việc, họ khắc một hòn đá ghi tên đơn vị, như ký tên vào bài tập về nhà. Các nhà khảo cổ đã tìm thấy nhiều hòn đá như vậy. Có hòn rất đẹp. Có hòn trông như khắc vào chiều thứ Sáu. Trên giấy, kế hoạch rất đơn giản. Một bức tường đá dày mười bộ La Mã, có lẽ cao khoảng mười lăm bộ. Phía trước, hướng bắc, là một con mương sâu. Ở đoạn giữa, thợ xây đặt tường ngay trên dải vách đá Whin Sill, để địa hình gánh một nửa việc. Mỗi dặm La Mã có một đồn nhỏ gọi là milecastle, đủ chỗ cho một tiểu đội. Giữa hai milecastle là hai tháp canh đá gọi là turret. Tổng cộng tám mươi milecastle và khoảng một trăm sáu mươi turret, xếp hàng như hạt trên sợi dây. Và đây là chi tiết quan trọng nhất: mỗi milecastle có hai cổng, một quay về nam, một quay về bắc, xuyên thẳng qua tường. Rồi kế hoạch bắt đầu thay đổi. Giữa chừng, tường mỏng đi: từ mười bộ còn khoảng tám, có lẽ để tiết kiệm thời gian và đá. Ở phía tây không có đá vôi tốt để làm vữa, nên một phần ba phía tây của tường làm bằng đất cỏ, tức là một bức tường xếp từ những viên gạch cỏ. Rồi La Mã thấy milecastle chưa đủ, bèn dời các pháo đài lớn lên ngay tuyến tường, mỗi pháo đài chứa hàng trăm lính. Rồi tới phần kỳ quặc nhất: sau tường, ngay phía La Mã, họ đào thêm một con mương khổng lồ thứ hai kẹp giữa hai bờ đất, gọi là Vallum. Nó quay về phía nam, về phía chính tỉnh của họ. Phần lớn bức tường mọc lên trong khoảng sáu năm. Ngày qua ngày: khai đá, chở đá, lấp lõi bằng đá vụn và đất sét, xếp đá mặt, lặp lại. Bảy mươi ba dặm. Xây xong, các quân đoàn hành quân về căn cứ. Những người thật sự sống trên tường là lính phụ trợ, tuyển từ các dân tộc bị chinh phục khắp đế chế: người Tungri và Batavi từ vùng nay là Bỉ và Hà Lan, về sau có cả cung thủ từ Syria. Vậy người lính canh nhìn về phía bắc vào màn sương Britannia thường chẳng phải người Briton, cũng chẳng phải người La Mã. Giống như bạn. Ta biết đời họ ra sao vì họ có viết lại. Ở Vindolanda, một đồn ngay sau tuyến tường, các nhà khảo cổ tìm thấy hàng trăm lá thư gỗ mỏng, được giữ nguyên trong lớp bùn ướt thiếu không khí. Một lá là thiệp mời sinh nhật của vợ một sĩ quan. Một lá nhắc tới gói đồ gồm tất, dép và hai chiếc quần lót. Một sĩ quan viết rằng lính của ông hết bia, nhờ ai đó gửi thêm. Một bản báo cáo gọi dân bản xứ là 'Brittunculi', tức 'bọn Briton nhãi nhép'. Đời nơi biên ải lạnh, chán và đầy giấy tờ. Và điều đó đưa ta về tiếng gõ cửa kia. Nếu bức tường cứ mỗi dặm có một cái cửa, thì rốt cuộc nó dùng để làm gì?",
+ "word_count": 546
+}

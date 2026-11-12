@@ -1,0 +1,733 @@
+{
+ "title": "Why Did Rome Build a Wall Across Britain?",
+ "title_vi": "Vì sao La Mã xây một bức tường chắn ngang Britannia? (Tường Hadrian)",
+ "question": "Why did the most powerful empire on Earth build a 73-mile wall across Britain, and why did it have a gate every mile?",
+ "formula": "điều tra hiện trường: mở bằng cảnh vô lý (tường có cửa, có người gõ cửa), loại dần giả thuyết \"pháo đài chống xâm lược\", cú lật ở 74 %: tường là trạm kiểm soát ra vào, đồng thời là lời tuyên bố \"La Mã dừng ở đây\"",
+ "minutes": 10,
+ "format": "long",
+ "factions": [
+  {
+   "id": "rome",
+   "culture": "roman_empire_50ad",
+   "note_vi": "La Mã thời Hadrian (~122; văn hóa roman_empire_50ad hợp lệ tới năm 200). Màu phe: đỏ thẫm + vàng đồng. Lê dương (roman_legionary_50ad: giáp lá lorica segmentata, khiên chữ nhật cong đỏ, gladius, pilum) xây tường ở chương 2 và chương 1 S3/S6. Bách phu trưởng (roman_centurion_50ad, mào ngang) ở S6, S7, S12, S15. Lính phụ trợ Tungri (vai mới auxiliary: giáp xích, khiên bầu dục phẳng màu xanh-trắng để khác lê dương, giáo, quần chẽn bracae) là Atto, có khăn cổ cam: chương 1 S1, chương 2 S10-11, chương 3 S12-17. Hadrian: râu quai nón, giáp ngực đồng, áo choàng tía (S3-S6, S15). Kỵ binh phụ trợ chỉ thể hiện bằng khối quân trên sa bàn (S13)."
+  },
+  {
+   "id": "britons_north",
+   "culture": "iron_age_britons_50ad",
+   "note_vi": "Các bộ tộc phía bắc tường năm 122 (Caledonii, Selgovae, Novantae). Dùng tạm văn hóa iron_age_britons_50ad vì đồ sắt muộn phương bắc gần như giống (năm 122 nằm ngoài khoảng năm của văn hóa: nếu tool đòi khớp năm thì nới years tới 130 hoặc nhân bản thành caledonians_122ad). KHÔNG gọi là 'Pict' (tên này chỉ xuất hiện trong sử liệu từ năm 297). Màu phe: xanh rêu + nâu; áo choàng len kẻ ô, quần, giáo, khiên vuông/bầu dục nhỏ, một số có torc; không giáp. Vepo (người chăn dê, vai commoner, khăn cổ xanh lá) + con dê: S1, S11, S14, S17. Toán cướp (briton_warrior_50ad): S12-S13. Quân Caledonia ở Mons Graupius: S5 (sa bàn + đám đông xa). Không vẽ xấu hơn phe La Mã."
+  },
+  {
+   "id": "britons_south",
+   "culture": "iron_age_britons_50ad",
+   "note_vi": "Người Briton phía nam tường đã La Mã hóa một phần (Brigantes và tỉnh Britannia). Màu phe: xanh dương nhạt + vàng đất, phân biệt rõ với phương bắc; áo tunic kiểu La Mã khoác áo choàng kẻ ô cài khuy fibula, không vũ khí. Xuất hiện: S6 (nhìn tường mọc lên với vẻ ngờ vực), S9 (cạnh Vallum), S14 (xếp hàng qua cổng), S15 (bên 'này là La Mã'). Bản đồ/sa bàn dùng màu phe, không dùng đám đông."
+  }
+ ],
+ "library_needs": [
+  {
+   "kind": "sets",
+   "name": "hadrians_wall",
+   "brief": "Một đoạn Tường Hadrian 3D dài khoảng 60 chạy theo trục X, mặt bắc quay về +Y, camera mặc định đứng phía nam (-Y) nhưng phải quay được sang phía bắc nhìn cổng bắc. Tường đá vàng xám đẽo vuông, rộng 3 (param width: broad 3 | narrow 2,4), cao 4,5, đỉnh có lan can thấp; tùy chọn crag: true đặt tường lên dải vách đá đen (Whin Sill) dốc về phía bắc. Giữa đoạn là milecastle (sân vuông ~6×7, tường thấp phía nam) có HAI cổng vòm: cổng nam (-Y) và cổng bắc (+Y) xuyên tường, cánh cửa gỗ là part riêng gate_north/gate_south để mở/đóng. Turret (tháp đá vuông có cửa sổ, đỉnh cao ~6) ở x = ±20. Mương bắc chữ V (ditch: true). Vallum tùy chọn ở phía nam: mương phẳng đáy giữa hai bờ đất, có lối đắp qua trước cổng nam. Tham số: kind stone|turf (turf = khối cỏ xanh xếp lớp như gạch, đỉnh có hàng rào gỗ), build 0-1 (chiều cao xây xong; < 1 có giàn giáo gỗ, đống đá, giỏ đá vụn, lõi lộ ra), ruin 0-1 (sụp còn vài hàng đá, cỏ mọc, đá rơi vãi), fort (pháo đài lớn có cổng đôi hai tháp nằm vắt qua tuyến), road_on_top (con đường đất/đá dăm chạy thẳng trên nền tường cho cảnh 1750s), beacon_slots (vị trí đặt beacon_fire trên đỉnh turret). Anchors: gate_north, gate_south, milecastle, turret_1, turret_2 (đỉnh), walk (đỉnh tường giữa), ditch, vallum, fort_gate. Ban đêm dùng grade night + mist từ vfx; nhân vật đứng được trên đỉnh tường (z = 4,5) và trong sân milecastle."
+  },
+  {
+   "kind": "sets",
+   "name": "barrack_room",
+   "brief": "Nội thất phòng doanh trại La Mã trong đồn (contubernium) ban đêm, mở về -Y: tường đá quét vôi ố, xà gỗ, sàn đất nện, hai giường tầng gỗ phủ chăn len, giá treo khiên/giáo/mũ, lò sưởi than hồng nhỏ, bàn gỗ thô có đèn dầu đất nung (đèn điểm ấm thật), cuộn giấy/thư gỗ và cốc gốm, vò rượu/bia úp ngược. Cửa ra sân có ánh trăng xanh. Anchors: table (mặt bàn cao ~0,9), bunk, hearth, door. Khoảng diễn quanh (0, 3) cho 2-3 nhân vật."
+  },
+  {
+   "kind": "props",
+   "name": "centurial_stone",
+   "brief": "Đá xây ghi tên đơn vị (centurial stone) 3D: khối đá cát vàng xám ~0,5×0,3×0,3, mặt trước có khung chữ nhật lõm và chữ La-tinh khắc lõm (param text, mặc định '> COH III | LEG II AVG'), param wonky: true = chữ xiêu vẹo, to nhỏ không đều, một chữ ngược (gag 'khắc chiều thứ Sáu'). Gốc ở tâm đáy. Có biến thể 2D để nhân vật cầm khoe."
+  },
+  {
+   "kind": "props",
+   "name": "writing_tablet",
+   "brief": "Thư gỗ Vindolanda: lá gỗ mỏng màu sáng cỡ phóng to 0,6×0,25, chữ mực đen nét nghiêng xếp hai cột, nếp gấp giữa (param folded), mép sứt. dim 2d để cầm tay đọc; param dim 3d để nằm trên bàn hoặc vùi trong lớp bùn (có thể kèm lớp bùn nâu mặt cắt). param text_lines để đổi số dòng."
+  },
+  {
+   "kind": "props",
+   "name": "wall_stone",
+   "brief": "Viên đá mặt tường La Mã đẽo thô (~0,45×0,28×0,32, đá cát vàng xám, cạnh vát) hoặc khối đất cỏ (kind turf: đất nâu, mặt cỏ xanh); 3D để đặt, rơi, chồng; param pile: N để tạo đống đá; biến thể 2D để nhân vật khiêng trên vai. Gốc ở tâm."
+  },
+  {
+   "kind": "props",
+   "name": "cornu_horn",
+   "brief": "Kèn đồng La Mã (cornu) 2D cầm tay: ống đồng cong hình chữ G lớn có thanh gỗ ngang, loa kèn rộng, viền mực dày; gắn handL/handR, miệng kèn ở đầu. Dùng khi lính thổi báo động (tiếng war_horn)."
+  },
+  {
+   "kind": "props",
+   "name": "emperor_bust",
+   "brief": "Tượng bán thân hoàng đế bằng cẩm thạch trắng ngà trên bệ đá vuông cao 1,2: đầu tóc ngắn, mặt khái quát (không chân dung thật), param beard none|full, part 'beard' là lưới riêng có gốc ở cằm để story scale từ 0 lên 1 (gag râu mọc). Màu ấm để ánh trời không nhuộm xám. Gốc tâm đáy bệ. Dùng một hàng 4-5 tượng."
+  },
+  {
+   "kind": "props",
+   "name": "coins",
+   "brief": "Đồng denarius bạc: 2D cầm tay (đồng xu to 0,12, hình đầu người nghiêng khái quát + chữ), túi tiền da 2D thắt dây; 3D đồng xu rơi/lăn và chồng xu nhỏ (param n). Không dùng chân dung thật."
+  },
+  {
+   "kind": "props",
+   "name": "ladder",
+   "brief": "Thang gỗ thô 3D buộc dây, dài 5 (param length), hai thanh dọc hơi cong, 9 bậc; gốc ở chân thang để dựng nghiêng vào tường; có thể đổ (xoay quanh gốc)."
+  },
+  {
+   "kind": "chars",
+   "name": "cow",
+   "brief": "Bò nhỏ thời đồ sắt (giống bò lông ngắn nâu đỏ, sừng ngắn cong), 2D nhìn thẳng mũm mĩm như goat: thân nâu đỏ, mõm hồng, tai to, chuông nhỏ trên dây da làm đồ nhận diện. Biểu cảm: neutral, grumpy, shock, smug_closed. Tính cách lì, không chịu leo thang (gag S13)."
+  },
+  {
+   "kind": "chars",
+   "name": "hadrian_122ad",
+   "brief": "Trang phục (outfit) cho Hadrian, văn hóa roman_empire_50ad, vai emperor: râu quai nón đầy + tóc xoăn ngắn chải về trước (đặc trưng tượng Hadrian), giáp ngực đồng kiểu cơ bắp (muscled cuirass) với dải pteruges da, tunic trắng, áo choàng tía (paludamentum) cài vai, giày da buộc dây. Màu nhấn tía. Không chép chân dung kênh khác."
+  },
+  {
+   "kind": "chars",
+   "name": "roman_auxiliary_122ad",
+   "brief": "Trang phục lính phụ trợ Tungri (văn hóa roman_empire_50ad, vai auxiliary) cho Atto: mũ sắt có che má, giáo phủ vai bằng giáp xích (lorica hamata) dài tới hông, tunic đỏ nhạt, quần chẽn bracae tới gối màu nâu, áo choàng len nâu (đêm lạnh), khiên bầu dục phẳng (màu xanh-trắng có hoa văn khác khiên lê dương), giáo hasta, kiếm ngắn. look.accent khăn cổ cam. Bóng đen phải khác lê dương (khiên bầu dục vs chữ nhật)."
+  },
+  {
+   "kind": "chars",
+   "name": "briton_farmer_50ad",
+   "brief": "Trang phục vai commoner của văn hóa iron_age_britons_50ad, dùng cho Vepo (người chăn dê phương bắc): áo choàng len kẻ ô xanh rêu-nâu cài trâm, tunic len dài, quần, giày da mềm, túi da đeo chéo, gậy chăn gia súc dài. Không giáp, không vũ khí. Râu tỉa, tóc buộc. look.accent khăn cổ xanh lá; mặt tỉnh bơ."
+  }
+ ],
+ "sources": [
+  {
+   "claim": "Tường dài 73 dặm (80 dặm La Mã) từ Tyne tới Solway, khởi công khoảng năm 122, phần lớn xong trong khoảng 6 năm; do ba quân đoàn II Augusta, VI Victrix, XX Valeria Victrix xây; milecastle mỗi dặm, hai turret giữa; tường rộng 10 bộ rồi hẹp lại; pháo đài dời lên tuyến; Vallum phía nam; nằm trọn trong nước Anh; dùng tới khoảng 410; cổng có thể là trạm hải quan",
+   "url": "https://en.wikipedia.org/wiki/Hadrian%27s_Wall"
+  },
+  {
+   "claim": "Historia Augusta, Đời Hadrian: 5.2 'người Briton không thể giữ dưới quyền La Mã'; 5.3 trả lại các tỉnh bên kia Euphrates/Tigris; 11.2 Hadrian tới Britannia và xây tường dài 80 dặm 'để tách người La Mã khỏi người man di'",
+   "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Historia_Augusta/Hadrian/1*.html"
+  },
+  {
+   "claim": "Hadrian lên ngôi năm 117, mất năm 138, hoàng đế đầu tiên để râu đầy (các hoàng đế sau theo), say mê kiến trúc, đi khắp đế chế, thăm Britannia năm 122",
+   "url": "https://en.wikipedia.org/wiki/Hadrian"
+  },
+  {
+   "claim": "Agricola thắng người Caledonia ở trận Mons Graupius năm 83 hoặc 84, sau đó La Mã rút khỏi Scotland",
+   "url": "https://en.wikipedia.org/wiki/Battle_of_Mons_Graupius"
+  },
+  {
+   "claim": "Tuyến đồn dọc đường Stanegate là biên giới trước khi có Tường Hadrian",
+   "url": "https://en.wikipedia.org/wiki/Stanegate"
+  },
+  {
+   "claim": "Đoạn tường đất cỏ từ sông Irthing (milecastle 49) tới Bowness-on-Solway; turret bằng đá; một phần được xây lại bằng đá trước năm 138",
+   "url": "https://historicengland.org.uk/images-books/publications/hadrians-wall/hadrians-wall-chap4"
+  },
+  {
+   "claim": "Tường đất cỏ ở đoạn phía tây (lý do vật liệu)",
+   "url": "https://www.visithadrianswall.co.uk/hadrians-wall/life-on-hadrians-wall/a-wall-made-of-turf"
+  },
+  {
+   "claim": "Thư Vindolanda 346: tất, hai đôi dép và hai chiếc quần lót",
+   "url": "https://romaninscriptionsofbritain.org/inscriptions/TabVindol346"
+  },
+  {
+   "claim": "Thư Vindolanda 164: báo cáo gọi dân bản xứ là 'Brittunculi'",
+   "url": "https://antigonejournal.com/2022/12/vindolanda-tablets/"
+  },
+  {
+   "claim": "Thư Vindolanda 291 (thiệp mời sinh nhật của Claudia Severa) và 628 (decurion Masclus xin gửi thêm bia); thư được giữ trong lớp đất ẩm thiếu khí",
+   "url": "https://www.mentalfloss.com/science/archaeology/vindolanda-tablets-facts"
+  },
+  {
+   "claim": "Lính phụ trợ Tungri và Batavi đóng ở Vindolanda",
+   "url": "https://en.wikipedia.org/wiki/Vindolanda"
+  },
+  {
+   "claim": "Cung thủ Hamian từ Syria đóng ở đồn Magnis (Carvoran) trên Tường Hadrian",
+   "url": "https://en.wikipedia.org/wiki/Magnis_(Carvoran)"
+  },
+  {
+   "claim": "Giới học thuật: tường là rào chắn chỉ qua được ở các điểm kiểm soát; tranh luận về kiểm soát/thu thuế người qua lại",
+   "url": "https://the-past.com/?p=32088"
+  },
+  {
+   "claim": "Tường Antonine bắt đầu khoảng năm 142 dưới thời Antoninus Pius, dài khoảng 63 km (39 dặm), bằng đất cỏ, bỏ sau khoảng 20 năm",
+   "url": "https://en.wikipedia.org/wiki/Antonine_Wall"
+  },
+  {
+   "claim": "Đường Military Road (B6318) những năm 1750 được làm ngay trên nền Tường Hadrian",
+   "url": "https://co-curate.ncl.ac.uk/resources/view/138497"
+  },
+  {
+   "claim": "Di sản Thế giới UNESCO (Frontiers of the Roman Empire, công nhận năm 1987)",
+   "url": "https://whc.unesco.org/en/list/430"
+  },
+  {
+   "claim": "Đường mòn quốc gia Hadrian's Wall Path dài 84 dặm",
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/"
+  },
+  {
+   "claim": "George R.R. Martin thăm Tường Hadrian năm 1981, cảm hứng cho bức tường băng trong A Song of Ice and Fire",
+   "url": "https://www.smartertravel.com/game-of-thrones-exclusive-george-r-r-martin-talks-season-two-the-winds-of-winter-and-real-world-influences-for-a-song-of-ice-and-fire/"
+  },
+  {
+   "claim": "Dân số đế chế La Mã thế kỷ 2 ước khoảng 50-70 triệu",
+   "url": "https://en.wikipedia.org/wiki/Demography_of_the_Roman_Empire"
+  }
+ ],
+ "chapter": {
+  "n": 3,
+  "title": "A Door, Not a Fortress",
+  "of": 3,
+  "start_sec": 353.86,
+  "frames": 6825,
+  "previous": {
+   "n": 2,
+   "title": "Eighty Miles of Stone"
+  },
+  "next": null
+ },
+ "chapters": [
+  {
+   "n": 1,
+   "title": "The Edge of the World",
+   "title_vi": "Tận cùng thế giới",
+   "summary_vi": "Mở giữa cao trào: đêm sương trên tường, lính phụ trợ Atto thấy một con dê và một người đàn ông (Vepo) gõ cửa tường. Quay về năm 122: đế chế gần cực đại, câu hỏi lớn (sao siêu cường lại xây tường có cổng mỗi dặm?), Hadrian và bộ râu, chính sách thôi bành trướng, Agricola thắng ở Mons Graupius rồi rút, Britannia khó trị; Hadrian tới tận nơi và ra lệnh xây tường. Treo: sáu năm rất dài."
+  },
+  {
+   "n": 2,
+   "title": "Eighty Miles of Stone",
+   "title_vi": "Tám mươi dặm đá",
+   "summary_vi": "Lính lê dương ba quân đoàn tự xây và ký tên lên đá; kế hoạch: tường 10 bộ, mương bắc, vách Whin Sill, 80 milecastle mỗi cái hai cổng xuyên tường, 160 turret. Kế hoạch đổi: tường mỏng đi, đoạn tây bằng đất cỏ, pháo đài lớn lên tuyến, Vallum quay về nam. Sáu năm xây; lính phụ trợ Tungri, Batavi, Syria đến canh. Thư Vindolanda: sinh nhật, tất và quần lót, hết bia, 'Brittunculi'. Treo: cửa mỗi dặm để làm gì?"
+  },
+  {
+   "n": 3,
+   "title": "A Door, Not a Fortress",
+   "title_vi": "Cánh cửa, không phải pháo đài",
+   "summary_vi": "Loại giả thuyết pháo đài (thang, quá dài, không chắc có lối đi đỉnh, La Mã thích đánh ngoài đồng). Tường là dây báo động: bò không leo thang được, kỵ binh xuất cổng. Câu trả lời ở 74 %: trạm kiểm soát (hỏi, phí, Vallum kiểm soát cả phía nam), thông điệp 'La Mã dừng ở đây', giữ lính bận rộn. Hệ quả: Tường Antonine thất bại, dùng gần 300 năm, nông dân lấy đá, đường 1750s; ngày nay Di sản Thế giới, không phải biên giới Anh–Scotland, cảm hứng bức tường băng. Gọi lại tiêu đề: một cánh cửa, người gác và phí; con dê chưa trả tiền."
+  }
+ ],
+ "sequences": [
+  {
+   "id": 12,
+   "chapter": 3,
+   "seconds": 38,
+   "set": "hadrians_wall",
+   "chars": [
+    "atto",
+    "centurion",
+    "raiders"
+   ],
+   "props": [
+    "ladder"
+   ],
+   "vo_en": "Let's test the obvious answer first. Theory one: the wall was a giant fortress, built to stop an invasion. [beat] Problem. A stone wall maybe fifteen feet high is impressive, but raiders with a ladder can get over it in a minute. Seventy-three miles is far too long to guard every yard at once. Historians aren't even sure there was a walkway along the top for soldiers to fight from. And Rome didn't like fighting from behind walls anyway. Its whole style was to march out and win in the open, where training and armor mattered. Hiding behind stone was the opposite of how Rome fought. So the wall did something smarter. It didn't stop raiders. It slowed them down.",
+   "vo_vi": "Hãy kiểm tra câu trả lời hiển nhiên trước. Giả thuyết một: bức tường là một pháo đài khổng lồ để chặn quân xâm lược. Vấn đề là bức tường đá cao chừng mười lăm bộ thì oai thật, nhưng kẻ cướp có cái thang thì trèo qua trong một phút. Bảy mươi ba dặm là quá dài để canh từng thước cùng lúc. Các nhà sử học còn không chắc trên đỉnh có lối đi cho lính đứng đánh. Mà La Mã vốn không thích đánh từ sau tường. Lối đánh của họ là xuất quân và thắng ngoài đồng trống, nơi huấn luyện và giáp trụ phát huy tác dụng. Nấp sau đá là trái ngược với cách La Mã chiến đấu. Nên bức tường làm một việc khôn hơn. Nó không chặn kẻ cướp. Nó làm chúng chậm lại.",
+   "action": "Thẻ chương 3. Màn hình 'THEORY 1: A FORTRESS?'. Hai chiến binh phương bắc dựng thang leo qua tường; thẻ nhỏ đồng hồ đếm '0:58'. Toàn cảnh tường dài tít, chỉ lác đác vài lính. Sơ đồ mặt cắt đỉnh tường, lối đi hiện dấu '?'. Sa bàn: khối quân La Mã tiến ra đồng trống ✓; rồi cùng khối quân nấp sau tường ✗. Bách phu trưởng lắc đầu chê nấp; Atto bật ý tưởng (ding).",
+   "camera": "Thẻ chương → thẻ câu hỏi → toàn chiến binh leo thang (máy phía bắc, thấp) crane_up theo người leo → toàn tường dài pull_out cao → sơ đồ nhìn từ trên push_in vào dấu ? → sa bàn top truck_right → sa bàn height high orbit_left → cận bách phu trưởng và Atto.",
+   "transition": "fade",
+   "expressions": "Chiến binh: focus → happy (qua tường); bách phu trưởng: grumpy lắc đầu; Atto: focus → happy (hiểu ra).",
+   "gag": "Bức tường 'pháo đài' bị vượt bằng cái thang trong chưa đầy một phút, có đồng hồ đếm.",
+   "sfx": [
+    "war_drum",
+    "step",
+    "wood creak",
+    "ding",
+    "stamp_hit",
+    "crowd_murmur"
+   ],
+   "fx": [
+    "grade day lạnh",
+    "mist nhẹ phía bắc"
+   ],
+   "emphasis": [
+    "Theory one",
+    "fortress",
+    "ladder",
+    "minute",
+    "walkway",
+    "open",
+    "smarter",
+    "slowed them down"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Thẻ chương",
+     "card_text": "CHAPTER 3 · A DOOR, NOT A FORTRESS"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình câu hỏi giả thuyết",
+     "card_text": "THEORY 1: A FORTRESS?"
+    },
+    {
+     "type": "full",
+     "what_vi": "Hai chiến binh phương bắc dựng thang leo qua tường, đồng hồ đếm dưới một phút",
+     "card_text": "0:58"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Tường dài tít tắp, chỉ lác đác vài lính canh"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Mặt cắt đỉnh tường, dấu hỏi trên lối đi",
+     "card_text": "WALKWAY?"
+    },
+    {
+     "type": "board",
+     "what_vi": "Sa bàn: khối quân La Mã tiến ra đồng trống, dấu ✓",
+     "card_text": "✓ OPEN FIELD"
+    },
+    {
+     "type": "board",
+     "what_vi": "Cùng khối quân nấp sau tường, dấu ✗, máy orbit chéo",
+     "card_text": "✗ BEHIND WALL"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Bách phu trưởng lắc đầu chê"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Atto bật ý tưởng, mắt sáng"
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "chapter": 3,
+   "seconds": 43,
+   "set": "tactical_board",
+   "chars": [
+    "raiders",
+    "cow",
+    "atto"
+   ],
+   "props": [
+    "ladder",
+    "beacon_fire"
+   ],
+   "vo_en": "Picture a raid. A band of warriors crosses the ditch, climbs the wall, and grabs some cattle. Now they have to get home, with cows, over a wall and a ditch. Cows are terrible at ladders. [beat] Meanwhile, a guard in a turret has spotted them. Signals probably pass along the line from tower to tower. Cavalry rides out from the nearest fort, through a gate, and catches the raiders in the open, exactly where Rome wanted to fight. The wall was a tripwire and a trap. It turned a quick raid into a slow, noisy mistake. Rome didn't need to stop every raid. It just needed to make every raid a bad idea. But that's still only half the story. Because most people who came to the wall weren't raiders at all.",
+   "vo_vi": "Hãy hình dung một vụ cướp. Một toán chiến binh vượt mương, trèo tường, lùa được ít bò. Giờ chúng phải về nhà, kèm theo bò, qua tường và mương. Bò thì leo thang rất tệ. Trong lúc đó, lính trong tháp canh đã phát hiện. Tín hiệu có lẽ được truyền dọc tuyến từ tháp này sang tháp khác. Kỵ binh từ pháo đài gần nhất phóng ra qua cổng, đuổi kịp bọn cướp ngoài đồng trống, đúng nơi La Mã muốn đánh. Bức tường là dây báo động và cái bẫy. Nó biến một vụ cướp chớp nhoáng thành một sai lầm chậm chạp, ồn ào. La Mã không cần chặn mọi vụ cướp. Chỉ cần khiến vụ cướp nào cũng là ý tồi. Nhưng đó mới là một nửa câu chuyện. Vì phần lớn người tới bức tường hoàn toàn không phải kẻ cướp.",
+   "action": "Sa bàn chạng vạng: khối nhỏ xanh rêu vượt mương, qua tường, vào trại bò phía nam (mũi tên vẽ dần). Cảnh thật (hadrians_wall): raider lùa bò về chân tường; con bò nhìn cái thang, nhìn raider, ngồi phịch xuống. Lính trong turret giật mình, thổi kèn cornu. Lửa hiệu nối nhau bùng lên dọc tường. Sa bàn: khối kỵ binh đỏ ra khỏi pháo đài qua cổng, mũi tên bọc, bắt kịp khối cướp ngoài đồng. Thẻ 'TRIPWIRE + TRAP'. Raider giơ tay đầu hàng, con bò thong thả đi về nhà. Atto gật gù; tiếng gõ cổng.",
+   "camera": "Sa bàn top push theo mũi tên → full raider và bò truck_left → full bò trước thang (máy thấp ngang bò, dolly-in chậm) → cận lính turret snap zoom → toàn lửa hiệu nối nhau pan_right dọc tuyến → sa bàn top drift theo kỵ binh → sa bàn high orbit_right kịch tính → thẻ → trung raider và bò → cận Atto, whip ra.",
+   "transition": "cut",
+   "expressions": "Raider: focus → worried → shock; bò: grumpy → smug_closed; lính turret: shock; Atto: smirk.",
+   "gag": "Bò không chịu leo thang, ngồi phịch xuống; cuối cùng thong thả tự đi về nhà.",
+   "sfx": [
+    "step",
+    "moo",
+    "wood creak",
+    "squeak",
+    "war_horn",
+    "fire",
+    "gallop",
+    "crowd_roar",
+    "sad_trombone"
+   ],
+   "fx": [
+    "fire (lửa hiệu trên turret)",
+    "dust dưới kỵ binh trên sa bàn",
+    "grade dusk"
+   ],
+   "emphasis": [
+    "raid",
+    "cattle",
+    "Cows",
+    "ladders",
+    "Signals",
+    "Cavalry",
+    "tripwire",
+    "trap",
+    "bad idea",
+    "half"
+   ],
+   "shots": [
+    {
+     "type": "board",
+     "what_vi": "Sa bàn chạng vạng: khối cướp xanh rêu vượt mương, qua tường, mũi tên vẽ dần tới đàn bò"
+    },
+    {
+     "type": "full",
+     "what_vi": "Raider lùa bò về chân tường nơi dựng thang"
+    },
+    {
+     "type": "full",
+     "what_vi": "Con bò nhìn thang, nhìn raider, ngồi phịch xuống"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Lính trong turret giật mình, thổi kèn cornu"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Lửa hiệu nối nhau bùng lên dọc tuyến tường lúc chạng vạng"
+    },
+    {
+     "type": "board",
+     "what_vi": "Khối kỵ binh đỏ ra khỏi pháo đài qua cổng, mũi tên bọc sườn"
+    },
+    {
+     "type": "board",
+     "what_vi": "Kỵ binh bắt kịp khối cướp ngoài đồng trống, máy orbit chéo"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình sự thật",
+     "card_text": "TRIPWIRE + TRAP"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Raider giơ tay đầu hàng, con bò thong thả đi về"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Atto gật gù, rồi quay đầu khi nghe tiếng gõ cổng"
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "chapter": 3,
+   "seconds": 40,
+   "set": "hadrians_wall",
+   "chars": [
+    "atto",
+    "vepo",
+    "goat",
+    "britons_south_villagers"
+   ],
+   "props": [
+    "coins"
+   ],
+   "vo_en": "So here's the real answer. Hadrian's Wall was less like a fortress, and more like a border checkpoint. Think less Great Wall of China, more airport security. Remember the man with the goat? He walks up to a milecastle gate. A soldier looks him over. \"Where are you going? What are you carrying? Are you armed?\" [beat] Many historians think travelers and traders paid a fee to cross, like customs today. Nobody slips through unseen. Every person, every cart, every goat goes through a door Rome controls. And remember the Vallum, the ditch that faced south? It meant even people inside the province couldn't walk up to the wall wherever they liked. The wall wasn't built to keep everyone out. It was built to decide who got in.",
+   "vo_vi": "Và đây là câu trả lời thật sự. Tường Hadrian không giống pháo đài, mà giống một trạm kiểm soát biên giới. Đừng nghĩ tới Vạn Lý Trường Thành, hãy nghĩ tới cửa an ninh sân bay. Nhớ người đàn ông dắt dê chứ? Ông ta tới cổng milecastle. Một người lính nhìn ông từ đầu tới chân: \"Đi đâu? Mang theo gì? Có vũ khí không?\" Nhiều nhà sử học cho rằng khách và thương nhân phải nộp phí để qua, như hải quan ngày nay. Không ai lọt qua mà không bị thấy. Mọi người, mọi xe, mọi con dê đều phải đi qua một cánh cửa La Mã nắm. Và nhớ cái Vallum, con mương quay về phía nam chứ? Nó khiến ngay cả người trong tỉnh cũng không thể tới chân tường ở bất cứ đâu họ muốn. Bức tường không xây để chặn tất cả. Nó xây để quyết định ai được vào.",
+   "action": "Thẻ 'A CHECKPOINT, NOT A FORTRESS'. Ban ngày, cổng bắc milecastle mở: Vepo và con dê bước tới. Atto chống giáo hỏi ba câu (nhép miệng). Vepo tỉnh bơ giơ con dê lên làm 'hành lý'. Đồng xu rơi vào lòng bàn tay Atto. Hàng dài người, xe kéo, bò, dê xếp hàng qua cổng; Atto đóng dấu như soát vé. Giấy sơ đồ: mũi tên đi vòng tường bị ✗, chỉ qua cổng ✓; thêm Vallum phía nam, mũi tên từ nam cũng chỉ qua lối đắp. Atto đóng dấu 'IN', mặt hãnh diện.",
+   "camera": "Thẻ → toàn cổng bắc từ phía bắc, máy thấp push_in → trung Atto–Vepo (luật 180°: Atto bên trái, Vepo bên phải) → cận Vepo giơ dê → cận vật đồng xu crane_down → toàn hàng người truck_right dọc hàng → sơ đồ nhìn từ trên vẽ dần → sơ đồ pan xuống nam → cận Atto đóng dấu, punch-in.",
+   "transition": "whip",
+   "expressions": "Atto: focus nghiêm (hỏi) → shock (dê bị giơ lên) → smug_closed (đóng dấu); Vepo: neutral tỉnh bơ; dê: smirk; dân xếp hàng: grumpy chờ.",
+   "gag": "Vepo khai 'hành lý' bằng cách giơ nguyên con dê; hàng chờ qua cổng như soát vé sân bay.",
+   "sfx": [
+    "gate creak",
+    "cash",
+    "stamp_hit",
+    "crowd_murmur",
+    "bell",
+    "quill",
+    "ding"
+   ],
+   "fx": [
+    "grade day ấm",
+    "dust dưới bánh xe kéo"
+   ],
+   "emphasis": [
+    "real answer",
+    "checkpoint",
+    "airport security",
+    "fee",
+    "customs",
+    "unseen",
+    "door",
+    "Vallum",
+    "who got in"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Màn hình câu trả lời",
+     "card_text": "A CHECKPOINT, NOT A FORTRESS"
+    },
+    {
+     "type": "full",
+     "what_vi": "Ban ngày, Vepo và con dê tới cổng bắc milecastle đang mở"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Atto chống giáo hỏi ba câu, Vepo đứng đối diện"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Vepo tỉnh bơ giơ nguyên con dê lên làm hành lý"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Đồng xu rơi vào lòng bàn tay Atto",
+     "card_text": "TOLL?"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Hàng dài người, xe kéo, bò, dê xếp hàng qua cổng, Atto đóng dấu"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Mũi tên đi vòng tường bị ✗, chỉ qua cổng ✓"
+    },
+    {
+     "type": "diagram",
+     "what_vi": "Thêm Vallum phía nam, mũi tên từ nam chỉ qua lối đắp trước cổng",
+     "card_text": "VALLUM"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Atto đóng dấu dứt khoát, mặt hãnh diện"
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "chapter": 3,
+   "seconds": 37,
+   "set": "hadrians_wall",
+   "chars": [
+    "hadrian",
+    "centurion",
+    "auxiliaries",
+    "britons_south_villagers"
+   ],
+   "props": [
+    "wall_stone"
+   ],
+   "vo_en": "And there's one more job the wall did. It sent a message. Hadrian's own biography says he built it to separate the Romans from the barbarians. A line on the ground that said: this side is Rome. Roads, taxes, baths, law. That side is not. It also sent a message back home. After centuries of conquest, the empire would stop here. No more marching into the Highlands. No more endless wars over cold hills. The wall was Hadrian putting a period at the end of a very long sentence. [beat] And some historians add a very practical bonus. Thousands of bored soldiers on a quiet frontier are trouble. Thousands of busy soldiers are builders.",
+   "vo_vi": "Bức tường còn một việc nữa: gửi đi một thông điệp. Chính tiểu sử Hadrian viết ông xây nó để tách người La Mã khỏi người man di. Một vạch trên mặt đất nói rằng: bên này là La Mã, có đường sá, thuế, nhà tắm, luật pháp. Bên kia thì không. Nó cũng gửi thông điệp về kinh đô: sau nhiều thế kỷ chinh phạt, đế chế sẽ dừng ở đây. Thôi tiến vào Cao nguyên. Thôi những cuộc chiến bất tận vì mấy ngọn đồi lạnh. Bức tường là dấu chấm Hadrian đặt ở cuối một câu văn rất dài. Và một số nhà sử học còn thêm một lợi ích rất thực tế: hàng nghìn lính buồn chán ở biên ải yên ắng là rắc rối; hàng nghìn lính bận rộn là thợ xây.",
+   "action": "Toàn cảnh tường dưới nắng, cờ phe rome bay trên turret. Thẻ trích dẫn. Phía nam (roman_countryside britain + roman_road + milestone): đường lát, người thu thuế, nhà tắm xa; phía bắc: đồi hoang, làng mái tranh. Bản đồ đế chế: các mũi tên chinh phục dài dừng sững ở vạch tường. Giấy sơ đồ: tay viết một dòng chữ rất dài rồi chấm một dấu chấm to tại vị trí tường. Hadrian cười mỉm. Lính phụ trợ ngồi chơi xúc xắc ngáp dài; bách phu trưởng đi qua dúi xẻng vào tay từng người.",
+   "camera": "Toàn tường crane_up → thẻ → toàn phía nam truck_left → toàn phía bắc truck_right (đối xứng, giữ trục) → bản đồ push_in vào vạch → sơ đồ top theo bút, punch-in ở dấu chấm → cận Hadrian → full lính xúc xắc drift → trung bách phu trưởng phát xẻng pull_out.",
+   "transition": "cut",
+   "expressions": "Hadrian: smug_closed; lính: neutral buồn chán → shock (nhận xẻng) → grumpy; bách phu trưởng: smirk.",
+   "gag": "Dấu chấm khổng lồ cuối câu; lính đang chơi xúc xắc bị dúi xẻng vào tay.",
+   "sfx": [
+    "wind_gust",
+    "banner flap",
+    "quill",
+    "stamp_hit",
+    "dice",
+    "thud",
+    "sad_trombone"
+   ],
+   "fx": [
+    "banner phe rome trên turret",
+    "light_shafts phía nam"
+   ],
+   "emphasis": [
+    "message",
+    "separate",
+    "Rome",
+    "is not",
+    "stop here",
+    "period",
+    "busy",
+    "builders"
+   ],
+   "shots": [
+    {
+     "type": "wide",
+     "what_vi": "Tường dưới nắng, cờ đỏ La Mã bay trên turret"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình trích dẫn",
+     "card_text": "\"...to separate the Romans from the barbarians.\" — Historia Augusta, Life of Hadrian 11.2"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Phía nam: đường lát đá, cột mốc, người thu thuế, nhà tắm xa",
+     "card_text": "ROADS · TAXES · BATHS · LAW"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Phía bắc: đồi hoang, làng mái tranh, khói bếp"
+    },
+    {
+     "type": "map",
+     "what_vi": "Các mũi tên chinh phục dài dừng sững ở vạch tường",
+     "card_text": "STOP"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Tay viết một dòng rất dài rồi chấm dấu chấm to đúng chỗ tường"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Hadrian cười mỉm hài lòng"
+    },
+    {
+     "type": "full",
+     "what_vi": "Lính phụ trợ ngồi chơi xúc xắc, ngáp dài"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Bách phu trưởng dúi xẻng vào tay từng lính"
+    }
+   ]
+  },
+  {
+   "id": 16,
+   "chapter": 3,
+   "seconds": 38,
+   "set": "parchment_map",
+   "chars": [
+    "goat",
+    "farmer"
+   ],
+   "props": [
+    "wall_stone"
+   ],
+   "vo_en": "Did it work? Mostly. Hadrian died in 138, and his successor, Antoninus Pius, tried pushing north again. Around 142 he began a new wall of turf across Scotland, about thirty-nine miles long. It lasted only about twenty years. Then Rome pulled back south to Hadrian's line, and stayed there. Hadrian's Wall was used, repaired, and rebuilt for nearly three centuries, until Roman rule in Britain ended around the year 410. After that, local farmers did what farmers do. [beat] They took the free stone. You can still find Roman blocks in churches, barns, and field walls across the north of England. In the 1750s, the British army even built a road right on top of it, using the wall as a foundation.",
+   "vo_vi": "Có hiệu quả không? Phần lớn là có. Hadrian mất năm 138, người kế vị Antoninus Pius thử tiến lên phía bắc lần nữa. Khoảng năm 142, ông khởi công một bức tường đất cỏ mới chắn ngang Scotland, dài khoảng ba mươi chín dặm. Nó chỉ tồn tại chừng hai mươi năm. Rồi La Mã rút về tuyến của Hadrian và ở lại đó. Tường Hadrian được dùng, sửa và xây lại suốt gần ba thế kỷ, tới khi La Mã thôi cai trị Britannia vào khoảng năm 410. Sau đó, nông dân địa phương làm việc nông dân hay làm: lấy đá miễn phí. Ngày nay vẫn thấy đá La Mã trong nhà thờ, chuồng trại và tường rào khắp miền bắc nước Anh. Những năm 1750, quân đội Anh còn làm một con đường ngay trên nó, lấy tường làm móng.",
+   "action": "Thẻ năm 142. Bản đồ Bắc Britannia (bounds -7..0, 54.2..57): đường thẳng Antonine vẽ dần Forth–Clyde, vùng đỏ lan lên rồi rút; mũi tên về tuyến Hadrian. Tường Hadrian qua các mùa (tuyết, mưa, nắng; grade đổi). Thẻ năm 410. Tường đổ nát (ruin 0,6), cỏ mọc; nông dân (person commoner) lén khiêng đá về, nhìn trước ngó sau. Cận đá La Mã trong tường chuồng bò. Cảnh 1750s: con đường chạy thẳng tắp trên nền tường (road_on_top). Con dê đứng trên đống đá nhai tỉnh bơ.",
+   "camera": "Thẻ → bản đồ push theo đường Antonine đang vẽ → bản đồ pull_out khi rút về → toàn tường montage mùa (cùng góc, match) drift → thẻ → full nông dân truck_left theo người khiêng → cận vật đá trong tường chuồng → toàn con đường crane_up → cận dê.",
+   "transition": "cut",
+   "expressions": "Nông dân: smirk lén lút → shock (bị dê nhìn); dê: neutral nhai.",
+   "gag": "Nông dân khiêng đá lén lút nhìn quanh, chạm mắt con dê tỉnh bơ.",
+   "sfx": [
+    "quill",
+    "paper",
+    "wind_gust",
+    "rain",
+    "step",
+    "thud",
+    "squeak"
+   ],
+   "fx": [
+    "snow → rain → nắng (montage mùa)",
+    "grade cold/storm/day theo mùa, sepia bản đồ"
+   ],
+   "emphasis": [
+    "Mostly",
+    "142",
+    "thirty-nine miles",
+    "twenty years",
+    "three centuries",
+    "410",
+    "free stone",
+    "1750s",
+    "road"
+   ],
+   "shots": [
+    {
+     "type": "card",
+     "what_vi": "Màn hình năm",
+     "card_text": "AD 142 · the Antonine Wall"
+    },
+    {
+     "type": "map",
+     "what_vi": "Đường Antonine vẽ dần từ Forth sang Clyde, vùng đỏ lan lên",
+     "card_text": "ANTONINE WALL · ~39 MILES"
+    },
+    {
+     "type": "map",
+     "what_vi": "Vùng đỏ rút lại, mũi tên quay về tuyến Hadrian"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Tường Hadrian qua các mùa: tuyết, mưa, nắng"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình năm",
+     "card_text": "AD 410 · Roman rule in Britain ends"
+    },
+    {
+     "type": "full",
+     "what_vi": "Tường đổ nát, nông dân lén khiêng đá về, nhìn trước ngó sau"
+    },
+    {
+     "type": "insert",
+     "what_vi": "Đá La Mã xếp trong tường chuồng bò"
+    },
+    {
+     "type": "wide",
+     "what_vi": "Con đường thẳng tắp chạy trên nền tường",
+     "card_text": "1750s"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Con dê đứng trên đống đá nhai tỉnh bơ"
+    }
+   ]
+  },
+  {
+   "id": 17,
+   "chapter": 3,
+   "seconds": 36,
+   "set": "hadrians_wall",
+   "chars": [
+    "joe",
+    "atto",
+    "vepo",
+    "goat"
+   ],
+   "props": [
+    "coins"
+   ],
+   "vo_en": "Today, Hadrian's Wall is a World Heritage Site. You can walk its whole length on an eighty-four-mile trail. Here's one for trivia night: it isn't the border between England and Scotland. The whole wall sits inside England. In 1981, an American writer visited it, stood on top, and imagined a guard staring north into nothing. Years later, he turned that feeling into a giant wall of ice in a fantasy series. So, why did Rome build a wall across Britain? Not because the mightiest empire on Earth was scared. It wanted something better than a fortress. It wanted a door. [beat] And a doorman. And a toll. The goat, by the way, still hasn't paid.",
+   "vo_vi": "Ngày nay Tường Hadrian là Di sản Thế giới. Bạn có thể đi bộ suốt chiều dài của nó trên một con đường mòn dài tám mươi bốn dặm. Một câu đố vui: nó không phải biên giới giữa Anh và Scotland. Cả bức tường nằm trọn trong nước Anh. Năm 1981, một nhà văn Mỹ tới thăm, đứng trên đỉnh và tưởng tượng cảm giác một người lính canh nhìn về phía bắc vào hư vô. Nhiều năm sau, ông biến cảm giác đó thành một bức tường băng khổng lồ trong một bộ truyện kỳ ảo. Vậy, vì sao La Mã xây một bức tường chắn ngang Britannia? Không phải vì đế chế hùng mạnh nhất thế giới sợ hãi. Nó muốn thứ tốt hơn một pháo đài. Nó muốn một cánh cửa. Một người gác cửa. Và một khoản phí qua cửa. Nhân tiện, con dê vẫn chưa trả tiền.",
+   "action": "Ngày nay (ruin 0,7): Joe trong vai khách đi bộ (ba lô, gậy) đi dọc tường đổ, chụp ảnh. Bản đồ kiểu modern: đường biên Anh–Scotland chấm, tường nằm hẳn phía nam. Thẻ 'NOT THE BORDER'. POV từ đỉnh tường nhìn bắc vào sương; bong bóng tưởng tượng: bức tường băng khổng lồ (không logo, không nhân vật có bản quyền). Thẻ câu hỏi tiêu đề. Wipe về năm 122: Atto mở cổng bắc, Vepo và dê bước qua; Atto chìa tay đòi phí. Vepo nhún vai, con dê nhai chiếc biên lai. Fade đen.",
+   "camera": "Establishing tường ngày nay drift theo Joe → bản đồ modern push_in vào đường biên → thẻ → POV từ đỉnh tường pan nhẹ, bong bóng nở → thẻ câu hỏi → full cổng bắc pull_out (match với S1) → cận Atto chìa tay → trung dê nhai biên lai, máy push_in rồi fade.",
+   "transition": "fade",
+   "expressions": "Joe: happy (khách du lịch); Atto: smug_closed → grumpy (dê nhai biên lai); Vepo: neutral nhún vai; dê: smirk.",
+   "gag": "Tag cuối: con dê nhai mất biên lai phí qua cổng, vẫn chưa trả tiền (kết gag chạy dọc video).",
+   "sfx": [
+    "step",
+    "camera click",
+    "wind_gust",
+    "bubble pop",
+    "gate creak",
+    "cash",
+    "chew",
+    "sad_trombone nhẹ"
+   ],
+   "fx": [
+    "grade day hiện đại, grade cold cho bong bóng băng",
+    "mist phía bắc",
+    "snow nhẹ trong bong bóng"
+   ],
+   "emphasis": [
+    "World Heritage",
+    "eighty-four",
+    "inside England",
+    "1981",
+    "ice",
+    "door",
+    "doorman",
+    "toll",
+    "goat"
+   ],
+   "shots": [
+    {
+     "type": "establishing",
+     "what_vi": "Tường ngày nay đổ nát trên vách đá, Joe trong vai khách đi bộ chụp ảnh",
+     "card_text": "UNESCO WORLD HERITAGE SITE"
+    },
+    {
+     "type": "map",
+     "what_vi": "Bản đồ hiện đại: đường biên Anh–Scotland, tường nằm hẳn phía nam",
+     "card_text": "ENGLAND · SCOTLAND"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình sự thật",
+     "card_text": "NOT THE BORDER · 100% inside England"
+    },
+    {
+     "type": "pov",
+     "what_vi": "Từ đỉnh tường nhìn bắc vào sương; bong bóng tưởng tượng bức tường băng khổng lồ",
+     "card_text": "1981"
+    },
+    {
+     "type": "card",
+     "what_vi": "Màn hình câu hỏi gọi lại tiêu đề",
+     "card_text": "WHY DID ROME BUILD A WALL ACROSS BRITAIN?"
+    },
+    {
+     "type": "full",
+     "what_vi": "Về năm 122: Atto mở cổng bắc, Vepo và dê bước qua (match cảnh mở)"
+    },
+    {
+     "type": "closeup",
+     "what_vi": "Atto chìa tay đòi phí"
+    },
+    {
+     "type": "medium",
+     "what_vi": "Vepo nhún vai, con dê nhai chiếc biên lai; fade đen"
+    }
+   ]
+  }
+ ],
+ "vo_en": "Let's test the obvious answer first. Theory one: the wall was a giant fortress, built to stop an invasion. [beat] Problem. A stone wall maybe fifteen feet high is impressive, but raiders with a ladder can get over it in a minute. Seventy-three miles is far too long to guard every yard at once. Historians aren't even sure there was a walkway along the top for soldiers to fight from. And Rome didn't like fighting from behind walls anyway. Its whole style was to march out and win in the open, where training and armor mattered. Hiding behind stone was the opposite of how Rome fought. So the wall did something smarter. It didn't stop raiders. It slowed them down. Picture a raid. A band of warriors crosses the ditch, climbs the wall, and grabs some cattle. Now they have to get home, with cows, over a wall and a ditch. Cows are terrible at ladders. [beat] Meanwhile, a guard in a turret has spotted them. Signals probably pass along the line from tower to tower. Cavalry rides out from the nearest fort, through a gate, and catches the raiders in the open, exactly where Rome wanted to fight. The wall was a tripwire and a trap. It turned a quick raid into a slow, noisy mistake. Rome didn't need to stop every raid. It just needed to make every raid a bad idea. But that's still only half the story. Because most people who came to the wall weren't raiders at all. So here's the real answer. Hadrian's Wall was less like a fortress, and more like a border checkpoint. Think less Great Wall of China, more airport security. Remember the man with the goat? He walks up to a milecastle gate. A soldier looks him over. \"Where are you going? What are you carrying? Are you armed?\" [beat] Many historians think travelers and traders paid a fee to cross, like customs today. Nobody slips through unseen. Every person, every cart, every goat goes through a door Rome controls. And remember the Vallum, the ditch that faced south? It meant even people inside the province couldn't walk up to the wall wherever they liked. The wall wasn't built to keep everyone out. It was built to decide who got in. And there's one more job the wall did. It sent a message. Hadrian's own biography says he built it to separate the Romans from the barbarians. A line on the ground that said: this side is Rome. Roads, taxes, baths, law. That side is not. It also sent a message back home. After centuries of conquest, the empire would stop here. No more marching into the Highlands. No more endless wars over cold hills. The wall was Hadrian putting a period at the end of a very long sentence. [beat] And some historians add a very practical bonus. Thousands of bored soldiers on a quiet frontier are trouble. Thousands of busy soldiers are builders. Did it work? Mostly. Hadrian died in 138, and his successor, Antoninus Pius, tried pushing north again. Around 142 he began a new wall of turf across Scotland, about thirty-nine miles long. It lasted only about twenty years. Then Rome pulled back south to Hadrian's line, and stayed there. Hadrian's Wall was used, repaired, and rebuilt for nearly three centuries, until Roman rule in Britain ended around the year 410. After that, local farmers did what farmers do. [beat] They took the free stone. You can still find Roman blocks in churches, barns, and field walls across the north of England. In the 1750s, the British army even built a road right on top of it, using the wall as a foundation. Today, Hadrian's Wall is a World Heritage Site. You can walk its whole length on an eighty-four-mile trail. Here's one for trivia night: it isn't the border between England and Scotland. The whole wall sits inside England. In 1981, an American writer visited it, stood on top, and imagined a guard staring north into nothing. Years later, he turned that feeling into a giant wall of ice in a fantasy series. So, why did Rome build a wall across Britain? Not because the mightiest empire on Earth was scared. It wanted something better than a fortress. It wanted a door. [beat] And a doorman. And a toll. The goat, by the way, still hasn't paid.",
+ "vo_vi": "Hãy kiểm tra câu trả lời hiển nhiên trước. Giả thuyết một: bức tường là một pháo đài khổng lồ để chặn quân xâm lược. Vấn đề là bức tường đá cao chừng mười lăm bộ thì oai thật, nhưng kẻ cướp có cái thang thì trèo qua trong một phút. Bảy mươi ba dặm là quá dài để canh từng thước cùng lúc. Các nhà sử học còn không chắc trên đỉnh có lối đi cho lính đứng đánh. Mà La Mã vốn không thích đánh từ sau tường. Lối đánh của họ là xuất quân và thắng ngoài đồng trống, nơi huấn luyện và giáp trụ phát huy tác dụng. Nấp sau đá là trái ngược với cách La Mã chiến đấu. Nên bức tường làm một việc khôn hơn. Nó không chặn kẻ cướp. Nó làm chúng chậm lại. Hãy hình dung một vụ cướp. Một toán chiến binh vượt mương, trèo tường, lùa được ít bò. Giờ chúng phải về nhà, kèm theo bò, qua tường và mương. Bò thì leo thang rất tệ. Trong lúc đó, lính trong tháp canh đã phát hiện. Tín hiệu có lẽ được truyền dọc tuyến từ tháp này sang tháp khác. Kỵ binh từ pháo đài gần nhất phóng ra qua cổng, đuổi kịp bọn cướp ngoài đồng trống, đúng nơi La Mã muốn đánh. Bức tường là dây báo động và cái bẫy. Nó biến một vụ cướp chớp nhoáng thành một sai lầm chậm chạp, ồn ào. La Mã không cần chặn mọi vụ cướp. Chỉ cần khiến vụ cướp nào cũng là ý tồi. Nhưng đó mới là một nửa câu chuyện. Vì phần lớn người tới bức tường hoàn toàn không phải kẻ cướp. Và đây là câu trả lời thật sự. Tường Hadrian không giống pháo đài, mà giống một trạm kiểm soát biên giới. Đừng nghĩ tới Vạn Lý Trường Thành, hãy nghĩ tới cửa an ninh sân bay. Nhớ người đàn ông dắt dê chứ? Ông ta tới cổng milecastle. Một người lính nhìn ông từ đầu tới chân: \"Đi đâu? Mang theo gì? Có vũ khí không?\" Nhiều nhà sử học cho rằng khách và thương nhân phải nộp phí để qua, như hải quan ngày nay. Không ai lọt qua mà không bị thấy. Mọi người, mọi xe, mọi con dê đều phải đi qua một cánh cửa La Mã nắm. Và nhớ cái Vallum, con mương quay về phía nam chứ? Nó khiến ngay cả người trong tỉnh cũng không thể tới chân tường ở bất cứ đâu họ muốn. Bức tường không xây để chặn tất cả. Nó xây để quyết định ai được vào. Bức tường còn một việc nữa: gửi đi một thông điệp. Chính tiểu sử Hadrian viết ông xây nó để tách người La Mã khỏi người man di. Một vạch trên mặt đất nói rằng: bên này là La Mã, có đường sá, thuế, nhà tắm, luật pháp. Bên kia thì không. Nó cũng gửi thông điệp về kinh đô: sau nhiều thế kỷ chinh phạt, đế chế sẽ dừng ở đây. Thôi tiến vào Cao nguyên. Thôi những cuộc chiến bất tận vì mấy ngọn đồi lạnh. Bức tường là dấu chấm Hadrian đặt ở cuối một câu văn rất dài. Và một số nhà sử học còn thêm một lợi ích rất thực tế: hàng nghìn lính buồn chán ở biên ải yên ắng là rắc rối; hàng nghìn lính bận rộn là thợ xây. Có hiệu quả không? Phần lớn là có. Hadrian mất năm 138, người kế vị Antoninus Pius thử tiến lên phía bắc lần nữa. Khoảng năm 142, ông khởi công một bức tường đất cỏ mới chắn ngang Scotland, dài khoảng ba mươi chín dặm. Nó chỉ tồn tại chừng hai mươi năm. Rồi La Mã rút về tuyến của Hadrian và ở lại đó. Tường Hadrian được dùng, sửa và xây lại suốt gần ba thế kỷ, tới khi La Mã thôi cai trị Britannia vào khoảng năm 410. Sau đó, nông dân địa phương làm việc nông dân hay làm: lấy đá miễn phí. Ngày nay vẫn thấy đá La Mã trong nhà thờ, chuồng trại và tường rào khắp miền bắc nước Anh. Những năm 1750, quân đội Anh còn làm một con đường ngay trên nó, lấy tường làm móng. Ngày nay Tường Hadrian là Di sản Thế giới. Bạn có thể đi bộ suốt chiều dài của nó trên một con đường mòn dài tám mươi bốn dặm. Một câu đố vui: nó không phải biên giới giữa Anh và Scotland. Cả bức tường nằm trọn trong nước Anh. Năm 1981, một nhà văn Mỹ tới thăm, đứng trên đỉnh và tưởng tượng cảm giác một người lính canh nhìn về phía bắc vào hư vô. Nhiều năm sau, ông biến cảm giác đó thành một bức tường băng khổng lồ trong một bộ truyện kỳ ảo. Vậy, vì sao La Mã xây một bức tường chắn ngang Britannia? Không phải vì đế chế hùng mạnh nhất thế giới sợ hãi. Nó muốn thứ tốt hơn một pháo đài. Nó muốn một cánh cửa. Một người gác cửa. Và một khoản phí qua cửa. Nhân tiện, con dê vẫn chưa trả tiền.",
+ "word_count": 732
+}
