@@ -1,0 +1,116 @@
+{
+  "kind": "prop",
+  "name": "ladder",
+  "title_vi": "Thang gỗ thô buộc dây",
+  "description_vi": "Thang gỗ 3D làm thủ công: hai thanh dọc gỗ nâu đậm hơi cong vênh, các bậc tròn buộc dây gai ở hai đầu. Gốc ở tâm giữa hai chân (z = 0), thang dựng theo +Z, mặt thang nằm trong mặt phẳng XZ: story xoay quanh trục X (rot x ±0,41) để dựa vào tường. Dài mặc định 5 với 9 bậc; số bậc tự tính theo chiều dài (khoảng 0,5 một bậc). Gỗ và dây dùng warm_top để mặt ngửa không bị ánh trời nhuộm xanh.",
+  "dim": "3d",
+  "params": {
+    "length": {
+      "type": "number",
+      "default": 5,
+      "desc_vi": "Chiều dài thang (đơn vị; nhân vật cao 2,5)"
+    },
+    "width": {
+      "type": "number",
+      "default": 0.6,
+      "desc_vi": "Khoảng cách giữa tâm hai thanh dọc"
+    },
+    "rungs": {
+      "type": "integer",
+      "default": 0,
+      "desc_vi": "Số bậc; 0 = tự tính theo chiều dài (dài 5 ra 9 bậc)"
+    },
+    "bow": {
+      "type": "number",
+      "default": 0.07,
+      "desc_vi": "Độ cong vênh của thanh dọc (0 = thẳng)"
+    },
+    "rail_radius": {
+      "type": "number",
+      "default": 0.05,
+      "desc_vi": "Bán kính thanh dọc"
+    },
+    "rung_radius": {
+      "type": "number",
+      "default": 0.034,
+      "desc_vi": "Bán kính bậc thang"
+    },
+    "wood_color": {
+      "type": "color",
+      "default": [
+        0.34,
+        0.15,
+        0.05
+      ],
+      "desc_vi": "Màu gỗ thanh dọc (linear, ấm đậm)"
+    },
+    "rung_color": {
+      "type": "color",
+      "default": [
+        0.44,
+        0.21,
+        0.07
+      ],
+      "desc_vi": "Màu gỗ bậc (sáng hơn thanh dọc một chút)"
+    },
+    "rope_color": {
+      "type": "color",
+      "default": [
+        0.66,
+        0.44,
+        0.18
+      ],
+      "desc_vi": "Màu dây gai buộc bậc"
+    },
+    "lashing": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có vẽ dây buộc ở hai đầu mỗi bậc không"
+    },
+    "broken_rung": {
+      "type": "integer",
+      "default": -1,
+      "desc_vi": "Chỉ số bậc bị gãy (ẩn mặc định, 0 = bậc dưới cùng); -1 = không có"
+    },
+    "seed": {
+      "type": "integer",
+      "default": 7,
+      "desc_vi": "Hạt ngẫu nhiên cho độ lệch nhẹ của bậc (vẻ thủ công)"
+    }
+  },
+  "parts": [
+    "rails",
+    "rungs",
+    "rail_l",
+    "rail_r",
+    "rung0",
+    "rope0_l",
+    "rope0_r"
+  ],
+  "tags": [
+    "ladder",
+    "thang",
+    "gỗ",
+    "wood",
+    "dây thừng",
+    "rope",
+    "công trường",
+    "leo trèo",
+    "tường",
+    "cổ đại",
+    "3d"
+  ],
+  "notes_vi": "Tôi đã viết `build.py` nhưng **chưa dựng thử trong Blender**: chưa có ảnh xem trước và chưa biết có lỗi khi dựng hay không. Lần dựng thumbnail tiếp theo sẽ cho biết.\n\nCách dựng:\n- **Thanh dọc:** khối tiện thon dần lên trên (mảnh hơn khoảng 18 %), sau đó uốn đỉnh lưới theo sin(πz/L) để thanh hơi cong. Hai thanh cong cùng chiều nhưng lệch nhau (0,07 và 0,04) nên trông như làm tay, không đối xứng hoàn hảo. Bậc thang được tính theo đúng vị trí thanh ở từng độ cao nên luôn chạm vào thanh.\n- **Bậc:** trụ nằm ngang theo trục X, lòi ra khoảng 0,1 mỗi bên. Mỗi bậc lệch ngẫu nhiên ±2,5 cm và nghiêng ±0,03 rad theo `seed`.\n- **Dây buộc:** mỗi đầu bậc có một ống dây gai ngắn bọc quanh thanh dọc. Vân dây dùng `wave` để trông như những vòng quấn.\n- **Vật liệu:** gỗ có vân kéo dài theo trục Z cục bộ (dùng chung cho thanh và bậc). Mọi vật liệu đều bọc `warm_top` để mặt ngửa không bị ánh trời nhuộm xanh. Tên vật liệu có hậu tố màu nên đổi màu không đụng bản khác.\n\nTham số và phần con:\n- `length` 5 cho 9 bậc, mỗi bậc cách nhau khoảng 0,5. `rungs` > 0 thì ép số bậc.\n- `broken_rung` ẩn sẵn một bậc (dùng `keep_hidden`) cho gag \"bậc gãy\". Bậc đó không có dây buộc.\n- Các phần `rails`/`rungs` là empty gom nhóm. Muốn animate riêng từng cái thì nhắm `<name>_rail_l`, `<name>_rail_r`, `<name>_rung<i>`, `<name>_rope<i>_l/_r`.\n\nDùng trong story: đặt chân thang cách tường khoảng L·sin(0,41) ≈ 2 rồi xoay rot x ±0,41 (dấu tùy tường nằm ở phía +Y hay −Y).\n\nCần để ý khi xem ảnh: có 9 bậc và 18 ống dây nên chi tiết khá dày. Ở khung toàn cảnh trên điện thoại, nếu dây trông vụn thì tắt bằng `lashing: false`.",
+  "status": "draft",
+  "brief_vi": "Thang gỗ thô 3D buộc dây: hai thanh dọc gỗ nâu hơi cong, 9 bậc tròn buộc dây gai ở hai đầu, dài 5 (param length, số bậc tự theo length), rộng 0,6. Gốc ở chân thang (tâm giữa hai chân, z = 0); thang dựng thẳng theo +Z, mặt bậc nằm trong mặt phẳng XZ để story xoay quanh trục X dựa vào tường (rot x ±0,41). Màu gỗ ấm đậm (tránh ánh trời nhuộm xanh, dùng look.warm_top). parts: rails, rungs.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T11:58:03",
+  "review": {
+    "score": 8,
+    "summary_vi": "Thang gỗ dựng đúng mô tả: 9 bậc, hai đầu mỗi bậc buộc dây gai, gỗ màu nâu ấm không bị ánh trời nhuộm xanh, chân thang chạm đất, cao khoảng gấp đôi Joe, viền mực rõ. Bản này dùng được, không cần sửa; hai thanh dọc chỉ hơi cong rất nhẹ, muốn rõ hơn thì tăng `bow` trong story.",
+    "problems": [
+      "Hai thanh dọc cong rất nhẹ, khó thấy ở khung xa. Story có thể tăng `bow` lên 0,12-0,15 nếu muốn rõ vẻ thô; không cần sửa mặc định.",
+      "Ở khung xa trên điện thoại, dây buộc chỉ còn là các khoanh sáng nhỏ. Vẫn đọc được là thang buộc dây, chấp nhận được."
+    ]
+  }
+}
