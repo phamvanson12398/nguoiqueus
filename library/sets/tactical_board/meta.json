@@ -62,7 +62,7 @@
  "anchors": {
   "center": "tâm bàn",
   "unit_<id>": "vị trí đầu của khối quân",
-  "arrow<i>_start/_end": "mũi tên"
+  "arrow<i>_start/_mid/_end": "đầu, giữa, cuối mũi tên"
  },
  "parts": "<id quân> = empty của khối quân (đã có moves; có thể thêm tracks)",
  "tags": [

@@ -93,6 +93,7 @@ def build(params, lib):
         maps.arrow(root, f"board_arrow{k}", [tuple(q) for q in ar["path"]], ar.get("width", 0.22), 0.006 + k * 0.0005, rgb,
                    int(ar["from"]) if "from" in ar else None, int(ar.get("to", ar.get("from", 1) + 45)), smooth_path=ar.get("smooth", True))
         anchors[f"arrow{k}_end"] = world(ar["path"][-1]); anchors[f"arrow{k}_start"] = world(ar["path"][0])
+        _pts = [tuple(q) for q in ar["path"]]; anchors[f"arrow{k}_mid"] = world(maps.point_at(_pts, maps.path_len(_pts), 0.5)[0])
     for k, lb in enumerate(p["labels"]):
         objs = maps.label(root, f"board_lbl{k}", lb["text"], lb["at"], lb.get("size", 0.35), flat("board_lbl", (0.95, 0.93, 0.85)), 0.012,
                           rot=lb.get("rot", 0), outline_m=ink)
