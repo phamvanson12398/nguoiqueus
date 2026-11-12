@@ -1,6 +1,6 @@
 ---
 name: "blender-why-shorts"
-description: "Làm shorts dọc hoạt hình 'Why…' hài kiểu US bằng tool WhyShorts Studio trên máy người dùng: nhân vật 2D trong bối cảnh 3D, camera trôi liền mạch, phụ đề từng chữ, tiếng động theo hành động, dựng và render bằng Blender. Dùng khi người dùng muốn làm video 'Why…', sửa video đang làm, thêm đạo cụ/bối cảnh/nhân vật vào thư viện, hoặc gặp lỗi với tool."
+description: "Làm video hoạt hình 'Why…' bằng tool WhyShorts Studio trên máy người dùng: Shorts dọc hài kiểu US (45-75 s) hoặc video lịch sử dài 16:9 (10-20 phút, kiểu Squire Explains: chương, bản đồ, sa bàn, màn hình chữ, nhiều phe với trang phục theo văn hóa, nhạc + tiếng động + hiệu ứng). Nhân vật 2D trong bối cảnh 3D, dựng và render bằng Blender. Dùng khi người dùng muốn làm video 'Why…', sửa video đang làm, thêm đồ/văn hóa/trang phục vào thư viện, làm gói YouTube, hoặc gặp lỗi với tool."
 ---
 
 # Shorts "Why…" bằng WhyShorts Studio (v4: dùng tool)
@@ -43,6 +43,20 @@ Sau khi pull: tắt cửa sổ đen, mở lại `start_studio.bat`, tải lại 
 | Thư viện | duyệt đồ nháp hoặc gõ góp ý ("to hơn, đổi màu"); thiết kế đồ mới | Claude sửa theo góp ý, render lại, tự xem | 2-4 phút/món |
 
 Sửa một chuỗi sau khi đã render: sửa `story.json` hoặc "Nhờ Claude sửa" → tab Render nhập khung `A-B` của chuỗi đó → nút **"Ghép vào video đầy đủ"** (cần ffmpeg: `winget install ffmpeg`). Bản cũ giữ ở `*_before.mp4`.
+
+## Video dài 16:9 (chọn "Khổ video: 16:9 dài" ở bước 2)
+Luật riêng của video dài nằm ở `LONGFORM_RULES.md` (khung kịch bản theo % thời lượng, nhịp 12-16 cắt/phút, màn hình chữ ≥ 1 mỗi 90 s,
+bảng lời → kiểu cảnh, âm thanh, hiệu ứng); định dạng ở `STORY.md`; trang phục ở `library/OUTFITS.md`. Khác với Shorts:
+| Bước | Khác gì |
+|---|---|
+| 2. Content | `write_content_long`: chương → nhịp (beat) → cú máy dự kiến; khai báo phe (`factions`: văn hóa, màu). 10 phút ≈ 1.900 từ, ~140 cú máy, 4-6 phút Claude. Tool kiểm nhịp cắt, màn hình chữ, số kiểu cảnh. |
+| 3. Giọng đọc | Tải một file wav cho cả video; tool canh chữ (tìm theo dải, vài giây cho 2.000 từ) rồi **chia chương** ở đầu câu vào `projects/<slug>/chapters/NN/` (mỗi chương là một dự án con có story riêng). |
+| 4. Duyệt & dựng | Làm lần lượt từng chương: plan_shots (camera rig `long`, shot `frame` đặt máy theo chủ thể) → văn hóa mới (tra web, có nguồn) → trang phục từng vai (xem ảnh xếp hàng + bóng đen, chấm sử liệu) → đồ mới → dựng, `CAMERA OK`. Bấm lại thì **làm tiếp** từ chỗ dở (story đã lập được dùng lại, chỉ thiết kế đồ còn thiếu); "Dựng lại chương này" mới lập story lại. |
+| 5. Render | Chọn chất lượng: fast (on twos, 12 mẫu, ~30 % thời gian, để duyệt), normal, high. Render chuỗi ảnh PNG từng chương rồi ghép; tắt giữa chừng bấm lại là render tiếp. Bấm **"Đo tốc độ máy"** một lần để ước tính đúng. |
+| 6. YouTube | Claude viết 8-12 tiêu đề, mô tả có mốc chương (tool tính từ giọng thật), nguồn, tag, bình luận ghim; tool render 3 thumbnail bằng nhân vật/bối cảnh của video, Claude chấm và sửa cái tốt nhất. |
+- Bản đồ (`parchment_map`, bờ biển thật), sa bàn (`tactical_board`) và giấy sơ đồ (`paper_diagram`) dựng từ dữ liệu trong story, không thiết kế lại mỗi video.
+- Đám đông (`crowds`) nhân bản vài lính mẫu theo đội hình; nhân vật `type: person` mặc trang phục theo `faction` + `role`.
+- Âm thanh tự trộn ra −14 LUFS, đỉnh thật ≤ −1 dB (`mix.wav`); nhạc/tiếng động/nền tự tổng hợp, file CC0 trong `library/music|sfx/` được ưu tiên.
 
 ## Khi Claude tự điều khiển tool
 - Có quyền dùng máy người dùng (computer use): đọc skill `computer-use` trước. Mở `start_studio.bat` (Explorer → thư mục tool → bấm đúp), rồi thao tác trên trang như bảng trên. **Không gõ phím vào cửa sổ Blender** (bộ gõ Unikey làm sai chữ); tool luôn chạy Blender bằng dòng lệnh nên không cần mở Blender.
@@ -92,6 +106,8 @@ Gõ lỗi vào "Nhờ Claude sửa" kèm số khung ("khung 886: …"); tool g�
 | `CAMERA NEEDS FIX` | Tool tự gửi Claude sửa 2 lần; nếu vẫn lỗi: giãn khóa camera, seq ≥ 90 khung. |
 | Thiết kế đồ "chưa xong" | Xem log; thiết kế lại ở tab Thư viện (thêm góp ý), rồi "Chỉ render lại xem trước". |
 | Render chậm hơn 2 s/khung | Khung đầu luôn chậm (biên dịch shader khoảng 40 s); nếu vẫn chậm, kiểm tra đang dùng GPU NVIDIA trong Blender. |
+| Video dài: "Hết lượt Claude của gói" khi đang dựng | Đợi lượt mở lại (giờ trong thông báo), bấm "Duyệt & dựng" lần nữa: tool làm tiếp, không lập story lại. |
+| Video dài: bóng đen hai phe giống nhau / sai sử liệu | Tab Thư viện → trang phục → góp ý ("khiên bầu dục phẳng, không mào"), Claude sửa và xếp hàng lại. |
 | Lượt dùng | `python claude_bridge.py usage` hoặc góc trên phải của trang; chi tiết từng lần gọi ở `logs/`. |
 
 ## Giao kết quả
