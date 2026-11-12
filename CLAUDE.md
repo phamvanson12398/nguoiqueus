@@ -332,3 +332,15 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   tính lại cảnh cho mỗi nét (chương 1: 1.026 s → 118 s cho 21 nhân vật).
 - Phụ đề video dài: viền = ống tròn dọc mép chữ (bevel) đặt sau chữ trắng; hết gai ở góc chữ.
 - Ảnh: `docs/img/char3d_compare.jpg`, `char3d_shorts.jpg`, `hadrian3d_ch{1,2,3}.jpg`.
+
+## Video dài liền mạch, hình đẹp, render nhanh hơn
+- Video dài là MỘT mạch kể: "phần" (chapters/NN) chỉ để dựng/render. `longform.stitch`: `meta.part_offset/part_first/part_last`,
+  bỏ thẻ `chapter`, bỏ fade ở chỗ nối, phần sau mở bằng mood nhạc phần trước kết thúc; builder tạo nhạc/nền theo thời gian chung
+  của cả video (cắt từ cùng một bản, không fade ở chỗ nối). Đo chỗ nối phần 1→2: −12..−16 dB liền, không hụt. YouTube: "Timestamps"
+  theo tên nhịp kể, không tên chương. UI/server gọi là "phần".
+- Hình: mây hoạt hình trong shader trời (`look.add_clouds`, video dài, `world.clouds`), mảng màu + vân cỏ cho mặt đất/đồi lớn
+  (`look.ground_variation`, `Builder.dress_ground`), viền sáng (rim) trên nhân vật 3D. LONGFORM_RULES mục 10 + STYLE "Hình đẹp, không
+  đơn điệu"; `variety_problems` trong kiểm tra plan (≥ 1 vfx / 45 s, ≥ 2 grade khi phần ≥ 2 phút).
+- Render (đo khung 4646 chương 1, 50 %, CPU): gốc 69 s → phụ đề 4 mẫu 50 s → cảnh 16 mẫu 43,5 s (−37 %, PSNR ≥ 47 dB so với gốc).
+  Không đáng: vignette làm mờ nhanh (68,6 dB nhưng chỉ −2 s), giảm bước bóng (không nhanh hơn). Compositor chạy GPU trên Windows
+  (`WHYSHORTS_GPU_COMPOSITOR`). Chất lượng: fast 8 mẫu + on twos, normal 16, high 32.

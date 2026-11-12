@@ -513,7 +513,7 @@ def job_bench(job, slug, pct=100, quality="normal"):
         st = longform.status(slug); c = next((c for c in st if c["story"]), None)
         if not c: raise ValueError("chưa có phần nào dựng xong để đo")
         t = longform.chapter_slug(slug, c["n"])
-    samples = {"fast": 12, "normal": 32, "high": 48}.get(quality, 32)
+    samples = {"fast": 8, "normal": 16, "high": 32}.get(quality, 32)
     out = run_builder(job, t, ["--bench", "3", "--pct", str(int(pct)), "--samples", str(samples)])
     m = re.search(r"BENCH sec_per_frame ([0-9.]+)", out)
     if not m: raise ValueError("không đo được tốc độ")
