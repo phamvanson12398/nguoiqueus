@@ -96,6 +96,31 @@
     },
     "part_last": {
      "type": "boolean"
+    },
+    "clip": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "from",
+      "to"
+     ],
+     "properties": {
+      "from": {
+       "type": "integer",
+       "minimum": 1
+      },
+      "to": {
+       "type": "integer",
+       "minimum": 1
+      },
+      "source": {
+       "type": "string"
+      },
+      "title": {
+       "type": "string"
+      }
+     },
+     "description": "Short cut from a long video: render frames from..to of this (re-framed 9:16) story; tool-made"
     }
    }
   },

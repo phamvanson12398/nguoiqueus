@@ -315,7 +315,7 @@ class Builder:
                     sp = self.subject_pos(s["frame"].get("subject", [0, 0, 0]), (s["a"] + s["b"]) // 2, f"camera.shots[{k}].frame")
                     fr = self.subject_scale(s, s["frame"])
                     fr = self.clear_angle(dict(s, frame=fr), sp)
-                    s = dict(s, frame=fr, keys=framing.frame_keys(fr, s.get("type", "medium"), s["a"], s["b"], sp))
+                    s = dict(s, frame=fr, keys=framing.frame_keys(fr, s.get("type", "medium"), s["a"], s["b"], sp, self.frame_aspect()))
                     self.report.setdefault("framed", []).append([s["a"], s["b"], s.get("type")])
                 d = dict(a=s["a"], b=s["b"], keys=[tuple(k) for k in s["keys"]])
                 for k in ("ease_in", "ease_out", "follow_w", "omega", "type"):
@@ -375,6 +375,9 @@ class Builder:
         print(f"NOTE shot {s['a']}-{s['b']}: '{subj}' head at {hz:.2f} -> framing scaled x{k:.2f}")
         return dict(fr, _scale=k)
 
+    def frame_aspect(self):
+        return 9 / 16 if self.aspect == "9:16" else 16 / 9
+
     def clear_angle(self, s, sp):
         """the shot preset puts the camera at a fixed angle/distance from the subject; when a wall (or the inside of a
         building) is in the way at the start, middle or end of the shot, try other angles, then a high angle, and keep the
@@ -386,7 +389,7 @@ class Builder:
         a, b = s["a"], s["b"]; m = (a + b) // 2
 
         def blocked(f2):
-            ks = framing.frame_keys(f2, s.get("type", "medium"), a, b, sp)
+            ks = framing.frame_keys(f2, s.get("type", "medium"), a, b, sp, self.frame_aspect())
             ctx.sc.frame_set(m)
             for kk in (ks[0], ks[-1]):
                 who = self._blocker(own, kk[1], kk[2])
@@ -824,6 +827,18 @@ def render_sequence(B, sc, opt):
         out = os.path.join(pdir, f"{base}_{a:04d}-{b:04d}{ext}")
     encode.encode(fdir, audio if "frames" not in opt else "-", out, fps=B.st["meta"]["fps"], first=max(1, a),
                   last=min(B.st["meta"]["frames"], b), log=lambda m: print(m, flush=True))
+    clip = B.st["meta"].get("clip")
+    if clip and "frames" in opt:                   # a Short cut from a long video: put the matching slice of the mix under it
+        mix = os.path.join(B.out, "mix.wav"); fps = B.st["meta"]["fps"]
+        short = os.path.join(B.out, B.st["meta"].get("output", "short.mp4"))
+        import subprocess
+        cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", out]
+        if os.path.exists(mix):
+            dur = (b - a + 1) / fps
+            cmd += ["-ss", f"{(a - 1) / fps:.3f}", "-t", f"{dur:.3f}", "-i", mix, "-map", "0:v", "-map", "1:a", "-c:a", "aac", "-b:a", "192k",
+                    "-af", f"afade=t=in:d=0.15,afade=t=out:st={max(0.0, dur - 0.6):.3f}:d=0.6"]
+        cmd += ["-c:v", "copy", "-shortest", "-movflags", "+faststart", short]
+        subprocess.run(cmd, check=True); out = short
     print("RENDERED ->", out, flush=True)
     return 0
 

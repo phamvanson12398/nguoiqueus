@@ -212,6 +212,10 @@ small.err{color:var(--bad)}
       <div class="row"><button id="btnBench">Đo tốc độ máy</button><span class="muted">render thử 4 khung để ước tính đúng thời gian trên máy này</span></div>
     </div>
     <div class="panel"><h2>File đã render</h2><div id="outputs"></div><video id="player" controls class="hidden" style="max-height:70vh;margin-top:10px;border-radius:8px"></video></div>
+    <div class="panel" id="clipPanel"><div class="row"><h2 style="margin:0;flex:1">Shorts cắt từ video dài</h2><button id="btnClips">Chọn khoảnh khắc</button></div>
+      <p class="muted">Claude chọn 3-5 đoạn hay nhất (25-60 giây); tool dựng lại từng đoạn ở khổ dọc 9:16 (cùng cảnh 3D, camera đóng khung lại),
+        phụ đề kiểu Shorts, chữ móc 2 giây đầu và "Full video on the channel" ở cuối. Xem ảnh rồi bấm Render từng Short.</p>
+      <div id="clipList"></div></div>
     <div class="panel"><h2>Dọn dẹp</h2>
       <div class="row"><button id="btnClean">Dọn ảnh tạm</button><span class="muted" id="tempInfo">Xóa ảnh render tạm (frames/, parts/, ảnh dựng thumbnail).
         Giữ story, giọng đọc, ảnh xem trước, video mp4 và gói YouTube.</span></div>
@@ -240,6 +244,11 @@ small.err{color:var(--bad)}
       <p class="muted">Thumbnail tool dựng chưa đủ đẹp? Dán prompt vào ChatGPT, Gemini (Nano Banana), Midjourney, Ideogram… và <b>đính kèm ảnh
         tham chiếu nhân vật</b> để AI vẽ đúng người. Chữ tiêu đề: dùng bản "có chữ" với Ideogram/ChatGPT, hoặc tự thêm bằng Canva.</p>
       <div id="aiRefs" class="thumbs"></div><div id="aiPrompts"></div></div>
+    <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Học từ số liệu thật</h2>
+        <label class="btn">Tải file retention (CSV)<input type="file" id="retCsv" accept=".csv,text/csv" style="display:none"></label></div>
+      <p class="muted">Sau khi đăng video vài ngày: YouTube Studio → video → Số liệu phân tích → Mức độ tương tác → "Tỷ lệ giữ chân người xem" →
+        Xuất (CSV), rồi tải lên đây. Tool tìm chỗ người xem bỏ đi, khớp với câu và cảnh lúc đó; Claude rút bài học, các video sau tự áp dụng.</p>
+      <div id="anaBox"></div></div>
     <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Nhận diện kênh (mọi video)</h2><button id="btnChSave">Lưu</button></div>
       <p class="muted">Tên kênh hiện nhỏ ở góc mọi video; video dài có màn hình kết (End screen) ở các giây cuối, chừa chỗ cho ô video gợi ý và nút
         đăng ký của YouTube (thêm chúng trong YouTube Studio → Màn hình kết thúc). Nhân vật dẫn chuyện xuất hiện trong content mới. Để trống tên = tắt.</p>
@@ -625,8 +634,25 @@ $('#btnFix').onclick = () => { const t = $('#fixText').value.trim(); if (!t) ret
   run(P('/fix'), {problem: t, frames: f, chapter: S.state.format === 'long' ? parseInt($('#fixCh').value) : null}, 'Sửa theo ảnh xem trước'); };
 
 // ---------------- 5. render ----------------
+function renderClips() {
+  const long = S.state.format === 'long'; $('#clipPanel').classList.toggle('hidden', !long); if (!long) return;
+  const cl = S.state.clips || [];
+  const mmss = t => `${Math.floor(t / 60)}:${String(Math.round(t % 60)).padStart(2, '0')}`;
+  $('#clipList').innerHTML = cl.length ? cl.map(c => `<div class="panel" style="padding:10px"><div class="row">
+      <b style="flex:1">${c.k}. ${esc(c.title)}</b><span class="muted">${mmss(c.start_sec)}–${mmss(c.end_sec)} · ${c.seconds} s · phần ${c.part}</span>
+      <button data-clip="${c.k}" class="primary">Render Short</button>
+      ${c.rendered ? `<a href="${P(`/file/clips/${String(c.k).padStart(2, '0')}/short.mp4`)}" target="_blank">short.mp4</a>` : ''}</div>
+      <div class="muted">Chữ móc: <b>${esc(c.hook_text)}</b> — ${esc(c.why_vi)}</div>
+      <div class="thumbs">${c.previews.map(f => `<figure><img loading="lazy" style="max-height:220px" src="${P(`/file/clips/${String(c.k).padStart(2, '0')}/preview/` + f)}?t=${Date.now()}"></figure>`).join('')}</div></div>`).join('')
+    : '<span class="muted">Chưa có (bấm "Chọn khoảnh khắc", khoảng 2-3 phút Claude + dựng xem trước).</span>';
+  $$('#clipList button[data-clip]').forEach(b => b.onclick = () => run(P('/clips/render'), {k: +b.dataset.clip, quality: $('#rQual').value}, `Render Short ${b.dataset.clip}`));
+  $$('#clipList img').forEach(im => im.onclick = () => zoom([im.src]));
+}
+$('#btnClips').onclick = () => { if (!(S.state.chapters || []).every(c => c.story)) return toast('Dựng đủ các phần ở bước 4 trước');
+  run(P('/clips'), {}, 'Chọn & dựng Shorts'); };
+
 function renderRender() {
-  refreshTemp();
+  refreshTemp(); renderClips();
   const st = S.state; const L = st.format === 'long';
   const fr = L && (st.chapters || []).length ? st.chapters.reduce((a, c) => a + c.frames, 0) : st.story ? st.story.frames : st.estimate.frames;
   $('#rPct').options[0].text = L ? '100 % (1920x1080)' : '100 % (1080x1920)';
@@ -674,7 +700,7 @@ function renderYT() {
   $('#ytTags').innerHTML = (y.tags || []).map(t => `<span class="chip">${esc(t)}</span>`).join('') + ' ' +
     (y.hashtags || []).map(h => `<span class="chip">#${esc(h.replace(/^#/, ''))}</span>`).join('');
   $('#ytPinned').textContent = y.pinned_comment || '';
-  renderAIPrompts(y); renderSubs(y);
+  renderAIPrompts(y); renderSubs(y); renderAnalytics();
 }
 $('#btnYT').onclick = () => { if (!S.state.content) return toast('Cần có content trước'); run(P('/youtube'), {thumbs: true}, 'Tạo gói YouTube'); };
 $('#ytCopyDesc').onclick = () => copyText($('#ytDesc').value);
@@ -694,6 +720,21 @@ function renderAIPrompts(y) {
     <div class="muted">Mẹo: ${esc(p.tips_vi)}</div></div>`).join('');
   $$('#aiPrompts button[data-copy]').forEach(b => b.onclick = () => copyText(decodeURIComponent(b.dataset.copy)));
 }
+function renderAnalytics() {
+  const a = S.state.analytics; const pct = v => Math.round(v * 100) + ' %';
+  const mmss = t => `${Math.floor(t / 60)}:${String(Math.round(t % 60)).padStart(2, '0')}`;
+  $('#anaBox').innerHTML = (a ? `<div><b>${esc(a.summary_vi)}</b></div><div class="muted" style="margin:4px 0">Còn ${pct(a.data.at_30s)} ở giây 30 · trung bình ${pct(a.data.average)} · cuối video ${pct(a.data.at_end)}</div>` +
+      a.per_drop.map(x => `<div>• <b>${mmss(x.at_sec)}</b>: ${esc(x.reason_vi)}</div>`).join('') +
+      `<div style="margin-top:6px"><b>Bài học mới:</b><ul>${a.lessons.map(l => `<li>${esc(l)}</li>`).join('')}</ul></div>` : '') +
+    (S.state.lessons ? `<details><summary class="muted">Tất cả bài học của kênh (library/LESSONS.md)</summary><pre style="white-space:pre-wrap">${esc(S.state.lessons)}</pre></details>` : '');
+}
+$('#retCsv').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try { const j = await api(P('/analytics/upload'), {raw: await f.arrayBuffer()}); watchJob(j.id, 'Học từ số liệu'); }
+  catch (err) { toast(err.message); }
+  e.target.value = '';
+};
+
 async function loadChannel() {
   try {
     const r = await api('/api/channel'); const c = r.channel || {};

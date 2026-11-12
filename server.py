@@ -105,7 +105,7 @@ def slugify(s):
 
 
 def pdir(slug):
-    if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,60}(/chapters/\d{2})?", slug or ""): raise ValueError("tên dự án không hợp lệ")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,60}(/chapters/\d{2}|/clips/\d{2})?", slug or ""): raise ValueError("tên dự án không hợp lệ")
     return os.path.join(PROJECTS, slug)
 
 
@@ -129,8 +129,10 @@ def _inside_projects(p):
 def temp_dirs(slug):
     """render scratch of a project: frames/, parts/, _bench/ (also in every part), thumbnail/reference build folders"""
     d = pdir(slug); out = []
-    roots = [d] + ([os.path.join(d, "chapters", c) for c in sorted(os.listdir(os.path.join(d, "chapters")))
-                    if os.path.isdir(os.path.join(d, "chapters", c))] if os.path.isdir(os.path.join(d, "chapters")) else [])
+    roots = [d]
+    for sub in ("chapters", "clips"):                      # parts of a long video and Shorts cut from it
+        sd = os.path.join(d, sub)
+        if os.path.isdir(sd): roots += [os.path.join(sd, c) for c in sorted(os.listdir(sd)) if os.path.isdir(os.path.join(sd, c))]
     for r in roots:
         out += [os.path.join(r, t) for t in TEMP_DIRS if os.path.isdir(os.path.join(r, t))]
     yd = os.path.join(d, "youtube")
@@ -242,6 +244,13 @@ def project_state(slug):
                          refs=sorted(f for f in os.listdir(os.path.join(yd, "refs")) if f.endswith(".png")) if os.path.isdir(os.path.join(yd, "refs")) else []) if os.path.isdir(yd) else None
     st["chapters"] = longform.status(slug) if st["format"] == "long" else None
     st["retention"] = jload(os.path.join(d, "retention_review.json"))
+    st["analytics"] = jload(os.path.join(d, "analytics", "report.json"))
+    st["lessons"] = open(os.path.join(bridge.LIB, "LESSONS.md"), encoding="utf-8").read() if os.path.exists(os.path.join(bridge.LIB, "LESSONS.md")) else ""
+    try:
+        import clips as _clips
+        st["clips"] = _clips.status(slug) if "/" not in slug else []
+    except Exception:
+        st["clips"] = []
     cur = BUSY.get(slug); st["job"] = JOBS[cur].to_json(10 ** 9) if cur and cur in JOBS else None
     return st
 
@@ -595,6 +604,42 @@ def job_subs(job, slug, langs):
     return {"files": sorted(os.listdir(sd))}
 
 
+def job_clips(job, slug):
+    """Claude picks 3-5 moments; each becomes a 9:16 Short project (clips/NN) with 3 preview frames"""
+    import clips
+    if not is_long(slug): raise ValueError("chỉ dùng cho video dài đã dựng")
+    job.say("Claude chọn khoảnh khắc hay nhất để cắt thành Shorts…")
+    picks = bridge.pick_clips(slug)["clips"]
+    made = clips.make_all(slug, picks, log=job.say)
+    for c in made:
+        k = c["k"]; a, b = c["frames"]
+        job.say(f"Xem trước Short {k:02d} (dựng lại khổ dọc)…")
+        try:
+            run_builder(job, clips.clip_slug(slug, k), ["--preview", f"{a + 40},{(a + b) // 2},{b - 30}", "--pct", "35"])
+        except Exception as e:
+            if job.cancelled: raise
+            job.say(f"   (lỗi xem trước: {e})")
+    return {"clips": len(made)}
+
+
+def job_render_clip(job, slug, k, quality="normal"):
+    import clips
+    info = jload(os.path.join(clips.clips_dir(slug), f"{int(k):02d}", "clip.json"))
+    if not info: raise ValueError("không có Short này")
+    a, b = info["frames"]
+    job.say(f"Render Short {int(k):02d} «{info.get('title', '')}» (khung {a}-{b}, 1080x1920)…")
+    run_builder(job, clips.clip_slug(slug, k), ["--render", "--seq", "--quality", quality, "--frames", f"{a}-{b}", "--pct", "100"])
+    return {"file": f"clips/{int(k):02d}/short.mp4"}
+
+
+def job_learn(job, slug):
+    job.say("Đọc số liệu giữ chân người xem, tìm chỗ tụt; Claude rút bài học cho các video sau…")
+    r = bridge.learn_retention(slug)
+    job.say(f"   {len(r['data']['drops'])} chỗ tụt; {len(r['lessons'])} bài học mới -> library/LESSONS.md")
+    for x in r["lessons"]: job.say("   • " + x)
+    return {"lessons": len(r["lessons"])}
+
+
 def job_retention(job, slug):
     job.say("Claude soát giữ chân người xem (câu móc 15 giây đầu, đoạn dễ tụt người xem)…")
     r = bridge.retention_review(slug)
@@ -909,6 +954,17 @@ class Handler(BaseHTTPRequestHandler):
             if act == ["splice"]:                      # put a re-rendered part (parts/*_AAAA-BBBB.mp4) into the full video
                 part = self.safe_join(d, self.jbody()["part"])
                 return self.send_json(start_job("splice", slug, job_splice, slug, part).to_json())
+            if act == ["analytics", "upload"] and method == "POST":
+                n = int(self.headers.get("Content-Length", 0)); data = self.rfile.read(n)
+                if n > 20_000_000: raise ValueError("file quá lớn")
+                ad = os.path.join(d, "analytics"); os.makedirs(ad, exist_ok=True)
+                open(os.path.join(ad, "retention.csv"), "wb").write(data)
+                return self.send_json(start_job("learn", slug, job_learn, slug).to_json())
+            if act == ["clips"] and method == "POST":
+                return self.send_json(start_job("clips", slug, job_clips, slug).to_json())
+            if act[:2] == ["clips", "render"] and method == "POST":
+                b = self.jbody()
+                return self.send_json(start_job("render_clip", slug, job_render_clip, slug, int(b["k"]), b.get("quality", "normal")).to_json())
             if act == ["youtube", "subs"] and method == "POST":
                 langs = [x for x in self.jbody().get("langs", []) if x in bridge.LANG_NAMES]
                 return self.send_json(start_job("subs", slug, job_subs, slug, langs).to_json())

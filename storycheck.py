@@ -139,7 +139,7 @@ def check_story(st, lib=None, pending=()):
         if cd["to"] < cd["from"]: errs.append(f"cards[{k}]: 'to' ({cd['to']}) before 'from' ({cd['from']})")
     N = st["meta"]["frames"]
     cam = st["camera"]
-    if cam.get("rig") == "long" and st["meta"].get("aspect", "9:16") != "16:9":
+    if cam.get("rig") == "long" and st["meta"].get("aspect", "9:16") != "16:9" and not st["meta"].get("clip"):
         errs.append("camera: rig 'long' is for long-form videos, set meta.aspect to '16:9'")
     spans = [(s["a"], s["b"]) for s in (cam.get("shots") or cam.get("seqs") or [])]
     if spans:

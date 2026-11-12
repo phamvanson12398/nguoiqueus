@@ -38,7 +38,7 @@ READ_TOOLS = ["Read", "Glob", "Grep"]
 WEB_TOOLS = ["WebSearch", "WebFetch"]
 JOB_TOOLS = {"ideas": WEB_TOOLS, "write_content": WEB_TOOLS + ["Read"], "rewrite_seq": [], "plan_shots": READ_TOOLS,
              "design_prop": READ_TOOLS, "design_set": READ_TOOLS, "design_char": READ_TOOLS, "review": READ_TOOLS,
-             "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "thumb_prompts": READ_TOOLS, "retention_review": [], "translate_subs": [], "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
+             "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "thumb_prompts": READ_TOOLS, "retention_review": [], "translate_subs": [], "pick_clips": [], "learn_retention": [], "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
              "fix_from_preview": READ_TOOLS}
 
 
@@ -856,7 +856,7 @@ def write_content(slug, idea, minutes=1.0, model=None, wpm=190, fmt="short"):
     words = int(round(minutes * wpm))
     n_seq = max(4, min(7, int(round(minutes * 6)))) if minutes <= 1.25 else int(round(minutes * 5.5))
     prompt = (f"Viết content cho ý tưởng sau (JSON):\n{json.dumps(idea, ensure_ascii=False)}\n\n"
-              + channel_note() +
+              + channel_note() + lessons_note() +
               f"Độ dài: {minutes} phút ≈ {words} từ lời đọc tiếng Anh (±10 %), khoảng {n_seq} chuỗi máy"
               + (" chia thành chương, mỗi chương 4-7 chuỗi" if minutes > 1.25 else "") + ".\n"
               "Theo STYLE.md: lời đọc, bản dịch Việt, bảng chuỗi máy (mỗi chuỗi: lời đọc của chuỗi, hành động, bối cảnh, đạo cụ, "
@@ -891,7 +891,7 @@ def check_long_content(x, minutes):
 def write_content_long(slug, idea, minutes, model=None, wpm=190):
     words = int(round(minutes * wpm)); n_ch = max(2, round(minutes / 3)); n_seq = max(n_ch * 3, round(minutes * 60 / 35))
     prompt = (f"Viết content cho ý tưởng sau (JSON):\n{json.dumps(idea, ensure_ascii=False)}\n\n"
-              + channel_note() +
+              + channel_note() + lessons_note() +
               f"Độ dài: {minutes} phút ≈ {words} từ lời đọc tiếng Anh (±8 %), khoảng {n_ch} chương, {n_seq} chuỗi.\n"
               + LONG_CONTENT_RULES.replace("{RULES}", long_rules()) +
               "Theo STYLE.md cho phong cách nhân vật/bối cảnh. Mỗi chuỗi: lời đọc, bản dịch Việt, hành động, bối cảnh, đạo cụ, nhân vật, "
@@ -941,7 +941,7 @@ def retention_review(slug, model=None):
                      "shots": [{"type": x.get("type"), "what": x.get("what_vi"), "card": x.get("card_text")} for x in s.get("shots", [])][:20],
                      "gag": s.get("gag"), "emphasis": s.get("emphasis")})
     kind = "video dài 16:9" if content.get("format") == "long" else "Shorts dọc"
-    prompt = (f"Soát giữ chân người xem cho {kind} '{content.get('title')}' (câu hỏi: {content.get('question')}).\n{RETENTION_RULES}\n"
+    prompt = (f"Soát giữ chân người xem cho {kind} '{content.get('title')}' (câu hỏi: {content.get('question')}).\n{RETENTION_RULES}\n" + lessons_note() +
               f"Các chuỗi theo thứ tự, at_sec = giây bắt đầu:\n{json.dumps(seqs, ensure_ascii=False)}")
     ids = {s.get("id") for s in content["sequences"]}
 
@@ -985,6 +985,83 @@ def translate_subs(slug, lang, lines, model=None):
         return e
     data, info = call("translate_subs", prompt, schema, project=slug, model=model, check=check)
     return data
+
+
+CLIP_RULES = """
+Chọn 3-5 khoảnh khắc trong video dài để cắt thành YouTube Shorts (dọc, 25-60 giây). Mục tiêu: mỗi Short tự đứng được và cuốn
+người xem bấm sang video đầy đủ.
+- Mỗi đoạn: mở bằng một câu gây tò mò hoặc tình huống lạ (không mở giữa câu, không cần ngữ cảnh trước); có một cú (tiết lộ,
+  con số sốc, gag, đảo chiều) trong 25 giây đầu; kết trọn ý hoặc bằng một câu treo khiến người xem muốn xem bản đầy đủ.
+- Ưu tiên: câu hỏi của video + cú lật, chuyện vui/gag rõ nhất, sự thật gây ngạc nhiên nhất, khoảnh khắc nhân vật cảm xúc mạnh.
+- start_sec/end_sec theo thời gian video đầy đủ (dùng at_sec của chuỗi + vị trí câu trong lời đọc); KHÔNG vắt qua ranh giới phần
+  (parts) đã cho. Các đoạn không chồng nhau.
+- hook_text: ≤ 6 từ tiếng Anh in lên màn hình 2 giây đầu (câu hỏi/nghịch lý, không lặp đúng câu nói đầu). title: tiêu đề Short ≤ 60 ký tự
+  (có thể kèm #shorts). why_vi: vì sao đoạn này sẽ được xem hết.
+"""
+
+
+def pick_clips(slug, model=None):
+    """3-5 moments of a long video to re-cut as vertical Shorts"""
+    import youtube, clips
+    d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+    starts = youtube.sequence_starts(slug)
+    seqs = [{"id": s.get("id"), "at_sec": round(t, 1), "vo_en": s.get("vo_en"), "gag": s.get("gag")} for t, s in starts]
+    P = [{"part": c["n"], "start": c["start"], "end": c["end"]} for c in clips.parts(slug)]
+    schema = {"type": "object", "additionalProperties": False, "required": ["clips"], "properties": {"clips": {
+        "type": "array", "minItems": 3, "maxItems": 5, "items": {"type": "object", "additionalProperties": False,
+            "required": ["title", "hook_text", "start_sec", "end_sec", "why_vi"],
+            "properties": {"title": {"type": "string"}, "hook_text": {"type": "string"}, "start_sec": {"type": "number"},
+                           "end_sec": {"type": "number"}, "why_vi": {"type": "string"}}}}}}
+    prompt = (f"Video dài '{content.get('title')}'.\n{CLIP_RULES}\nCác phần (giây): {json.dumps(P)}\n"
+              f"Các chuỗi (at_sec = giây bắt đầu trong video đầy đủ):\n{json.dumps(seqs, ensure_ascii=False)}")
+
+    def check(x):
+        e = []; spans = []
+        for i, c in enumerate(x["clips"]):
+            L = c["end_sec"] - c["start_sec"]
+            if not 20 <= L <= 62: e.append(f"clips[{i}] dài {L:.0f} s (cần 25-60)")
+            if clips.part_of(slug, c["start_sec"], c["end_sec"]) is None: e.append(f"clips[{i}] vắt qua ranh giới hai phần {json.dumps(P)}")
+            if len(c["hook_text"].split()) > 6: e.append(f"clips[{i}].hook_text quá 6 từ")
+            for a, b in spans:
+                if c["start_sec"] < b and a < c["end_sec"]: e.append(f"clips[{i}] chồng lên đoạn khác")
+            spans.append((c["start_sec"], c["end_sec"]))
+        return e
+    data, info = call("pick_clips", prompt, schema, project=slug, model=model, check=check)
+    os.makedirs(clips.clips_dir(slug), exist_ok=True)
+    json.dump(data, open(os.path.join(clips.clips_dir(slug), "picks.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return data
+
+
+def learn_retention(slug, model=None):
+    """turn the real retention curve of a published video into short, reusable rules (library/LESSONS.md)"""
+    import analytics
+    d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+    rep = analytics.drops(slug)
+    schema = {"type": "object", "additionalProperties": False, "required": ["summary_vi", "per_drop", "lessons"], "properties": {
+        "summary_vi": {"type": "string"},
+        "per_drop": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": ["at_sec", "reason_vi"],
+                                                "properties": {"at_sec": {"type": "number"}, "reason_vi": {"type": "string"}}}},
+        "lessons": {"type": "array", "minItems": 1, "maxItems": 5, "items": {"type": "string"}}}}
+    prompt = ("Đây là số liệu giữ chân người xem THẬT của một video đã đăng (YouTube Studio). Phân tích vì sao người xem bỏ đi ở từng chỗ "
+              "(dựa vào câu đang nói và cảnh đang chiếu), rồi rút ra 1-5 BÀI HỌC NGẮN, TỔNG QUÁT cho các video sau của kênh (luật cụ thể, "
+              "làm theo được: ví dụ 'Không để bản đồ đứng quá 6 giây không có mũi tên/chữ mới'). Không lặp bài học đã có.\n"
+              f"Video: '{content.get('title')}' ({content.get('format', 'short')}).\n"
+              f"Số liệu (tỉ lệ 0-1; intro_loss = mất trong 30 giây đầu; drops = chỗ tụt mạnh nhất sau đó): {json.dumps(rep, ensure_ascii=False)}\n"
+              f"Bài học đã có:\n{__import__('analytics').lessons_text() or '(chưa có)'}")
+    data, info = call("learn_retention", prompt, schema, project=slug, model=model)
+    data["data"] = rep
+    os.makedirs(os.path.join(d, "analytics"), exist_ok=True)
+    json.dump(data, open(os.path.join(d, "analytics", "report.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    analytics.add_lessons(content.get("title", slug), data["lessons"])
+    return data
+
+
+def lessons_note():
+    """lessons learnt from this channel's real retention data, for every content / review prompt"""
+    p = os.path.join(LIB, "LESSONS.md")
+    if not os.path.exists(p): return ""
+    txt = open(p, encoding="utf-8").read().strip()
+    return ("\nBÀI HỌC TỪ SỐ LIỆU THẬT CỦA KÊNH (bắt buộc áp dụng):\n" + txt[-4000:] + "\n") if txt else ""
 
 
 def rewrite_seq(slug, index, request, model=None):
