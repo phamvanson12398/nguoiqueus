@@ -1,0 +1,143 @@
+{
+  "kind": "prop",
+  "name": "coins",
+  "title_vi": "Tiền denarius bạc (đồng xu 2D, túi tiền 2D, đồng xu 3D, chồng xu)",
+  "description_vi": "Bộ tiền denarius bạc La Mã, màu bạc hơi ấm. Chọn món bằng param item:\n- 'coin2d': đồng xu 2D cầm tay, bán kính r2d = 0,14 (đường kính 0,28). Có vành bạc tối viền mực, mặt bạc sáng, đầu người nhìn nghiêng vẽ khái quát (đội vòng nguyệt quế, có dải ruy băng sau gáy, không phải chân dung thật) và vòng \"chữ\" khái quát gồm các vạch và vòng nhỏ quanh mép trên. Có vệt sáng trên vành. Gốc ở tâm đồng xu.\n- 'purse2d': túi tiền da 2D cao khoảng 0,36, rộng 0,4. Cổ túi thắt dây vàng có nút và hai đầu dây thả xuống, miệng túi xòe nhăn, một đồng bạc ló ra ở miệng túi (peek). Gốc ở tâm túi.\n- 'coin3d': đồng xu 3D bán kính 0,15, dày 0,02, dùng để rơi hoặc lăn. Gốc ở tâm. Dựng bằng khối tiện: vành nổi, mặt lõm nhẹ, đầu người nổi trên cả hai mặt.\n- 'stack': chồng n đồng xu 3D, xếp hơi lệch và xoay ngẫu nhiên. Gốc ở tâm đáy. Đồng trên cùng có hình nổi.\nVật liệu 3D là bạc PBR kim loại bọc warm_top để mặt ngửa không bị ánh trời nhuộm xanh. Vật liệu 2D là flat.",
+  "dim": "2d",
+  "params": {
+    "item": {
+      "type": "string",
+      "default": "coin2d",
+      "enum": [
+        "coin2d",
+        "purse2d",
+        "coin3d",
+        "stack"
+      ],
+      "desc_vi": "Món cần dựng. Chỉ tạo phần ứng với món đó: coin2d/coin3d tạo {name}_coin, purse2d tạo {name}_purse, stack tạo {name}_stack (đồng trên cùng tên {name}_coin)"
+    },
+    "n": {
+      "type": "integer",
+      "default": 6,
+      "desc_vi": "Số đồng xu trong chồng (item='stack'), từ 1 đến 40"
+    },
+    "at": {
+      "type": "array",
+      "default": [
+        0.42,
+        0.45,
+        0.15
+      ],
+      "desc_vi": "Vị trí trong hệ tọa độ thân khi đồ 2D có parent (x ngang, y lên, z ra trước)"
+    },
+    "scale2d": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Hệ số phóng to/thu nhỏ đồ 2D, gán vào scale của part"
+    },
+    "r2d": {
+      "type": "number",
+      "default": 0.14,
+      "desc_vi": "Bán kính đồng xu 2D trước khi nhân scale2d"
+    },
+    "r3d": {
+      "type": "number",
+      "default": 0.15,
+      "desc_vi": "Bán kính đồng xu 3D (đã phóng đại cho dễ nhìn)"
+    },
+    "thickness": {
+      "type": "number",
+      "default": 0.02,
+      "desc_vi": "Độ dày đồng xu 3D"
+    },
+    "silver_color": {
+      "type": "array",
+      "default": [
+        0.8,
+        0.75,
+        0.66
+      ],
+      "desc_vi": "Màu bạc hơi ấm (linear). Vành, hình nổi và vệt sáng tự suy ra từ màu này"
+    },
+    "leather_color": {
+      "type": "array",
+      "default": [
+        0.45,
+        0.22,
+        0.08
+      ],
+      "desc_vi": "Màu da túi tiền"
+    },
+    "cord_color": {
+      "type": "array",
+      "default": [
+        0.9,
+        0.66,
+        0.28
+      ],
+      "desc_vi": "Màu dây thắt túi"
+    },
+    "facing": {
+      "type": "integer",
+      "default": 1,
+      "desc_vi": "Hướng đầu người trên mặt xu: 1 nhìn sang phải, -1 nhìn sang trái"
+    },
+    "legend": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Vẽ vòng chữ khái quát quanh mép đồng xu 2D"
+    },
+    "shine": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Vệt sáng trên vành đồng xu 2D"
+    },
+    "peek": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Cho một đồng bạc ló ra ở miệng túi tiền"
+    },
+    "relief": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Hình đầu người nổi trên đồng xu 3D (tắt đi thì dựng nhẹ hơn)"
+    },
+    "seed": {
+      "type": "integer",
+      "default": 3,
+      "desc_vi": "Hạt ngẫu nhiên cho kiểu vạch chữ và độ lệch trong chồng xu"
+    }
+  },
+  "parts": [
+    "coin",
+    "purse",
+    "stack"
+  ],
+  "tags": [
+    "roman",
+    "money",
+    "coin",
+    "denarius",
+    "silver",
+    "purse",
+    "2d",
+    "3d",
+    "handheld",
+    "falls",
+    "rolls",
+    "stack"
+  ],
+  "notes_vi": "Tôi đã viết xong `build.py` nhưng chưa chạy thử trong Blender. Lần chạy đầu tiên sẽ là bước dựng và chụp ảnh xem lại của bridge.\n\n**Cách hiểu mô tả:**\n- \"to 0,14\" được hiểu là bán kính 0,14 (đường kính 0,28). Lý do là AUTHORING ghi đồ cầm tay nên cỡ 0,3-0,8, và đồng xu có r ≈ 0,15. Nếu muốn đường kính 0,14 thì đặt `r2d: 0.07`.\n- Ảnh thumbnail mặc định chỉ có `coin2d` (meta dim là 2d). Muốn xem các món khác thì chụp với `--params '{\"item\":\"stack\"}'` (hoặc coin3d, purse2d).\n\n**Các phần (chỉ tạo phần của món đang chọn):**\n- `coin2d`: `{name}_coin` (empty, scale = scale2d). Bên trong có `{name}_coin_face` chứa đầu người, gán scale x = -1 khi `facing=-1`, và `{name}_coin_legend`.\n- `purse2d`: `{name}_purse`. Đồng ló ra miệng túi là `{name}_purse_coin`.\n- `coin3d`: gốc `{name}` ở tâm, bên trong là nhóm `{name}_coin` (gồm body, head, headb). Cho lăn thì xoay `rotation_euler` của gốc.\n- `stack`: nhóm `{name}_stack`, gốc ở tâm đáy, gồm `{name}_coin0…coin{n-2}` và đồng trên cùng `{name}_coin` có hình nổi, để story có thể búng đồng trên cùng đi.\n\n**Hình vẽ:**\n- Đầu người nhìn nghiêng là đa giác khái quát, đội vòng nguyệt quế 6 lá, có dải ruy băng sau gáy, mắt chấm, tai cong. Không lấy theo chân dung hoàng đế nào.\n- Vòng chữ chỉ là các vạch hướng tâm và vài vòng nhỏ chia thành cụm như từ, chạy từ 215° qua đỉnh xuống −35°. Không có chữ thật.\n- Viền mực vành ngoài của xu 2D là 0,025 (thay vì 0,035) để vành bạc tối vẫn lộ ra. Độ dày nét tự co giãn theo r2d.\n\n**Vật liệu:**\n- 2D dùng `flat`, tên `coins_<loại>_<màu>_<hệ số>`.\n- 3D dùng `pbr` kim loại (metal 0,9, rough 0,38) bọc `warm_top`, để mặt ngửa của đồng nằm đất không bị ánh trời nhuộm xám xanh. Hình nổi tối hơn một chút cho dễ đọc.\n\n**Cần xem kỹ trên ảnh:**\n- Ở xu 2D: lá nguyệt quế, mắt và vạch chữ có quá nhỏ trên điện thoại không. Nếu quá nhỏ thì tăng r2d hoặc tắt `legend`.\n- Ở xu 3D: kim loại có phản chiếu bầu trời quá tối hoặc quá xanh không. Nếu có thì giảm metal xuống khoảng 0,6.\n- Viền mực tự động trên hình nổi mỏng (0,003) có bị dày quá không.",
+  "status": "draft",
+  "brief_vi": "Tiền denarius bạc, param item: 'coin2d' (đồng xu 2D to 0,14 cầm tay, mặt bạc có hình đầu người nghiêng khái quát + vòng chữ, viền mực, gốc ở tâm), 'purse2d' (túi tiền da 2D thắt dây), 'coin3d' (một đồng xu 3D dày 0,02 để rơi/lăn, gốc ở tâm), 'stack' (chồng n đồng 3D, param n). Không dùng chân dung thật. Màu bạc hơi ấm. params: item, n, at, scale2d. parts: coin, purse, stack.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T12:08:57",
+  "review": {
+    "score": 8,
+    "summary_vi": "Đồng denarius 2D đã đúng: vành bạc ấm với viền mực mỏng, đầu người nghiêng đội vòng nguyệt quế và vòng chữ khái quát, nhìn là nhận ra đồng bạc cổ. Ở cảnh toàn, đồng xu trên tay Joe hơi nhỏ, cận cảnh thì nên tăng scale2d. Ba món túi tiền, xu 3D và chồng xu chưa được render để xem.",
+    "problems": [
+      "Ở đúng cỡ người dùng yêu cầu (r 0,14), đồng xu trong tay Joe khá nhỏ nên hình đầu người khó thấy ở cảnh toàn. Muốn cận cảnh hoặc giơ lên khoe thì đặt scale2d khoảng 1,5-2.",
+      "Ảnh xem lại mới chỉ có item='coin2d'. Các item purse2d, coin3d và stack chưa được render để kiểm tra."
+    ]
+  }
+}
