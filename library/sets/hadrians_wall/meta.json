@@ -1,0 +1,227 @@
+{
+  "kind": "set",
+  "name": "hadrians_wall",
+  "title_vi": "Tường Hadrian (đoạn 60 m, có milecastle và hai turret)",
+  "description_vi": "Một đoạn Tường Hadrian 3D dài 60 chạy dọc trục X (x từ -30 đến 30 tính từ origin). Mặt bắc quay về +Y, đường tâm tường ở y = 0. Tường đá vàng xám đẽo vuông (vân gạch đá theo vị trí thế giới), có chân móng. Lối đi trên đỉnh lát đá phẳng ở z = 4,5; lan can phía bắc có răng cưa cao tới z = 5,4. Ở x = 0 phía nam có milecastle: sân 6 × 7 rải sỏi, tường thấp cao 3, một dãy nhà lính mái ngói đỏ, thùng gỗ. Cổng bắc là lối vòm xuyên tường (rộng 2,4, cao 3, vòng đá vòm sẫm màu). Cổng nam nằm giữa hai trụ cao 3,6 ở y = -8,5. Hai cánh cửa gỗ là object riêng, gốc đặt ở bản lề phía tây. Mỗi cánh có đai sắt hai mặt và vòng gõ cửa ở mặt ngoài. Turret vuông có cửa sổ, cửa dưới chân và răng cưa (đỉnh khoảng 6), đặt ở x = ±20. Đất cỏ có mương chữ V phía bắc (y 6..10), ụ đất sau mương và lối đất qua mương trước cổng bắc. Tùy chọn: vách đá đen dốc về bắc (crag, có cột đá bazan), vallum phía nam, pháo đài ở xa, đường quân sự xây đè lên nền tường, bệ lửa hiệu. Có các trạng thái: đang xây (giàn giáo gỗ, đống đá đẽo, lõi đá vụn lộ trên đỉnh, đầu phía đông xây dở dạng bậc) và đổ nát (chiều cao lởm chởm, đỉnh phủ cỏ, đá rơi). Bản tường đất (turf) đổi sang khối đất phân lớp vát chân, lối đi ván gỗ, hàng rào cọc và turret gỗ.",
+  "params": {
+    "name": {
+      "type": "string",
+      "default": "wall",
+      "desc_vi": "Tiền tố tên object (story dùng 'wall' và 'wallb'). Cánh cửa tên '<name>_gate_north' và '<name>_gate_south'."
+    },
+    "origin": {
+      "type": "array",
+      "default": [
+        0,
+        0
+      ],
+      "desc_vi": "Vị trí [x, y] của tâm tường tại cổng bắc (story dùng [0,0] và [300,0])."
+    },
+    "kind": {
+      "type": "string",
+      "default": "stone",
+      "enum": [
+        "stone",
+        "turf"
+      ],
+      "desc_vi": "stone = tường đá đẽo vuông; turf = tường đất phân lớp vát chân, lối đi ván gỗ, lan can cọc gỗ, turret gỗ."
+    },
+    "width": {
+      "type": "number",
+      "default": 3,
+      "desc_vi": "Bề dày tường: 3 (broad) hoặc 2,4 (narrow). Nhận cả chữ 'broad'/'narrow'. Mặt tường ở y = ±width/2."
+    },
+    "build": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Mức xây 0-1 (chiều cao = 4,5 × build). Nhỏ hơn 1 thì không có lan can, có giàn giáo gỗ phía nam, đống đá đẽo, đống đá vụn, lõi đá vụn lộ giữa hai lớp mặt; đầu phía đông xây dở dạng bậc."
+    },
+    "ruin": {
+      "type": "number",
+      "default": 0,
+      "desc_vi": "Mức đổ nát 0-1: chiều cao lởm chởm, đỉnh phủ cỏ (từ 0,3), đá rơi hai bên, turret và milecastle thấp đi, mái nhà lính mất."
+    },
+    "ditch": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Mương chữ V phía bắc (y 6..10, sâu 2,6) cùng ụ đất phía sau. Tự tắt khi crag = true."
+    },
+    "causeway": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Lối đất băng qua mương trước cổng bắc (x ±1,6)."
+    },
+    "crag": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "Dải vách đá đen dốc đứng về phía bắc (mép vách cách mặt bắc 1 đơn vị, sâu khoảng 13), có cột đá bazan. Bật thì không có mương."
+    },
+    "vallum": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "Vallum phía nam: hai ụ đất kẹp một mương đáy bằng (y -35..-19), có lối đất qua mương ở x = 0."
+    },
+    "fort": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "Pháo đài La Mã ở xa phía nam (tường, tháp góc, tháp cổng, dãy nhà lính mái ngói đỏ, nhà chỉ huy). true dùng vị trí mặc định [-22, -52] và cỡ [36, 26]; hoặc truyền {\"at\": [x, y], \"size\": [w, d]} tính tương đối với origin."
+    },
+    "road_on_top": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "Đường quân sự thế kỷ 18 xây đè lên nền tường: tường bị san còn 0,5 từ đầu tây tới x = 12, có nền đường đất và mặt sỏi rộng 5 (mặt đường z ≈ 0,67). Phía đông còn tàn tích thấp phủ cỏ. Milecastle và turret chỉ còn móng; cánh cửa bị ẩn."
+    },
+    "beacon_slots": {
+      "type": "array",
+      "default": [],
+      "desc_vi": "Bệ lửa hiệu (chậu sắt + củi, chưa cháy; story tự thêm fx lửa ở anchor beacon_<slot>). Chọn trong 'turret_1', 'turret_2', 'milecastle' (trên lối đi ở x = +2,2). Nhận cả true (hai turret) hoặc một số 1-3."
+    },
+    "gates": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "false: vẫn tạo hai cánh cửa nhưng ẩn (story vẫn bật hiện được)."
+    },
+    "lit_windows": {
+      "type": "boolean",
+      "default": false,
+      "desc_vi": "Cửa sổ turret phát sáng vàng cam (dùng cho cảnh đêm)."
+    },
+    "stone_color": {
+      "type": "array",
+      "default": [
+        0.58,
+        0.5,
+        0.34
+      ],
+      "desc_vi": "Màu đá vàng xám (linear). Màu đá thứ hai và vữa tự suy ra từ màu này."
+    },
+    "hills": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Đồi xa hai phía và vài cây táo gai rải rác."
+    },
+    "seed": {
+      "type": "integer",
+      "default": 7,
+      "desc_vi": "Hạt ngẫu nhiên cho đổ nát, đá rơi, cột đá, đồi và cây (dùng Random riêng, không đụng random chung)."
+    }
+  },
+  "parts": [
+    "wall",
+    "parapet",
+    "arch",
+    "gate_north",
+    "gate_south",
+    "milecastle",
+    "barrack",
+    "turret_1",
+    "turret_2",
+    "ground",
+    "causeway",
+    "crag",
+    "scaffold",
+    "stones",
+    "road",
+    "fort",
+    "beacon_turret_1",
+    "beacon_turret_2",
+    "beacon_milecastle",
+    "hills"
+  ],
+  "space": "Khu diễn chính có ba chỗ. (1) Mặt bắc trước cổng vòm: nhân vật đứng trên đất cỏ y = 2..5 (giữa tường và mương) hoặc trên lối đất qua mương (y 6..10, z = 0); camera đặt ở y 14-18, z 1,5-3, nhìn về -Y vào cổng (x = 0, z ≈ 1,5). (2) Lối đi trên tường: z = 4,5, y từ -1,5 đến 1,1 (lan can ở mép bắc); nhân vật đứng ở (-3, -0,2, 4,5); camera ở phía nam, hơi cao (y -5..-9, z 6-7), nhìn về +Y để thấy lan can và vùng bắc phía sau; tránh x = ±20 vì turret che. (3) Sân milecastle: x -3..3, y -1,5..-8; cổng nam ở y = -8,5; camera ở phía nam (y -16, z 2-3) nhìn qua cổng nam vào sân và lối vòm bắc. Toàn cảnh: camera đông nam cao (x +16, y -22, z 9) lens 28-30. Khi bật crag: đất phía bắc tụt xuống z ≈ -13 cách mặt tường 1 đơn vị, góc từ dưới vách nhìn lên rất ấn tượng (camera ở y +14, z -11). Bản thứ hai `wallb` ở origin [300, 0]: cộng 300 vào x của mọi vị trí.",
+  "anchors": {
+    "gate_north": "Chân cổng vòm bắc, tâm lối đi (origin + (0, 0, 0)).",
+    "gate_south": "Chân cổng nam milecastle (origin + (0, -8.5, 0)).",
+    "milecastle": "Tâm sân milecastle trên mặt đất (origin + (0, -5, 0)).",
+    "turret_1": "Tâm sàn đỉnh turret phía tây (x -20, y ≈ -1.27, z ≈ 5.6).",
+    "turret_2": "Tâm sàn đỉnh turret phía đông (x +20, y ≈ -1.27, z ≈ 5.6).",
+    "walk": "Chỗ nhân vật đứng trên lối đi đỉnh tường (-3, -0.2, 4.5; tự hạ khi tường xây dở hoặc đổ nát).",
+    "ditch": "Đáy mương chữ V phía bắc (0, 8, -2.6).",
+    "north_approach": "Mặt đất phía bắc trước cổng (0, 14); khi bật crag thì là mép vách.",
+    "south_approach": "Mặt đất phía nam milecastle (0, -14, 0).",
+    "center": "Origin trên đường tâm tường.",
+    "crag_edge": "Mép vách đá (chỉ khi crag).",
+    "vallum": "Đáy mương vallum (chỉ khi vallum).",
+    "fort": "Tâm pháo đài (chỉ khi fort).",
+    "beacon_turret_1": "Đỉnh đống củi của chậu lửa hiệu, nơi đặt fx lửa (chỉ khi beacon_slots có slot này; tương tự beacon_turret_2, beacon_milecastle)."
+  },
+  "views": [
+    {
+      "pos": [
+        16,
+        -22,
+        9
+      ],
+      "look": [
+        0,
+        -2,
+        3
+      ],
+      "lens": 28
+    },
+    {
+      "pos": [
+        4,
+        16,
+        2.6
+      ],
+      "look": [
+        0,
+        0,
+        2
+      ],
+      "lens": 35
+    },
+    {
+      "pos": [
+        -8,
+        -7.5,
+        7
+      ],
+      "look": [
+        -3,
+        -0.2,
+        5.4
+      ],
+      "lens": 35
+    },
+    {
+      "pos": [
+        -27,
+        -11,
+        4
+      ],
+      "look": [
+        -20,
+        -1.2,
+        4
+      ],
+      "lens": 35
+    }
+  ],
+  "tags": [
+    "roman",
+    "ancient",
+    "britain",
+    "wall",
+    "fortification",
+    "milecastle",
+    "gate",
+    "night",
+    "set",
+    "longform"
+  ],
+  "notes_vi": "- Mọi kích thước tính tương đối với origin. Lối đi trên đỉnh ở z = 4,5 (anchor `walk` = (-3, -0,2, 4,5)); lan can đá cao 4,98, răng cưa tới 5,4. Khi chưa xây xong, đổ nát hoặc có đường đè lên, anchor `walk` tự lấy độ cao thật của chỗ đứng.\n- Cánh cửa `<name>_gate_north` và `<name>_gate_south` có gốc ở mép bản lề phía tây, chân ở z = 0, lúc nghỉ rotation = (0, 0, 0). Lưới đã được xoay đứng sẵn nên story chỉ cần key `rotation_euler.z` (âm = mở về -Y; khoảng -1,6 là mở hết) và lắc nhẹ `rotation_euler.x` ±0,03 khi bị gõ. Đai sắt và vòng gõ cửa là con của cánh cửa nên xoay theo. Vòng gõ cổng bắc ở mặt bắc (+Y); vòng gõ cổng nam ở mặt nam (-Y).\n- Cổng bắc: cánh cửa nằm ở đầu nam của lối vòm, nên mở vào sân milecastle. Cổng nam: cánh cửa ở mép ngoài, mở ra phía nam.\n- Turret: anchor ở tâm sàn đỉnh (z ≈ 5,6), răng cưa tới khoảng 6,1. Turret che lối đi trên tường (nhân vật đi dọc tường sẽ xuyên qua turret), nên cho nhân vật đứng trong khoảng x -18..18.\n- Vân đá tính theo vị trí thế giới, nên các khối ghép liền nhau không lộ đường nối. Đá trên mặt ngửa đã chỉnh ấm hơn để bớt bị trời nhuộm xanh.\n- Cảnh đêm: story dùng grade night và thêm sương bằng vfx. Bật `lit_windows` để cửa sổ turret sáng; `beacon_slots` tạo chậu lửa chưa cháy, story đặt fx fire tại anchor `beacon_<slot>`.\n- Các khối lặp lại (thân tường, lan can, cột đá, giàn giáo, đống đá, pháo đài) đều gộp mỗi nhóm thành một mesh, nên dựng nhanh và ít object.\n- Dùng Random(seed) riêng, không làm lệch `random` chung của các bối cảnh khác.\n- `road_on_top`: đường quân sự thế kỷ 18 xây trên nền tường đã san (x ≤ 12); phía đông còn tàn tích phủ cỏ. Cánh cửa bị ẩn bằng keep_hidden.",
+  "status": "draft",
+  "brief_vi": "Một đoạn Tường Hadrian 3D dài 60 chạy dọc trục X (x từ -30 tới 30 tính từ origin), mặt bắc quay về +Y, đường tâm tường ở y = 0. Params: name (tiền tố tên object, story dùng 'wall' và 'wallb'), origin [x, y] (story dùng [0,0] và [300,0]), kind stone|turf, width 3 (broad) | 2.4 (narrow), build 0-1 (chiều cao đã xây; < 1 có giàn giáo gỗ, đống đá, lõi lộ ra), ruin 0-1, ditch (mương chữ V phía bắc ở y khoảng 6..10), crag (dải vách đá đen dốc về bắc, mặc định false), vallum (mặc định false), fort, road_on_top, beacon_slots. Kích thước: tường đá vàng xám đẽo vuông, mặt tường ở y = ±width/2, lối đi trên đỉnh phẳng ở z = 4,5 (nhân vật đứng tại (-3, -0,2, 4,5)), lan can thấp phía bắc cao tới z khoảng 5,4. Milecastle ở x = 0 phía nam: sân khoảng 6 × 7 (y từ -1,5 tới -8,5), tường thấp cao 3, cổng nam ở y = -8,5. Cổng bắc là lối vòm xuyên tường tại x = 0 (rộng 2,4, cao 3). Cánh cửa gỗ là object riêng tên '<name>_gate_north' và '<name>_gate_south'; gốc của cánh cửa đặt ở mép bản lề phía tây để story xoay quanh Z (số âm = mở vào trong, về phía -Y) và xoay nhẹ quanh X khi bị gõ. Turret (tháp vuông có cửa sổ, đỉnh z khoảng 6) ở x = ±20. Ban đêm dùng grade night (story tự thêm sương bằng vfx). Anchors: gate_north, gate_south, milecastle, turret_1, turret_2, walk, ditch.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T06:40:13",
+  "review": {
+    "score": 7,
+    "summary_vi": "Bản sửa đã render: đá ra màu vàng xám ấm, rõ hàng gạch và viền. Tường có lan can răng cưa, cổng vòm có cánh cửa gỗ, milecastle ghép đúng chỗ. Đỉnh tường milecastle vẫn hơi xanh xám, còn turret, mương và cổng nam chưa có ảnh nên chưa kiểm tra được.",
+    "problems": [
+      "Đỉnh tường milecastle vẫn ngả xanh xám dưới ánh trời. Lỗi này nhỏ, chỉ thấy rõ ở góc nhìn từ trên xuống.",
+      "Ảnh xem lại chỉ có một góc máy cận sát tường, chưa thấy toàn cảnh 60 đơn vị, turret, mương và cánh cửa cổng nam."
+    ]
+  }
+}
