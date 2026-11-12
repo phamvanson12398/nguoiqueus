@@ -293,8 +293,21 @@ def setup_look(noline_objs):
     L.new(vf.outputs[0], vig.inputs[0]); L.new(bc.outputs["Image"], vig.inputs[6])
     L.new(vig.outputs[2], out.inputs[0])
     sc.compositing_node_group = ng
+    gpu_compositor(sc)
     sc.render.motion_blur_position = 'START'
     return ng
+
+
+def gpu_compositor(sc):
+    """run the compositor (bloom, vignette blur, grade, caption overlay) on the graphics card: on the user's NVIDIA
+    machine this was ~1/4 of the frame time on the CPU. Windows only by default (the cloud container has no GPU);
+    WHYSHORTS_GPU_COMPOSITOR=1/0 forces it."""
+    import os
+    want = os.environ.get("WHYSHORTS_GPU_COMPOSITOR")
+    on = want == "1" if want in ("0", "1") else os.name == "nt"
+    if not on: return
+    try: sc.render.compositor_device = 'GPU'
+    except Exception: pass
 
 
 def add_ink_outlines(objs):
