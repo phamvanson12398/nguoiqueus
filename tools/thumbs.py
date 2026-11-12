@@ -142,9 +142,13 @@ def render_item(kind, name, lib, views):
         ch.expr_table = [(1, L["faces"][0])]; chars.pose_char(ch, 1); chars.apply_expressions(ch)
         shoot(os.path.join(d, "thumb.png"), look.descendants(ch.root) + [floor()])
         if views:
+            bpy.context.view_layer.update()
+            hp = ch.head.matrix_world.translation                  # the real head: short characters (goat, cow) sit far below Joe's 1.85
+            hr = float(((L.get("cfg") or {}).get("head") or [0, 0.4])[1]) * ch.head.matrix_world.to_scale()[0]
+            dist = max(1.0, 6.5 * hr)
             for face in L["faces"]:
                 for kf, g in ch.F.items(): geo.set_visible(g, 1, kf == face)
-                camera((0, -2.6, 1.85), (0, 0, 1.85), 50); shoot(os.path.join(rv, f"face_{face}.png"), [])
+                camera((hp.x, hp.y - dist, hp.z), (hp.x, hp.y, hp.z), 50); shoot(os.path.join(rv, f"face_{face}.png"), [])
         return
 
     meta = lib.meta(kind, name); is2d = meta.get("dim") == "2d"

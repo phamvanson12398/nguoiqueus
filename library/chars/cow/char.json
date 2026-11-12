@@ -935,5 +935,15 @@
  "status": "draft",
  "brief_vi": "Bò nhỏ thời đồ sắt 2D nhìn thẳng, mũm mĩm cùng phong cách và cấu trúc cfg với chars/goat (thân tròn, 4 chân là nét, hai chân sau đi theo chân trước, đi được bằng legs walk_legs): lông ngắn nâu đỏ đậm (0.45, 0.14, 0.04), mõm hồng to có hai lỗ mũi, tai to chìa ngang, sừng ngắn cong màu ngà, đuôi có chùm lông; món đồ nhận diện: chuông đồng nhỏ treo dây da ở cổ. Cao ~1,4 tới đỉnh sừng, rộng hơn dê. faces: neutral, grumpy, shock, smug_closed (có chớp mắt). Tính cách lì, không chịu leo thang. Gốc dưới chân, đứng z = 0; story cho ngồi phịch bằng blocking scale Z 0,82 + hạ z 0,18.",
  "designed_by": "claude_bridge",
- "updated": "2026-11-12T12:12:48"
+ "updated": "2026-11-12T12:14:01",
+ "review": {
+  "score": 7,
+  "summary_vi": "Ảnh dáng đứng (thumb.png) nhìn ra ngay là bò đúng phong cách, chuông đồng rõ, đạt 7/10. Bốn ảnh biểu cảm bị tools/thumbs.py chụp hụt mặt (camera cố định ở z 1,85), nên chưa kiểm bằng mắt được grumpy/shock/smug_closed; cần sửa tool rồi chụp lại.",
+  "problems": [
+   "Cả 4 ảnh biểu cảm đều chụp hụt: chỉ thấy sừng và đỉnh đầu, mặt nằm ngoài khung dưới. Lỗi giống hệt lần làm dê: camera trong tools/thumbs.py cố định ở z 1,85, trong khi đầu bò ở z ≈ 0,88. Lỗi nằm ở tool, không phải ở char.json; cần nhắm camera vào ch.head.matrix_world.translation. Vì vậy grumpy, shock và smug_closed chưa kiểm được bằng mắt. Chỉ thấy lớp hood nâu phủ đúng đỉnh đầu, chừa vùng trắng quanh mắt.",
+   "thumb.png (neutral) đạt: nhìn ra ngay là bò (mõm hồng to có 2 lỗ mũi, tai chìa ngang lòng hồng, sừng ngà, chỏm lông sẫm, đuôi có chùm lông, 4 chân móng sẫm), mũm mĩm, rộng hơn dê, đúng phong cách viền đen.",
+   "Chuông đồng hiện rõ dưới mõm. Dây da gần như bị đầu che hết, chỉ lộ chút quanh chuông; vẫn đọc được là chuông đeo cổ, nhưng nếu muốn dây rõ hơn thì hạ đáy chữ U xuống thấp hơn.",
+   "Sừng hơi cao và thẳng đứng so với mô tả 'sừng ngắn cong'. Chấp nhận được, nhưng có thể rút ngắn khoảng 0,05 nếu người dùng muốn bò trông lì hơn."
+  ]
+ }
 }
