@@ -956,7 +956,29 @@ def check_long_story(st, content):
             want = set(_norm_txt(sh.get("card_text")).split())
             if sh["type"] == "card" and want and not any(len(want & cw) >= 0.8 * len(want) for cw in card_words):
                 e.append(f"màn hình chữ '{sh['card_text']}' (chuỗi {q.get('id')}) chưa có trong cards")
+    e += label_overlaps(st)
     return e
+
+
+def label_overlaps(st):
+    """handwritten labels of a paper_diagram are centred on 'at'; estimate their boxes and report pairs that overlap"""
+    out = []
+    for s in st.get("sets", []):
+        if s.get("type") != "paper_diagram": continue
+        boxes = []
+        for lb in (s.get("params") or {}).get("labels", []):
+            try:
+                sz = float(lb.get("size", 0.42)); x, y = float(lb["at"][0]), float(lb["at"][1])
+            except (TypeError, ValueError, KeyError, IndexError): continue
+            if lb.get("rot"): continue
+            w, h = 0.55 * sz * len(str(lb.get("text", ""))), 1.1 * sz
+            boxes.append((lb.get("text", ""), x - w / 2, x + w / 2, y - h / 2, y + h / 2))
+        for i in range(len(boxes)):
+            for j in range(i + 1, len(boxes)):
+                a, b = boxes[i], boxes[j]
+                if a[1] < b[2] and b[1] < a[2] and a[3] < b[4] and b[3] < a[4]:
+                    out.append(f"sets '{s['id']}': nhãn '{a[0]}' và '{b[0]}' đè nhau (nhãn canh giữa tại 'at', rộng ≈ 0,55 × size × số ký tự): dời một nhãn")
+    return out
 
 
 def plan_shots(slug, model=None):
