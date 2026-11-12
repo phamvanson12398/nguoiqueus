@@ -283,15 +283,15 @@ def default_preview_frames(slug):
     return sorted(set(fr))[:10] or [1]
 
 
-def job_build_long(job, slug, design=True, preview=True, chapters=None):
+def job_build_long(job, slug, design=True, preview=True, chapters=None, replan=False):
     """long video: split (if needed), then plan/design/check/preview chapter by chapter (skips chapters that have a story)"""
     if not os.path.exists(os.path.join(pdir(slug), "chapters", "index.json")): longform.split(slug, log=job.say)
     st = longform.status(slug); out = {}
-    todo = [c for c in st if (int(c["n"]) in chapters if chapters else not c["story"])]
+    todo = [c for c in st if (int(c["n"]) in chapters if chapters else not c["story"] or pending_designs(longform.chapter_slug(slug, c["n"])) or not c["previews"])]
     if not todo: job.say("Mọi chương đã có story.json (chọn chương để dựng lại)."); return {"chapters": []}
     for c in todo:
         job.say(f"===== Chương {c['n']:02d}/{len(st)} «{c['title']}» ({c['frames']} khung) =====")
-        out[c["n"]] = job_build(job, longform.chapter_slug(slug, c["n"]), design, preview)
+        out[c["n"]] = job_build(job, longform.chapter_slug(slug, c["n"]), design, preview, replan=replan)
     job.say(f"Xong {len(todo)} chương. Xem ảnh từng chương rồi bấm Render (render lần lượt từng chương rồi ghép).")
     return {"chapters": list(out)}
 
@@ -344,14 +344,29 @@ def story_outfits(d, exclude=None):
     return out[:3]
 
 
-def job_build(job, slug, design=True, preview=True, chapters=None):
+def saved_plan(slug):
+    """missing list of a story.json planned from the current content + words (None = plan again)"""
+    d = pdir(slug); sp, mp = os.path.join(d, "story.json"), os.path.join(d, "missing.json")
+    if not (os.path.exists(sp) and os.path.exists(mp)): return None
+    if any(os.path.exists(os.path.join(d, f)) and os.path.getmtime(os.path.join(d, f)) > os.path.getmtime(sp) for f in ("content.json", "words.json")):
+        return None
+    return jload(mp)
+
+
+def pending_designs(slug):
+    lib = storycheck.LibIndex(); miss = saved_plan(slug) or []
+    return [m for m in miss if not lib.exists(m["kind"], m["name"])] + [o for o in needed_outfits(pdir(slug))]
+
+
+def job_build(job, slug, design=True, preview=True, chapters=None, replan=False):
     """'Duyệt & dựng': plan shots -> design missing library items -> check -> build + preview, with automatic fix rounds"""
-    if "/chapters/" not in slug and is_long(slug): return job_build_long(job, slug, design, preview, chapters)
+    if "/chapters/" not in slug and is_long(slug): return job_build_long(job, slug, design, preview, chapters, replan)
     d = pdir(slug); lib = storycheck.LibIndex()
     if not os.path.exists(os.path.join(d, "words.json")): raise ValueError("chưa có giọng đọc đã canh chữ (tải voice.wav lên trước)")
     job.say("1/4 Claude chuyển content thành story.json (bảng khung hình, " + ("16:9, shot list" if "/chapters/" in slug else "camera v3") + ")…")
-    res = bridge.plan_shots(slug)
-    missing = res.get("missing", [])
+    missing = None if replan else saved_plan(slug)
+    if missing is not None: job.say("   story.json đã có (lập từ content + giọng hiện tại): dùng lại, không lập lại.")
+    else: missing = bridge.plan_shots(slug).get("missing", [])
     job.say(f"   story.json xong. Đồ mới cần thiết kế: {', '.join(m['kind'] + '/' + m['name'] for m in missing) or 'không'}")
     failed = []
     order = {"cultures": 0, "outfits": 1}
@@ -359,7 +374,7 @@ def job_build(job, slug, design=True, preview=True, chapters=None):
     if missing and design:
         job.say("2/4 Thiết kế đồ còn thiếu (mỗi món vài phút)…")
         for k, m in enumerate(missing, 1):
-            if lib.exists(m["kind"], m["name"]):
+            if lib.exists(m["kind"], m["name"]) or m["name"] in failed:
                 job.say(f" - [{k}/{len(missing)}] {m['kind']}/{m['name']}: đã có trong thư viện, bỏ qua"); continue
             job.say(f" - [{k}/{len(missing)}] {m['kind']}/{m['name']}: {m['brief']}")
             try:
@@ -375,10 +390,11 @@ def job_build(job, slug, design=True, preview=True, chapters=None):
                 job.say(f"   -> {last.get('score', '?')}/10 {last.get('summary_vi', '')}")
                 if not r.get("ok", True): failed.append(m["name"])
             except Exception as e:
-                if job.cancelled: raise
+                if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}. Khi lượt mở lại, bấm 'Duyệt & dựng' lần nữa: tool làm tiếp từ đồ còn thiếu, không lập lại story.")
                 failed.append(m["name"]); job.say(f"   -> LỖI: {e}")
         # outfits of the roles the story uses (known only once the cultures exist)
         for oid, cul, brief in needed_outfits(d):
+            if oid in failed: continue
             job.say(f" - trang phục {oid} (văn hóa {cul}): {brief[:160]}")
             try:
                 r = bridge.design_outfit(oid, brief, culture=cul, compare=story_outfits(d, oid))
@@ -386,7 +402,7 @@ def job_build(job, slug, design=True, preview=True, chapters=None):
                 job.say(f"   -> {last.get('score', '?')}/10 {last.get('summary_vi', '')} | sử liệu: {last.get('accuracy_vi', '')}")
                 if not r.get("ok", True): failed.append(oid)
             except Exception as e:
-                if job.cancelled: raise
+                if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}. Khi lượt mở lại, bấm 'Duyệt & dựng' lần nữa.")
                 failed.append(oid); job.say(f"   -> LỖI: {e}")
     if failed: raise ValueError("thiết kế chưa xong: " + ", ".join(failed) + " (xem log; có thể thiết kế lại ở tab Thư viện rồi bấm 'Chỉ render lại xem trước')")
     errs = storycheck.check_story(jload(os.path.join(d, "story.json")))
@@ -709,7 +725,7 @@ class Handler(BaseHTTPRequestHandler):
             if act == ["build"]:
                 b = self.jbody()
                 return self.send_json(start_job("build", slug, job_build, slug, b.get("design", True), b.get("preview", True),
-                                                [int(x) for x in b.get("chapters", [])] or None).to_json())
+                                                [int(x) for x in b.get("chapters", [])] or None, bool(b.get("replan"))).to_json())
             if act == ["preview"]:
                 b = self.jbody(); t = sub_target(slug, b.get("chapter")); frames = b.get("frames") or default_preview_frames(t)
                 return self.send_json(start_job("preview", slug, job_preview, t, [int(f) for f in frames], int(b.get("pct", 35))).to_json())

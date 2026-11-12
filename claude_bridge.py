@@ -992,7 +992,14 @@ def plan_shots(slug, model=None):
         return e
     data, info = call("plan_shots", prompt, schema, project=slug, model=model, check=check)
     _save_versioned(slug, "story.json", data["story"])
+    json.dump(data["missing"], open(os.path.join(d, "missing.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     return data
+
+
+def is_usage_limit(err):
+    """the Pro/Max plan's usage window is used up: every further call fails until it resets"""
+    s = str(err).lower()
+    return "hit your" in s and "limit" in s or "usage limit" in s
 
 
 def _pointer(doc, path):

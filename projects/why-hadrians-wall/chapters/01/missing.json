@@ -1,0 +1,40 @@
+[
+ {
+  "kind": "sets",
+  "name": "hadrians_wall",
+  "brief": "Một đoạn Tường Hadrian 3D dài 60 chạy dọc trục X (x từ -30 tới 30 tính từ origin), mặt bắc quay về +Y, đường tâm tường ở y = 0. Params: name (tiền tố tên object, story dùng 'wall' và 'wallb'), origin [x, y] (story dùng [0,0] và [300,0]), kind stone|turf, width 3 (broad) | 2.4 (narrow), build 0-1 (chiều cao đã xây; < 1 có giàn giáo gỗ, đống đá, lõi lộ ra), ruin 0-1, ditch (mương chữ V phía bắc ở y khoảng 6..10), crag (dải vách đá đen dốc về bắc, mặc định false), vallum (mặc định false), fort, road_on_top, beacon_slots. Kích thước: tường đá vàng xám đẽo vuông, mặt tường ở y = ±width/2, lối đi trên đỉnh phẳng ở z = 4,5 (nhân vật đứng tại (-3, -0,2, 4,5)), lan can thấp phía bắc cao tới z khoảng 5,4. Milecastle ở x = 0 phía nam: sân khoảng 6 × 7 (y từ -1,5 tới -8,5), tường thấp cao 3, cổng nam ở y = -8,5. Cổng bắc là lối vòm xuyên tường tại x = 0 (rộng 2,4, cao 3). Cánh cửa gỗ là object riêng tên '<name>_gate_north' và '<name>_gate_south'; gốc của cánh cửa đặt ở mép bản lề phía tây để story xoay quanh Z (số âm = mở vào trong, về phía -Y) và xoay nhẹ quanh X khi bị gõ. Turret (tháp vuông có cửa sổ, đỉnh z khoảng 6) ở x = ±20. Ban đêm dùng grade night (story tự thêm sương bằng vfx). Anchors: gate_north, gate_south, milecastle, turret_1, turret_2, walk, ditch."
+ },
+ {
+  "kind": "props",
+  "name": "wall_stone",
+  "brief": "Viên đá mặt tường La Mã đẽo thô (khoảng 0,45 × 0,28 × 0,32, đá cát vàng xám ấm, cạnh vát), gốc ở tâm khối. Params: dim '3d' (đặt, rơi, chồng; story có track rơi và lật) | '2d' (vẽ phẳng trong mặt phẳng nhân vật, viền mực, để lính ôm trước ngực, gắn torso tại [0, 0.66, 0.42]); pile N (chỉ 3D: đống N viên xếp lộn xộn, gốc ở tâm đáy đống); kind stone|turf (khối đất nâu mặt cỏ xanh)."
+ },
+ {
+  "kind": "props",
+  "name": "emperor_bust",
+  "brief": "Tượng bán thân hoàng đế bằng cẩm thạch trắng ngà ấm (màu ấm để ánh trời không nhuộm xám) trên bệ đá vuông cao 1,2; tổng cao khoảng 2,1; mặt quay về -Y; gốc ở tâm đáy bệ. Đầu tóc ngắn, mặt khái quát (không phải chân dung thật). Params: beard none|full, seed (đổi nhẹ kiểu tóc/mũi/tai để các tượng trong hàng khác nhau). Part 'beard' là lưới riêng tên '<id>_beard', gốc đặt ở cằm, để story scale từ 0 lên 1 (gag râu mọc 'pop'); beard none thì không tạo part này. Story đặt hàng 6 tượng cách nhau 2 đơn vị."
+ },
+ {
+  "kind": "props",
+  "name": "writing_tablet",
+  "brief": "Thư gỗ Vindolanda: lá gỗ mỏng màu sáng, phóng to cỡ 0,6 × 0,25, chữ mực đen nét nghiêng xếp hai cột, nếp gấp giữa, mép sứt. Params: dim '2d' (vẽ phẳng có viền mực để nhân vật hai tay cầm đọc trước ngực, gắn torso tại [0, 0.6, 0.42]) | '3d' (nằm trên bàn); folded (bool); text_lines (số dòng). Gốc ở tâm."
+ },
+ {
+  "kind": "outfits",
+  "name": "hadrian_122ad",
+  "culture": "roman_empire_50ad",
+  "brief": "Hoàng đế Hadrian năm 122 (vai emperor): tóc xoăn ngắn chải về trước, râu quai nón đầy (trang phục tự có râu thì look không vẽ thêm), giáp ngực đồng kiểu cơ bắp (muscled cuirass) với dải pteruges da ở vai và hông, tunic trắng, áo choàng tía (paludamentum) cài vai phải, giày da buộc dây. Màu nhấn tía; không vũ khí cầm tay. Bóng đen phải khác bách phu trưởng (không mào ngang, có áo choàng tía dài)."
+ },
+ {
+  "kind": "outfits",
+  "name": "roman_auxiliary_122ad",
+  "culture": "roman_empire_50ad",
+  "brief": "Lính bộ binh phụ trợ Tungri năm 122 (vai auxiliary) cho Atto: mũ sắt có che má, giáp xích (lorica hamata) dài tới hông, tunic đỏ nhạt, quần chẽn bracae nâu tới gối, áo choàng len nâu (đêm lạnh), khiên bầu dục PHẲNG màu xanh-trắng có hoa văn (khác khiên chữ nhật cong đỏ của lê dương) ở tay trái, giáo hasta ở tay phải, kiếm ngắn bên hông. Khăn cổ cam đến từ look.accent. Bóng đen phải khác lê dương."
+ },
+ {
+  "kind": "outfits",
+  "name": "briton_farmer_50ad",
+  "culture": "iron_age_britons_50ad",
+  "brief": "Vai commoner của văn hóa iron_age_britons_50ad (dùng cho Vepo, người chăn dê phương bắc, và dân làng Briton phía nam): áo choàng len kẻ ô cài trâm (màu theo ô $team của phe: xanh rêu-nâu cho phương bắc, xanh dương nhạt-vàng đất cho phương nam), tunic len dài, quần, giày da mềm, túi da đeo chéo, gậy chăn gia súc dài ở tay phải. Không giáp, không vũ khí. Hợp với tóc buộc và râu tỉa."
+ }
+]

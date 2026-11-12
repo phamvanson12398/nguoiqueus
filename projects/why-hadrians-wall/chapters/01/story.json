@@ -1,0 +1,6967 @@
+{
+  "meta": {
+    "title": "Why Did Rome Build a Wall Across Britain? — Ch.1 The Edge of the World",
+    "fps": 30,
+    "frames": 5464,
+    "seed": 12,
+    "aspect": "16:9",
+    "samples": 24,
+    "chapter": {
+      "n": 1,
+      "title": "The Edge of the World",
+      "start_sec": 0
+    }
+  },
+  "factions": [
+    {
+      "id": "rome",
+      "culture": "roman_empire_50ad",
+      "color": [
+        0.62,
+        0.06,
+        0.04
+      ],
+      "label": "ROME"
+    },
+    {
+      "id": "britons_north",
+      "culture": "iron_age_britons_50ad",
+      "color": [
+        0.18,
+        0.36,
+        0.12
+      ],
+      "label": "CALEDONII"
+    },
+    {
+      "id": "britons_south",
+      "culture": "iron_age_britons_50ad",
+      "color": [
+        0.35,
+        0.55,
+        0.8
+      ],
+      "label": "BRIGANTES"
+    }
+  ],
+  "defs": {
+    "knock": "lambda f, a: 0.03 * exp(-(f - a) / 3.0) if f >= a else 0.0"
+  },
+  "sets": [
+    {
+      "id": "wall",
+      "type": "hadrians_wall",
+      "params": {
+        "name": "wall",
+        "origin": [
+          0,
+          0
+        ],
+        "kind": "stone",
+        "width": 3,
+        "build": 1,
+        "ruin": 0,
+        "ditch": true,
+        "crag": false,
+        "vallum": false
+      },
+      "note": "Tường hoàn chỉnh: đêm sương S1, cổng mở ban ngày S3, Hadrian bước ra S3"
+    },
+    {
+      "id": "wallb",
+      "type": "hadrians_wall",
+      "params": {
+        "name": "wallb",
+        "origin": [
+          300,
+          0
+        ],
+        "kind": "stone",
+        "width": 3,
+        "build": 0.55,
+        "ditch": true,
+        "crag": false,
+        "vallum": false
+      },
+      "note": "Công trường đang xây (S2 cuối, S3)",
+      "props": [
+        {
+          "id": "stone3d",
+          "type": "wall_stone",
+          "params": {
+            "dim": "3d"
+          },
+          "loc": [
+            299.15,
+            -2.6,
+            -6
+          ]
+        },
+        {
+          "id": "stone_pile",
+          "type": "wall_stone",
+          "params": {
+            "dim": "3d",
+            "pile": 12
+          },
+          "loc": [
+            296.4,
+            -3.4,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "map_emp",
+      "type": "parchment_map",
+      "params": {
+        "origin": [
+          700,
+          0,
+          0
+        ],
+        "bounds": [
+          -12,
+          27.5,
+          52,
+          56
+        ],
+        "title": "IMPERIUM ROMANUM · AD 122",
+        "rivers": [
+          "Rhine",
+          "Danube",
+          "Nile",
+          "Euphrates",
+          "Tigris"
+        ],
+        "regions": [
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 898,
+            "poly": [
+              [
+                7,
+                44
+              ],
+              [
+                7.5,
+                46.2
+              ],
+              [
+                13.7,
+                46.5
+              ],
+              [
+                13.5,
+                45.6
+              ],
+              [
+                12.4,
+                44.2
+              ],
+              [
+                16,
+                41.9
+              ],
+              [
+                18.5,
+                40.1
+              ],
+              [
+                16.5,
+                38
+              ],
+              [
+                15.6,
+                38
+              ],
+              [
+                15.6,
+                40
+              ],
+              [
+                12,
+                42
+              ],
+              [
+                10,
+                44
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 905,
+            "poly": [
+              [
+                -9,
+                43.5
+              ],
+              [
+                -1.8,
+                43.4
+              ],
+              [
+                3.2,
+                42.3
+              ],
+              [
+                0,
+                39
+              ],
+              [
+                -2,
+                36.7
+              ],
+              [
+                -5.6,
+                36
+              ],
+              [
+                -9,
+                37
+              ],
+              [
+                -8.8,
+                42
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 912,
+            "poly": [
+              [
+                -4.5,
+                48.5
+              ],
+              [
+                2,
+                51
+              ],
+              [
+                6,
+                51.5
+              ],
+              [
+                8,
+                49
+              ],
+              [
+                7.5,
+                46.3
+              ],
+              [
+                7,
+                43.7
+              ],
+              [
+                3,
+                43.2
+              ],
+              [
+                -1.5,
+                43.5
+              ],
+              [
+                -1.2,
+                46.2
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 919,
+            "poly": [
+              [
+                -5.6,
+                50
+              ],
+              [
+                1.4,
+                51.1
+              ],
+              [
+                1.7,
+                52.8
+              ],
+              [
+                0,
+                53.6
+              ],
+              [
+                -1.5,
+                55
+              ],
+              [
+                -3.2,
+                55
+              ],
+              [
+                -3.4,
+                54
+              ],
+              [
+                -4.5,
+                53.2
+              ],
+              [
+                -5.2,
+                51.7
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 926,
+            "poly": [
+              [
+                13.7,
+                46.5
+              ],
+              [
+                16,
+                48.2
+              ],
+              [
+                22,
+                44.6
+              ],
+              [
+                22.5,
+                47.5
+              ],
+              [
+                26,
+                47.5
+              ],
+              [
+                29,
+                45.2
+              ],
+              [
+                28,
+                42
+              ],
+              [
+                26,
+                41
+              ],
+              [
+                22,
+                41
+              ],
+              [
+                19.5,
+                42
+              ],
+              [
+                13.5,
+                45.6
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 930,
+            "poly": [
+              [
+                19.5,
+                42
+              ],
+              [
+                26,
+                41
+              ],
+              [
+                24,
+                38
+              ],
+              [
+                23.2,
+                36.5
+              ],
+              [
+                21.7,
+                36.8
+              ],
+              [
+                21,
+                38.5
+              ],
+              [
+                19.4,
+                40
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 935,
+            "poly": [
+              [
+                26,
+                41.2
+              ],
+              [
+                29,
+                41.2
+              ],
+              [
+                36,
+                42
+              ],
+              [
+                41.5,
+                41.5
+              ],
+              [
+                44,
+                40
+              ],
+              [
+                38,
+                37
+              ],
+              [
+                36.2,
+                36.6
+              ],
+              [
+                30,
+                36.2
+              ],
+              [
+                27.3,
+                37
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 942,
+            "poly": [
+              [
+                36.2,
+                36.6
+              ],
+              [
+                38,
+                37
+              ],
+              [
+                40,
+                36.5
+              ],
+              [
+                39,
+                33
+              ],
+              [
+                35.5,
+                30
+              ],
+              [
+                34.3,
+                31.3
+              ],
+              [
+                35.5,
+                34
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 948,
+            "poly": [
+              [
+                25,
+                31.6
+              ],
+              [
+                32.3,
+                31.3
+              ],
+              [
+                34.3,
+                31.2
+              ],
+              [
+                32.6,
+                29
+              ],
+              [
+                33,
+                26
+              ],
+              [
+                32.9,
+                24.1
+              ],
+              [
+                32.2,
+                24.1
+              ],
+              [
+                31.2,
+                27
+              ],
+              [
+                30.2,
+                29.5
+              ],
+              [
+                28,
+                30.8
+              ],
+              [
+                25,
+                30.9
+              ]
+            ]
+          },
+          {
+            "faction": "rome",
+            "opacity": 0.42,
+            "from": 955,
+            "poly": [
+              [
+                -6,
+                35.8
+              ],
+              [
+                -1,
+                35.2
+              ],
+              [
+                5,
+                36.9
+              ],
+              [
+                10,
+                37.2
+              ],
+              [
+                11,
+                35
+              ],
+              [
+                10.4,
+                33.5
+              ],
+              [
+                13,
+                32.8
+              ],
+              [
+                20,
+                31
+              ],
+              [
+                25,
+                31.6
+              ],
+              [
+                25,
+                30.9
+              ],
+              [
+                19.5,
+                30.4
+              ],
+              [
+                15,
+                31.5
+              ],
+              [
+                10,
+                31
+              ],
+              [
+                5,
+                33.5
+              ],
+              [
+                -1,
+                34
+              ],
+              [
+                -6,
+                34
+              ]
+            ]
+          },
+          {
+            "name": "Gallia",
+            "faction": "rome",
+            "opacity": 0.4,
+            "from": 1787,
+            "to": 1889,
+            "poly": [
+              [
+                -4.5,
+                48.5
+              ],
+              [
+                2,
+                51
+              ],
+              [
+                6,
+                51.5
+              ],
+              [
+                8,
+                49
+              ],
+              [
+                7.5,
+                46.3
+              ],
+              [
+                7,
+                43.7
+              ],
+              [
+                3,
+                43.2
+              ],
+              [
+                -1.5,
+                43.5
+              ],
+              [
+                -1.2,
+                46.2
+              ]
+            ]
+          },
+          {
+            "name": "Aegyptus",
+            "faction": "rome",
+            "opacity": 0.4,
+            "from": 1797,
+            "to": 1889,
+            "poly": [
+              [
+                25,
+                31.6
+              ],
+              [
+                32.3,
+                31.3
+              ],
+              [
+                34.3,
+                31.2
+              ],
+              [
+                32.6,
+                29
+              ],
+              [
+                33,
+                26
+              ],
+              [
+                32.9,
+                24.1
+              ],
+              [
+                32.2,
+                24.1
+              ],
+              [
+                31.2,
+                27
+              ],
+              [
+                30.2,
+                29.5
+              ],
+              [
+                28,
+                30.8
+              ],
+              [
+                25,
+                30.9
+              ]
+            ]
+          },
+          {
+            "name": "Graecia",
+            "faction": "rome",
+            "opacity": 0.4,
+            "from": 1815,
+            "to": 1889,
+            "poly": [
+              [
+                19.5,
+                42
+              ],
+              [
+                26,
+                41
+              ],
+              [
+                24,
+                38
+              ],
+              [
+                23.2,
+                36.5
+              ],
+              [
+                21.7,
+                36.8
+              ],
+              [
+                21,
+                38.5
+              ],
+              [
+                19.4,
+                40
+              ]
+            ]
+          },
+          {
+            "name": "Mesopotamia",
+            "faction": "rome",
+            "opacity": 0.5,
+            "from": 3100,
+            "to": 3263,
+            "poly": [
+              [
+                40,
+                36.5
+              ],
+              [
+                43,
+                37.2
+              ],
+              [
+                45,
+                35
+              ],
+              [
+                48,
+                30.5
+              ],
+              [
+                47,
+                29.8
+              ],
+              [
+                44,
+                31.5
+              ],
+              [
+                41,
+                34
+              ]
+            ]
+          }
+        ],
+        "cities": [
+          {
+            "name": "Roma",
+            "at": [
+              12.48,
+              41.89
+            ],
+            "size": 3
+          },
+          {
+            "name": "Londinium",
+            "at": [
+              -0.12,
+              51.5
+            ]
+          },
+          {
+            "name": "Eboracum",
+            "at": [
+              -1.08,
+              53.96
+            ],
+            "label_offset": [
+              1,
+              0
+            ]
+          },
+          {
+            "name": "Antiochia",
+            "at": [
+              36.16,
+              36.2
+            ]
+          },
+          {
+            "name": "Alexandria",
+            "at": [
+              29.92,
+              31.2
+            ]
+          },
+          {
+            "name": "Carthago",
+            "at": [
+              10.32,
+              36.85
+            ]
+          },
+          {
+            "name": "Athenae",
+            "at": [
+              23.73,
+              37.98
+            ]
+          },
+          {
+            "name": "Ctesiphon",
+            "at": [
+              44.58,
+              33.09
+            ],
+            "from": 3110,
+            "to": 3263
+          }
+        ],
+        "labels": [
+          {
+            "text": "MARE INTERNUM",
+            "at": [
+              18,
+              34.3
+            ],
+            "kind": "sea",
+            "rot": -5
+          },
+          {
+            "text": "OCEANUS",
+            "at": [
+              -9,
+              47.5
+            ],
+            "kind": "sea",
+            "rot": 60
+          },
+          {
+            "text": "SYRIA",
+            "at": [
+              38.8,
+              34.3
+            ],
+            "kind": "region",
+            "from": 1040
+          },
+          {
+            "text": "BRITANNIA",
+            "at": [
+              -3.2,
+              52.6
+            ],
+            "kind": "region",
+            "from": 1100
+          }
+        ],
+        "arrows": [
+          {
+            "path": [
+              [
+                44.5,
+                33.5
+              ],
+              [
+                41.5,
+                34.8
+              ],
+              [
+                39.2,
+                35.8
+              ]
+            ],
+            "faction": "rome",
+            "from": 3225,
+            "to": 3262
+          }
+        ]
+      }
+    },
+    {
+      "id": "map_cal",
+      "type": "parchment_map",
+      "params": {
+        "origin": [
+          760,
+          0,
+          0
+        ],
+        "bounds": [
+          -12,
+          53,
+          4,
+          58.8
+        ],
+        "title": "BRITANNIA ET CALEDONIA",
+        "cities": [
+          {
+            "name": "Eboracum",
+            "at": [
+              -1.08,
+              53.96
+            ]
+          },
+          {
+            "name": "Luguvalium",
+            "at": [
+              -2.93,
+              54.89
+            ],
+            "from": 4180,
+            "label_offset": [
+              -1,
+              -1
+            ]
+          },
+          {
+            "name": "Vindolanda",
+            "at": [
+              -2.36,
+              54.99
+            ],
+            "from": 4210,
+            "label_offset": [
+              0,
+              1
+            ]
+          },
+          {
+            "name": "Coria",
+            "at": [
+              -2.02,
+              54.97
+            ],
+            "from": 4235,
+            "label_offset": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "text": "CALEDONIA",
+            "at": [
+              -4.6,
+              57.4
+            ],
+            "kind": "region"
+          },
+          {
+            "text": "BRITANNIA",
+            "at": [
+              -2,
+              53.4
+            ],
+            "kind": "region"
+          },
+          {
+            "text": "STANEGATE",
+            "at": [
+              -2.5,
+              54.75
+            ],
+            "kind": "region",
+            "size": 0.22,
+            "from": 4255
+          },
+          {
+            "text": "OCEANUS GERMANICUS",
+            "at": [
+              1.5,
+              56.2
+            ],
+            "kind": "sea",
+            "rot": -30
+          }
+        ],
+        "mountains": [
+          {
+            "line": [
+              [
+                -5.5,
+                56.4
+              ],
+              [
+                -4.5,
+                56.9
+              ],
+              [
+                -3.6,
+                57.1
+              ],
+              [
+                -4.8,
+                57.6
+              ],
+              [
+                -5.2,
+                58.1
+              ]
+            ]
+          }
+        ],
+        "arrows": [
+          {
+            "path": [
+              [
+                -1.08,
+                53.96
+              ],
+              [
+                -2,
+                55
+              ],
+              [
+                -3.2,
+                55.9
+              ],
+              [
+                -3,
+                56.5
+              ],
+              [
+                -2.6,
+                57.2
+              ]
+            ],
+            "faction": "rome",
+            "from": 3540,
+            "to": 3668
+          },
+          {
+            "path": [
+              [
+                -2.8,
+                57
+              ],
+              [
+                -3.4,
+                56.3
+              ],
+              [
+                -2.6,
+                55.4
+              ]
+            ],
+            "faction": "rome",
+            "from": 3990,
+            "to": 4055,
+            "width": 0.1
+          },
+          {
+            "path": [
+              [
+                -2.93,
+                54.89
+              ],
+              [
+                -2.36,
+                54.99
+              ],
+              [
+                -2.02,
+                54.97
+              ]
+            ],
+            "color": [
+              0.42,
+              0.26,
+              0.12
+            ],
+            "from": 4185,
+            "to": 4250,
+            "width": 0.07,
+            "smooth": false
+          },
+          {
+            "path": [
+              [
+                -3.3,
+                54.95
+              ],
+              [
+                -1.45,
+                55
+              ]
+            ],
+            "color": [
+              0.1,
+              0.08,
+              0.06
+            ],
+            "from": 4712,
+            "to": 4760,
+            "width": 0.09,
+            "smooth": false
+          }
+        ],
+        "units": [
+          {
+            "id": "agricola",
+            "at": [
+              -1.08,
+              53.96
+            ],
+            "faction": "rome",
+            "label": "AGRICOLA",
+            "from": 3530,
+            "moves": [
+              [
+                3540,
+                [
+                  -1.08,
+                  53.96
+                ]
+              ],
+              [
+                3668,
+                [
+                  -2.6,
+                  57.15
+                ]
+              ],
+              [
+                3990,
+                [
+                  -2.7,
+                  57
+                ]
+              ],
+              [
+                4055,
+                [
+                  -2.6,
+                  55.35
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "map_brit",
+      "type": "parchment_map",
+      "params": {
+        "origin": [
+          820,
+          0,
+          0
+        ],
+        "bounds": [
+          -8,
+          53,
+          3,
+          56.5
+        ],
+        "title": "BRITANNIA · AD 122",
+        "cities": [
+          {
+            "name": "Eboracum",
+            "at": [
+              -1.08,
+              53.96
+            ]
+          },
+          {
+            "name": "Luguvalium",
+            "at": [
+              -2.93,
+              54.89
+            ],
+            "label_offset": [
+              -1,
+              -1
+            ]
+          },
+          {
+            "name": "Pons Aelius",
+            "at": [
+              -1.61,
+              54.97
+            ],
+            "label_offset": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "text": "TYNE",
+            "at": [
+              -1.25,
+              55.15
+            ],
+            "kind": "region",
+            "from": 1614
+          },
+          {
+            "text": "SOLWAY FIRTH",
+            "at": [
+              -3.7,
+              54.75
+            ],
+            "kind": "region",
+            "from": 1644
+          },
+          {
+            "text": "CALEDONIA",
+            "at": [
+              -4.2,
+              56.1
+            ],
+            "kind": "region"
+          },
+          {
+            "text": "MARE GERMANICUM",
+            "at": [
+              1.2,
+              55.4
+            ],
+            "kind": "sea"
+          }
+        ],
+        "arrows": [
+          {
+            "path": [
+              [
+                -1.52,
+                55
+              ],
+              [
+                -3.25,
+                54.96
+              ]
+            ],
+            "faction": "rome",
+            "from": 1594,
+            "to": 1668,
+            "width": 0.14,
+            "smooth": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "board",
+      "type": "tactical_board",
+      "params": {
+        "origin": [
+          900,
+          0,
+          0
+        ],
+        "ground": "grass",
+        "hills": [
+          {
+            "at": [
+              2.5,
+              1.8
+            ],
+            "r": 3,
+            "h": 1,
+            "stretch": 1.4,
+            "label": "MONS GRAUPIUS"
+          }
+        ],
+        "forests": [
+          {
+            "at": [
+              -5.5,
+              2.5
+            ],
+            "r": 1.5,
+            "n": 8
+          },
+          {
+            "at": [
+              6,
+              -2.5
+            ],
+            "r": 1.2,
+            "n": 6
+          }
+        ],
+        "units": [
+          {
+            "id": "rom_aux",
+            "at": [
+              -1.5,
+              -2.8
+            ],
+            "faction": "rome",
+            "size": [
+              4,
+              1
+            ],
+            "rows": 2,
+            "cols": 8,
+            "label": "ROME",
+            "moves": [
+              [
+                3770,
+                [
+                  -1.5,
+                  -2.8
+                ]
+              ],
+              [
+                3860,
+                [
+                  1.6,
+                  -0.2
+                ]
+              ]
+            ]
+          },
+          {
+            "id": "rom_leg",
+            "at": [
+              -1.5,
+              -4.2
+            ],
+            "faction": "rome",
+            "size": [
+              4,
+              0.8
+            ],
+            "rows": 2,
+            "cols": 8,
+            "moves": [
+              [
+                3770,
+                [
+                  -1.5,
+                  -4.2
+                ]
+              ],
+              [
+                3860,
+                [
+                  0.8,
+                  -2
+                ]
+              ]
+            ]
+          },
+          {
+            "id": "cal",
+            "at": [
+              2.4,
+              1
+            ],
+            "faction": "britons_north",
+            "size": [
+              5,
+              1.4
+            ],
+            "rows": 3,
+            "cols": 10,
+            "label": "CALEDONII",
+            "moves": [
+              [
+                3800,
+                [
+                  2.4,
+                  1
+                ]
+              ],
+              [
+                3875,
+                [
+                  3.8,
+                  3.6
+                ]
+              ]
+            ]
+          }
+        ],
+        "arrows": [
+          {
+            "path": [
+              [
+                -1.5,
+                -2.2
+              ],
+              [
+                1.2,
+                0.4
+              ]
+            ],
+            "faction": "rome",
+            "from": 3775,
+            "to": 3830
+          }
+        ]
+      }
+    },
+    {
+      "id": "paper",
+      "type": "paper_diagram",
+      "params": {
+        "origin": [
+          1100,
+          0,
+          0
+        ],
+        "paper": "grid",
+        "strokes": [
+          {
+            "path": [
+              [
+                -6,
+                -0.3
+              ],
+              [
+                6,
+                -0.3
+              ]
+            ],
+            "from": 5045,
+            "to": 5080,
+            "color": "ink",
+            "width": 0.1,
+            "smooth": false
+          },
+          {
+            "path": [
+              [
+                -5.35,
+                -0.3
+              ],
+              [
+                -5.35,
+                0.4
+              ],
+              [
+                -4.65,
+                0.4
+              ],
+              [
+                -4.65,
+                -0.3
+              ]
+            ],
+            "from": 5082,
+            "to": 5090,
+            "color": "red",
+            "smooth": false
+          },
+          {
+            "path": [
+              [
+                -2.85,
+                -0.3
+              ],
+              [
+                -2.85,
+                0.4
+              ],
+              [
+                -2.15,
+                0.4
+              ],
+              [
+                -2.15,
+                -0.3
+              ]
+            ],
+            "from": 5090,
+            "to": 5098,
+            "color": "red",
+            "smooth": false
+          },
+          {
+            "path": [
+              [
+                -0.35,
+                -0.3
+              ],
+              [
+                -0.35,
+                0.4
+              ],
+              [
+                0.35,
+                0.4
+              ],
+              [
+                0.35,
+                -0.3
+              ]
+            ],
+            "from": 5098,
+            "to": 5106,
+            "color": "red",
+            "smooth": false
+          },
+          {
+            "path": [
+              [
+                2.15,
+                -0.3
+              ],
+              [
+                2.15,
+                0.4
+              ],
+              [
+                2.85,
+                0.4
+              ],
+              [
+                2.85,
+                -0.3
+              ]
+            ],
+            "from": 5106,
+            "to": 5114,
+            "color": "red",
+            "smooth": false
+          },
+          {
+            "path": [
+              [
+                4.65,
+                -0.3
+              ],
+              [
+                4.65,
+                0.4
+              ],
+              [
+                5.35,
+                0.4
+              ],
+              [
+                5.35,
+                -0.3
+              ]
+            ],
+            "from": 5114,
+            "to": 5122,
+            "color": "red",
+            "smooth": false
+          }
+        ],
+        "circles": [
+          {
+            "at": [
+              -4.17,
+              -0.1
+            ],
+            "r": 0.13,
+            "from": 5124,
+            "to": 5128,
+            "color": "blue"
+          },
+          {
+            "at": [
+              -3.33,
+              -0.1
+            ],
+            "r": 0.13,
+            "from": 5128,
+            "to": 5132,
+            "color": "blue"
+          },
+          {
+            "at": [
+              -1.67,
+              -0.1
+            ],
+            "r": 0.13,
+            "from": 5132,
+            "to": 5136,
+            "color": "blue"
+          },
+          {
+            "at": [
+              -0.83,
+              -0.1
+            ],
+            "r": 0.13,
+            "from": 5136,
+            "to": 5140,
+            "color": "blue"
+          }
+        ],
+        "arrows": [
+          {
+            "path": [
+              [
+                -5,
+                -0.9
+              ],
+              [
+                -2.5,
+                -0.9
+              ]
+            ],
+            "from": 5120,
+            "to": 5135,
+            "color": "blue"
+          },
+          {
+            "path": [
+              [
+                5.6,
+                1.3
+              ],
+              [
+                5.6,
+                2.2
+              ]
+            ],
+            "from": 5138,
+            "to": 5148,
+            "color": "ink"
+          }
+        ],
+        "labels": [
+          {
+            "text": "80 ROMAN MILES",
+            "at": [
+              0,
+              2.6
+            ],
+            "size": 0.55,
+            "from": 5095
+          },
+          {
+            "text": "MILECASTLE",
+            "at": [
+              -2.5,
+              1.1
+            ],
+            "color": "red",
+            "from": 5110
+          },
+          {
+            "text": "1 ROMAN MILE",
+            "at": [
+              -3.75,
+              -1.5
+            ],
+            "color": "blue",
+            "from": 5130
+          },
+          {
+            "text": "NORTH",
+            "at": [
+              5.6,
+              2.7
+            ],
+            "from": 5145
+          }
+        ]
+      }
+    },
+    {
+      "id": "field",
+      "type": "open_field",
+      "params": {
+        "origin": [
+          1300,
+          0,
+          0
+        ],
+        "ground": "meadow",
+        "trees": 14,
+        "rocks": 8,
+        "seed": 5
+      }
+    },
+    {
+      "id": "italy",
+      "type": "roman_countryside",
+      "params": {
+        "name": "italy",
+        "origin": [
+          1600,
+          0
+        ],
+        "region": "italy",
+        "sun": "keep",
+        "huts": false,
+        "trees": 16,
+        "seed": 6
+      },
+      "props": [
+        {
+          "id": "bust1",
+          "type": "emperor_bust",
+          "params": {
+            "beard": "none",
+            "seed": 1
+          },
+          "loc": [
+            1603.5,
+            6,
+            0
+          ]
+        },
+        {
+          "id": "bust2",
+          "type": "emperor_bust",
+          "params": {
+            "beard": "none",
+            "seed": 2
+          },
+          "loc": [
+            1605.5,
+            6,
+            0
+          ]
+        },
+        {
+          "id": "bust3",
+          "type": "emperor_bust",
+          "params": {
+            "beard": "full",
+            "seed": 3
+          },
+          "loc": [
+            1607.5,
+            6,
+            0
+          ],
+          "note": "Hadrian"
+        },
+        {
+          "id": "bust4",
+          "type": "emperor_bust",
+          "params": {
+            "beard": "full",
+            "seed": 4
+          },
+          "loc": [
+            1609.5,
+            6,
+            0
+          ]
+        },
+        {
+          "id": "bust5",
+          "type": "emperor_bust",
+          "params": {
+            "beard": "full",
+            "seed": 5
+          },
+          "loc": [
+            1611.5,
+            6,
+            0
+          ]
+        },
+        {
+          "id": "bust6",
+          "type": "emperor_bust",
+          "params": {
+            "beard": "full",
+            "seed": 6
+          },
+          "loc": [
+            1613.5,
+            6,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brit",
+      "type": "roman_countryside",
+      "params": {
+        "name": "brit",
+        "origin": [
+          1900,
+          0
+        ],
+        "region": "britain",
+        "huts": true,
+        "mist": true,
+        "outcrop": {
+          "at": [
+            4,
+            10
+          ],
+          "h": 2.2,
+          "size": 5
+        },
+        "trees": 20,
+        "seed": 4
+      },
+      "props": [
+        {
+          "id": "brit_road",
+          "type": "roman_road",
+          "params": {
+            "length": 40,
+            "width": 3.6
+          },
+          "loc": [
+            1880,
+            18,
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "chars": [
+    {
+      "id": "atto",
+      "type": "person",
+      "faction": "rome",
+      "outfit": "roman_auxiliary_122ad",
+      "look": {
+        "hair": "short",
+        "beard": "none",
+        "accent": [
+          0.98,
+          0.3,
+          0.02
+        ],
+        "seed": 7
+      },
+      "blocking": {
+        "default": {
+          "location": [
+            -3,
+            -0.2,
+            -60
+          ]
+        },
+        "segments": [
+          {
+            "from": 1,
+            "to": 840,
+            "location": [
+              -3,
+              -0.2,
+              4.5
+            ]
+          }
+        ]
+      },
+      "expressions": [
+        [
+          1,
+          "worried"
+        ],
+        [
+          469,
+          "shock"
+        ],
+        [
+          560,
+          "worried"
+        ],
+        [
+          645,
+          "shock"
+        ],
+        [
+          701,
+          "neutral"
+        ],
+        [
+          745,
+          "shock"
+        ]
+      ],
+      "blinks": [
+        120,
+        300,
+        520,
+        780
+      ],
+      "reacts": [
+        [
+          60,
+          "shiver"
+        ],
+        [
+          250,
+          "shiver"
+        ],
+        [
+          469,
+          "flinch"
+        ],
+        [
+          645,
+          "hop"
+        ]
+      ],
+      "reaction_fx": [
+        645
+      ],
+      "pose": {
+        "default": {
+          "armL": [
+            "ik",
+            [
+              -0.42,
+              0.25
+            ],
+            -1
+          ],
+          "armR": [
+            "ik",
+            [
+              0.42,
+              0.25
+            ],
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": "vepo",
+      "type": "person",
+      "faction": "britons_north",
+      "role": "commoner",
+      "look": {
+        "hair": "tied",
+        "beard": "goatee",
+        "accent": [
+          0.05,
+          0.55,
+          0.12
+        ],
+        "seed": 11
+      },
+      "blocking": {
+        "default": {
+          "location": [
+            2.5,
+            14,
+            -60
+          ]
+        },
+        "segments": [
+          {
+            "from": 476,
+            "to": 610,
+            "location": [
+              "lerp(2.5, 0.7, (f - 476) / 134)",
+              "lerp(14, 2.4, (f - 476) / 134)",
+              0
+            ]
+          },
+          {
+            "from": 611,
+            "to": 840,
+            "location": [
+              0.7,
+              2.4,
+              0
+            ]
+          }
+        ]
+      },
+      "expressions": [
+        [
+          1,
+          "neutral"
+        ],
+        [
+          720,
+          "smirk"
+        ]
+      ],
+      "blinks": [
+        560,
+        690,
+        800
+      ],
+      "pose": {
+        "default": {
+          "armL": [
+            "ik",
+            [
+              -0.42,
+              0.2
+            ],
+            -1
+          ],
+          "armR": [
+            "ik",
+            [
+              0.42,
+              0.2
+            ],
+            1
+          ]
+        },
+        "segments": [
+          {
+            "from": 476,
+            "to": 610,
+            "legs": "walk_legs(f * 0.3)"
+          },
+          {
+            "from": 634,
+            "to": 672,
+            "armR": [
+              "ik",
+              [
+                0.45,
+                "0.78 + 0.08 * sin((f - 636) * 0.571)"
+              ],
+              1
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "goat",
+      "type": "goat",
+      "blocking": {
+        "default": {
+          "location": [
+            1.5,
+            13,
+            -60
+          ]
+        },
+        "segments": [
+          {
+            "from": 407,
+            "to": 480,
+            "location": [
+              "lerp(1.5, -1.6, (f - 407) / 73)",
+              "lerp(13, 4.8, (f - 407) / 73)",
+              0
+            ]
+          },
+          {
+            "from": 481,
+            "to": 840,
+            "location": [
+              -1.6,
+              4.8,
+              0
+            ]
+          }
+        ]
+      },
+      "expressions": [
+        [
+          1,
+          "neutral"
+        ],
+        [
+          700,
+          "smirk"
+        ]
+      ],
+      "blinks": [
+        500,
+        650
+      ]
+    },
+    {
+      "id": "hadrian",
+      "type": "person",
+      "faction": "rome",
+      "outfit": "hadrian_122ad",
+      "look": {
+        "hair": "curly",
+        "beard": "full",
+        "accent": [
+          0.4,
+          0.05,
+          0.45
+        ],
+        "seed": 5
+      },
+      "blocking": {
+        "default": {
+          "location": [
+            1600,
+            4,
+            -60
+          ]
+        },
+        "segments": [
+          {
+            "from": 2384,
+            "to": 2466,
+            "location": [
+              6,
+              -10,
+              0
+            ]
+          },
+          {
+            "from": 2467,
+            "to": 4448,
+            "location": [
+              1600,
+              4,
+              0
+            ]
+          },
+          {
+            "from": 4449,
+            "to": 4708,
+            "location": [
+              "lerp(1884, 1897, (f - 4449) / 259)",
+              5,
+              0
+            ]
+          },
+          {
+            "from": 4709,
+            "to": 5464,
+            "location": [
+              1904,
+              10,
+              2.2
+            ]
+          }
+        ]
+      },
+      "props": [
+        {
+          "id": "had_tablet",
+          "type": "writing_tablet",
+          "params": {
+            "dim": "2d"
+          },
+          "loc": [
+            0,
+            0.6,
+            0.42
+          ]
+        }
+      ],
+      "expressions": [
+        [
+          1,
+          "smirk"
+        ],
+        [
+          2555,
+          "smug_closed"
+        ],
+        [
+          2682,
+          "smirk"
+        ],
+        [
+          3007,
+          "focus"
+        ],
+        [
+          3279,
+          "smirk"
+        ],
+        [
+          3420,
+          "smug_closed"
+        ],
+        [
+          4272,
+          "grumpy"
+        ],
+        [
+          4330,
+          "focus"
+        ],
+        [
+          5240,
+          "smug_closed"
+        ],
+        [
+          5299,
+          "focus"
+        ]
+      ],
+      "blinks": [
+        2600,
+        2800,
+        3050,
+        3320,
+        4300,
+        4650,
+        4900,
+        5200
+      ],
+      "reacts": [
+        [
+          3435,
+          "proud"
+        ],
+        [
+          5328,
+          "proud"
+        ]
+      ],
+      "pose": {
+        "default": {
+          "armL": [
+            "ik",
+            [
+              -0.42,
+              0.2
+            ],
+            -1
+          ],
+          "armR": [
+            "ik",
+            [
+              0.42,
+              0.2
+            ],
+            1
+          ]
+        },
+        "segments": [
+          {
+            "from": 2555,
+            "to": 2700,
+            "armR": [
+              "ik",
+              [
+                0.16,
+                "0.92 + 0.04 * sin(f * 0.35)"
+              ],
+              1
+            ]
+          },
+          {
+            "from": 4272,
+            "to": 4448,
+            "armL": [
+              "ik",
+              [
+                -0.25,
+                0.58
+              ],
+              -1
+            ],
+            "armR": [
+              "ik",
+              [
+                0.25,
+                0.58
+              ],
+              1
+            ]
+          },
+          {
+            "from": 4449,
+            "to": 4708,
+            "legs": "walk_legs(f * 0.3)"
+          },
+          {
+            "from": 5300,
+            "to": 5464,
+            "armR": [
+              "ik",
+              [
+                0.62,
+                0
+              ],
+              1
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "centurion",
+      "type": "person",
+      "faction": "rome",
+      "role": "officer",
+      "look": {
+        "beard": "none",
+        "seed": 21
+      },
+      "blocking": {
+        "default": {
+          "location": [
+            1880,
+            5.4,
+            -60
+          ]
+        },
+        "segments": [
+          {
+            "from": 1473,
+            "to": 2129,
+            "location": [
+              302.6,
+              -3.3,
+              0
+            ]
+          },
+          {
+            "from": 4449,
+            "to": 4708,
+            "location": [
+              "lerp(1880.5, 1893, (f - 4449) / 259)",
+              5.4,
+              0
+            ]
+          },
+          {
+            "from": 4709,
+            "to": 5464,
+            "location": [
+              1901.2,
+              7.5,
+              0
+            ]
+          }
+        ]
+      },
+      "expressions": [
+        [
+          1,
+          "grumpy"
+        ],
+        [
+          4449,
+          "worried"
+        ],
+        [
+          5330,
+          "shock"
+        ],
+        [
+          5400,
+          "worried"
+        ]
+      ],
+      "blinks": [
+        1600,
+        2000,
+        4500,
+        5100
+      ],
+      "fx": [
+        {
+          "type": "drips",
+          "from": 4600
+        }
+      ],
+      "pose": {
+        "default": {
+          "armL": [
+            "ik",
+            [
+              -0.42,
+              0.25
+            ],
+            -1
+          ],
+          "armR": [
+            "ik",
+            [
+              0.42,
+              0.25
+            ],
+            1
+          ]
+        },
+        "segments": [
+          {
+            "from": 4449,
+            "to": 4708,
+            "legs": "walk_legs(f * 0.33)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "leg1",
+      "type": "person",
+      "faction": "rome",
+      "role": "soldier",
+      "look": {
+        "seed": 31
+      },
+      "blocking": {
+        "default": {
+          "location": [
+            299,
+            -2.5,
+            -60
+          ]
+        },
+        "segments": [
+          {
+            "from": 1473,
+            "to": 2129,
+            "location": [
+              299,
+              -2.5,
+              0
+            ]
+          }
+        ]
+      },
+      "props": [
+        {
+          "id": "stone2d",
+          "type": "wall_stone",
+          "params": {
+            "dim": "2d"
+          },
+          "loc": [
+            0,
+            0.66,
+            0.42
+          ]
+        }
+      ],
+      "expressions": [
+        [
+          1,
+          "focus"
+        ],
+        [
+          1992,
+          "shock"
+        ],
+        [
+          2012,
+          "grumpy"
+        ]
+      ],
+      "blinks": [
+        1600,
+        1940
+      ],
+      "reacts": [
+        [
+          1992,
+          "hop"
+        ]
+      ],
+      "reaction_fx": [
+        1992
+      ],
+      "pose": {
+        "default": {
+          "armL": [
+            "ik",
+            [
+              -0.42,
+              0.25
+            ],
+            -1
+          ],
+          "armR": [
+            "ik",
+            [
+              0.42,
+              0.25
+            ],
+            1
+          ]
+        },
+        "segments": [
+          {
+            "from": 1473,
+            "to": 1985,
+            "armL": [
+              "ik",
+              [
+                -0.24,
+                0.62
+              ],
+              -1
+            ],
+            "armR": [
+              "ik",
+              [
+                0.24,
+                0.62
+              ],
+              1
+            ]
+          },
+          {
+            "from": 1992,
+            "to": 2040,
+            "armL": [
+              "ik",
+              [
+                -0.6,
+                0.9
+              ],
+              -1
+            ],
+            "armR": [
+              "ik",
+              [
+                0.6,
+                0.9
+              ],
+              1
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "leg2",
+      "type": "person",
+      "faction": "rome",
+      "role": "soldier",
+      "look": {
+        "seed": 32
+      },
+      "blocking": {
+        "default": {
+          "location": [
+            303.4,
+            -2.3,
+            -60
+          ]
+        },
+        "segments": [
+          {
+            "from": 1473,
+            "to": 2129,
+            "location": [
+              303.4,
+              -2.3,
+              0
+            ]
+          },
+          {
+            "from": 3978,
+            "to": 4448,
+            "location": [
+              1896,
+              3,
+              0
+            ]
+          },
+          {
+            "from": 4449,
+            "to": 4708,
+            "location": [
+              "lerp(1879, 1891.5, (f - 4449) / 259)",
+              5.6,
+              0
+            ]
+          },
+          {
+            "from": 4709,
+            "to": 5464,
+            "location": [
+              1902.6,
+              7.4,
+              0
+            ]
+          }
+        ]
+      },
+      "expressions": [
+        [
+          1,
+          "focus"
+        ],
+        [
+          2041,
+          "worried"
+        ],
+        [
+          4074,
+          "grumpy"
+        ],
+        [
+          4449,
+          "worried"
+        ],
+        [
+          5330,
+          "shock"
+        ],
+        [
+          5400,
+          "worried"
+        ]
+      ],
+      "blinks": [
+        2060,
+        4100,
+        4520,
+        5380
+      ],
+      "reacts": [
+        [
+          4100,
+          "shiver"
+        ]
+      ],
+      "pose": {
+        "default": {
+          "armL": [
+            "ik",
+            [
+              -0.42,
+              0.25
+            ],
+            -1
+          ],
+          "armR": [
+            "ik",
+            [
+              0.42,
+              0.25
+            ],
+            1
+          ]
+        },
+        "segments": [
+          {
+            "from": 4449,
+            "to": 4708,
+            "legs": "walk_legs(f * 0.33)"
+          }
+        ]
+      }
+    }
+  ],
+  "crowds": [
+    {
+      "id": "legion",
+      "faction": "rome",
+      "role": "soldier",
+      "count": 40,
+      "formation": "block",
+      "cols": 10,
+      "spacing": [
+        0.95,
+        1
+      ],
+      "at": [
+        1300,
+        24,
+        0
+      ],
+      "variants": 4,
+      "faces": [
+        "neutral",
+        "focus"
+      ],
+      "march": [
+        [
+          1236,
+          1889
+        ]
+      ],
+      "moves": [
+        [
+          1236,
+          [
+            1300,
+            24
+          ]
+        ],
+        [
+          1889,
+          [
+            1300,
+            13
+          ]
+        ]
+      ],
+      "pose": {
+        "armL": [
+          "ang",
+          -0.35,
+          0.6
+        ],
+        "armR": [
+          "ang",
+          0.25,
+          -0.25
+        ]
+      }
+    },
+    {
+      "id": "builders",
+      "faction": "rome",
+      "role": "soldier",
+      "count": 8,
+      "formation": "line",
+      "cols": 8,
+      "spacing": [
+        1.5,
+        1
+      ],
+      "at": [
+        313,
+        -2.8,
+        0
+      ],
+      "variants": 3,
+      "faces": [
+        "focus",
+        "grumpy"
+      ],
+      "from": 1473,
+      "to": 2129,
+      "pose": {
+        "armL": [
+          "ang",
+          -0.35,
+          0.6
+        ],
+        "armR": [
+          "ang",
+          0.25,
+          -0.25
+        ]
+      }
+    },
+    {
+      "id": "caled",
+      "faction": "britons_north",
+      "role": "soldier",
+      "count": 24,
+      "formation": "scatter",
+      "area": [
+        14,
+        4
+      ],
+      "at": [
+        1900,
+        26,
+        0
+      ],
+      "variants": 4,
+      "faces": [
+        "neutral",
+        "grumpy"
+      ],
+      "from": 3879,
+      "to": 3977,
+      "march": [
+        [
+          3879,
+          3977
+        ]
+      ],
+      "moves": [
+        [
+          3879,
+          [
+            1900,
+            26
+          ]
+        ],
+        [
+          3977,
+          [
+            1900,
+            33
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "villagers",
+      "faction": "britons_south",
+      "role": "commoner",
+      "count": 9,
+      "formation": "scatter",
+      "area": [
+        9,
+        2.5
+      ],
+      "at": [
+        1904,
+        2.5,
+        0
+      ],
+      "variants": 3,
+      "faces": [
+        "grumpy",
+        "worried"
+      ],
+      "from": 4929,
+      "to": 5037
+    }
+  ],
+  "camera": {
+    "rig": "long",
+    "lens": 35,
+    "dof": {
+      "fstop": 2.8
+    },
+    "trans": {
+      "841": [
+        "whip",
+        1
+      ],
+      "4449": [
+        "whip",
+        1
+      ]
+    },
+    "shots": [
+      {
+        "a": 1,
+        "b": 205,
+        "type": "establishing",
+        "grade": "night",
+        "fstop": 5,
+        "note": "tường đêm sương, đuốc",
+        "keys": [
+          [
+            1,
+            [
+              -30,
+              -24,
+              13
+            ],
+            [
+              -6,
+              2,
+              3
+            ],
+            28
+          ],
+          [
+            205,
+            [
+              -19,
+              -25,
+              11.5
+            ],
+            [
+              4,
+              2,
+              3
+            ],
+            28
+          ]
+        ]
+      },
+      {
+        "a": 206,
+        "b": 316,
+        "type": "medium",
+        "grade": "night",
+        "fstop": 2.8,
+        "frame": {
+          "subject": "atto",
+          "move": "truck_left",
+          "angle": -15,
+          "x": -0.25
+        }
+      },
+      {
+        "a": 317,
+        "b": 406,
+        "type": "closeup",
+        "grade": "night",
+        "fstop": 2,
+        "frame": {
+          "subject": "atto",
+          "move": "push_in",
+          "angle": 12,
+          "height": "low",
+          "x": 0.2
+        }
+      },
+      {
+        "a": 407,
+        "b": 468,
+        "type": "pov",
+        "grade": "night",
+        "fstop": 4,
+        "note": "từ đỉnh tường nhìn xuống sương",
+        "keys": [
+          [
+            407,
+            [
+              -3,
+              0.9,
+              6.5
+            ],
+            [
+              0.8,
+              11,
+              0.3
+            ],
+            28
+          ],
+          [
+            468,
+            [
+              -2.85,
+              1.15,
+              6.4
+            ],
+            [
+              0.2,
+              8.5,
+              0.4
+            ],
+            28
+          ]
+        ]
+      },
+      {
+        "a": 469,
+        "b": 560,
+        "type": "full",
+        "grade": "night",
+        "fstop": 3.5,
+        "note": "con dê",
+        "keys": [
+          [
+            469,
+            [
+              -1,
+              0.6,
+              6.2
+            ],
+            [
+              -1.3,
+              5.4,
+              0.6
+            ],
+            45
+          ],
+          [
+            560,
+            [
+              -0.7,
+              0.9,
+              5.9
+            ],
+            [
+              -0.6,
+              6,
+              0.8
+            ],
+            45
+          ]
+        ]
+      },
+      {
+        "a": 561,
+        "b": 638,
+        "type": "medium",
+        "grade": "night",
+        "fstop": 2.8,
+        "note": "Vepo đi tới cổng bắc",
+        "keys": [
+          [
+            561,
+            [
+              0.9,
+              -0.6,
+              7.3
+            ],
+            [
+              1.2,
+              6,
+              1.3
+            ],
+            35
+          ],
+          [
+            638,
+            [
+              0.6,
+              -0.3,
+              6.9
+            ],
+            [
+              0.8,
+              3,
+              1.3
+            ],
+            35
+          ]
+        ]
+      },
+      {
+        "a": 639,
+        "b": 700,
+        "type": "insert",
+        "grade": "night",
+        "fstop": 2.2,
+        "note": "cánh cổng rung theo 3 tiếng gõ",
+        "keys": [
+          [
+            639,
+            [
+              0.7,
+              -6.2,
+              1.5
+            ],
+            [
+              0,
+              0,
+              1.6
+            ],
+            35
+          ],
+          [
+            700,
+            [
+              0.35,
+              -5.2,
+              1.5
+            ],
+            [
+              0,
+              0,
+              1.6
+            ],
+            35
+          ]
+        ]
+      },
+      {
+        "a": 701,
+        "b": 758,
+        "type": "closeup",
+        "grade": "night",
+        "fstop": 2,
+        "frame": {
+          "subject": "atto",
+          "move": "orbit_right",
+          "angle": -12,
+          "x": -0.2
+        }
+      },
+      {
+        "a": 759,
+        "b": 840,
+        "type": "wide",
+        "grade": "night",
+        "fstop": 5,
+        "note": "kéo lùi cao hé lộ tuyến tường",
+        "keys": [
+          [
+            759,
+            [
+              9,
+              -16,
+              9
+            ],
+            [
+              -2,
+              2,
+              3.5
+            ],
+            24
+          ],
+          [
+            840,
+            [
+              13,
+              -24,
+              18
+            ],
+            [
+              -8,
+              4,
+              2
+            ],
+            24
+          ]
+        ]
+      },
+      {
+        "a": 841,
+        "b": 925,
+        "type": "card",
+        "grade": "sepia",
+        "fstop": 1.4,
+        "frame": {
+          "subject": "map_emp.center",
+          "size": 9,
+          "move": "drift",
+          "height": "top"
+        }
+      },
+      {
+        "a": 926,
+        "b": 1012,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_emp.center",
+          "size": 8.5,
+          "move": "pull_out",
+          "amount": 0.6
+        }
+      },
+      {
+        "a": 1013,
+        "b": 1075,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_emp.city_antiochia",
+          "size": 3.5,
+          "move": "push_in",
+          "amount": 0.7
+        }
+      },
+      {
+        "a": 1076,
+        "b": 1139,
+        "type": "map",
+        "grade": "sepia",
+        "note": "mưa phùn rơi lên bản đồ",
+        "frame": {
+          "subject": "map_emp.city_londinium",
+          "size": 3.2,
+          "move": "pan_left",
+          "amount": 0.6
+        }
+      },
+      {
+        "a": 1140,
+        "b": 1235,
+        "type": "wide",
+        "grade": "cold",
+        "fstop": 4.5,
+        "frame": {
+          "subject": [
+            1900,
+            16,
+            0.8
+          ],
+          "size": 7,
+          "angle": -20,
+          "move": "pan_right"
+        }
+      },
+      {
+        "a": 1236,
+        "b": 1342,
+        "type": "card",
+        "fstop": 1.4,
+        "frame": {
+          "subject": "legion",
+          "move": "drift",
+          "angle": 10
+        }
+      },
+      {
+        "a": 1343,
+        "b": 1472,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_emp.city_eboracum",
+          "size": 6,
+          "move": "push_in",
+          "amount": 1.2
+        }
+      },
+      {
+        "a": 1473,
+        "b": 1570,
+        "type": "wide",
+        "fstop": 5,
+        "frame": {
+          "subject": [
+            302,
+            -2,
+            1.5
+          ],
+          "size": 10,
+          "angle": -35,
+          "height": "high",
+          "move": "crane_up"
+        }
+      },
+      {
+        "a": 1571,
+        "b": 1680,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_brit.arrow0_mid",
+          "size": 2.8,
+          "move": "push_in",
+          "amount": 0.8
+        }
+      },
+      {
+        "a": 1681,
+        "b": 1826,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_emp.city_roma",
+          "size": 7,
+          "move": "drift"
+        }
+      },
+      {
+        "a": 1827,
+        "b": 1889,
+        "type": "wide",
+        "fstop": 4.5,
+        "frame": {
+          "subject": "legion",
+          "move": "truck_right",
+          "angle": 15,
+          "height": "low"
+        }
+      },
+      {
+        "a": 1890,
+        "b": 2040,
+        "type": "medium",
+        "fstop": 2.4,
+        "frame": {
+          "subject": "leg1",
+          "move": "push_in",
+          "angle": 15,
+          "x": -0.2
+        }
+      },
+      {
+        "a": 2041,
+        "b": 2083,
+        "type": "closeup",
+        "fstop": 2,
+        "frame": {
+          "subject": "leg2",
+          "move": "orbit_left",
+          "angle": -15,
+          "height": "low"
+        }
+      },
+      {
+        "a": 2084,
+        "b": 2129,
+        "type": "wide",
+        "fstop": 5,
+        "note": "nhìn về phía bắc từ tường đang xây",
+        "keys": [
+          [
+            2084,
+            [
+              301,
+              -0.6,
+              3.8
+            ],
+            [
+              300,
+              40,
+              4
+            ],
+            30
+          ],
+          [
+            2129,
+            [
+              301.6,
+              -0.3,
+              3.9
+            ],
+            [
+              304,
+              40,
+              4
+            ],
+            30
+          ]
+        ]
+      },
+      {
+        "a": 2130,
+        "b": 2286,
+        "type": "insert",
+        "fstop": 2.2,
+        "note": "cổng bắc milecastle mở kẽo kẹt",
+        "keys": [
+          [
+            2130,
+            [
+              0.8,
+              -6.4,
+              1.6
+            ],
+            [
+              0,
+              0,
+              1.7
+            ],
+            32
+          ],
+          [
+            2286,
+            [
+              0.3,
+              -4.8,
+              1.5
+            ],
+            [
+              0,
+              0.5,
+              1.7
+            ],
+            32
+          ]
+        ]
+      },
+      {
+        "a": 2287,
+        "b": 2383,
+        "type": "card",
+        "fstop": 1.4,
+        "frame": {
+          "subject": [
+            0,
+            0,
+            3
+          ],
+          "size": 10,
+          "angle": -30,
+          "move": "drift"
+        }
+      },
+      {
+        "a": 2384,
+        "b": 2466,
+        "type": "full",
+        "grade": "night",
+        "fstop": 2.8,
+        "frame": {
+          "subject": "hadrian",
+          "move": "push_in",
+          "height": "low",
+          "angle": -10
+        }
+      },
+      {
+        "a": 2467,
+        "b": 2554,
+        "type": "card",
+        "grade": "warm",
+        "fstop": 1.4,
+        "frame": {
+          "subject": "hadrian",
+          "move": "drift",
+          "angle": 20
+        }
+      },
+      {
+        "a": 2555,
+        "b": 2681,
+        "type": "medium",
+        "grade": "warm",
+        "fstop": 2.4,
+        "frame": {
+          "subject": "hadrian",
+          "move": "push_in",
+          "height": "low",
+          "angle": -15,
+          "x": -0.25
+        }
+      },
+      {
+        "a": 2682,
+        "b": 2753,
+        "type": "closeup",
+        "grade": "warm",
+        "fstop": 2,
+        "frame": {
+          "subject": "hadrian",
+          "move": "orbit_left",
+          "angle": 20,
+          "x": 0.2
+        }
+      },
+      {
+        "a": 2754,
+        "b": 2885,
+        "type": "insert",
+        "grade": "warm",
+        "fstop": 2.2,
+        "note": "lia dọc hàng tượng mặt nhẵn tới tượng Hadrian",
+        "keys": [
+          [
+            2754,
+            [
+              1603.8,
+              3.2,
+              1.8
+            ],
+            [
+              1603.8,
+              6,
+              1.6
+            ],
+            40
+          ],
+          [
+            2885,
+            [
+              1607.2,
+              3.2,
+              1.8
+            ],
+            [
+              1607.4,
+              6,
+              1.6
+            ],
+            40
+          ]
+        ]
+      },
+      {
+        "a": 2886,
+        "b": 3006,
+        "type": "wide",
+        "grade": "warm",
+        "fstop": 4,
+        "frame": {
+          "subject": [
+            1608.5,
+            6,
+            1.2
+          ],
+          "size": 4.5,
+          "move": "pull_out",
+          "amount": 1
+        }
+      },
+      {
+        "a": 3007,
+        "b": 3086,
+        "type": "full",
+        "grade": "warm",
+        "fstop": 2.8,
+        "frame": {
+          "subject": "hadrian",
+          "move": "orbit_right",
+          "angle": 25
+        }
+      },
+      {
+        "a": 3087,
+        "b": 3187,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_emp.region_mesopotamia",
+          "size": 3.4,
+          "move": "push_in"
+        }
+      },
+      {
+        "a": 3188,
+        "b": 3278,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_emp.region_mesopotamia",
+          "size": 5,
+          "move": "drift",
+          "height": "high"
+        }
+      },
+      {
+        "a": 3279,
+        "b": 3446,
+        "type": "closeup",
+        "grade": "warm",
+        "fstop": 2,
+        "frame": {
+          "subject": "hadrian",
+          "move": "orbit_left",
+          "angle": -20,
+          "height": "low"
+        }
+      },
+      {
+        "a": 3447,
+        "b": 3697,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_cal.arrow0_mid",
+          "size": 5,
+          "move": "push_in",
+          "amount": 0.8
+        }
+      },
+      {
+        "a": 3698,
+        "b": 3765,
+        "type": "card",
+        "fstop": 1.4,
+        "frame": {
+          "subject": "board.center",
+          "size": 7,
+          "move": "drift",
+          "height": "high"
+        }
+      },
+      {
+        "a": 3766,
+        "b": 3878,
+        "type": "board",
+        "fstop": 4,
+        "frame": {
+          "subject": "board.center",
+          "size": 6.5,
+          "move": "orbit_right",
+          "height": "high"
+        }
+      },
+      {
+        "a": 3879,
+        "b": 3977,
+        "type": "wide",
+        "grade": "storm",
+        "fstop": 4.5,
+        "frame": {
+          "subject": [
+            1900,
+            28,
+            1
+          ],
+          "size": 10,
+          "move": "pan_left"
+        }
+      },
+      {
+        "a": 3978,
+        "b": 4073,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_cal.arrow1_mid",
+          "size": 3.5,
+          "move": "pull_out"
+        }
+      },
+      {
+        "a": 4074,
+        "b": 4158,
+        "type": "full",
+        "grade": "storm",
+        "fstop": 2.8,
+        "frame": {
+          "subject": "leg2",
+          "move": "crane_down",
+          "angle": 15
+        }
+      },
+      {
+        "a": 4159,
+        "b": 4271,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_cal.city_vindolanda",
+          "size": 2.4,
+          "move": "drift"
+        }
+      },
+      {
+        "a": 4272,
+        "b": 4361,
+        "type": "closeup",
+        "grade": "warm",
+        "fstop": 2,
+        "frame": {
+          "subject": "hadrian",
+          "move": "push_in",
+          "angle": 15,
+          "height": "low"
+        }
+      },
+      {
+        "a": 4362,
+        "b": 4448,
+        "type": "card",
+        "grade": "warm",
+        "fstop": 1.4,
+        "frame": {
+          "subject": "hadrian",
+          "move": "drift",
+          "angle": -20
+        }
+      },
+      {
+        "a": 4449,
+        "b": 4583,
+        "type": "establishing",
+        "grade": "dawn",
+        "fstop": 5,
+        "frame": {
+          "subject": [
+            1892,
+            6,
+            0
+          ],
+          "size": 14,
+          "angle": -25,
+          "height": "high",
+          "move": "crane_down"
+        }
+      },
+      {
+        "a": 4584,
+        "b": 4708,
+        "type": "full",
+        "grade": "dawn",
+        "fstop": 3,
+        "note": "bám Hadrian sải bước, tùy tùng lê phía sau",
+        "keys": [
+          [
+            4584,
+            [
+              1889.8,
+              -2.6,
+              1.6
+            ],
+            [
+              1890.8,
+              5,
+              1.5
+            ],
+            35
+          ],
+          [
+            4708,
+            [
+              1896.2,
+              -2.6,
+              1.6
+            ],
+            [
+              1897,
+              5,
+              1.5
+            ],
+            35
+          ]
+        ]
+      },
+      {
+        "a": 4709,
+        "b": 4790,
+        "type": "map",
+        "grade": "sepia",
+        "frame": {
+          "subject": "map_cal.arrow3_mid",
+          "size": 2,
+          "move": "push_in"
+        }
+      },
+      {
+        "a": 4791,
+        "b": 4928,
+        "type": "wide",
+        "fstop": 4.5,
+        "frame": {
+          "subject": "hadrian",
+          "move": "orbit_left",
+          "angle": -30,
+          "height": "low",
+          "size": 9
+        }
+      },
+      {
+        "a": 4929,
+        "b": 5037,
+        "type": "wide",
+        "fstop": 4,
+        "frame": {
+          "subject": [
+            1904,
+            3,
+            1.2
+          ],
+          "size": 6,
+          "angle": 20,
+          "height": "low",
+          "move": "push_in"
+        }
+      },
+      {
+        "a": 5038,
+        "b": 5163,
+        "type": "diagram",
+        "fstop": 4,
+        "frame": {
+          "subject": "paper.center",
+          "size": 6,
+          "move": "push_in",
+          "height": "top"
+        }
+      },
+      {
+        "a": 5164,
+        "b": 5298,
+        "type": "medium",
+        "fstop": 2.4,
+        "frame": {
+          "subject": "hadrian",
+          "move": "orbit_right",
+          "angle": 15,
+          "height": "low"
+        }
+      },
+      {
+        "a": 5299,
+        "b": 5339,
+        "type": "closeup",
+        "fstop": 1.8,
+        "frame": {
+          "subject": "hadrian",
+          "move": "push_in",
+          "amount": 1.6,
+          "height": "low",
+          "angle": -5
+        }
+      },
+      {
+        "a": 5340,
+        "b": 5464,
+        "type": "medium",
+        "grade": "dusk",
+        "fstop": 2.8,
+        "frame": {
+          "subject": [
+            1901.9,
+            7.5,
+            1.2
+          ],
+          "size": 4.5,
+          "move": "pull_out",
+          "amount": 1.8
+        }
+      }
+    ],
+    "punch": [
+      [
+        469,
+        1.12,
+        8,
+        30
+      ],
+      [
+        2718,
+        1.15,
+        8,
+        40
+      ],
+      [
+        5328,
+        1.18,
+        6,
+        30
+      ]
+    ],
+    "shakes": [
+      [
+        1992,
+        0.8,
+        10
+      ],
+      [
+        5328,
+        0.6,
+        10
+      ]
+    ]
+  },
+  "visibility": {
+    "stone2d": [
+      [
+        1,
+        1985
+      ]
+    ],
+    "had_tablet": [
+      [
+        4272,
+        4448
+      ]
+    ]
+  },
+  "tracks": [
+    {
+      "target": "wall_gate_north",
+      "note": "3 tiếng gõ làm cánh cổng rung; ban ngày cổng mở",
+      "segments": [
+        {
+          "from": 630,
+          "to": 700,
+          "rotation_euler": [
+            "knock(f, 639) + knock(f, 650) + knock(f, 661)",
+            0,
+            0
+          ]
+        },
+        {
+          "from": 2200,
+          "to": 2383,
+          "rotation_euler": [
+            0,
+            0,
+            "-1.35 * ease(clamp01((f - 2200) / 40))"
+          ]
+        }
+      ],
+      "default": {
+        "rotation_euler": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "target": "stone3d",
+      "note": "viên đá rơi trúng chân lính",
+      "segments": [
+        {
+          "from": 1986,
+          "to": 1992,
+          "let": {
+            "u": "(f - 1986) / 6"
+          },
+          "location": [
+            "lerp(299.05, 299.15, u)",
+            -2.6,
+            "lerp(1.55, 0.16, u * u)"
+          ],
+          "rotation_euler": [
+            "2.4 * u",
+            0,
+            "0.6 * u"
+          ]
+        },
+        {
+          "from": 1993,
+          "to": 2129,
+          "location": [
+            299.15,
+            -2.6,
+            0.16
+          ],
+          "rotation_euler": [
+            2.4,
+            0,
+            0.6
+          ]
+        }
+      ],
+      "default": {
+        "location": [
+          299.15,
+          -2.6,
+          -6
+        ],
+        "rotation_euler": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "target": "bust4_beard",
+      "segments": [
+        {
+          "from": 1,
+          "to": 2924,
+          "scale": [
+            0.001,
+            0.001,
+            0.001
+          ]
+        },
+        {
+          "from": 2925,
+          "to": 5464,
+          "scale": [
+            "pop_scale(f, 2925)",
+            "pop_scale(f, 2925)",
+            "pop_scale(f, 2925)"
+          ]
+        }
+      ]
+    },
+    {
+      "target": "bust5_beard",
+      "segments": [
+        {
+          "from": 1,
+          "to": 2959,
+          "scale": [
+            0.001,
+            0.001,
+            0.001
+          ]
+        },
+        {
+          "from": 2960,
+          "to": 5464,
+          "scale": [
+            "pop_scale(f, 2960)",
+            "pop_scale(f, 2960)",
+            "pop_scale(f, 2960)"
+          ]
+        }
+      ]
+    },
+    {
+      "target": "bust6_beard",
+      "segments": [
+        {
+          "from": 1,
+          "to": 2989,
+          "scale": [
+            0.001,
+            0.001,
+            0.001
+          ]
+        },
+        {
+          "from": 2990,
+          "to": 5464,
+          "scale": [
+            "pop_scale(f, 2990)",
+            "pop_scale(f, 2990)",
+            "pop_scale(f, 2990)"
+          ]
+        }
+      ]
+    }
+  ],
+  "captions": {
+    "style": "bottom"
+  },
+  "cards": [
+    {
+      "style": "fade",
+      "from": 1,
+      "to": 20,
+      "in": 0,
+      "out": 20
+    },
+    {
+      "style": "chapter",
+      "sub": "CHAPTER 1",
+      "text": "THE EDGE OF THE WORLD",
+      "from": 1,
+      "to": 75
+    },
+    {
+      "style": "screen",
+      "variant": "year",
+      "sub": "THE YEAR IS",
+      "text": "AD 122",
+      "caption": "Britannia",
+      "from": 862,
+      "to": 925
+    },
+    {
+      "style": "screen",
+      "variant": "number",
+      "sub": "AROUND",
+      "text": "60,000,000",
+      "caption": "people, one emperor",
+      "from": 1240,
+      "to": 1335
+    },
+    {
+      "style": "label",
+      "text": "73 MILES · COAST TO COAST",
+      "from": 1580,
+      "to": 1678,
+      "pos": [
+        0.45,
+        0.62
+      ]
+    },
+    {
+      "style": "screen",
+      "variant": "question",
+      "text": "WHY WOULD ROME BUILD A WALL?",
+      "from": 2290,
+      "to": 2380
+    },
+    {
+      "style": "screen",
+      "variant": "name",
+      "sub": "PUBLIUS AELIUS HADRIANUS",
+      "text": "HADRIAN",
+      "caption": "Emperor, AD 117-138",
+      "from": 2470,
+      "to": 2552
+    },
+    {
+      "style": "label",
+      "text": "AGRICOLA · AD 77-84",
+      "from": 3560,
+      "to": 3690,
+      "pos": [
+        -0.5,
+        0.7
+      ]
+    },
+    {
+      "style": "screen",
+      "variant": "place",
+      "sub": "AD 83 OR 84",
+      "text": "MONS GRAUPIUS",
+      "caption": "Caledonia",
+      "from": 3700,
+      "to": 3764
+    },
+    {
+      "style": "screen",
+      "variant": "quote",
+      "text": "\"The Britons could not be kept under Roman control.\"",
+      "caption": "— Historia Augusta, Life of Hadrian 5.2",
+      "from": 4364,
+      "to": 4446
+    },
+    {
+      "style": "label",
+      "text": "~73 MILES · COAST TO COAST",
+      "from": 4715,
+      "to": 4788,
+      "pos": [
+        0,
+        0.62
+      ]
+    }
+  ],
+  "vfx": [
+    {
+      "type": "smoke",
+      "note": "sương mù phía bắc tường",
+      "at": [
+        0,
+        16,
+        0
+      ],
+      "from": 1,
+      "to": 840,
+      "n": 18,
+      "size": 4,
+      "spread": 26,
+      "rise": 0.3,
+      "wind": [
+        0.4,
+        -0.3
+      ],
+      "opacity": 0.55
+    },
+    {
+      "type": "smoke",
+      "note": "sương xa",
+      "at": [
+        0,
+        34,
+        0
+      ],
+      "from": 1,
+      "to": 840,
+      "n": 12,
+      "size": 6,
+      "spread": 40,
+      "rise": 0.2,
+      "wind": [
+        0.3,
+        -0.2
+      ],
+      "opacity": 0.5
+    },
+    {
+      "type": "smoke",
+      "note": "hơi thở Atto",
+      "at": [
+        -3,
+        -0.5,
+        6.4
+      ],
+      "from": 200,
+      "to": 840,
+      "n": 3,
+      "size": 0.2,
+      "spread": 0.15,
+      "rise": 0.5
+    },
+    {
+      "type": "fire",
+      "note": "lò than trên đỉnh tường",
+      "at": [
+        -5.2,
+        0.2,
+        4.55
+      ],
+      "from": 1,
+      "to": 840,
+      "size": 0.45
+    },
+    {
+      "type": "rain",
+      "note": "mưa phùn Britannia (gag trên bản đồ)",
+      "from": 1090,
+      "to": 1235,
+      "intensity": 0.5
+    },
+    {
+      "type": "dust",
+      "at": [
+        302,
+        -2.5,
+        0
+      ],
+      "from": 1473,
+      "to": 1570,
+      "n": 6,
+      "spread": 6
+    },
+    {
+      "type": "dust",
+      "at": [
+        1300,
+        16,
+        0
+      ],
+      "from": 1827,
+      "to": 1889,
+      "n": 10,
+      "spread": 7
+    },
+    {
+      "type": "dust",
+      "note": "đá rơi trúng chân",
+      "at": [
+        299.15,
+        -2.6,
+        0
+      ],
+      "from": 1991,
+      "to": 2010,
+      "n": 5,
+      "spread": 0.5,
+      "size": 0.4
+    },
+    {
+      "type": "smoke",
+      "note": "khói bếp làng phía bắc",
+      "at": [
+        304,
+        55,
+        0
+      ],
+      "from": 2070,
+      "to": 2140,
+      "n": 6,
+      "size": 1.6,
+      "spread": 2,
+      "rise": 2
+    },
+    {
+      "type": "light_shafts",
+      "at": [
+        1596,
+        10,
+        14
+      ],
+      "dir": [
+        0.3,
+        -0.3,
+        -1
+      ],
+      "from": 2467,
+      "to": 3446,
+      "n": 4
+    },
+    {
+      "type": "rain",
+      "note": "mưa tạt cao nguyên",
+      "from": 3879,
+      "to": 4158,
+      "intensity": 1,
+      "wind": [
+        1.2,
+        0
+      ]
+    },
+    {
+      "type": "banner",
+      "at": [
+        1882.5,
+        6,
+        0
+      ],
+      "faction": "rome",
+      "h": 3.2
+    },
+    {
+      "type": "banner",
+      "at": [
+        1899,
+        8.5,
+        0
+      ],
+      "faction": "rome",
+      "h": 3.4
+    },
+    {
+      "type": "smoke",
+      "note": "khói làng xa phía bắc",
+      "at": [
+        1915,
+        70,
+        0
+      ],
+      "from": 4791,
+      "to": 4928,
+      "n": 6,
+      "size": 3,
+      "spread": 3,
+      "rise": 4
+    }
+  ],
+  "sound": {
+    "music": [
+      {
+        "mood": "mystery",
+        "from": 1,
+        "to": 860,
+        "gain_db": -4,
+        "duck_db": -10
+      },
+      {
+        "mood": "epic",
+        "from": 800,
+        "to": 1700,
+        "gain_db": -4,
+        "duck_db": -10
+      },
+      {
+        "mood": "tense",
+        "from": 1640,
+        "to": 2480,
+        "gain_db": -4,
+        "duck_db": -10
+      },
+      {
+        "mood": "calm",
+        "from": 2420,
+        "to": 3460,
+        "gain_db": -5,
+        "duck_db": -10
+      },
+      {
+        "mood": "epic",
+        "from": 3400,
+        "to": 4460,
+        "gain_db": -4,
+        "duck_db": -10
+      },
+      {
+        "mood": "tense",
+        "from": 4400,
+        "to": 5464,
+        "gain_db": -4,
+        "duck_db": -10
+      }
+    ],
+    "ambience": [
+      {
+        "kind": "night",
+        "from": 1,
+        "to": 840
+      },
+      {
+        "kind": "wind",
+        "from": 1,
+        "to": 840,
+        "gain_db": -24
+      },
+      {
+        "kind": "rain",
+        "from": 1090,
+        "to": 1235
+      },
+      {
+        "kind": "camp",
+        "from": 1473,
+        "to": 1570
+      },
+      {
+        "kind": "camp",
+        "from": 1890,
+        "to": 2129
+      },
+      {
+        "kind": "forest",
+        "from": 2467,
+        "to": 3086,
+        "gain_db": -24
+      },
+      {
+        "kind": "rain",
+        "from": 3879,
+        "to": 4158
+      },
+      {
+        "kind": "wind",
+        "from": 4449,
+        "to": 5464,
+        "gain_db": -22
+      }
+    ],
+    "events": [
+      [
+        210,
+        "wind_gust",
+        0.5
+      ],
+      [
+        362,
+        "gulp",
+        0.5
+      ],
+      [
+        469,
+        "bell",
+        0.45
+      ],
+      [
+        470,
+        "squeak",
+        0.4
+      ],
+      [
+        525,
+        "bell",
+        0.35
+      ],
+      [
+        639,
+        "thud",
+        0.45
+      ],
+      [
+        650,
+        "thud",
+        0.45
+      ],
+      [
+        661,
+        "thud",
+        0.45
+      ],
+      [
+        702,
+        "scratch",
+        0.5
+      ],
+      [
+        926,
+        "paper",
+        0.4
+      ],
+      [
+        1594,
+        "quill",
+        0.4
+      ],
+      [
+        1480,
+        "hammer",
+        0.35
+      ],
+      [
+        1525,
+        "hammer",
+        0.35
+      ],
+      [
+        1827,
+        "march",
+        0.5
+      ],
+      [
+        1900,
+        "hammer",
+        0.3
+      ],
+      [
+        1991,
+        "thud",
+        0.5
+      ],
+      [
+        1992,
+        "bonk",
+        0.55
+      ],
+      [
+        2084,
+        "wind_gust",
+        0.4
+      ],
+      [
+        2200,
+        "squeak",
+        0.45
+      ],
+      [
+        2240,
+        "thud",
+        0.4
+      ],
+      [
+        2287,
+        "war_drum",
+        0.6
+      ],
+      [
+        2384,
+        "war_drum",
+        0.5
+      ],
+      [
+        2698,
+        "ding",
+        0.35
+      ],
+      [
+        2925,
+        "pop",
+        0.3
+      ],
+      [
+        2960,
+        "pop",
+        0.3
+      ],
+      [
+        2990,
+        "pop",
+        0.3
+      ],
+      [
+        2998,
+        "ding",
+        0.4
+      ],
+      [
+        3087,
+        "paper",
+        0.35
+      ],
+      [
+        3435,
+        "stamp_hit",
+        0.5
+      ],
+      [
+        3540,
+        "quill",
+        0.35
+      ],
+      [
+        3766,
+        "war_horn",
+        0.6
+      ],
+      [
+        3790,
+        "crowd_roar",
+        0.5
+      ],
+      [
+        3830,
+        "sword_clash",
+        0.4
+      ],
+      [
+        3879,
+        "wind_gust",
+        0.45
+      ],
+      [
+        3900,
+        "thunder",
+        0.45
+      ],
+      [
+        4272,
+        "paper",
+        0.4
+      ],
+      [
+        4650,
+        "gulp",
+        0.4
+      ],
+      [
+        4712,
+        "quill",
+        0.35
+      ],
+      [
+        5045,
+        "quill",
+        0.4
+      ],
+      [
+        5328,
+        "stamp_hit",
+        0.55
+      ],
+      [
+        5345,
+        "gulp",
+        0.45
+      ],
+      [
+        5410,
+        "sad_trombone",
+        0.3
+      ]
+    ],
+    "repeat": [
+      {
+        "name": "heartbeat",
+        "from": 317,
+        "to": 468,
+        "every": 24,
+        "gain": 0.4
+      },
+      {
+        "name": "step",
+        "from": 480,
+        "to": 610,
+        "every": 15,
+        "gain": 0.25
+      },
+      {
+        "name": "march",
+        "from": 1236,
+        "to": 1889,
+        "every": 60,
+        "gain": 0.3
+      },
+      {
+        "name": "step",
+        "from": 4584,
+        "to": 4708,
+        "every": 14,
+        "gain": 0.25
+      }
+    ],
+    "master": {
+      "lufs": -14
+    }
+  },
+  "words": [
+    [
+      0,
+      "It's"
+    ],
+    [
+      0.19,
+      "a"
+    ],
+    [
+      0.38,
+      "freezing"
+    ],
+    [
+      0.75,
+      "night"
+    ],
+    [
+      0.94,
+      "in"
+    ],
+    [
+      1.13,
+      "northern"
+    ],
+    [
+      1.5,
+      "Britain."
+    ],
+    [
+      2.38,
+      "You're"
+    ],
+    [
+      2.59,
+      "nineteen,"
+    ],
+    [
+      3.21,
+      "you're"
+    ],
+    [
+      3.42,
+      "a"
+    ],
+    [
+      3.62,
+      "long"
+    ],
+    [
+      3.83,
+      "way"
+    ],
+    [
+      4.04,
+      "from"
+    ],
+    [
+      4.25,
+      "home,"
+    ],
+    [
+      4.45,
+      "and"
+    ],
+    [
+      4.66,
+      "you're"
+    ],
+    [
+      4.87,
+      "standing"
+    ],
+    [
+      5.28,
+      "on"
+    ],
+    [
+      5.49,
+      "top"
+    ],
+    [
+      5.7,
+      "of"
+    ],
+    [
+      5.91,
+      "a"
+    ],
+    [
+      6.11,
+      "wall."
+    ],
+    [
+      6.84,
+      "Fog"
+    ],
+    [
+      7.01,
+      "rolls"
+    ],
+    [
+      7.17,
+      "in"
+    ],
+    [
+      7.34,
+      "from"
+    ],
+    [
+      7.51,
+      "the"
+    ],
+    [
+      7.67,
+      "north."
+    ],
+    [
+      8.38,
+      "Somewhere"
+    ],
+    [
+      8.87,
+      "out"
+    ],
+    [
+      9.03,
+      "there,"
+    ],
+    [
+      9.2,
+      "something"
+    ],
+    [
+      9.69,
+      "is"
+    ],
+    [
+      9.85,
+      "moving."
+    ],
+    [
+      10.52,
+      "You"
+    ],
+    [
+      10.77,
+      "grip"
+    ],
+    [
+      11.01,
+      "your"
+    ],
+    [
+      11.26,
+      "spear."
+    ],
+    [
+      12.02,
+      "You"
+    ],
+    [
+      12.24,
+      "squint"
+    ],
+    [
+      12.45,
+      "into"
+    ],
+    [
+      12.89,
+      "the"
+    ],
+    [
+      13.1,
+      "dark."
+    ],
+    [
+      13.52,
+      "A"
+    ],
+    [
+      13.73,
+      "shape"
+    ],
+    [
+      13.94,
+      "climbs"
+    ],
+    [
+      14.15,
+      "out"
+    ],
+    [
+      14.35,
+      "of"
+    ],
+    [
+      14.56,
+      "the"
+    ],
+    [
+      14.77,
+      "mist."
+    ],
+    [
+      15.18,
+      "It's"
+    ],
+    [
+      15.39,
+      "a"
+    ],
+    [
+      15.61,
+      "goat."
+    ],
+    [
+      15.82,
+      "Behind"
+    ],
+    [
+      16.25,
+      "the"
+    ],
+    [
+      16.47,
+      "goat,"
+    ],
+    [
+      16.68,
+      "a"
+    ],
+    [
+      16.9,
+      "man"
+    ],
+    [
+      17.11,
+      "walks"
+    ],
+    [
+      17.33,
+      "right"
+    ],
+    [
+      17.54,
+      "up"
+    ],
+    [
+      17.76,
+      "to"
+    ],
+    [
+      17.97,
+      "the"
+    ],
+    [
+      18.19,
+      "wall."
+    ],
+    [
+      18.7,
+      "He"
+    ],
+    [
+      18.91,
+      "doesn't"
+    ],
+    [
+      19.12,
+      "climb"
+    ],
+    [
+      19.33,
+      "it."
+    ],
+    [
+      19.72,
+      "He"
+    ],
+    [
+      19.9,
+      "doesn't"
+    ],
+    [
+      20.07,
+      "attack"
+    ],
+    [
+      20.42,
+      "it."
+    ],
+    [
+      21.04,
+      "He"
+    ],
+    [
+      21.26,
+      "knocks."
+    ],
+    [
+      21.48,
+      "Because"
+    ],
+    [
+      21.91,
+      "this"
+    ],
+    [
+      22.13,
+      "wall,"
+    ],
+    [
+      22.35,
+      "built"
+    ],
+    [
+      22.57,
+      "by"
+    ],
+    [
+      22.79,
+      "the"
+    ],
+    [
+      23.01,
+      "greatest"
+    ],
+    [
+      23.45,
+      "army"
+    ],
+    [
+      23.88,
+      "on"
+    ],
+    [
+      24.1,
+      "Earth,"
+    ],
+    [
+      24.5,
+      "has"
+    ],
+    [
+      24.65,
+      "a"
+    ],
+    [
+      24.81,
+      "door."
+    ],
+    [
+      25.26,
+      "Actually,"
+    ],
+    [
+      26.2,
+      "it"
+    ],
+    [
+      26.4,
+      "has"
+    ],
+    [
+      26.6,
+      "about"
+    ],
+    [
+      26.99,
+      "eighty"
+    ],
+    [
+      27.39,
+      "of"
+    ],
+    [
+      27.58,
+      "them."
+    ],
+    [
+      28,
+      "Let's"
+    ],
+    [
+      28.24,
+      "go"
+    ],
+    [
+      28.47,
+      "back."
+    ],
+    [
+      28.71,
+      "It's"
+    ],
+    [
+      28.94,
+      "the"
+    ],
+    [
+      29.18,
+      "year"
+    ],
+    [
+      29.41,
+      "122."
+    ],
+    [
+      29.65,
+      "The"
+    ],
+    [
+      29.89,
+      "Roman"
+    ],
+    [
+      30.36,
+      "Empire"
+    ],
+    [
+      30.83,
+      "is"
+    ],
+    [
+      31.06,
+      "close"
+    ],
+    [
+      31.3,
+      "to"
+    ],
+    [
+      31.53,
+      "the"
+    ],
+    [
+      31.77,
+      "biggest"
+    ],
+    [
+      32.24,
+      "it"
+    ],
+    [
+      32.48,
+      "will"
+    ],
+    [
+      32.71,
+      "ever"
+    ],
+    [
+      33.18,
+      "be."
+    ],
+    [
+      33.74,
+      "It"
+    ],
+    [
+      33.94,
+      "stretches"
+    ],
+    [
+      34.33,
+      "from"
+    ],
+    [
+      34.52,
+      "the"
+    ],
+    [
+      34.72,
+      "deserts"
+    ],
+    [
+      35.11,
+      "of"
+    ],
+    [
+      35.31,
+      "Syria"
+    ],
+    [
+      35.7,
+      "to"
+    ],
+    [
+      35.89,
+      "the"
+    ],
+    [
+      36.09,
+      "drizzle"
+    ],
+    [
+      36.48,
+      "of"
+    ],
+    [
+      36.68,
+      "northern"
+    ],
+    [
+      37.07,
+      "Britain."
+    ],
+    [
+      37.96,
+      "Britain"
+    ],
+    [
+      38.31,
+      "has"
+    ],
+    [
+      38.48,
+      "been"
+    ],
+    [
+      38.66,
+      "a"
+    ],
+    [
+      38.83,
+      "Roman"
+    ],
+    [
+      39.18,
+      "province"
+    ],
+    [
+      39.53,
+      "for"
+    ],
+    [
+      39.71,
+      "almost"
+    ],
+    [
+      40.06,
+      "eighty"
+    ],
+    [
+      40.41,
+      "years."
+    ],
+    [
+      41.18,
+      "Historians"
+    ],
+    [
+      41.69,
+      "think"
+    ],
+    [
+      41.86,
+      "around"
+    ],
+    [
+      42.2,
+      "sixty"
+    ],
+    [
+      42.54,
+      "million"
+    ],
+    [
+      42.89,
+      "people"
+    ],
+    [
+      43.23,
+      "live"
+    ],
+    [
+      43.4,
+      "under"
+    ],
+    [
+      43.74,
+      "one"
+    ],
+    [
+      43.91,
+      "emperor."
+    ],
+    [
+      44.72,
+      "And"
+    ],
+    [
+      44.94,
+      "at"
+    ],
+    [
+      45.16,
+      "the"
+    ],
+    [
+      45.38,
+      "far"
+    ],
+    [
+      45.6,
+      "northwest"
+    ],
+    [
+      46.03,
+      "corner"
+    ],
+    [
+      46.47,
+      "of"
+    ],
+    [
+      46.69,
+      "all"
+    ],
+    [
+      46.91,
+      "that"
+    ],
+    [
+      47.13,
+      "power,"
+    ],
+    [
+      47.57,
+      "Rome"
+    ],
+    [
+      47.79,
+      "does"
+    ],
+    [
+      48,
+      "something"
+    ],
+    [
+      48.66,
+      "strange."
+    ],
+    [
+      49.06,
+      "It"
+    ],
+    [
+      49.27,
+      "starts"
+    ],
+    [
+      49.48,
+      "building"
+    ],
+    [
+      49.9,
+      "a"
+    ],
+    [
+      50.11,
+      "wall."
+    ],
+    [
+      50.32,
+      "Seventy-three"
+    ],
+    [
+      51.16,
+      "miles"
+    ],
+    [
+      51.58,
+      "of"
+    ],
+    [
+      51.79,
+      "it,"
+    ],
+    [
+      52.32,
+      "coast"
+    ],
+    [
+      52.52,
+      "to"
+    ],
+    [
+      52.72,
+      "coast,"
+    ],
+    [
+      53.1,
+      "from"
+    ],
+    [
+      53.27,
+      "the"
+    ],
+    [
+      53.43,
+      "River"
+    ],
+    [
+      53.76,
+      "Tyne"
+    ],
+    [
+      53.92,
+      "in"
+    ],
+    [
+      54.09,
+      "the"
+    ],
+    [
+      54.25,
+      "east"
+    ],
+    [
+      54.42,
+      "to"
+    ],
+    [
+      54.58,
+      "the"
+    ],
+    [
+      54.75,
+      "Solway"
+    ],
+    [
+      55.08,
+      "Firth"
+    ],
+    [
+      55.24,
+      "in"
+    ],
+    [
+      55.41,
+      "the"
+    ],
+    [
+      55.57,
+      "west."
+    ],
+    [
+      56,
+      "Now"
+    ],
+    [
+      56.23,
+      "think"
+    ],
+    [
+      56.46,
+      "about"
+    ],
+    [
+      56.93,
+      "that."
+    ],
+    [
+      57.46,
+      "This"
+    ],
+    [
+      57.69,
+      "is"
+    ],
+    [
+      57.92,
+      "the"
+    ],
+    [
+      58.15,
+      "empire"
+    ],
+    [
+      58.62,
+      "that"
+    ],
+    [
+      58.85,
+      "conquered"
+    ],
+    [
+      59.54,
+      "Gaul,"
+    ],
+    [
+      59.77,
+      "Egypt,"
+    ],
+    [
+      60.24,
+      "and"
+    ],
+    [
+      60.47,
+      "Greece."
+    ],
+    [
+      60.88,
+      "It"
+    ],
+    [
+      61.06,
+      "doesn't"
+    ],
+    [
+      61.24,
+      "hide."
+    ],
+    [
+      61.78,
+      "It"
+    ],
+    [
+      62,
+      "invades."
+    ],
+    [
+      62.98,
+      "So"
+    ],
+    [
+      63.17,
+      "why"
+    ],
+    [
+      63.35,
+      "would"
+    ],
+    [
+      63.54,
+      "the"
+    ],
+    [
+      63.72,
+      "most"
+    ],
+    [
+      63.91,
+      "powerful"
+    ],
+    [
+      64.46,
+      "army"
+    ],
+    [
+      64.84,
+      "on"
+    ],
+    [
+      65.02,
+      "the"
+    ],
+    [
+      65.21,
+      "planet"
+    ],
+    [
+      65.58,
+      "spend"
+    ],
+    [
+      65.76,
+      "years"
+    ],
+    [
+      65.95,
+      "stacking"
+    ],
+    [
+      66.32,
+      "rocks"
+    ],
+    [
+      66.51,
+      "at"
+    ],
+    [
+      66.69,
+      "the"
+    ],
+    [
+      66.88,
+      "end"
+    ],
+    [
+      67.06,
+      "of"
+    ],
+    [
+      67.25,
+      "the"
+    ],
+    [
+      67.43,
+      "world?"
+    ],
+    [
+      68,
+      "Was"
+    ],
+    [
+      68.18,
+      "Rome"
+    ],
+    [
+      68.35,
+      "scared"
+    ],
+    [
+      68.71,
+      "of"
+    ],
+    [
+      68.89,
+      "someone?"
+    ],
+    [
+      69.42,
+      "Who"
+    ],
+    [
+      69.61,
+      "lived"
+    ],
+    [
+      70,
+      "on"
+    ],
+    [
+      70.19,
+      "the"
+    ],
+    [
+      70.39,
+      "other"
+    ],
+    [
+      70.78,
+      "side?"
+    ],
+    [
+      70.97,
+      "And"
+    ],
+    [
+      71.16,
+      "if"
+    ],
+    [
+      71.36,
+      "the"
+    ],
+    [
+      71.55,
+      "wall"
+    ],
+    [
+      71.74,
+      "was"
+    ],
+    [
+      71.94,
+      "meant"
+    ],
+    [
+      72.13,
+      "to"
+    ],
+    [
+      72.33,
+      "keep"
+    ],
+    [
+      72.52,
+      "people"
+    ],
+    [
+      72.91,
+      "out,"
+    ],
+    [
+      73.32,
+      "why"
+    ],
+    [
+      73.49,
+      "did"
+    ],
+    [
+      73.65,
+      "it"
+    ],
+    [
+      73.82,
+      "have"
+    ],
+    [
+      73.98,
+      "a"
+    ],
+    [
+      74.15,
+      "gate"
+    ],
+    [
+      74.32,
+      "every"
+    ],
+    [
+      74.82,
+      "single"
+    ],
+    [
+      75.15,
+      "mile?"
+    ],
+    [
+      76.2,
+      "That's"
+    ],
+    [
+      76.38,
+      "the"
+    ],
+    [
+      76.56,
+      "question."
+    ],
+    [
+      77.18,
+      "And"
+    ],
+    [
+      77.37,
+      "the"
+    ],
+    [
+      77.56,
+      "answer"
+    ],
+    [
+      77.94,
+      "isn't"
+    ],
+    [
+      78.13,
+      "what"
+    ],
+    [
+      78.32,
+      "most"
+    ],
+    [
+      78.51,
+      "people"
+    ],
+    [
+      78.89,
+      "think."
+    ],
+    [
+      79.44,
+      "To"
+    ],
+    [
+      79.62,
+      "get"
+    ],
+    [
+      79.81,
+      "there,"
+    ],
+    [
+      79.99,
+      "we"
+    ],
+    [
+      80.17,
+      "need"
+    ],
+    [
+      80.35,
+      "to"
+    ],
+    [
+      80.54,
+      "meet"
+    ],
+    [
+      80.72,
+      "the"
+    ],
+    [
+      80.9,
+      "man"
+    ],
+    [
+      81.09,
+      "whose"
+    ],
+    [
+      81.27,
+      "name"
+    ],
+    [
+      81.45,
+      "is"
+    ],
+    [
+      81.63,
+      "on"
+    ],
+    [
+      81.82,
+      "it."
+    ],
+    [
+      82.2,
+      "Publius"
+    ],
+    [
+      82.6,
+      "Aelius"
+    ],
+    [
+      83,
+      "Hadrianus."
+    ],
+    [
+      83.6,
+      "Hadrian,"
+    ],
+    [
+      84.62,
+      "for"
+    ],
+    [
+      84.77,
+      "short."
+    ],
+    [
+      85.14,
+      "He"
+    ],
+    [
+      85.32,
+      "became"
+    ],
+    [
+      85.69,
+      "emperor"
+    ],
+    [
+      86.24,
+      "in"
+    ],
+    [
+      86.42,
+      "117,"
+    ],
+    [
+      86.6,
+      "and"
+    ],
+    [
+      86.79,
+      "he"
+    ],
+    [
+      86.97,
+      "looked"
+    ],
+    [
+      87.34,
+      "different"
+    ],
+    [
+      87.88,
+      "from"
+    ],
+    [
+      88.07,
+      "the"
+    ],
+    [
+      88.25,
+      "emperors"
+    ],
+    [
+      88.8,
+      "before"
+    ],
+    [
+      89.17,
+      "him."
+    ],
+    [
+      89.35,
+      "He"
+    ],
+    [
+      89.53,
+      "had"
+    ],
+    [
+      89.71,
+      "a"
+    ],
+    [
+      89.9,
+      "beard."
+    ],
+    [
+      90.58,
+      "A"
+    ],
+    [
+      90.84,
+      "real,"
+    ],
+    [
+      91.34,
+      "full"
+    ],
+    [
+      91.54,
+      "beard."
+    ],
+    [
+      91.75,
+      "Before"
+    ],
+    [
+      92.16,
+      "him,"
+    ],
+    [
+      92.64,
+      "Roman"
+    ],
+    [
+      93.1,
+      "emperors"
+    ],
+    [
+      93.79,
+      "were"
+    ],
+    [
+      94.02,
+      "almost"
+    ],
+    [
+      94.47,
+      "always"
+    ],
+    [
+      94.93,
+      "clean-shaven."
+    ],
+    [
+      96.16,
+      "After"
+    ],
+    [
+      96.55,
+      "him,"
+    ],
+    [
+      97.28,
+      "almost"
+    ],
+    [
+      97.67,
+      "every"
+    ],
+    [
+      98.25,
+      "emperor"
+    ],
+    [
+      98.83,
+      "for"
+    ],
+    [
+      99.03,
+      "a"
+    ],
+    [
+      99.22,
+      "century"
+    ],
+    [
+      99.8,
+      "grew"
+    ],
+    [
+      99.99,
+      "one."
+    ],
+    [
+      100.19,
+      "But"
+    ],
+    [
+      100.38,
+      "the"
+    ],
+    [
+      100.58,
+      "beard"
+    ],
+    [
+      100.77,
+      "wasn't"
+    ],
+    [
+      100.96,
+      "the"
+    ],
+    [
+      101.16,
+      "biggest"
+    ],
+    [
+      101.55,
+      "change."
+    ],
+    [
+      101.98,
+      "His"
+    ],
+    [
+      102.15,
+      "predecessor,"
+    ],
+    [
+      102.85,
+      "Trajan,"
+    ],
+    [
+      103.19,
+      "had"
+    ],
+    [
+      103.36,
+      "pushed"
+    ],
+    [
+      103.71,
+      "the"
+    ],
+    [
+      103.88,
+      "empire"
+    ],
+    [
+      104.23,
+      "all"
+    ],
+    [
+      104.4,
+      "the"
+    ],
+    [
+      104.58,
+      "way"
+    ],
+    [
+      104.75,
+      "into"
+    ],
+    [
+      105.09,
+      "Mesopotamia."
+    ],
+    [
+      106.22,
+      "Hadrian"
+    ],
+    [
+      106.58,
+      "looked"
+    ],
+    [
+      106.94,
+      "at"
+    ],
+    [
+      107.12,
+      "the"
+    ],
+    [
+      107.3,
+      "map"
+    ],
+    [
+      107.48,
+      "and"
+    ],
+    [
+      107.66,
+      "gave"
+    ],
+    [
+      107.84,
+      "those"
+    ],
+    [
+      108.02,
+      "new"
+    ],
+    [
+      108.2,
+      "provinces"
+    ],
+    [
+      108.74,
+      "back."
+    ],
+    [
+      109.28,
+      "He"
+    ],
+    [
+      109.47,
+      "wanted"
+    ],
+    [
+      109.86,
+      "an"
+    ],
+    [
+      110.05,
+      "empire"
+    ],
+    [
+      110.44,
+      "that"
+    ],
+    [
+      110.63,
+      "stopped"
+    ],
+    [
+      111.01,
+      "growing"
+    ],
+    [
+      111.4,
+      "and"
+    ],
+    [
+      111.59,
+      "started"
+    ],
+    [
+      111.98,
+      "holding."
+    ],
+    [
+      112.6,
+      "In"
+    ],
+    [
+      112.79,
+      "his"
+    ],
+    [
+      112.97,
+      "mind,"
+    ],
+    [
+      113.16,
+      "the"
+    ],
+    [
+      113.34,
+      "borders"
+    ],
+    [
+      113.71,
+      "were"
+    ],
+    [
+      113.9,
+      "finally"
+    ],
+    [
+      114.45,
+      "done."
+    ],
+    [
+      114.88,
+      "And"
+    ],
+    [
+      115.1,
+      "Britain"
+    ],
+    [
+      115.55,
+      "was"
+    ],
+    [
+      115.77,
+      "the"
+    ],
+    [
+      115.99,
+      "messiest"
+    ],
+    [
+      116.43,
+      "border"
+    ],
+    [
+      116.88,
+      "of"
+    ],
+    [
+      117.1,
+      "all."
+    ],
+    [
+      117.5,
+      "Forty"
+    ],
+    [
+      117.86,
+      "years"
+    ],
+    [
+      118.04,
+      "earlier,"
+    ],
+    [
+      118.41,
+      "a"
+    ],
+    [
+      118.59,
+      "Roman"
+    ],
+    [
+      118.95,
+      "general"
+    ],
+    [
+      119.5,
+      "named"
+    ],
+    [
+      119.86,
+      "Agricola"
+    ],
+    [
+      120.58,
+      "had"
+    ],
+    [
+      120.77,
+      "marched"
+    ],
+    [
+      121.13,
+      "deep"
+    ],
+    [
+      121.31,
+      "into"
+    ],
+    [
+      121.67,
+      "what"
+    ],
+    [
+      121.85,
+      "is"
+    ],
+    [
+      122.04,
+      "now"
+    ],
+    [
+      122.22,
+      "Scotland."
+    ],
+    [
+      123.22,
+      "In"
+    ],
+    [
+      123.53,
+      "the"
+    ],
+    [
+      123.83,
+      "year"
+    ],
+    [
+      124.14,
+      "83"
+    ],
+    [
+      124.45,
+      "or"
+    ],
+    [
+      124.75,
+      "84,"
+    ],
+    [
+      125.28,
+      "he"
+    ],
+    [
+      125.51,
+      "crushed"
+    ],
+    [
+      125.98,
+      "the"
+    ],
+    [
+      126.22,
+      "Caledonians"
+    ],
+    [
+      127.16,
+      "at"
+    ],
+    [
+      127.39,
+      "a"
+    ],
+    [
+      127.62,
+      "battle"
+    ],
+    [
+      128.09,
+      "called"
+    ],
+    [
+      128.56,
+      "Mons"
+    ],
+    [
+      128.8,
+      "Graupius."
+    ],
+    [
+      129.27,
+      "Rome"
+    ],
+    [
+      129.5,
+      "could"
+    ],
+    [
+      129.74,
+      "have"
+    ],
+    [
+      129.97,
+      "taken"
+    ],
+    [
+      130.44,
+      "the"
+    ],
+    [
+      130.67,
+      "whole"
+    ],
+    [
+      131.14,
+      "island."
+    ],
+    [
+      131.61,
+      "Instead,"
+    ],
+    [
+      132.3,
+      "it"
+    ],
+    [
+      132.56,
+      "pulled"
+    ],
+    [
+      133.09,
+      "back."
+    ],
+    [
+      133.74,
+      "The"
+    ],
+    [
+      133.93,
+      "army"
+    ],
+    [
+      134.3,
+      "was"
+    ],
+    [
+      134.48,
+      "needed"
+    ],
+    [
+      134.85,
+      "elsewhere,"
+    ],
+    [
+      135.41,
+      "and"
+    ],
+    [
+      135.59,
+      "the"
+    ],
+    [
+      135.78,
+      "Highlands"
+    ],
+    [
+      136.15,
+      "were"
+    ],
+    [
+      136.33,
+      "cold,"
+    ],
+    [
+      137.16,
+      "wet,"
+    ],
+    [
+      137.36,
+      "and"
+    ],
+    [
+      137.56,
+      "hard"
+    ],
+    [
+      137.76,
+      "to"
+    ],
+    [
+      137.96,
+      "tax."
+    ],
+    [
+      138.6,
+      "The"
+    ],
+    [
+      138.79,
+      "frontier"
+    ],
+    [
+      139.16,
+      "slid"
+    ],
+    [
+      139.35,
+      "south,"
+    ],
+    [
+      139.54,
+      "to"
+    ],
+    [
+      139.72,
+      "a"
+    ],
+    [
+      139.91,
+      "line"
+    ],
+    [
+      140.1,
+      "of"
+    ],
+    [
+      140.29,
+      "forts"
+    ],
+    [
+      140.47,
+      "along"
+    ],
+    [
+      140.85,
+      "a"
+    ],
+    [
+      141.04,
+      "road"
+    ],
+    [
+      141.22,
+      "called"
+    ],
+    [
+      141.6,
+      "the"
+    ],
+    [
+      141.79,
+      "Stanegate."
+    ],
+    [
+      142.35,
+      "And"
+    ],
+    [
+      142.54,
+      "when"
+    ],
+    [
+      142.72,
+      "Hadrian"
+    ],
+    [
+      143.1,
+      "took"
+    ],
+    [
+      143.29,
+      "power,"
+    ],
+    [
+      144.02,
+      "his"
+    ],
+    [
+      144.21,
+      "own"
+    ],
+    [
+      144.4,
+      "biography"
+    ],
+    [
+      144.98,
+      "says"
+    ],
+    [
+      145.17,
+      "the"
+    ],
+    [
+      145.36,
+      "Britons"
+    ],
+    [
+      145.74,
+      "could"
+    ],
+    [
+      145.93,
+      "not"
+    ],
+    [
+      146.13,
+      "be"
+    ],
+    [
+      146.32,
+      "kept"
+    ],
+    [
+      146.51,
+      "under"
+    ],
+    [
+      146.89,
+      "Roman"
+    ],
+    [
+      147.27,
+      "control."
+    ],
+    [
+      147.66,
+      "So"
+    ],
+    [
+      147.85,
+      "in"
+    ],
+    [
+      148.04,
+      "122,"
+    ],
+    [
+      148.23,
+      "Hadrian"
+    ],
+    [
+      148.61,
+      "did"
+    ],
+    [
+      148.81,
+      "something"
+    ],
+    [
+      149.38,
+      "emperors"
+    ],
+    [
+      149.95,
+      "rarely"
+    ],
+    [
+      150.53,
+      "did."
+    ],
+    [
+      151.04,
+      "He"
+    ],
+    [
+      151.24,
+      "came"
+    ],
+    [
+      151.43,
+      "to"
+    ],
+    [
+      151.63,
+      "see"
+    ],
+    [
+      151.83,
+      "it"
+    ],
+    [
+      152.03,
+      "himself."
+    ],
+    [
+      152.76,
+      "He"
+    ],
+    [
+      152.94,
+      "crossed"
+    ],
+    [
+      153.31,
+      "the"
+    ],
+    [
+      153.5,
+      "sea,"
+    ],
+    [
+      153.92,
+      "rode"
+    ],
+    [
+      154.11,
+      "north,"
+    ],
+    [
+      154.3,
+      "and"
+    ],
+    [
+      154.49,
+      "walked"
+    ],
+    [
+      154.87,
+      "the"
+    ],
+    [
+      155.06,
+      "land"
+    ],
+    [
+      155.25,
+      "between"
+    ],
+    [
+      155.62,
+      "the"
+    ],
+    [
+      155.81,
+      "Tyne"
+    ],
+    [
+      156,
+      "and"
+    ],
+    [
+      156.19,
+      "the"
+    ],
+    [
+      156.38,
+      "Solway,"
+    ],
+    [
+      156.94,
+      "one"
+    ],
+    [
+      157.13,
+      "of"
+    ],
+    [
+      157.32,
+      "the"
+    ],
+    [
+      157.51,
+      "narrowest"
+    ],
+    [
+      158.08,
+      "necks"
+    ],
+    [
+      158.26,
+      "of"
+    ],
+    [
+      158.45,
+      "the"
+    ],
+    [
+      158.64,
+      "whole"
+    ],
+    [
+      159.02,
+      "island."
+    ],
+    [
+      159.68,
+      "Out"
+    ],
+    [
+      159.9,
+      "there,"
+    ],
+    [
+      160.12,
+      "beyond"
+    ],
+    [
+      160.34,
+      "the"
+    ],
+    [
+      160.56,
+      "hills,"
+    ],
+    [
+      160.79,
+      "were"
+    ],
+    [
+      161.01,
+      "tribes"
+    ],
+    [
+      161.45,
+      "Rome"
+    ],
+    [
+      161.67,
+      "had"
+    ],
+    [
+      161.89,
+      "never"
+    ],
+    [
+      162.33,
+      "fully"
+    ],
+    [
+      162.78,
+      "conquered."
+    ],
+    [
+      164.28,
+      "To"
+    ],
+    [
+      164.45,
+      "the"
+    ],
+    [
+      164.62,
+      "south"
+    ],
+    [
+      164.79,
+      "were"
+    ],
+    [
+      164.96,
+      "Britons"
+    ],
+    [
+      165.31,
+      "Rome"
+    ],
+    [
+      165.48,
+      "had"
+    ],
+    [
+      165.65,
+      "conquered,"
+    ],
+    [
+      166.46,
+      "but"
+    ],
+    [
+      166.64,
+      "didn't"
+    ],
+    [
+      166.82,
+      "completely"
+    ],
+    [
+      167.54,
+      "trust."
+    ],
+    [
+      167.9,
+      "Hadrian"
+    ],
+    [
+      168.23,
+      "was"
+    ],
+    [
+      168.4,
+      "a"
+    ],
+    [
+      168.56,
+      "serious"
+    ],
+    [
+      168.89,
+      "amateur"
+    ],
+    [
+      169.38,
+      "architect,"
+    ],
+    [
+      170.16,
+      "and"
+    ],
+    [
+      170.35,
+      "many"
+    ],
+    [
+      170.74,
+      "historians"
+    ],
+    [
+      171.33,
+      "think"
+    ],
+    [
+      171.52,
+      "the"
+    ],
+    [
+      171.72,
+      "basic"
+    ],
+    [
+      172.11,
+      "plan"
+    ],
+    [
+      172.3,
+      "came"
+    ],
+    [
+      172.5,
+      "from"
+    ],
+    [
+      172.69,
+      "him."
+    ],
+    [
+      172.88,
+      "He"
+    ],
+    [
+      173.08,
+      "stood"
+    ],
+    [
+      173.27,
+      "in"
+    ],
+    [
+      173.47,
+      "the"
+    ],
+    [
+      173.66,
+      "middle"
+    ],
+    [
+      174.05,
+      "and"
+    ],
+    [
+      174.25,
+      "made"
+    ],
+    [
+      174.44,
+      "a"
+    ],
+    [
+      174.64,
+      "decision."
+    ],
+    [
+      175.44,
+      "He"
+    ],
+    [
+      175.63,
+      "didn't"
+    ],
+    [
+      175.83,
+      "order"
+    ],
+    [
+      176.21,
+      "a"
+    ],
+    [
+      176.41,
+      "war."
+    ],
+    [
+      176.6,
+      "He"
+    ],
+    [
+      176.79,
+      "ordered"
+    ],
+    [
+      177.37,
+      "a"
+    ],
+    [
+      177.57,
+      "wall."
+    ],
+    [
+      177.96,
+      "And"
+    ],
+    [
+      178.17,
+      "the"
+    ],
+    [
+      178.37,
+      "soldiers"
+    ],
+    [
+      178.78,
+      "who"
+    ],
+    [
+      178.99,
+      "had"
+    ],
+    [
+      179.2,
+      "to"
+    ],
+    [
+      179.4,
+      "build"
+    ],
+    [
+      179.61,
+      "it"
+    ],
+    [
+      179.81,
+      "were"
+    ],
+    [
+      180.02,
+      "about"
+    ],
+    [
+      180.43,
+      "to"
+    ],
+    [
+      180.64,
+      "have"
+    ],
+    [
+      180.84,
+      "a"
+    ],
+    [
+      181.05,
+      "very"
+    ],
+    [
+      181.46,
+      "long"
+    ],
+    [
+      181.67,
+      "six"
+    ],
+    [
+      181.87,
+      "years."
+    ]
+  ]
+}

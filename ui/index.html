@@ -550,14 +550,14 @@ function chapterBlocks(st) {
     <div class="thumbs wide" data-ch="${c.n}">${c.previews.map(f => `<figure><img loading="lazy" src="${P(`/file/chapters/${String(c.n).padStart(2, '0')}/preview/` + f)}?t=${Date.now()}"><figcaption>ch ${c.n} · khung ${parseInt(f.slice(2, 6))}</figcaption></figure>`).join('') || '<span class="muted">Chưa có ảnh xem trước.</span>'}</div></div>`).join('');
 }
 window.buildChapter = n => { if (S.state.chapters.find(c => c.n === n).story && !confirm(`Dựng lại chương ${n}? Claude lên lại shot list (story cũ giữ trong lịch sử của chương).`)) return;
-  run(P('/build'), {chapters: [n]}, `Dựng chương ${n}`); };
+  run(P('/build'), {chapters: [n], replan: true}, `Dựng chương ${n}`); };
 window.previewChapter = n => { const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {chapter: n, frames: f}, `Xem trước chương ${n}`); };
 function renderBuild() {
   const st = S.state; const s = st.story;
   $('#fixCh').classList.toggle('hidden', st.format !== 'long');
   if (st.format === 'long') {
     $('#fixCh').innerHTML = (st.chapters || []).map(c => `<option value="${c.n}">chương ${c.n}</option>`).join('');
-    $('#storyInfo').innerHTML = (st.chapters || []).length ? `Video dài: ${st.chapters.length} chương, ${st.chapters.filter(c => c.story).length} chương đã có story. "Duyệt &amp; dựng" dựng lần lượt các chương chưa có.` : 'Chưa chia chương (tải giọng đọc ở bước 3).';
+    $('#storyInfo').innerHTML = (st.chapters || []).length ? `Video dài: ${st.chapters.length} chương, ${st.chapters.filter(c => c.story).length} chương đã có story. "Duyệt &amp; dựng" làm lần lượt các chương chưa xong (chưa có story, còn đồ chưa thiết kế hoặc chưa có ảnh xem trước); story đã lập thì dùng lại.` : 'Chưa chia chương (tải giọng đọc ở bước 3).';
     $('#previews').classList.remove('thumbs');
     $('#previews').innerHTML = (st.chapters || []).length ? chapterBlocks(st) : '<span class="muted">Chưa có ảnh xem trước.</span>';
     return;
