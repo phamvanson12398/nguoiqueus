@@ -306,3 +306,16 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
      → bóng tối lấy từ màu nhân (gain), Bright/Contrast giữ nhỏ (thử trước bằng numpy trên ảnh ban ngày).
   4. Ánh trời nhuộm xanh mặt ngửa lặp lại ở tường và đá → `look.warm_top(m)` (nhân sắc ấm theo pháp tuyến Z), ghi vào AUTHORING.md.
 - `tools/bpy_run.py` bỏ `--` thừa (trước đây `bpy_run.py thumbs.py -- props/x` làm thumbs.py render lại cả thư viện).
+- Chương 2 (172 s): `sets/barrack_room` (vòng chấm cuối bị cắt do hết lượt, tôi tự xem), `props/{centurial_stone 8, care_package 7}`; camera tự sửa 1 vòng.
+  Chương 3 (227 s): `props/{ladder 8, cornu_horn 8, coins 8}`, `chars/cow` 7; tự sửa 2 vòng (neo `arrow0_mid` thiếu, 8 cú bị che). Ảnh: `docs/img/hadrian_ch{1,2,3}.jpg`.
+  Tổng Claude: lập story 3 × 12-15 phút, 17 món mới × 3-5 phút; chạm giới hạn 5 giờ của gói hai lần.
+- Lỗi đã sửa (tiếp):
+  5. Camera nằm trong tường / sau tường (framing chỉ tính khoảng cách): `check_line_of_sight` bắn tia camera → điểm nhìn giữa mỗi shot,
+     bị che thì WARN cho vòng tự sửa; `clear_angle` thử góc ±35/±70 rồi góc cao trước khi báo (NOTE trong log). Chương 3: 6/8 tự hết.
+  6. Cận cảnh con vật thấp (dê, bò) nhìn vào tường: preset tính theo đầu người 1,85 → `subject_scale` co khung + điểm nhìn theo chiều cao đầu thật.
+  7. Tay cầm bút của `paper_diagram` to và đứng đè hình vẽ → cỡ 1,2, nghỉ lâu thì rời tờ giấy; nhãn đè nhau → `label_overlaps` trong kiểm tra plan.
+  8. `tactical_board` thiếu neo `arrow<i>_mid` như bản đồ; `tools/thumbs.py` chụp mặt theo đầu thật (con vật thấp bị hụt).
+  9. Thumbnail dùng grade tối (lính màu xanh đêm) → schema và `thumb_story` bỏ night/storm/dusk/cold.
+- Gói YouTube (252 s): 10 tiêu đề (chọn "Why Hadrian's Wall Had a Gate Every Mile"), 17 mốc chương, 14 nguồn, 3 thumbnail (Claude chấm 5/7/4, chọn VS).
+  Ảnh: `docs/img/hadrian_thumbs.jpg`.
+- Render thử trong container: chương 1 khung 1-300, fast 25 %, âm thanh −14,0 LUFS, 6 đoạn nhạc theo mood. Bản 10 phút đầy đủ render trên máy người dùng.
