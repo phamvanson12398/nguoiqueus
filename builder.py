@@ -311,8 +311,9 @@ class Builder:
             shots = []
             for k, s in enumerate(cs["shots"]):
                 if "frame" in s and "keys" not in s:       # shot preset -> two camera keys
-                    s = dict(s, keys=framing.frame_keys(s["frame"], s.get("type", "medium"), s["a"], s["b"],
-                                                        self.subject_pos(s["frame"].get("subject", [0, 0, 0]), (s["a"] + s["b"]) // 2, f"camera.shots[{k}].frame")))
+                    sp = self.subject_pos(s["frame"].get("subject", [0, 0, 0]), (s["a"] + s["b"]) // 2, f"camera.shots[{k}].frame")
+                    fr = self.clear_angle(s, sp)
+                    s = dict(s, frame=fr, keys=framing.frame_keys(fr, s.get("type", "medium"), s["a"], s["b"], sp))
                     self.report.setdefault("framed", []).append([s["a"], s["b"], s.get("type")])
                 d = dict(a=s["a"], b=s["b"], keys=[tuple(k) for k in s["keys"]])
                 for k in ("ease_in", "ease_out", "follow_w", "omega", "type"):
@@ -344,6 +345,47 @@ class Builder:
             self.lens = camera.bake_camera(self.cam, self.cam_d, res, set(trans))
             self.cuts = sorted(trans)
             self.bake_dof(res, cs, cs["seqs"])
+
+    def _blocker(self, own, cam, look):
+        """name of the first object between cam and look that is not part of `own` (None = clear)"""
+        cam, look = Vector(cam), Vector(look); d = (look - cam).length
+        if d < 0.3: return None
+        dg = bpy.context.evaluated_depsgraph_get()
+        mine = {own.name} | {c.name for c in own.children_recursive}
+        hit, _loc, _n, _i, ob, _m = ctx.sc.ray_cast(dg, cam, (look - cam).normalized(), distance=d * 0.92)
+        if hit and ob is not None and ob.name not in mine and not ob.name.startswith(("vfx_", "Overlay", "cap_", "card_")):
+            return ob.name
+        return None
+
+    def clear_angle(self, s, sp):
+        """the shot preset puts the camera at a fixed angle/distance from the subject; when a wall (or the inside of a
+        building) is in the way at the start, middle or end of the shot, try other angles, then a high angle, and keep the
+        first clear one. Leaves the frame unchanged when nothing helps (check_line_of_sight then warns)."""
+        fr = s["frame"]; subj = fr.get("subject")
+        if not isinstance(subj, str) or "." in subj or s.get("type") in ("board", "map") or fr.get("height") == "top": return fr
+        own = self.chars[subj].root if subj in self.chars else self.crowds.get(subj) or bpy.data.objects.get(subj)
+        if own is None: return fr
+        a, b = s["a"], s["b"]; m = (a + b) // 2
+
+        def blocked(f2):
+            ks = framing.frame_keys(f2, s.get("type", "medium"), a, b, sp)
+            ctx.sc.frame_set(m)
+            for kk in (ks[0], ks[-1]):
+                who = self._blocker(own, kk[1], kk[2])
+                if who: return who
+            return None
+        who = blocked(fr)
+        if not who: return fr
+        base = float(fr.get("angle", 0.0))
+        tries = [dict(fr, angle=base + da) for da in (35, -35, 70, -70)] + \
+                [dict(fr, angle=base + da, height="high") for da in (0, 35, -35, 70, -70)]
+        for f2 in tries:
+            if not blocked(f2):
+                print(f"NOTE shot {a}-{b}: view of '{subj}' blocked by '{who}' -> angle {f2['angle']:.0f}"
+                      + (f", height {f2['height']}" if f2.get("height") != fr.get("height") else ""))
+                self.report.setdefault("reframed", []).append([a, b, who, f2["angle"], f2.get("height")])
+                return f2
+        return fr
 
     def check_line_of_sight(self, res, shots):
         """framing places the camera by distance only: a wall, a tree or the inside of a building can end up between the
