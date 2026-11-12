@@ -789,7 +789,9 @@ def long_rules():
 
 LONG_CONTENT_RULES = """
 Đây là VIDEO DÀI YouTube 16:9 (không phải Shorts): theo LONGFORM_RULES.md bên dưới (khung kịch bản, lời → kiểu cảnh, nhịp hình).
-- Chia chương (chapters); mỗi chuỗi (sequence) là một nhịp kể 20-60 giây, ghi `chapter` và `shots` = danh sách cú máy dự kiến
+- Video là MỘT MẠCH KỂ LIỀN: không chia chương cho người xem, lời đọc không nói "chapter/part", không có tiêu đề chương trên màn hình.
+  `chapters` chỉ là các PHẦN để tool dựng và render (~2-4 phút mỗi phần, cắt ở đầu một câu giữa mạch kể; title chỉ để tool ghi nhận).
+  Mỗi chuỗi (sequence) là một nhịp kể 20-60 giây, ghi `chapter` (= số phần) và `shots` = danh sách cú máy dự kiến
   (12-16 cắt/phút theo `seconds`), mỗi cú có `type` chọn theo câu lời đọc tương ứng, `what_vi`, và `card_text` khi là màn hình chữ/bản đồ/nhãn.
 - Màn hình chữ ở mốc quan trọng khoảng 1 cái mỗi 45-90 giây (shot type card có card_text), đổi kiểu: năm, con số, câu hỏi, trích dẫn, tên, địa danh.
 - vo_en tổng phải đúng bằng các vo_en của chuỗi nối lại theo thứ tự.
@@ -911,7 +913,7 @@ Luật khi viết story.json:
 
 
 PLAN_RULES_LONG = """
-Luật riêng cho VIDEO DÀI (story này là MỘT CHƯƠNG; đọc LONGFORM_RULES.md bên dưới). Luật camera v3/seqs ở trên KHÔNG áp dụng:
+Luật riêng cho VIDEO DÀI (story này là MỘT PHẦN của một video liền mạch: người xem không thấy chỗ nối; đọc LONGFORM_RULES.md bên dưới). Luật camera v3/seqs ở trên KHÔNG áp dụng:
 dùng rig "long" với shots (shot ngắn được).
 - meta.aspect = "16:9", meta.chapter = {n, title, start_sec}. `shots` liền nhau phủ khung 1..meta.frames, mỗi shot 0,5-25 giây
   (phần lớn 1,5-4 s, 12-16 cắt/phút, thỉnh thoảng 1 cảnh dài 8-25 s); mỗi shot có `type`. Bám theo `shots` dự kiến trong content.
@@ -919,8 +921,9 @@ dùng rig "long" với shots (shot ngắn được).
   khi cần đường máy đặc biệt. Camera luôn chuyển động; hai shot liền nhau đổi kiểu cảnh hoặc góc/chuyển động. Cắt ở đầu câu/chữ nhấn.
 - camera.dof = {"fstop": 2.8}; cận/cận vật đặt shot.fstop 1.8-2.2; toàn cảnh 4-5.6.
 - Phụ đề: captions.style "bottom" (mặc định của 16:9); không dùng highlight/impact kiểu Shorts.
-- Mở chương: {"style":"chapter","sub":"CHAPTER n","text": tiêu đề IN HOA, from 1, to ~75} + {"style":"fade","from":1,"to":20,"in":0,"out":20}.
-  Chương cuối kết bằng {"style":"fade","hold":true} trong 30 khung cuối.
+- KHÔNG có thẻ "chapter", không màn đen ở đầu/cuối phần: phần nối tiếp phần trước giữa mạch kể (cắt thẳng như mọi cú máy).
+  Chỉ phần 1 mở bằng {"style":"fade","from":1,"to":20,"in":0,"out":20}; chỉ phần cuối kết bằng {"style":"fade","hold":true} 30 khung cuối.
+  Nhạc phần này mở bằng đúng tâm trạng nhạc phần trước kết thúc (tool tự nối, nhạc chạy liền qua chỗ nối).
 - MỌI card_text trong shots của content phải hiện trên màn hình: shot type card → thẻ style "screen" (variant year/number/question/
   quote/name/place/fact) trùng thời gian shot đó; map/diagram/board/label → thẻ label/title hoặc chữ trên bối cảnh. pos x,y trong -1..1
   theo khung 16:9; phụ đề ở y ≈ -0,8, tránh đặt thẻ nhỏ ở đó.

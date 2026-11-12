@@ -120,9 +120,41 @@ def split(slug, log=print):
         _w(os.path.join(cd, "content.json"), sub)
         _w(os.path.join(cd, "settings.json"), {"format": "long", "chapter": n, "parent": slug})
         res.append({"n": n, "title": title, "start": a, "end": b, "frames": frames, "words": len(rel)})
-        log(f"chương {n:02d} «{title}»: {a:.1f}–{b:.1f} s, {frames} khung, {len(rel)} chữ, {len(seqs)} chuỗi")
+        log(f"phần {n:02d} «{title}»: {a:.1f}–{b:.1f} s, {frames} khung, {len(rel)} chữ, {len(seqs)} chuỗi")
     _w(os.path.join(d, "chapters", "index.json"), {"chapters": res})
     return res
+
+
+def stitch(slug, log=print):
+    """make the parts read as ONE continuous video (the viewer never sees chapters; parts only exist to build and render):
+    each part's story gets its place in the full timeline (music/ambience run on across the seams, no fades there),
+    'chapter' title cards are dropped, and a part opens on the music mood the previous part ended with."""
+    idx = _j(os.path.join(PROJECTS, slug, "chapters", "index.json"), {"chapters": []})
+    chs = idx["chapters"]; prev_mood = None; changed = []
+    for k, c in enumerate(chs):
+        sp = os.path.join(chapter_dir(slug, c["n"]), "story.json")
+        st = _j(sp)
+        if not st: prev_mood = None; continue
+        before = json.dumps(st, sort_keys=True)
+        m = st["meta"]
+        m["part_offset"] = round(float(c["start"]), 3); m["part_first"] = k == 0; m["part_last"] = k == len(chs) - 1
+        N = int(m.get("frames", 0) or 0)
+
+        def seam_fade(cd):           # fade from/to black at a seam would flash black in the middle of the video
+            if cd.get("style") != "fade": return False
+            return (k > 0 and cd.get("from", 1) <= 2) or (k < len(chs) - 1 and N and cd.get("to", 0) >= N - 2)
+        st["cards"] = [cd for cd in st.get("cards", []) if cd.get("style") != "chapter" and not seam_fade(cd)]
+        mus = st.get("sound", {}).get("music")
+        if isinstance(mus, dict): mus = st["sound"]["music"] = [mus]
+        if mus:
+            mus.sort(key=lambda x: x.get("from", 1))
+            if prev_mood and not mus[0].get("file") and mus[0].get("from", 1) <= 1 and mus[0].get("mood") != prev_mood:
+                mus[0]["mood"] = prev_mood
+            last = mus[-1]; prev_mood = None if last.get("file") else last.get("mood")
+        if json.dumps(st, sort_keys=True) != before:
+            _w(sp, st); changed.append(c["n"])
+    if changed: log(f"Nối liền các phần: cập nhật phần {changed} (vị trí trong video, bỏ thẻ chương, nhạc chạy tiếp)")
+    return changed
 
 
 def chapter_output(slug, n):
@@ -146,11 +178,11 @@ def status(slug):
 
 def concat(slug, out_name="out.mp4", log=print):
     """join the chapter mp4s (same codec settings) without re-encoding"""
-    if not shutil.which("ffmpeg"): raise ValueError("cần ffmpeg để ghép các chương")
+    if not shutil.which("ffmpeg"): raise ValueError("cần ffmpeg để ghép các phần")
     st = status(slug)
-    if not st: raise ValueError("chưa chia chương")
+    if not st: raise ValueError("chưa chia phần")
     miss = [c["n"] for c in st if not c["rendered"]]
-    if miss: raise ValueError(f"chương chưa render (hoặc story mới hơn video): {miss}")
+    if miss: raise ValueError(f"phần chưa render (hoặc story mới hơn video): {miss}")
     d = os.path.join(PROJECTS, slug)
     lst = os.path.join(d, "chapters", "concat.txt")
     with open(lst, "w", encoding="utf-8") as f:
@@ -159,7 +191,7 @@ def concat(slug, out_name="out.mp4", log=print):
     r = subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy",
                         "-movflags", "+faststart", out], capture_output=True, text=True)
     if r.returncode: raise ValueError("ffmpeg: " + r.stderr[-800:])
-    log(f"đã ghép {len(st)} chương -> {out}")
+    log(f"đã ghép {len(st)} phần -> {out}")
     return out
 
 

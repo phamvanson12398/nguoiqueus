@@ -11,7 +11,10 @@
    "n": 2,
    "title": "Eighty Miles of Stone",
    "start_sec": 182.12
-  }
+  },
+  "part_offset": 182.12,
+  "part_first": false,
+  "part_last": false
  },
  "factions": [
   {
@@ -4132,13 +4135,6 @@
    "out": 20
   },
   {
-   "style": "chapter",
-   "sub": "CHAPTER 2",
-   "text": "EIGHTY MILES OF STONE",
-   "from": 1,
-   "to": 75
-  },
-  {
    "style": "screen",
    "variant": "fact",
    "sub": "THREE LEGIONS",
@@ -4526,7 +4522,7 @@
  "sound": {
   "music": [
    {
-    "mood": "march",
+    "mood": "tense",
     "from": 1,
     "to": 930,
     "gain_db": -5,

@@ -11,12 +11,12 @@ không chép nội dung, nhân vật hay khung hình của kênh khác).
 | 0–3 % (10–25 s) | **Mở giữa cao trào** | Thả người xem vào khoảnh khắc căng nhất hoặc vô lý nhất, ngôi "you" hoặc nhân vật dẫn dắt. Kết bằng một câu hỏi/điều bất thường ("But something is wrong."). |
 | 3–5 % | **"Let's go back"** | Câu chuyển rõ ràng về điểm xuất phát ("Let's go back to this morning…"), kèm thẻ thời gian. |
 | 5–15 % | **Gieo câu hỏi lớn** | Nói thẳng câu hỏi của tiêu đề bằng lời; vì sao nó lạ; hứa sẽ trả lời. Giới thiệu nhân vật dẫn dắt và thế giới (năm, nơi chốn → màn hình chữ, bản đồ). |
-| 15–70 % | **Leo thang theo nhịp** | Mỗi 45–70 giây một **cú mới**: tiết lộ, đảo chiều, con số bất ngờ, thất bại lớn hơn. Mỗi cú mở bằng câu móc ("But here's the problem…", "And then it gets worse.") và kết bằng một câu ngắn treo lơ lửng. Cuối mỗi chương là một cú treo (cliffhanger). |
+| 15–70 % | **Leo thang theo nhịp** | Mỗi 45–70 giây một **cú mới**: tiết lộ, đảo chiều, con số bất ngờ, thất bại lớn hơn. Mỗi cú mở bằng câu móc ("But here's the problem…", "And then it gets worse.") và kết bằng một câu ngắn treo lơ lửng. Không chia chương: mạch kể chạy liền, chuyển ý bằng câu nối, không ngắt bằng tiêu đề. |
 | 70–85 % | **Giải thích chính** | Trả lời câu hỏi bằng cơ chế nhìn thấy được: sơ đồ, bàn chiến thuật, mặt cắt, so sánh ✓/✗. Một ý mỗi câu. |
 | 85–97 % | **Mở rộng** | Hệ quả: ngày nay còn thấy ở đâu, ai học theo, con số tổng kết. |
 | 97–100 % | **Gọi lại tiêu đề** | Câu chốt lặp lại gần nguyên văn tiêu đề/câu hỏi, có cú lật nhỏ hoặc tag hài; mờ về đen. |
 
-Chương: 2–4 phút, mỗi chương 3–6 nhịp kể (sequence 20–60 s). Tiêu đề chương ngắn (2–5 chữ), hiện trên thẻ chương.
+Phần (chỉ để tool dựng/render, người xem không thấy): 2–4 phút, 3–6 nhịp kể (sequence 20–60 s), cắt ở đầu một câu. Không thẻ chương, không tiêu đề chương.
 
 ## 2. Lời đọc
 - Tiếng Anh Mỹ, câu ngắn (trung bình 9–14 từ), hiện tại đơn; ngôi "you" khi kể trải nghiệm ("You're a young soldier…"), hoặc ngôi ba với
@@ -76,11 +76,11 @@ Màn hình chữ ở mốc quan trọng (`cards`, style `screen`, nền tối tr
 {"style": "screen", "variant": "name",     "text": "PUBLIUS DECIUS MUS", "caption": "Roman consul", "from": 1200, "to": 1260}
 ```
 Dài 45–90 khung; cú máy bên dưới vẫn trôi (thường type `card` hoặc một cảnh mờ fstop thấp). Thẻ `title`/`label`/dấu ✗✓ vẫn dùng cho nhãn
-nhỏ. Mở chương bằng `chapter` + `fade`; kết video bằng `fade` có `hold`.
+nhỏ. Video là một mạch liền, KHÔNG có thẻ chương; chỉ đầu video có `fade` vào, cuối video có `fade` với `hold`.
 
 ## 6. Bản đồ, bàn chiến thuật, giấy sơ đồ (bối cảnh có sẵn, chỉ cần dữ liệu)
 Ba bối cảnh dựng từ dữ liệu trong `sets[].params`, không cần thiết kế đồ mới. Mỗi cái đặt ở một `origin` riêng, xa các bối cảnh khác;
-cần nhiều bản đồ trong một chương thì thêm nhiều set với `id` và `origin` khác nhau (700, 760, 820…). Màu theo `faction` (khai báo
+cần nhiều bản đồ trong một phần thì thêm nhiều set với `id` và `origin` khác nhau (700, 760, 820…). Màu theo `faction` (khai báo
 `factions` ở đầu story với `color`).
 - **`parchment_map`** (shot type `map`): `bounds` = [kinh tây, vĩ nam, kinh đông, vĩ bắc] — bờ biển, hồ, sông là dữ liệu thật, chỉ cần chọn khung
   vừa 16:9 (bề ngang ≈ 1,78 × bề cao × cos(vĩ độ)). Thêm `cities` (`at` = [lon, lat]), `regions` (đa giác lon/lat, hiện dần từ `from`),
@@ -100,12 +100,12 @@ cần nhiều bản đồ trong một chương thì thêm nhiều set với `id`
 - Đổi quốc gia/thời kỳ/cải trang: `outfit_changes` [[khung, vai hoặc id trang phục, phe]].
 - Quân đội, đám đông: `crowds` (đội hình block/line/column/wedge/scatter/circle, `moves`, `march`); cận cảnh thì dùng 1-3 nhân vật thật
   đứng trước đám đông. Bản đồ/sa bàn dùng khối quân, không dùng đám đông.
-- Liệt kê trong `factions` (content) với văn hóa + thời kỳ (id dạng `roman_empire_50ad`), trang phục, màu, vũ khí đúng sử liệu; nói rõ chương nào có phe nào.
+- Liệt kê trong `factions` (content) với văn hóa + thời kỳ (id dạng `roman_empire_50ad`), trang phục, màu, vũ khí đúng sử liệu; nói rõ đoạn nào có phe nào.
 - Hai phe giống nhau phải phân biệt được bằng màu, khiên, cờ. Không biếm họa sắc tộc; phe "địch" không bị vẽ xấu hơn.
 
 ## 8. Âm thanh video dài (tự trộn: nén giọng, nhạc hạ dưới lời, chuẩn −14 LUFS)
 - `sound.music`: một hoặc nhiều đoạn `{"mood": ..., "from", "to", "gain_db": -4, "duck_db": -10}` (giao nhau 2 s thì tự trộn chéo).
-  mood: epic, tense, mystery, march, calm, sad, triumph, playful. Đổi mood theo chương/nhịp (mở đầu tense/mystery, trận đánh epic, hành quân march, kết triumph/calm, mất mát sad).
+  mood: epic, tense, mystery, march, calm, sad, triumph, playful. Đổi mood theo nhịp kể (mở đầu tense/mystery, trận đánh epic, hành quân march, kết triumph/calm, mất mát sad).
   `file` = file nhạc miễn phí bản quyền trong `library/music/` thay cho nhạc tự tổng hợp.
 - `sound.ambience`: nền liên tục theo bối cảnh, cũng chia đoạn: battlefield, camp, market, forest, sea, rain, fire, wind, night, river, swamp, city, room.
 - `sound.events` [khung, tên, gain 0.3-0.8] đặt đúng chữ/hành động. Tiếng video dài: arrow_hit, arrows, bell, crowd_murmur, crowd_roar, dig, fire, gallop, hammer, heartbeat, march, paper, quill, rain, shield_bash, splash, stamp_hit, sword_clash, thunder, war_drum, war_horn, whoosh_big, wind_gust (cộng bộ tiếng của Shorts cho gag).

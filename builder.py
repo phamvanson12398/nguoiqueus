@@ -624,13 +624,30 @@ class Builder:
             items = spec if isinstance(spec, list) else [spec]
             return [dict(default, **it) for it in items]
 
+        meta = self.st["meta"]
+        part_off = meta.get("part_offset")            # seconds: this story is one part of a longer, seamless video
+        first, last = meta.get("part_first", True), meta.get("part_last", True)
+
         def place(x, a, b, xf=2.0):
-            """x laid from frame a to b with crossfades"""
+            """x laid from frame a to b with crossfades (none at a seam with the previous/next part)"""
             i, j = int((a - 1) / FPS * A.SR), min(n, int(b / FPS * A.SR))
             out = np.zeros(n); seg = A.fit(x, j - i); f = min(len(seg) // 2, int(xf * A.SR))
             if f > 0:
-                seg = seg.copy(); seg[:f] *= np.linspace(0, 1, f); seg[-f:] *= np.linspace(1, 0, f)
+                seg = seg.copy()
+                if a > 1 or first: seg[:f] *= np.linspace(0, 1, f)
+                if b < N or last: seg[-f:] *= np.linspace(1, 0, f)
             out[i:j] = seg; return out
+        gen_cache = {}
+
+        def on_timeline(key, fn, a, sec):
+            """music/ambience in the video's global time: parts of one video cut from the same piece, so it runs on
+            across the seam instead of restarting at its intro"""
+            if part_off is None: return fn(sec)
+            off = float(part_off) + (a - 1) / FPS
+            need = off + sec
+            if key not in gen_cache or gen_cache[key][0] < need: gen_cache[key] = (need, fn(need))
+            full = gen_cache[key][1]; i = int(off * A.SR)
+            return full[i:i + int(sec * A.SR)]
         parts = [] if voice is None else [voice]
         rep = {}
         for k, mu in enumerate(segs(S.get("music"), {"mood": "epic", "from": 1, "to": N})):
@@ -639,14 +656,16 @@ class Builder:
                 x = A.load_audio(os.path.join(A.MUSIC_DIR, mu["file"])); x = np.tile(x, int(np.ceil(sec * A.SR / max(1, len(x)))))
             else:
                 mood = mu.get("mood", "epic"); mood = {"sneaky": "mystery"}.get(mood, mood)
-                x = A.music(sec, mood, seed=seed + k, intensity=mu.get("intensity", 1.0))
+                x = on_timeline(("m", mood, mu.get("intensity", 1.0)), lambda L, mood=mood, k=k: A.music(
+                    L, mood, seed=seed + (0 if part_off is not None else k), intensity=mu.get("intensity", 1.0)), a, sec)
             x = place(at_level(A.fit(x, int(sec * A.SR)), mu.get("gain_db", -4.0)), a, b)
             if duck is not None: x = x * duck ** (mu.get("duck_db", -10.0) / -13.0)
             parts.append(x); rep.setdefault("music", []).append(mu.get("file") or mu.get("mood"))
         for am in segs(S.get("ambience"), {"kind": "wind", "from": 1, "to": N}):
             if am["kind"] == "none": continue
             a, b = int(am.get("from", 1)), int(am.get("to", N)); sec = (b - a + 1) / FPS
-            x = place(at_level(A.ambience(sec, am["kind"]), am.get("gain_db", -20.0)), a, b, 1.0)
+            x = place(at_level(on_timeline(("a", am["kind"]), lambda L, kd=am["kind"]: A.ambience(L, kd), a, sec),
+                               am.get("gain_db", -20.0)), a, b, 1.0)
             if duck is not None: x = x * duck ** (4.0 / 13.0)
             parts.append(x)
         fx_ = np.zeros(n); vpk = float(np.abs(voice).max()) if voice is not None else 0.5

@@ -85,6 +85,17 @@
       "2d"
      ],
      "description": "nhân vật 3D (mặc định: khối tròn, đổ bóng hoạt hình, trang phục ôm theo thân) hoặc 2D phẳng như bản cũ"
+    },
+    "part_offset": {
+     "type": "number",
+     "minimum": 0,
+     "description": "giây: vị trí phần này trong video dài liền mạch (tool tự đặt)"
+    },
+    "part_first": {
+     "type": "boolean"
+    },
+    "part_last": {
+     "type": "boolean"
     }
    }
   },

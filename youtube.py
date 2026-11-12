@@ -47,19 +47,12 @@ def sequence_starts(slug):
 
 
 def timestamps(slug, beat_titles=None, min_gap=10.0):
-    """YouTube chapter list [(sec, title)]: chapters of a long video, refined by sequences; first at 0, >= min_gap apart"""
+    """timestamp list [(sec, title)] from the sequence (beat) starts of the real voice; first at 0, >= min_gap apart"""
     content = _j(os.path.join(PROJECTS, slug, "content.json")) or {}
     beat_titles = {int(k): v for k, v in (beat_titles or {}).items()}
     marks = []
-    chapters = {c["n"]: c for c in content.get("chapters", [])}
-    seen_ch = set()
-    for t, s in sequence_starts(slug):
+    for t, s in sequence_starts(slug):           # one seamless video: beat names only, no chapter names
         title = beat_titles.get(int(s.get("id", 0)))
-        ch = s.get("chapter")
-        if ch and ch not in seen_ch and chapters.get(ch):
-            seen_ch.add(ch)
-            cw = set(re.findall(r"[a-z]+", chapters[ch]["title"].lower())); bw = set(re.findall(r"[a-z]+", (title or "").lower()))
-            title = chapters[ch]["title"] + (f": {title}" if title and len(cw & bw - {"the", "a", "of", "to", "into"}) < 2 else "")
         if title: marks.append((t, title))
     if not marks: return []
     marks[0] = (0.0, marks[0][1])
@@ -72,7 +65,7 @@ def timestamps(slug, beat_titles=None, min_gap=10.0):
 def description(pkg, stamps):
     lines = [pkg["description_hook"].strip(), "", pkg["description_body"].strip()]
     if stamps:
-        lines += ["", "Chapters:"] + [f"{fmt(t)} {title}" for t, title in stamps]
+        lines += ["", "Timestamps:"] + [f"{fmt(t)} {title}" for t, title in stamps]
     if pkg.get("sources"):
         lines += ["", "Sources:"] + [f"- {s['source']}" + (f" ({s['url']})" if s.get("url") else "") for s in pkg["sources"]]
     if pkg.get("credits"): lines += ["", pkg["credits"].strip()]

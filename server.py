@@ -194,7 +194,7 @@ def job_write(job, slug, minutes):
     e = estimate(minutes, wpm)
     fmt = "long" if is_long(slug) else "short"
     e = estimate(minutes, wpm, fmt)
-    job.say(f"Claude đang viết content {minutes} phút " + ("(video dài 16:9, " + f"{e['chapters']} chương, " if fmt == "long" else "(")
+    job.say(f"Claude đang viết content {minutes} phút " + ("(video dài 16:9, " + f"{e['chapters']} phần, " if fmt == "long" else "(")
             + f"~{e['words']} từ ở {wpm} từ/phút, ~{e['sequences']} chuỗi)…")
     data = bridge.write_content(slug, idea, minutes, wpm=wpm, fmt=fmt)
     job.say(f"Xong: {data['word_count']} từ, {len(data['sequences'])} chuỗi.")
@@ -221,7 +221,7 @@ def job_align(job, slug):
     job.say(f"Giọng đọc {r['duration']} s ({r['frames']} khung), {r['word_count']} chữ, {len(r['segments'])} cụm. "
             f"Ước tính từ content: {est:.0f} s. Tốc độ giọng đo được: {wpm} từ/phút.")
     if longform.is_long(content):
-        job.say("Chia giọng đọc theo chương…")
+        job.say("Chia giọng đọc theo phần…")
         longform.split(slug, log=job.say)
     return {"duration": r["duration"], "frames": r["frames"]}
 
@@ -288,11 +288,11 @@ def job_build_long(job, slug, design=True, preview=True, chapters=None, replan=F
     if not os.path.exists(os.path.join(pdir(slug), "chapters", "index.json")): longform.split(slug, log=job.say)
     st = longform.status(slug); out = {}
     todo = [c for c in st if (int(c["n"]) in chapters if chapters else not c["story"] or pending_designs(longform.chapter_slug(slug, c["n"])) or not c["previews"])]
-    if not todo: job.say("Mọi chương đã có story.json (chọn chương để dựng lại)."); return {"chapters": []}
+    if not todo: job.say("Mọi phần đã có story.json (chọn phần để dựng lại)."); return {"chapters": []}
     for c in todo:
-        job.say(f"===== Chương {c['n']:02d}/{len(st)} «{c['title']}» ({c['frames']} khung) =====")
+        job.say(f"===== Phần {c['n']:02d}/{len(st)} «{c['title']}» ({c['frames']} khung) =====")
         out[c["n"]] = job_build(job, longform.chapter_slug(slug, c["n"]), design, preview, replan=replan)
-    job.say(f"Xong {len(todo)} chương. Xem ảnh từng chương rồi bấm Render (render lần lượt từng chương rồi ghép).")
+    job.say(f"Xong {len(todo)} phần. Xem ảnh từng phần rồi bấm Render (render lần lượt từng phần rồi ghép).")
     return {"chapters": list(out)}
 
 
@@ -405,6 +405,7 @@ def job_build(job, slug, design=True, preview=True, chapters=None, replan=False)
                 if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}. Khi lượt mở lại, bấm 'Duyệt & dựng' lần nữa.")
                 failed.append(oid); job.say(f"   -> LỖI: {e}")
     if failed: raise ValueError("thiết kế chưa xong: " + ", ".join(failed) + " (xem log; có thể thiết kế lại ở tab Thư viện rồi bấm 'Chỉ render lại xem trước')")
+    if "/chapters/" in slug: longform.stitch(slug.split("/chapters/")[0], log=job.say)   # parts of one seamless video
     errs = storycheck.check_story(jload(os.path.join(d, "story.json")))
     if errs: raise ValueError("story.json còn lỗi: " + "; ".join(errs[:5]))
     if not preview: return {"missing": missing}
@@ -441,11 +442,13 @@ def job_fix(job, slug, problem, frames):
 def job_render_long(job, slug, pct=100, samples=None, quality="normal"):
     """render every chapter whose mp4 is missing or older than its story.json, then join them"""
     st = longform.status(slug)
-    if not st or not all(c["story"] for c in st): raise ValueError("chưa dựng đủ các chương (bấm Duyệt & dựng)")
+    if not st or not all(c["story"] for c in st): raise ValueError("chưa dựng đủ các phần (bấm Duyệt & dựng)")
+    longform.stitch(slug, log=job.say)
+    st = longform.status(slug)
     todo = [c for c in st if not c["rendered"]]
-    job.say(f"Render {len(todo)}/{len(st)} chương" + (f" (đã có: {[c['n'] for c in st if c['rendered']]})" if len(todo) < len(st) else "") + "…")
+    job.say(f"Render {len(todo)}/{len(st)} phần" + (f" (đã có: {[c['n'] for c in st if c['rendered']]})" if len(todo) < len(st) else "") + "…")
     for c in todo:
-        job.say(f"===== Render chương {c['n']:02d} «{c['title']}» ({c['frames']} khung) =====")
+        job.say(f"===== Render phần {c['n']:02d}/{len(st)} ({c['frames']} khung) =====")
         job_render(job, longform.chapter_slug(slug, c["n"]), pct, None, samples, quality)
     if int(pct or 100) != 100: job.say("(render thử dưới 100 %: vẫn ghép để xem)")
     out = longform.concat(slug, log=job.say)
@@ -464,7 +467,7 @@ def job_youtube(job, slug, thumbs=True):
     open(os.path.join(yd, "description.txt"), "w", encoding="utf-8").write(desc)
     open(os.path.join(yd, "titles.txt"), "w", encoding="utf-8").write("\n".join(t["title"] for t in pkg["titles"]) + "\n")
     pkg["timestamps"] = [[round(t, 2), title] for t, title in stamps]
-    job.say(f"   {len(pkg['titles'])} tiêu đề, {len(stamps)} mốc chương, {len(pkg['tags'])} tag.")
+    job.say(f"   {len(pkg['titles'])} tiêu đề, {len(stamps)} mốc thời gian, {len(pkg['tags'])} tag.")
     st0, _ = youtube.source_story(slug)
     if thumbs and st0 and st0["meta"].get("aspect") == "16:9":
         imgs = []
@@ -508,7 +511,7 @@ def job_bench(job, slug, pct=100, quality="normal"):
     t = slug
     if is_long(slug):
         st = longform.status(slug); c = next((c for c in st if c["story"]), None)
-        if not c: raise ValueError("chưa có chương nào dựng xong để đo")
+        if not c: raise ValueError("chưa có phần nào dựng xong để đo")
         t = longform.chapter_slug(slug, c["n"])
     samples = {"fast": 12, "normal": 32, "high": 48}.get(quality, 32)
     out = run_builder(job, t, ["--bench", "3", "--pct", str(int(pct)), "--samples", str(samples)])

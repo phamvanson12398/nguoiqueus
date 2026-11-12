@@ -11,7 +11,10 @@
    "n": 3,
    "title": "A Door, Not a Fortress",
    "start_sec": 353.86
-  }
+  },
+  "part_offset": 353.86,
+  "part_first": false,
+  "part_last": true
  },
  "factions": [
   {
@@ -4905,13 +4908,6 @@
    "out": 20
   },
   {
-   "style": "chapter",
-   "sub": "CHAPTER 3",
-   "text": "A DOOR, NOT A FORTRESS",
-   "from": 1,
-   "to": 70
-  },
-  {
    "style": "screen",
    "variant": "question",
    "text": "THEORY 1: A FORTRESS?",
@@ -5415,7 +5411,7 @@
  "sound": {
   "music": [
    {
-    "mood": "mystery",
+    "mood": "tense",
     "from": 1,
     "to": 1140,
     "gain_db": -5,

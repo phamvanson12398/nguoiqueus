@@ -117,7 +117,7 @@ small.err{color:var(--bad)}
     <div class="panel">
       <h2>Độ dài</h2>
       <div class="row">
-        <label>Khổ video <select id="fmt"><option value="short">Shorts dọc 9:16 (45 giây – 10 phút)</option><option value="long">Video dài YouTube 16:9 (5–20 phút, chia chương)</option></select></label>
+        <label>Khổ video <select id="fmt"><option value="short">Shorts dọc 9:16 (45 giây – 10 phút)</option><option value="long">Video dài YouTube 16:9 (5–20 phút, một mạch liền)</option></select></label>
         <label>Số phút <input type="number" id="minutes" min="0.5" max="10" step="0.5" value="1" style="width:80px"></label>
         <div class="stats" id="est"></div>
       </div>
@@ -186,7 +186,7 @@ small.err{color:var(--bad)}
       <div id="previews" class="thumbs"></div>
       <div class="row" style="margin-top:12px">
         <input type="text" id="fixText" placeholder="Thấy lỗi gì? vd: khung 200 phụ đề che miệng Gary, nắp cống quá nhỏ…" style="flex:1;min-width:300px">
-        <select id="fixCh" class="hidden" title="Chương cần sửa"></select><button id="btnFix">Nhờ Claude sửa</button>
+        <select id="fixCh" class="hidden" title="Phần cần sửa"></select><button id="btnFix">Nhờ Claude sửa</button>
       </div>
     </div>
   </section>
@@ -214,7 +214,7 @@ small.err{color:var(--bad)}
   <section id="tab-youtube" class="hidden">
     <div class="panel">
       <h2>Gói YouTube</h2>
-      <p class="muted">Claude viết tiêu đề, mô tả, tag, bình luận ghim và 3 ý tưởng thumbnail. Tool chèn mốc chương theo thời gian giọng đọc thật
+      <p class="muted">Claude viết tiêu đề, mô tả, tag, bình luận ghim và 3 ý tưởng thumbnail. Tool chèn mốc thời gian theo giọng đọc thật
         và (video dài) render 3 thumbnail 1280x720 bằng chính nhân vật, trang phục, bối cảnh của video; Claude tự xem, chấm và sửa cái tốt nhất.</p>
       <div class="row"><button id="btnYT" class="primary">Tạo gói YouTube</button><span class="muted">khoảng 3-8 phút</span></div>
     </div>
@@ -295,7 +295,7 @@ async function loadProjects(select) {
 $('#projSel').onchange = async () => { S.slug = $('#projSel').value; try { localStorage.setItem('ws_proj', S.slug); } catch (e) {} await loadProject(); };
 $('#newProj').onclick = async () => {
   const t = prompt('Tên dự án (vd: why-pizza-boxes-square):'); if (!t) return;
-  const long = confirm('Video dài YouTube 16:9 (5–20 phút, chia chương)?\n\nOK = video dài · Hủy = Shorts dọc như cũ\n(đổi lại được ở bước 2 trước khi viết content)');
+  const long = confirm('Video dài YouTube 16:9 (5–20 phút, một mạch liền)?\n\nOK = video dài · Hủy = Shorts dọc như cũ\n(đổi lại được ở bước 2 trước khi viết content)');
   const r = await api('/api/projects', {body: {title: t, format: long ? 'long' : 'short', minutes: long ? 10 : 1}}); await loadProjects(r.slug); showTab('idea');
 };
 
@@ -368,7 +368,7 @@ async function updateEst() {
   const w = S.state && S.state.settings && S.state.settings.wpm_measured;
   const e = await api(`/api/estimate?minutes=${m}&format=${$('#fmt').value}` + (w ? `&wpm=${w}` : ''));
   $('#est').innerHTML = `<div class="stat"><span class="muted">Lời đọc</span><b>~${e.words} từ</b></div>
-    <div class="stat"><span class="muted">${e.format === 'long' ? 'Nhịp kể' : 'Chuỗi máy'}</span><b>~${e.sequences}</b>${e.chapters ? `<span class="muted">${e.chapters} chương</span>` : ''}</div>
+    <div class="stat"><span class="muted">${e.format === 'long' ? 'Nhịp kể' : 'Chuỗi máy'}</span><b>~${e.sequences}</b>${e.chapters ? `<span class="muted">${e.chapters} phần</span>` : ''}</div>
     ${e.shots ? `<div class="stat"><span class="muted">Cú máy</span><b>~${e.shots}</b><span class="muted">~14 cắt/phút</span></div>` : ''}
     <div class="stat"><span class="muted">Khung hình</span><b>${e.frames}</b></div>
     <div class="stat"><span class="muted">Render ước tính</span><b>${fmtTime(e.render_seconds)}</b><span class="muted">${S.status ? S.status.sec_per_frame : 1.4} s/khung</span></div>`;
@@ -391,7 +391,7 @@ const SEQ_FIELDS = [['vo_en', 'Lời đọc (EN)', 'full', 'ta'], ['vo_vi', 'B�
   ['set', 'Bối cảnh'], ['transition', 'Chuyển sang chuỗi sau'], ['chars', 'Nhân vật (phẩy)', '', 'list'], ['props', 'Đạo cụ (phẩy)', '', 'list'],
   ['expressions', 'Biểu cảm'], ['camera', 'Đường đi camera'], ['gag', 'Gag', 'full'], ['sfx', 'Tiếng động (phẩy)', '', 'list'],
   ['fx', 'Hiệu ứng hình (phẩy)', '', 'list'], ['emphasis', 'Chữ nhấn (phẩy)', '', 'list']];
-const LONG_FIELDS = [['chapter', 'Chương', '', 'num'], ['shots', 'Cú máy dự kiến — mỗi dòng: kiểu | thấy gì | chữ trên màn hình (ecu, closeup, medium, full, wide, establishing, insert, board, map, diagram, interior, card, pov)', 'full', 'shots']];
+const LONG_FIELDS = [['chapter', 'Phần', '', 'num'], ['shots', 'Cú máy dự kiến — mỗi dòng: kiểu | thấy gì | chữ trên màn hình (ecu, closeup, medium, full, wide, establishing, insert, board, map, diagram, interior, card, pov)', 'full', 'shots']];
 const shotsText = a => (a || []).map(x => [x.type, x.what_vi, x.card_text || ''].join(' | ').replace(/ \| $/, '')).join('\n');
 const parseShots = t => t.split('\n').map(l => l.split('|').map(x => x.trim())).filter(p => p[0]).map(([type, what_vi, card_text]) => Object.assign({type, what_vi: what_vi || ''}, card_text ? {card_text} : {}));
 function seqCard(s, i) {
@@ -430,7 +430,7 @@ function renderContent() {
   $('#seqList').innerHTML = c.sequences.map((s, i) => {
     let h = '';
     if (c.format === 'long' && s.chapter !== lastCh) { lastCh = s.chapter; const x = chT[s.chapter] || {};
-      h = `<h3 class="chapter-h">Chương ${s.chapter}: ${esc(x.title || '')} <span class="muted">${esc(x.title_vi || '')}</span></h3>${x.summary_vi ? `<div class="muted" style="margin:-4px 0 8px">${esc(x.summary_vi)}</div>` : ''}`; }
+      h = `<h3 class="chapter-h">Phần ${s.chapter}: ${esc(x.title || '')} <span class="muted">${esc(x.title_vi || '')}</span></h3>${x.summary_vi ? `<div class="muted" style="margin:-4px 0 8px">${esc(x.summary_vi)}</div>` : ''}`; }
     return h + seqCard(s, i);
   }).join('');
   bindSeqs();
@@ -543,21 +543,21 @@ $('#btnRealign').onclick = () => run(P('/align'), {}, 'Canh chữ');
 
 // ---------------- 4. build ----------------
 function chapterBlocks(st) {
-  return st.chapters.map(c => `<div class="panel" style="padding:10px"><div class="row"><h3 style="margin:0;flex:1">Chương ${c.n}: ${esc(c.title)}</h3>
+  return st.chapters.map(c => `<div class="panel" style="padding:10px"><div class="row"><h3 style="margin:0;flex:1">Phần ${c.n}: ${esc(c.title)}</h3>
     <span class="muted">${c.frames} khung (${(c.frames / 30).toFixed(0)} s) · ${c.words} chữ · ${c.story ? 'có story' : 'chưa dựng'}${c.rendered ? ' · đã render' : ''}</span>
-    <button onclick="buildChapter(${c.n})">${c.story ? 'Dựng lại chương này' : 'Dựng chương này'}</button>
+    <button onclick="buildChapter(${c.n})">${c.story ? 'Dựng lại phần này' : 'Dựng phần này'}</button>
     ${c.story ? `<button onclick="previewChapter(${c.n})">Xem trước lại</button>` : ''}</div>
     <div class="thumbs wide" data-ch="${c.n}">${c.previews.map(f => `<figure><img loading="lazy" src="${P(`/file/chapters/${String(c.n).padStart(2, '0')}/preview/` + f)}?t=${Date.now()}"><figcaption>ch ${c.n} · khung ${parseInt(f.slice(2, 6))}</figcaption></figure>`).join('') || '<span class="muted">Chưa có ảnh xem trước.</span>'}</div></div>`).join('');
 }
-window.buildChapter = n => { if (S.state.chapters.find(c => c.n === n).story && !confirm(`Dựng lại chương ${n}? Claude lên lại shot list (story cũ giữ trong lịch sử của chương).`)) return;
-  run(P('/build'), {chapters: [n], replan: true}, `Dựng chương ${n}`); };
-window.previewChapter = n => { const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {chapter: n, frames: f}, `Xem trước chương ${n}`); };
+window.buildChapter = n => { if (S.state.chapters.find(c => c.n === n).story && !confirm(`Dựng lại phần ${n}? Claude lên lại shot list (story cũ giữ trong lịch sử của phần).`)) return;
+  run(P('/build'), {chapters: [n], replan: true}, `Dựng phần ${n}`); };
+window.previewChapter = n => { const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {chapter: n, frames: f}, `Xem trước phần ${n}`); };
 function renderBuild() {
   const st = S.state; const s = st.story;
   $('#fixCh').classList.toggle('hidden', st.format !== 'long');
   if (st.format === 'long') {
-    $('#fixCh').innerHTML = (st.chapters || []).map(c => `<option value="${c.n}">chương ${c.n}</option>`).join('');
-    $('#storyInfo').innerHTML = (st.chapters || []).length ? `Video dài: ${st.chapters.length} chương, ${st.chapters.filter(c => c.story).length} chương đã có story. "Duyệt &amp; dựng" làm lần lượt các chương chưa xong (chưa có story, còn đồ chưa thiết kế hoặc chưa có ảnh xem trước); story đã lập thì dùng lại.` : 'Chưa chia chương (tải giọng đọc ở bước 3).';
+    $('#fixCh').innerHTML = (st.chapters || []).map(c => `<option value="${c.n}">phần ${c.n}</option>`).join('');
+    $('#storyInfo').innerHTML = (st.chapters || []).length ? `Video dài liền mạch, tool chia làm ${st.chapters.length} phần chỉ để dựng/render (người xem không thấy chỗ nối, không có thẻ phần); ${st.chapters.filter(c => c.story).length} phần đã có story. "Duyệt &amp; dựng" làm lần lượt các phần chưa xong (chưa có story, còn đồ chưa thiết kế hoặc chưa có ảnh xem trước); story đã lập thì dùng lại.` : 'Chưa chia phần (tải giọng đọc ở bước 3).';
     $('#previews').classList.remove('thumbs');
     $('#previews').innerHTML = (st.chapters || []).length ? chapterBlocks(st) : '<span class="muted">Chưa có ảnh xem trước.</span>';
     return;
@@ -570,7 +570,7 @@ $('#btnBuild').onclick = () => {
   if (!S.state.words) return toast('Cần tải giọng đọc ở bước 3 trước');
   run(P('/build'), {}, 'Duyệt & dựng');
 };
-$('#btnPreview').onclick = () => { if (S.state.format === 'long') return toast('Video dài: bấm "Xem trước lại" ở từng chương');
+$('#btnPreview').onclick = () => { if (S.state.format === 'long') return toast('Video dài: bấm "Xem trước lại" ở từng phần');
   const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {frames: f}, 'Xem trước'); };
 $('#btnFix').onclick = () => { const t = $('#fixText').value.trim(); if (!t) return toast('Mô tả lỗi trước');
   const f = (t.match(/khung\s*(\d+)/gi) || []).map(x => parseInt(x.replace(/\D/g, '')));
@@ -583,7 +583,7 @@ function renderRender() {
   $('#rPct').options[0].text = L ? '100 % (1920x1080)' : '100 % (1080x1920)';
   $('#rFrames').classList.toggle('hidden', L); $('#rChapters').classList.toggle('hidden', !L);
   if (L) $('#rChapters').innerHTML = (st.chapters || []).map(c => `<span class="chip ${c.rendered ? '' : 'draft'}">ch ${c.n}: ${c.rendered ? 'đã render' : c.story ? 'chờ render' : 'chưa dựng'}</span>`).join('') +
-    ' <span class="muted">Render lần lượt các chương chưa có video (hoặc story mới hơn video), rồi ghép thành out.mp4. Bị ngắt thì bấm lại để render tiếp.</span>';
+    ' <span class="muted">Render lần lượt các phần chưa có video (hoặc story mới hơn video), rồi ghép thành out.mp4. Bị ngắt thì bấm lại để render tiếp.</span>';
   const spf = S.status ? S.status.sec_per_frame : 1.4;
   const qf = {fast: 0.3, normal: 1.0, high: 1.45}; const sp = L ? (S.status ? S.status.sec_per_frame_long : 1.6) : spf;
   $('#renderEst').innerHTML = `<div class="stat"><span class="muted">Số khung</span><b>${fr}</b></div>` +
@@ -597,8 +597,8 @@ window.splicePart = f => { if (S.status && !S.status.ffmpeg) return toast('Cần
   run(P('/splice'), {part: f}, 'Ghép đoạn vào video'); };
 window.play = f => { const v = $('#player'); v.src = P('/file/' + f) + '?t=' + Date.now(); v.classList.remove('hidden'); v.play(); };
 window.openFile = async f => { const r = await api(P('/open'), {body: {file: f}}); if (!r.ok) play(f); };
-$('#btnRender').onclick = () => { if (S.state.format === 'long') { if (!(S.state.chapters || []).every(c => c.story)) return toast('Dựng đủ các chương ở bước 4 trước');
-    return run(P('/render'), {pct: parseInt($('#rPct').value), quality: $('#rQual').value}, 'Render các chương'); }
+$('#btnRender').onclick = () => { if (S.state.format === 'long') { if (!(S.state.chapters || []).every(c => c.story)) return toast('Dựng đủ các phần ở bước 4 trước');
+    return run(P('/render'), {pct: parseInt($('#rPct').value), quality: $('#rQual').value}, 'Render các phần'); }
   if (!S.state.story) return toast('Chưa có story.json (bước 4)');
   run(P('/render'), {pct: parseInt($('#rPct').value), frames: $('#rFrames').value.trim() || null, quality: $('#rQual').value}, 'Render'); };
 $('#btnBench').onclick = () => { if (!S.state.story && !(S.state.chapters || []).some(c => c.story)) return toast('Cần dựng xong story (bước 4) để đo');
