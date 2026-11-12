@@ -1,0 +1,22 @@
+[
+ {
+  "kind": "props",
+  "name": "ladder",
+  "brief": "Thang gỗ thô 3D buộc dây: hai thanh dọc gỗ nâu hơi cong, 9 bậc tròn buộc dây gai ở hai đầu, dài 5 (param length, số bậc tự theo length), rộng 0,6. Gốc ở chân thang (tâm giữa hai chân, z = 0); thang dựng thẳng theo +Z, mặt bậc nằm trong mặt phẳng XZ để story xoay quanh trục X dựa vào tường (rot x ±0,41). Màu gỗ ấm đậm (tránh ánh trời nhuộm xanh, dùng look.warm_top). parts: rails, rungs."
+ },
+ {
+  "kind": "props",
+  "name": "cornu_horn",
+  "brief": "Kèn đồng La Mã (cornu) 2D cầm tay trong mặt phẳng nhân vật: ống đồng cong hình chữ G lớn (đường kính vòng ~0,7) có thanh gỗ ngang chéo qua vòng, loa kèn rộng ở đầu trên chĩa ra trước, miệng thổi nhỏ ở đầu dưới gần miệng nhân vật; màu đồng vàng cam đậm, viền mực 0,035. Gắn torso, params at (mặc định [0.2, 0.75, 0.45]) và scale2d. Gốc ở miệng thổi. parts: horn, bar, bell."
+ },
+ {
+  "kind": "props",
+  "name": "coins",
+  "brief": "Tiền denarius bạc, param item: 'coin2d' (đồng xu 2D to 0,14 cầm tay, mặt bạc có hình đầu người nghiêng khái quát + vòng chữ, viền mực, gốc ở tâm), 'purse2d' (túi tiền da 2D thắt dây), 'coin3d' (một đồng xu 3D dày 0,02 để rơi/lăn, gốc ở tâm), 'stack' (chồng n đồng 3D, param n). Không dùng chân dung thật. Màu bạc hơi ấm. params: item, n, at, scale2d. parts: coin, purse, stack."
+ },
+ {
+  "kind": "chars",
+  "name": "cow",
+  "brief": "Bò nhỏ thời đồ sắt 2D nhìn thẳng, mũm mĩm cùng phong cách và cấu trúc cfg với chars/goat (thân tròn, 4 chân là nét, hai chân sau đi theo chân trước, đi được bằng legs walk_legs): lông ngắn nâu đỏ đậm (0.45, 0.14, 0.04), mõm hồng to có hai lỗ mũi, tai to chìa ngang, sừng ngắn cong màu ngà, đuôi có chùm lông; món đồ nhận diện: chuông đồng nhỏ treo dây da ở cổ. Cao ~1,4 tới đỉnh sừng, rộng hơn dê. faces: neutral, grumpy, shock, smug_closed (có chớp mắt). Tính cách lì, không chịu leo thang. Gốc dưới chân, đứng z = 0; story cho ngồi phịch bằng blocking scale Z 0,82 + hạ z 0,18."
+ }
+]
