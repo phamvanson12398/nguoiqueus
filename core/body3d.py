@@ -30,6 +30,7 @@ LAYER = 0.35             # 2D layer gaps (z) are squeezed by this much on top of
 LIMB_W = 1.7             # stick limbs get this much thicker
 CORNER = 0.035           # corner rounding radius (scene units) for every character piece
 EDGE = 0.065             # target edge length when subdividing flat pieces
+TUBE_FLAT = 0.25         # depth squash of stroke tubes lying on a surface
 HULL = 0.010             # ink shell thickness around solids (the rim tube draws the main outline)
 LIGHT = (-0.45, 0.6, -0.66)  # toon light direction in Blender camera space (x right, y up, -z towards the viewer)
 SHADE_AT = 0.52          # (dot + 1) / 2 below this is the shade band
@@ -272,6 +273,8 @@ def convert(c):
     free_roots = set()
     for limb in (getattr(c, "armL", None), getattr(c, "armR", None), getattr(c, "legL", None), getattr(c, "legR", None)):
         if limb: free_roots.add(limb[0])
+    for o in getattr(c, "held", []):           # props the story puts in the character's hands: their own solids, not bent onto the body
+        free_roots.add(o)
     skip = set()
     for attr in ("speedlines", "excl", "steam", "drips"):
         v = getattr(c, attr, None)
@@ -379,7 +382,9 @@ def convert(c):
             if ref is not None and len(me.vertices):
                 co = np.empty(len(me.vertices) * 3); me.vertices.foreach_get("co", co); co = co.reshape(-1, 3)
                 P = _apply(M, co); zc = M.translation.z; behind = zc < ref.base_z - 1e-6
-                h = ref.depth.many(P[:, 0], P[:, 1]) + ref.gap(zc) + 0.002 + (P[:, 2] - zc)
+                # tubes are flattened in depth: a thick ink stroke under a thinner coloured one (horns, outlines) must
+                # not poke through it once both sit on the surface one layer gap apart
+                h = ref.depth.many(P[:, 0], P[:, 1]) + ref.gap(zc) + 0.002 + (P[:, 2] - zc) * TUBE_FLAT
                 P[:, 2] = ref.base_z + (-h if behind else h)
                 me.vertices.foreach_set("co", _apply(M.inverted(), P).ravel()); me.update()
             _swap_to_mesh(o, me)

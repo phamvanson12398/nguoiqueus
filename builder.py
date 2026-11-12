@@ -204,6 +204,7 @@ class Builder:
             parent = getattr(c, hp.get("on", "torso"))
             o = self.lib.prop(hp["type"], dict(hp.get("params", {}), name=hp["id"], parent=parent))
             self.place(o, hp)
+            c.held = getattr(c, "held", []) + [o]
         for e in cs.get("fx", []):
             if e["type"] == "steam": fx.add_steam(c)
             elif e["type"] == "drips": fx.add_drips(c)

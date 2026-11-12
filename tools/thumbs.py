@@ -23,7 +23,7 @@ def load_library():
 
 Library = load_library()
 import core
-from core import ctx, look, geo, fx, faces, chars
+from core import ctx, look, geo, fx, faces, chars, body3d
 from mathutils import Vector
 
 _argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
@@ -139,6 +139,7 @@ def render_item(kind, name, lib, views):
         fresh()
         camera((0, -6.0, 1.15), (0, 0, 1.15), 50)
         ch, L = build_char(lib, name)
+        if body3d.style() == "3d": body3d.convert(ch)
         ch.expr_table = [(1, L["faces"][0])]; chars.pose_char(ch, 1); chars.apply_expressions(ch)
         shoot(os.path.join(d, "thumb.png"), look.descendants(ch.root) + [floor()])
         if views:
