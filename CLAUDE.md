@@ -319,3 +319,16 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
 - Gói YouTube (252 s): 10 tiêu đề (chọn "Why Hadrian's Wall Had a Gate Every Mile"), 17 mốc chương, 14 nguồn, 3 thumbnail (Claude chấm 5/7/4, chọn VS).
   Ảnh: `docs/img/hadrian_thumbs.jpg`.
 - Render thử trong container: chương 1 khung 1-300, fast 25 %, âm thanh −14,0 LUFS, 6 đoạn nhạc theo mood. Bản 10 phút đầy đủ render trên máy người dùng.
+
+## Nhân vật 3D (yêu cầu của người dùng: cả Shorts lẫn video dài)
+- `core/body3d.py`, chạy sau khi dựng nhân vật + trang phục + miệng nói: mặt/áo nền phồng thành khối tròn đặc (độ sâu theo khoảng cách tới
+  mép, hình tròn → cầu, chữ nhật → viên thuốc); mảnh trên đầu/thân uốn ôm theo bề mặt theo thứ tự lớp z (z nhỏ hơn nền → phía sau);
+  tay/giày/đồ cầm tay thành khối riêng, mảnh nhỏ vẽ lên mảnh lớn cùng nhóm (hoa văn khiên) ôm theo mảnh lớn; mọi góc bo tròn 0,035;
+  viền: ống tròn dọc mép + vỏ mực mỏng; đổ bóng 2 tông theo hướng sáng cố định trong không gian camera (ánh sáng thật cho bóng loang lổ).
+  Khung xương, tư thế, biểu cảm, chớp mắt, nhép miệng giữ nguyên.
+- `meta.char_style` "3d" (mặc định) | "2d"; biến môi trường `WHYSHORTS_CHAR_STYLE=2d` cho fingerprint: 3 Shorts cũ ở 2D vẫn giống hệt.
+- Lỗi đã sửa khi làm: trục Z camera của Blender hướng ra xa (ánh sáng đặt ngược → mặt xám); mảnh trang phục nằm trong thân (thiếu lệch
+  base_z); lớp sát nhau đâm xuyên (bước lớp 0,012); hoa văn khiên chìm trong khiên; ống viền dày trồi qua nét màu (ép dẹt ống 0,25);
+  tính lại cảnh cho mỗi nét (chương 1: 1.026 s → 118 s cho 21 nhân vật).
+- Phụ đề video dài: viền = ống tròn dọc mép chữ (bevel) đặt sau chữ trắng; hết gai ở góc chữ.
+- Ảnh: `docs/img/char3d_compare.jpg`, `char3d_shorts.jpg`, `hadrian3d_ch{1,2,3}.jpg`.
