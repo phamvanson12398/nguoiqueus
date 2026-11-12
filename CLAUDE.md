@@ -293,3 +293,16 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   lần 3 Claude chấm 5/7/4, chọn VS và sửa; Claude còn phát hiện chữ nhỏ dính nhau do viền dày → giãn chữ + viền mỏng cho chữ nhỏ.
   Mũi tên bản đồ thêm `smooth: false` (đường La Mã phải thẳng).
 
+
+### Bước 8 — đang làm (video trọn 10 phút "Hadrian's Wall", `projects/why-hadrians-wall`)
+- Content 1.868 từ, 3 chương, 17 chuỗi, 140 cú máy; giọng OmniVoice của người dùng 580 s → canh 1.855 từ (192 từ/phút) → chia chương ở đầu câu.
+- Chương 1 (182 s): plan_shots 12 phút; thiết kế 3 trang phục (hadrian_122ad, roman_auxiliary_122ad, briton_farmer_50ad, đều 8/10),
+  `sets/hadrians_wall` 7/10, `props/{wall_stone 7, emperor_bust 8, writing_tablet 8}`; dựng `CAMERA OK` ngay lần đầu. Ảnh: `docs/img/hadrian_ch1.jpg`.
+- Lỗi đã sửa:
+  1. Hết lượt 5 giờ của gói giữa lúc thiết kế → job vẫn thử hết các món (món nào cũng lỗi). Giờ dừng ngay, báo rõ; plan_shots ghi
+     `missing.json`, bấm "Duyệt & dựng" lại thì dùng lại story (nếu mới hơn content/words) và chỉ thiết kế đồ còn thiếu; "Dựng lại chương này" mới lập lại (`replan`).
+  2. Một trang phục bị xếp hàng thiết kế hai lần (library_needs + vai) → bỏ qua tên đã thử.
+  3. Grade đêm/hoàng hôn/bão làm đen kịt vùng tối: compositor chạy ở không gian tuyến tính, Bright −22 là trừ 0,29 mỗi điểm ảnh
+     → bóng tối lấy từ màu nhân (gain), Bright/Contrast giữ nhỏ (thử trước bằng numpy trên ảnh ban ngày).
+  4. Ánh trời nhuộm xanh mặt ngửa lặp lại ở tường và đá → `look.warm_top(m)` (nhân sắc ấm theo pháp tuyến Z), ghi vào AUTHORING.md.
+- Lưu ý khi chạy tay: `python tools/bpy_run.py tools/thumbs.py props/<x>` (không thêm `--`, nếu không thumbs.py render lại cả thư viện).
