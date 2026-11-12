@@ -281,53 +281,235 @@
    "additionalProperties": false,
    "properties": {
     "music": {
-     "type": "object",
-     "additionalProperties": false,
-     "properties": {
-      "mood": {
-       "enum": [
-        "playful",
-        "sneaky",
-        "tense"
-       ]
-      },
-      "gain": {
-       "type": "number"
-      },
-      "gain_with_voice": {
-       "type": "number"
-      },
-      "duck": {
-       "type": "array",
-       "items": {
-        "type": "integer"
+     "anyOf": [
+      {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "mood": {
+         "enum": [
+          "calm",
+          "epic",
+          "march",
+          "mystery",
+          "playful",
+          "sad",
+          "sneaky",
+          "tense",
+          "triumph"
+         ]
+        },
+        "gain": {
+         "type": "number"
+        },
+        "gain_with_voice": {
+         "type": "number"
+        },
+        "duck": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         }
+        },
+        "duck_window": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         },
+         "minItems": 2,
+         "maxItems": 2
+        },
+        "file": {
+         "type": "string",
+         "description": "long-form: file in library/music/ (royalty-free); loops/trims to fit"
+        },
+        "gain_db": {
+         "type": "number",
+         "description": "long-form: music level relative to the voice (default -4; ducked while the voice speaks)"
+        },
+        "duck_db": {
+         "type": "number",
+         "description": "long-form: extra drop while the voice speaks (default -10)"
+        },
+        "seed": {
+         "type": "integer"
+        },
+        "intensity": {
+         "type": "number",
+         "minimum": 0.2,
+         "maximum": 1.5
+        },
+        "from": {
+         "type": "integer"
+        },
+        "to": {
+         "type": "integer"
+        },
+        "note": {
+         "type": "string"
+        }
        }
       },
-      "duck_window": {
+      {
        "type": "array",
        "items": {
-        "type": "integer"
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+         "mood": {
+          "enum": [
+           "calm",
+           "epic",
+           "march",
+           "mystery",
+           "playful",
+           "sad",
+           "sneaky",
+           "tense",
+           "triumph"
+          ]
+         },
+         "gain": {
+          "type": "number"
+         },
+         "gain_with_voice": {
+          "type": "number"
+         },
+         "duck": {
+          "type": "array",
+          "items": {
+           "type": "integer"
+          }
+         },
+         "duck_window": {
+          "type": "array",
+          "items": {
+           "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+         },
+         "file": {
+          "type": "string",
+          "description": "long-form: file in library/music/ (royalty-free); loops/trims to fit"
+         },
+         "gain_db": {
+          "type": "number",
+          "description": "long-form: music level relative to the voice (default -4; ducked while the voice speaks)"
+         },
+         "duck_db": {
+          "type": "number",
+          "description": "long-form: extra drop while the voice speaks (default -10)"
+         },
+         "seed": {
+          "type": "integer"
+         },
+         "intensity": {
+          "type": "number",
+          "minimum": 0.2,
+          "maximum": 1.5
+         },
+         "from": {
+          "type": "integer"
+         },
+         "to": {
+          "type": "integer"
+         },
+         "note": {
+          "type": "string"
+         }
+        }
        },
-       "minItems": 2,
-       "maxItems": 2
+       "description": "long-form: music segments (mood or file, from, to); 2 s crossfades"
       }
-     }
+     ]
     },
     "ambience": {
-     "type": "object",
-     "additionalProperties": false,
-     "properties": {
-      "kind": {
-       "enum": [
-        "city",
-        "wind",
-        "none"
-       ]
+     "anyOf": [
+      {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "kind": {
+         "enum": [
+          "battlefield",
+          "camp",
+          "city",
+          "fire",
+          "forest",
+          "market",
+          "night",
+          "none",
+          "rain",
+          "river",
+          "room",
+          "sea",
+          "swamp",
+          "wind"
+         ]
+        },
+        "gain": {
+         "type": "number"
+        },
+        "gain_db": {
+         "type": "number",
+         "description": "long-form: relative to the voice (default -20)"
+        },
+        "from": {
+         "type": "integer"
+        },
+        "to": {
+         "type": "integer"
+        },
+        "note": {
+         "type": "string"
+        }
+       }
       },
-      "gain": {
-       "type": "number"
+      {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+         "kind": {
+          "enum": [
+           "battlefield",
+           "camp",
+           "city",
+           "fire",
+           "forest",
+           "market",
+           "night",
+           "none",
+           "rain",
+           "river",
+           "room",
+           "sea",
+           "swamp",
+           "wind"
+          ]
+         },
+         "gain": {
+          "type": "number"
+         },
+         "gain_db": {
+          "type": "number",
+          "description": "long-form: relative to the voice (default -20)"
+         },
+         "from": {
+          "type": "integer"
+         },
+         "to": {
+          "type": "integer"
+         },
+         "note": {
+          "type": "string"
+         }
+        }
+       }
       }
-     }
+     ]
     },
     "sfx_gain_with_voice": {
      "type": "number"
@@ -404,6 +586,24 @@
        "note": {
         "type": "string"
        }
+      }
+     }
+    },
+    "master": {
+     "type": "object",
+     "additionalProperties": false,
+     "description": "long-form mix: voice compression, ducking, loudness target",
+     "properties": {
+      "lufs": {
+       "type": "number",
+       "minimum": -24,
+       "maximum": -9
+      },
+      "compress_voice": {
+       "type": "boolean"
+      },
+      "sfx_db": {
+       "type": "number"
       }
      }
     }
@@ -715,6 +915,143 @@
      }
     }
    }
+  },
+  "vfx": {
+   "type": "array",
+   "description": "long-form effects: smoke, dust, fire, arrows, sparks, banner, light_shafts, rain, snow",
+   "items": {
+    "type": "object",
+    "required": [
+     "type"
+    ],
+    "properties": {
+     "type": {
+      "enum": [
+       "smoke",
+       "dust",
+       "fire",
+       "arrows",
+       "sparks",
+       "banner",
+       "light_shafts",
+       "rain",
+       "snow"
+      ]
+     },
+     "at": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      }
+     },
+     "from": {
+      "type": "integer"
+     },
+     "to": {
+      "type": "integer"
+     },
+     "frame": {
+      "type": "integer"
+     },
+     "n": {
+      "type": "integer"
+     },
+     "size": {
+      "type": "number"
+     },
+     "spread": {
+      "type": "number"
+     },
+     "color": {
+      "$ref": "#/$defs/rgb"
+     },
+     "opacity": {
+      "type": "number"
+     },
+     "life": {
+      "type": "integer"
+     },
+     "rise": {
+      "type": "number"
+     },
+     "wind": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "number"
+        }
+       }
+      ]
+     },
+     "tongues": {
+      "type": "integer"
+     },
+     "embers": {
+      "type": "integer"
+     },
+     "smoke": {
+      "type": "boolean"
+     },
+     "from_at": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      }
+     },
+     "to_at": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      }
+     },
+     "dur": {
+      "type": "integer"
+     },
+     "arc": {
+      "type": "number"
+     },
+     "stagger": {
+      "type": "integer"
+     },
+     "stick": {
+      "type": "boolean"
+     },
+     "faction": {
+      "type": "string"
+     },
+     "h": {
+      "type": "number"
+     },
+     "w": {
+      "type": "number"
+     },
+     "fh": {
+      "type": "number"
+     },
+     "rot": {
+      "type": "number"
+     },
+     "dir": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      }
+     },
+     "length": {
+      "type": "number"
+     },
+     "intensity": {
+      "type": "number"
+     },
+     "note": {
+      "type": "string"
+     }
+    }
+   }
   }
  },
  "$defs": {
@@ -789,7 +1126,30 @@
     "chug",
     "sad_trombone",
     "gulp",
-    "cash"
+    "cash",
+    "arrow_hit",
+    "arrows",
+    "bell",
+    "crowd_murmur",
+    "crowd_roar",
+    "dig",
+    "fire",
+    "gallop",
+    "hammer",
+    "heartbeat",
+    "march",
+    "paper",
+    "quill",
+    "rain",
+    "shield_bash",
+    "splash",
+    "stamp_hit",
+    "sword_clash",
+    "thunder",
+    "war_drum",
+    "war_horn",
+    "whoosh_big",
+    "wind_gust"
    ]
   },
   "face": {
@@ -1811,6 +2171,21 @@
           "maximum": 8
          }
         }
+       },
+       "grade": {
+        "enum": [
+         "day",
+         "dawn",
+         "dusk",
+         "night",
+         "cold",
+         "warm",
+         "desert",
+         "sepia",
+         "storm",
+         "fire"
+        ],
+        "description": "colour grade from this shot on (held until the next shot that sets one)"
        }
       },
       "anyOf": [

@@ -102,3 +102,21 @@ cần nhiều bản đồ trong một chương thì thêm nhiều set với `id`
   đứng trước đám đông. Bản đồ/sa bàn dùng khối quân, không dùng đám đông.
 - Liệt kê trong `factions` (content) với văn hóa + thời kỳ (id dạng `roman_empire_50ad`), trang phục, màu, vũ khí đúng sử liệu; nói rõ chương nào có phe nào.
 - Hai phe giống nhau phải phân biệt được bằng màu, khiên, cờ. Không biếm họa sắc tộc; phe "địch" không bị vẽ xấu hơn.
+
+## 8. Âm thanh video dài (tự trộn: nén giọng, nhạc hạ dưới lời, chuẩn −14 LUFS)
+- `sound.music`: một hoặc nhiều đoạn `{"mood": ..., "from", "to", "gain_db": -4, "duck_db": -10}` (giao nhau 2 s thì tự trộn chéo).
+  mood: epic, tense, mystery, march, calm, sad, triumph, playful. Đổi mood theo chương/nhịp (mở đầu tense/mystery, trận đánh epic, hành quân march, kết triumph/calm, mất mát sad).
+  `file` = file nhạc miễn phí bản quyền trong `library/music/` thay cho nhạc tự tổng hợp.
+- `sound.ambience`: nền liên tục theo bối cảnh, cũng chia đoạn: battlefield, camp, market, forest, sea, rain, fire, wind, night, river, swamp, city, room.
+- `sound.events` [khung, tên, gain 0.3-0.8] đặt đúng chữ/hành động. Tiếng video dài: arrow_hit, arrows, bell, crowd_murmur, crowd_roar, dig, fire, gallop, hammer, heartbeat, march, paper, quill, rain, shield_bash, splash, stamp_hit, sword_clash, thunder, war_drum, war_horn, whoosh_big, wind_gust (cộng bộ tiếng của Shorts cho gag).
+  Thưa hơn Shorts: chỉ hành động thật (va chạm, kèn lệnh, trống trận, mưa tên, ngựa, đám đông hò). `repeat` cho bước quân (march mỗi ~60 khung).
+- Không cần whoosh ở mỗi cắt (tool chỉ thêm ở whip và màn hình chữ). Tiếng thật CC0 bỏ vào `library/sfx/<tên>.wav` thì tự thay.
+
+## 9. Hiệu ứng hình (`vfx`) và chỉnh màu
+- `{"type": "smoke"|"dust", "at": [x,y,z], "from", "to", "n": 10, "size", "spread", "wind": [x, y]}` — khói bốc / bụi mù dưới chân quân.
+- `{"type": "fire", "at", "from", "to", "size"}` (lửa trại, làng cháy, lửa hiệu; có tàn và khói). `{"type": "sparks", "at", "frame"}` khi gươm chạm.
+- `{"type": "arrows", "from_at", "to_at", "from", "dur": 30, "n": 30, "spread", "arc"}` — mưa tên theo đường cong (khớp tiếng arrows).
+- `{"type": "banner", "at", "faction", "h"}` — cờ phe bay phấp phới. `{"type": "light_shafts", "at", "dir", "from", "to"}` — tia nắng.
+- `{"type": "rain"|"snow", "from", "to", "intensity"}` — lớp mưa/tuyết trước ống kính.
+- Chỉnh màu theo cú máy: shot `"grade"`: day, dawn, dusk, night, cold, warm, desert, sepia, storm, fire (giữ tới shot sau có grade).
+  Thời đại/nơi mới hoặc đổi giờ trong ngày thì đổi grade. Không vẽ máu me.

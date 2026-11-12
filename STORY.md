@@ -153,6 +153,15 @@ Dự án video dài có `content.json` với `format: "long"`, `chapters` và `c
 giọng và chữ vào `chapters/NN/` (mỗi chương là một dự án con: `content.json`, `voice.wav`, `words.json` tính từ đầu chương, rồi
 `story.json`, `preview/`, mp4). Render lần lượt từng chương rồi `longform.py concat` ghép thành `out.mp4` (ffmpeg, không mã hóa lại).
 
+### Âm thanh và hiệu ứng video dài
+Khi `meta.aspect` là 16:9 (hoặc có `sound.master`), builder trộn bằng `core/audio_long.py`: lọc + nén giọng, `music` theo đoạn
+(mood hoặc `file` trong `library/music/`, mức `gain_db` so với giọng, hạ `duck_db` khi có lời), `ambience` theo đoạn, `events`/`repeat`
+với tiếng video dài (march, war_drum, war_horn, sword_clash, shield_bash, arrows, arrow_hit, gallop, crowd_roar, fire, rain, thunder…;
+file thật `library/sfx/<tên>.wav` được ưu tiên), whoosh chỉ ở whip và màn hình chữ, rồi chuẩn hóa −14 LUFS (`sound.master.lufs`),
+chặn đỉnh −1,5 dB → `mix.wav`. Builder in dòng `AUDIO … LUFS`. Đo khớp ffmpeg ebur128 trong khoảng 0,1-0,2 dB.
+`vfx`: smoke, dust, fire, arrows, sparks, banner, light_shafts, rain, snow (`core/fx_long.py`); shot `grade` chỉnh màu (day, dawn, dusk,
+night, cold, warm, desert, sepia, storm, fire). Chi tiết tham số: `LONGFORM_RULES.md` mục 8-9. Mẫu: `projects/demo-legion`.
+
 ### `teleport_holds`
 Danh sách vật thể được giữ khung để motion blur không kéo vệt khi dịch chuyển tức thời. Mặc định gồm gốc các nhân vật và các đạo cụ có track `location`.
 

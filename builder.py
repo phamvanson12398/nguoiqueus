@@ -10,6 +10,7 @@ library/{sets,props,chars,motions}.  voice.wav is read from the story's folder; 
 preview/ and the mp4 are written there (or to --out).
 """
 import bpy, os, sys, json, math, random, time, importlib.util
+import numpy as np
 
 # ---------------- paths, fresh core modules ----------------
 _here = os.path.dirname(os.path.abspath(__file__)) if "__file__" in globals() and os.path.exists(__file__) else os.getcwd()
@@ -19,7 +20,7 @@ for _m in [m for m in sys.modules if m == "core" or m.startswith("core.") or m.s
     del sys.modules[_m]
 
 import core
-from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards, overlay, outfits
+from core import ctx, look, geo, timing, camera, faces, chars, fx, captions, sfx, mixer, cards, overlay, outfits, audio_long, fx_long
 from core.expr import Env, ExprError
 from core import framing
 import storycheck
@@ -166,7 +167,7 @@ class Builder:
         L = self.lib.json("chars", cs["type"])
         cid = cs["id"]
         cfg = chars.char_cfg(L, cs.get("faces"))
-        of, fac, cul = self.outfit_for(cs) if (cs.get("outfit") or cs.get("role")) else (None, None, None)
+        of, fac, cul = self.outfit_for(cs) if (cs.get("outfit") or (cs.get("role") and cs["type"] == "person")) else (None, None, None)
         changes = cs.get("outfit_changes", [])
         if of or changes:
             lk = outfits.resolve_look(cs, fac, cul, of, self.st["meta"].get("seed", 7))
@@ -465,6 +466,7 @@ class Builder:
             cap_root = None
 
         cards_root = cards.build_cards(st.get("cards"), self.lens)
+        vfx_noline = fx_long.build(st.get("vfx"), {f["id"]: f for f in st.get("factions", [])}, self.cam, meta.get("seed", 7)) if st.get("vfx") else []
 
         fxs = st.get("fx", {})
         for k, d in enumerate(fxs.get("dust", [])):
@@ -487,9 +489,12 @@ class Builder:
         if cards_root: noline += look.descendants(cards_root)
         for r in self.noline_roots: noline += look.descendants(r)
         for p_ in fx.PUFF_POOL: noline += look.descendants(p_)
+        for o in vfx_noline: noline += [o] + look.descendants(o)
         look.setup_look(noline)
         for coll, troot, loc in self.crowd_tpl:          # crowd templates leave the scene: only their instances render
             outfits.to_template_collection(coll, troot, loc)
+        if any("grade" in sh for sh in st["camera"].get("shots", [])):
+            fx_long.grade(st["camera"]["shots"])
         if self.dof_on:                       # DOF would blur captions/cards near the lens: render them in an overlay scene
             overlay.make_overlay([cap_root, cards_root], samples=max(4, meta.get("samples", 32) // 4))
 
@@ -500,7 +505,77 @@ class Builder:
         print(f"SCENE READY -> {sc.render.filepath}  ({self.report['build_seconds']} s, {len(bpy.data.objects)} objects)")
         return sc
 
+    def build_sound_long(self):
+        """long-form mix: compressed voice, music segments (mood or file) ducked under the voice, ambience beds,
+        story events + long-form/real SFX, whooshes on whips only, normalised to -14 LUFS with a peak limiter"""
+        A = audio_long; S = self.st.get("sound", {}); N, FPS = ctx.N, ctx.FPS
+        n = int(round(N / FPS * A.SR)); seed = self.st["meta"].get("seed", 7)
+        vo_p = os.path.join(self.dir, self.st["meta"].get("voice", "voice.wav"))
+        M = S.get("master", {})
+        voice = A.fit(A.load_audio(vo_p), n) if os.path.exists(vo_p) else None
+        if voice is not None:
+            voice = A.fft_filter(voice, A.band(lo=80))
+            if M.get("compress_voice", True): voice = A.compress(voice)
+        ref = A.lufs(voice) if voice is not None and np.abs(voice).max() > 1e-4 else -20.0
+        duck = A.duck_gain(voice) if voice is not None else None
+
+        def at_level(x, rel_db):                        # loudness relative to the voice
+            L = A.lufs(x)
+            return x * 10 ** ((ref + rel_db - L) / 20) if L > -69 else x
+
+        def segs(spec, default):
+            if not spec: return []
+            items = spec if isinstance(spec, list) else [spec]
+            return [dict(default, **it) for it in items]
+
+        def place(x, a, b, xf=2.0):
+            """x laid from frame a to b with crossfades"""
+            i, j = int((a - 1) / FPS * A.SR), min(n, int(b / FPS * A.SR))
+            out = np.zeros(n); seg = A.fit(x, j - i); f = min(len(seg) // 2, int(xf * A.SR))
+            if f > 0:
+                seg = seg.copy(); seg[:f] *= np.linspace(0, 1, f); seg[-f:] *= np.linspace(1, 0, f)
+            out[i:j] = seg; return out
+        parts = [] if voice is None else [voice]
+        rep = {}
+        for k, mu in enumerate(segs(S.get("music"), {"mood": "epic", "from": 1, "to": N})):
+            a, b = int(mu.get("from", 1)), int(mu.get("to", N)); sec = (b - a + 1) / FPS
+            if mu.get("file"):
+                x = A.load_audio(os.path.join(A.MUSIC_DIR, mu["file"])); x = np.tile(x, int(np.ceil(sec * A.SR / max(1, len(x)))))
+            else:
+                mood = mu.get("mood", "epic"); mood = {"sneaky": "mystery"}.get(mood, mood)
+                x = A.music(sec, mood, seed=seed + k, intensity=mu.get("intensity", 1.0))
+            x = place(at_level(A.fit(x, int(sec * A.SR)), mu.get("gain_db", -4.0)), a, b)
+            if duck is not None: x = x * duck ** (mu.get("duck_db", -10.0) / -13.0)
+            parts.append(x); rep.setdefault("music", []).append(mu.get("file") or mu.get("mood"))
+        for am in segs(S.get("ambience"), {"kind": "wind", "from": 1, "to": N}):
+            if am["kind"] == "none": continue
+            a, b = int(am.get("from", 1)), int(am.get("to", N)); sec = (b - a + 1) / FPS
+            x = place(at_level(A.ambience(sec, am["kind"]), am.get("gain_db", -20.0)), a, b, 1.0)
+            if duck is not None: x = x * duck ** (4.0 / 13.0)
+            parts.append(x)
+        fx_ = np.zeros(n); vpk = float(np.abs(voice).max()) if voice is not None else 0.5
+        lvl = vpk * 10 ** (M.get("sfx_db", 0.0) / 20)
+
+        def hit(name, frame, gain):
+            x = A.get_sfx(name, sfx.SFX); i = int((frame - 1) / FPS * A.SR); A._add(fx_, i, x, gain * lvl)
+        for fr, nm, g in S.get("events", []): hit(nm, fr, g)
+        for r in S.get("repeat", []):
+            for f in range(r["from"], r["to"] + 1, r["every"]): hit(r["name"], f, r["gain"])
+        au = S.get("auto", {})
+        if au.get("enabled", True):
+            for k, v in self.st["camera"].get("trans", {}).items():
+                if v[0] == "whip": hit("whoosh", int(k) - 5, 0.25)
+            for c in self.st.get("cards", []):
+                if c.get("style") in ("screen", "chapter"): hit("whoosh_big", int(c["from"]), 0.18)
+        parts.append(fx_)
+        mix, mrep = A.master(parts, M.get("lufs", -14.0))
+        rep.update(mrep); self.report["audio"] = rep
+        print(f"AUDIO {mrep['lufs']} LUFS (gain {mrep['gain_db']} dB) peak {mrep['peak_db']} dBFS  music={rep.get('music')}")
+        wav = A.write_wav(os.path.join(self.out, "mix.wav"), mix)
+        mixer.attach_audio(wav, None, sfx_volume=1.0)
+
     def build_sound(self):
+        if self.aspect != "9:16" or "master" in self.st.get("sound", {}): return self.build_sound_long()
         S = self.st.get("sound", {}); N, FPS = ctx.N, ctx.FPS
         TOTAL = N / FPS
         vo = os.path.join(self.dir, self.st["meta"].get("voice", "voice.wav"))

@@ -279,7 +279,8 @@ def _story_people(d):
     facs = {f["id"]: f for f in st.get("factions", [])}
     for x in st.get("chars", []) + st.get("crowds", []):
         cul = (facs.get(x.get("faction")) or {}).get("culture")
-        refs = [x.get("outfit") or x.get("role")] + [c[1] for c in x.get("outfit_changes", [])]
+        role = x.get("role") if x.get("type", "person") == "person" else None      # library characters wear their own clothes
+        refs = [x.get("outfit") or role] + [c[1] for c in x.get("outfit_changes", [])]
         for ref in refs:
             if ref: yield ref, cul
 
@@ -310,7 +311,8 @@ def story_outfits(d, exclude=None):
     facs = {f["id"]: f for f in st.get("factions", [])}
     lib = storycheck.LibIndex(); out = []
     for x in st.get("chars", []) + st.get("crowds", []):
-        cul = (facs.get(x.get("faction")) or {}).get("culture"); ref = x.get("outfit") or x.get("role")
+        cul = (facs.get(x.get("faction")) or {}).get("culture")
+        ref = x.get("outfit") or (x.get("role") if x.get("type", "person") == "person" else None)
         if not ref: continue
         oid, _ = _resolve_outfit(ref, cul)
         col = (facs.get(x.get("faction")) or {}).get("color")

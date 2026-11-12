@@ -127,7 +127,7 @@ def check_story(st, lib=None, pending=()):
         errs.append(f"{w}: '{ref}' is neither an outfit (have {lib.list('outfits')}) nor a role of culture '{cul}'")
     for k, c in enumerate(st.get("chars", [])):
         if c.get("outfit"): check_outfit(f"chars[{k}].outfit", c["outfit"], c.get("faction"))
-        elif c.get("role"): check_outfit(f"chars[{k}].role", c["role"], c.get("faction"))
+        elif c.get("role") and c["type"] == "person": check_outfit(f"chars[{k}].role", c["role"], c.get("faction"))
         for j, ch in enumerate(c.get("outfit_changes", [])):
             check_outfit(f"chars[{k}].outfit_changes[{j}]", ch[1], ch[2] if len(ch) > 2 else c.get("faction"))
     for k, cr in enumerate(st.get("crowds", [])):

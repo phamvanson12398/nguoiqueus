@@ -861,7 +861,8 @@ dùng rig "long" với shots (shot ngắn được).
 - MỌI card_text trong shots của content phải hiện trên màn hình: shot type card → thẻ style "screen" (variant year/number/question/
   quote/name/place/fact) trùng thời gian shot đó; map/diagram/board/label → thẻ label/title hoặc chữ trên bối cảnh. pos x,y trong -1..1
   theo khung 16:9; phụ đề ở y ≈ -0,8, tránh đặt thẻ nhỏ ở đó.
-- Âm thanh: không có whoosh ở mỗi cắt; nhạc liên tục (mood theo chương), tiếng động thưa và đúng hành động.
+- Âm thanh: sound.music theo đoạn (mood epic/tense/mystery/march/calm/sad/triumph), sound.ambience theo bối cảnh, events tiếng video dài
+  (LONGFORM_RULES mục 8); tool tự nén giọng, hạ nhạc dưới lời và chuẩn −14 LUFS. Hiệu ứng vfx + grade theo shot (mục 9).
 - Các bối cảnh đặt xa nhau (gốc tọa độ, x = 300, x = 500 …). Shot map/board/diagram dùng bối cảnh dữ liệu có sẵn: parchment_map (bờ biển
   thật theo kinh/vĩ độ), tactical_board (sa bàn, khối quân theo phe), paper_diagram (tay vẽ lên giấy) — xem LONGFORM_RULES mục 6;
   không đưa bản đồ/sa bàn/sơ đồ mới vào missing. Có phe thì khai báo `factions` (id, culture, color, label) ở đầu story.

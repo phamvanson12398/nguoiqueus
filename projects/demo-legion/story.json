@@ -240,7 +240,8 @@
      "height": "high",
      "move": "crane_down",
      "angle": -15
-    }
+    },
+    "grade": "dawn"
    },
    {
     "a": 111,
@@ -252,7 +253,8 @@
      "move": "push_in",
      "angle": 15,
      "x": -0.3
-    }
+    },
+    "grade": "day"
    },
    {
     "a": 201,
@@ -261,9 +263,12 @@
     "fstop": 2.4,
     "frame": {
      "subject": "marcus",
-     "move": "push_in",
-     "angle": -10
-    }
+     "move": "pull_out",
+     "angle": -10,
+     "size": 4.5,
+     "amount": 1.4
+    },
+    "grade": "storm"
    }
   ]
  },
@@ -310,10 +315,77 @@
   ]
  ],
  "sound": {
-  "music": {
-   "mood": "tense",
-   "gain": 0.14
-  }
+  "music": [
+   {
+    "mood": "march",
+    "from": 1,
+    "to": 160
+   },
+   {
+    "mood": "epic",
+    "from": 140,
+    "to": 300
+   }
+  ],
+  "ambience": [
+   {
+    "kind": "wind",
+    "from": 1,
+    "to": 120
+   },
+   {
+    "kind": "battlefield",
+    "from": 110,
+    "to": 300,
+    "gain_db": -18
+   }
+  ],
+  "events": [
+   [
+    5,
+    "war_horn",
+    0.7
+   ],
+   [
+    30,
+    "war_drum",
+    0.8
+   ],
+   [
+    60,
+    "war_drum",
+    0.8
+   ],
+   [
+    90,
+    "war_drum",
+    0.8
+   ],
+   [
+    200,
+    "crowd_roar",
+    0.6
+   ],
+   [
+    240,
+    "sword_clash",
+    0.7
+   ],
+   [
+    255,
+    "shield_bash",
+    0.6
+   ]
+  ],
+  "repeat": [
+   {
+    "name": "march",
+    "from": 30,
+    "to": 150,
+    "every": 60,
+    "gain": 0.35
+   }
+  ]
  },
  "cards": [
   {
@@ -324,6 +396,101 @@
    "caption": "the Roman frontier",
    "from": 40,
    "to": 100
+  }
+ ],
+ "vfx": [
+  {
+   "type": "dust",
+   "at": [
+    -1,
+    6,
+    0
+   ],
+   "from": 30,
+   "to": 160,
+   "n": 12,
+   "spread": 5
+  },
+  {
+   "type": "banner",
+   "at": [
+    -6.5,
+    7,
+    0
+   ],
+   "faction": "rome",
+   "h": 3.6
+  },
+  {
+   "type": "banner",
+   "at": [
+    5.5,
+    7.5,
+    0
+   ],
+   "faction": "rome",
+   "h": 3.6
+  },
+  {
+   "type": "fire",
+   "at": [
+    7,
+    20,
+    0
+   ],
+   "from": 1,
+   "to": 300,
+   "size": 1.2
+  },
+  {
+   "type": "arrows",
+   "from_at": [
+    0,
+    26,
+    1.5
+   ],
+   "to_at": [
+    0,
+    6,
+    0
+   ],
+   "from": 240,
+   "dur": 32,
+   "n": 30,
+   "spread": 4,
+   "arc": 7
+  },
+  {
+   "type": "sparks",
+   "at": [
+    1.2,
+    2.2,
+    1.4
+   ],
+   "frame": 241,
+   "n": 16
+  },
+  {
+   "type": "light_shafts",
+   "at": [
+    -6,
+    30,
+    16
+   ],
+   "dir": [
+    0.25,
+    -0.3,
+    -1
+   ],
+   "from": 1,
+   "to": 110,
+   "n": 4
+  },
+  {
+   "type": "rain",
+   "from": 270,
+   "to": 300,
+   "intensity": 1.0
   }
  ]
 }
