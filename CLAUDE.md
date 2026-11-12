@@ -239,3 +239,22 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
 - Còn để ý: dựng chương 1 mất 434 s (6.398 object) → bước 6 tối ưu; nhãn "CENTURION" đè đầu nhân vật; tools/thumbs.py chụp hụt mặt
   nhân vật thấp (con dê).
 
+### Bước 5 — xong (âm thanh và hiệu ứng hình video dài)
+- `core/audio_long.py` (numpy, lọc bằng FFT, trộn chương 3 phút trong vài giây):
+  - nhạc tự tổng hợp nhiều đoạn (intro → build → full → break, 8 ô nhịp/đoạn) theo mood epic, tense, mystery, march, calm, sad, triumph;
+    `file` trong `library/music/` thay được (đọc wav, hoặc ogg/mp3/flac qua `aud` của Blender);
+  - 23 tiếng video dài (march, war_drum, war_horn, sword_clash, shield_bash, arrows, gallop, crowd_roar, fire, rain, thunder, quill…),
+    13 nền âm thanh; file CC0 `library/sfx/<tên>.wav`, `amb_<loại>.wav` được ưu tiên;
+  - giọng: lọc 80 Hz + nén; nhạc/nền hạ dưới lời; đo độ lớn BS.1770 (biquad K đúng chuẩn, khớp ffmpeg ebur128 ~0,1-0,2 dB),
+    chặn đỉnh + đo đỉnh thật (lấy mẫu ×4) → −14 LUFS, đỉnh thật ≤ −1 dB. Builder in `AUDIO … LUFS` và ghi `mix.wav`.
+- Builder dùng đường này khi 16:9 hoặc có `sound.master`; đường Shorts giữ nguyên (fingerprint giống hệt). Whoosh chỉ ở whip và màn hình chữ.
+- `core/fx_long.py`: smoke, dust, fire (lưỡi lửa + tàn + khói), arrows (đường cong, xoay theo hướng bay), sparks, banner (Wave modifier),
+  light_shafts, rain/snow (lớp trước ống kính, driver `frame`), `grade` theo shot (day, dawn, dusk, night, cold, warm, desert, sepia, storm, fire;
+  compositor Mix nhân màu + Bright/Contrast, giữ nguyên chữ vì lớp phủ nằm sau). Shot không ghi grade = day.
+- Schema: music/ambience theo đoạn, tên tiếng video dài, `sound.master`, `vfx`, shot `grade`. LONGFORM_RULES mục 8-9.
+- Chạy thật: Claude thêm âm thanh + hiệu ứng vào chương 1 La Mã qua "Nhờ Claude sửa" (38 s, 35 thay đổi): 9 đoạn nhạc đổi mood, 17 đoạn nền,
+  53 tiếng động, 14 hiệu ứng, grade theo shot; dựng `CAMERA OK`, trộn −14,6 → sau khi sửa vòng bù −14,1..−14,3 LUFS. Ảnh: `docs/img/longform_step5.jpg`.
+- Lỗi đã sửa: K-weighting xấp xỉ lệch 1 dB với nhạc nhiều trầm → dùng biquad chuẩn; limiter làm hụt độ lớn → vòng bù; đỉnh thật vượt −1 dB
+  → đo ×4 và hạ trần; Bright/Contrast dùng thang −100..100 (grade gần như không thấy); `role` của nhân vật thư viện (Joe) không đòi trang phục.
+- Còn để ý: cột khói trông như chồng đĩa (thêm biến thể); giọng espeak nhỏ nên phải tăng 9-15 dB khi chuẩn hóa.
+

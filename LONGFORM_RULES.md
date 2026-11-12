@@ -118,5 +118,5 @@ cần nhiều bản đồ trong một chương thì thêm nhiều set với `id`
 - `{"type": "arrows", "from_at", "to_at", "from", "dur": 30, "n": 30, "spread", "arc"}` — mưa tên theo đường cong (khớp tiếng arrows).
 - `{"type": "banner", "at", "faction", "h"}` — cờ phe bay phấp phới. `{"type": "light_shafts", "at", "dir", "from", "to"}` — tia nắng.
 - `{"type": "rain"|"snow", "from", "to", "intensity"}` — lớp mưa/tuyết trước ống kính.
-- Chỉnh màu theo cú máy: shot `"grade"`: day, dawn, dusk, night, cold, warm, desert, sepia, storm, fire (giữ tới shot sau có grade).
+- Chỉnh màu theo cú máy: shot `"grade"`: day, dawn, dusk, night, cold, warm, desert, sepia, storm, fire (shot không ghi grade = day, màu thường).
   Thời đại/nơi mới hoặc đổi giờ trong ngày thì đổi grade. Không vẽ máu me.

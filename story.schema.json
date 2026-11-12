@@ -2185,7 +2185,7 @@
          "storm",
          "fire"
         ],
-        "description": "colour grade from this shot on (held until the next shot that sets one)"
+        "description": "colour grade of this shot (shots without one are plain day)"
        }
       },
       "anyOf": [

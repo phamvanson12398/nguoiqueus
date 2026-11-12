@@ -464,18 +464,30 @@ def limit(x, ceiling_db=-1.0, look=0.005, rel=0.08):
     return x * np.repeat(out, hop)[:n]
 
 
-def master(parts, target_lufs=-14.0, ceiling_db=-1.5):
+def true_peak_db(x, os_=4, chunk=1 << 18):
+    """inter-sample peak via FFT up-sampling (chunks overlap a little so no peak is missed)"""
+    pk = 0.0; pad = 256
+    for i in range(0, len(x), chunk):
+        seg = x[max(0, i - pad):i + chunk + pad]
+        if not len(seg): continue
+        X = np.fft.rfft(seg); y = np.fft.irfft(X, len(seg) * os_) * os_
+        pk = max(pk, float(np.abs(y).max()))
+    return 20 * math.log10(pk + 1e-12)
+
+
+def master(parts, target_lufs=-14.0, ceiling_db=-2.0, true_peak_max=-1.0):
     """sum, normalise to target LUFS, peak-limit -> (signal, report)"""
     n = max(len(p) for p in parts); mix = np.zeros(n)
     for p in parts: mix[:len(p)] += p
     before = lufs(mix); g = 10 ** ((target_lufs - before) / 20) if before > -69 else 1.0
     out = limit(mix * g, ceiling_db)
-    for _ in range(2):                             # the limiter shaves loudness: correct and limit again
-        err = target_lufs - lufs(out)
-        if abs(err) < 0.1 or before <= -69: break
+    for _ in range(6):                             # the limiter shaves loudness and lets inter-sample peaks through: correct
+        err = target_lufs - lufs(out); tp = true_peak_db(out)
+        if tp > true_peak_max: ceiling_db -= (tp - true_peak_max) + 0.1
+        if (abs(err) < 0.1 and tp <= true_peak_max) or before <= -69: break
         g *= 10 ** (err / 20); out = limit(mix * g, ceiling_db)
     return out, {"lufs_before": round(before, 1), "gain_db": round(20 * math.log10(g), 1), "lufs": round(lufs(out), 1),
-                 "peak_db": round(20 * math.log10(np.abs(out).max() + 1e-9), 1)}
+                 "peak_db": round(20 * math.log10(np.abs(out).max() + 1e-9), 1), "true_peak_db": round(true_peak_db(out), 1)}
 
 
 def write_wav(path, x):

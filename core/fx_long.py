@@ -237,7 +237,7 @@ def grade(shots, cuts_default="day"):
     bc = ng.nodes.new('CompositorNodeBrightContrast')
     ng.links.new(src, mix.inputs[6]); ng.links.new(mix.outputs[2], bc.inputs["Image"]); ng.links.new(bc.outputs["Image"], out.inputs[0])
     for s in shots:
-        g = GRADES.get(s.get("grade", cuts_default), GRADES["day"])
+        g = GRADES.get(s.get("grade") or cuts_default, GRADES["day"])       # a shot without grade is plain day
         for f in (s["a"],):
             mix.inputs[0].default_value = g[1]; mix.inputs[7].default_value = (*g[0], 1)
             bc.inputs["Bright"].default_value = g[2]; bc.inputs["Contrast"].default_value = g[3]
