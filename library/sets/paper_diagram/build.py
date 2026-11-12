@@ -75,7 +75,7 @@ def build(params, lib):
         anchors["label_" + maps.keyname(lb["text"])[:24]] = [ox + lb["at"][0], oy + lb["at"][1], oz]
     if p["hand"] and tips:
         tips.sort()
-        hand = geo.empty("paper_hand", root, (W * 0.6, -H * 0.6, 0.35)); hs = p.get("hand_scale", 1.8); hand.scale = (hs, hs, hs)
+        hand = geo.empty("paper_hand", root, (W * 0.6, -H * 0.6, 0.35)); hs = p.get("hand_scale", 1.2); hand.scale = (hs, hs, hs)
         pencil = geo.empty("paper_pencil", hand, (0, 0, 0)); pencil.rotation_euler = (0, 0, math.radians(-35))
         L = 1.6; w = 0.16
         maps.poly(pencil, "paper_pen_body", [(0.18, -w / 2), (L, -w / 2), (L, w / 2), (0.18, w / 2)], flat("paper_pen", (0.98, 0.72, 0.05)), 0.02, outline=0.03)
@@ -90,6 +90,7 @@ def build(params, lib):
             maps.poly(hand, f"paper_hand_f{i}", geo.ellipse(fx, fy, 0.16, 0.11, 18), skin, 0.032 + 0.001 * i, outline=0.035)
         maps.poly(hand, "paper_hand_thumb", geo.ellipse(0.42, -0.10, 0.20, 0.11, 20), skin, 0.04, outline=0.035)
         rest = (W * 0.62, -H * 0.62)
+        away = (W * 0.5 + 2.6 * hs, -H * 0.5 - 2.2 * hs)        # off the sheet: the hand leaves the drawing while idle
         cum = {i: maps.path_len(t[2]) for i, t in enumerate(tips)}
         last = rest
         for f in range(1, N + 1, 2):
@@ -98,12 +99,18 @@ def build(params, lib):
                 a, b, pts = tips[act]; u = ease((f - a) / max(1, b - a)); (x, y), _ = maps.point_at(pts, cum[act], u); last = (x, y); zz = 0.25
             else:
                 nxt = next((t for t in tips if t[0] > f), None)
-                if nxt and nxt[0] - f < 20:               # glide to the next start
-                    u = ease(1 - (nxt[0] - f) / 20); tx, ty = nxt[2][0]
-                    x, y = last[0] + (tx - last[0]) * u, last[1] + (ty - last[1]) * u; zz = 0.25 + 0.35 * math.sin(math.pi * u)
-                elif any(t[1] < f for t in tips) and not nxt:   # done: drift away
-                    u = min(1.0, (f - max(t[1] for t in tips)) / 30); x, y = last[0] + (rest[0] - last[0]) * ease(u), last[1] + (rest[1] - last[1]) * ease(u); zz = 0.4
-                else:
-                    x, y = last; zz = 0.3
+                ends = [t[1] for t in tips if t[1] < f]
+                idle = f - max(ends) if ends else 10 ** 6
+                to_next = nxt[0] - f if nxt else 10 ** 6
+                gap = idle + to_next
+                # long pause (or before the first / after the last stroke): move off the sheet, come back for the next stroke
+                w = 0.0 if gap < 50 else ease(min(1.0, idle / 25)) * ease(min(1.0, max(0.0, to_next - 20) / 25))
+                if not ends: w = 1.0 if to_next >= 20 else 0.0
+                if not ends: last = away
+                bx, by = last[0] + (away[0] - last[0]) * w, last[1] + (away[1] - last[1]) * w
+                x, y, zz = bx, by, 0.3 + 0.2 * w
+                if nxt and to_next < 20:                          # glide to the next start
+                    u = ease(1 - to_next / 20); tx, ty = nxt[2][0]
+                    x, y = bx + (tx - bx) * u, by + (ty - by) * u; zz = 0.25 + 0.35 * math.sin(math.pi * u)
             hand.location = (x, y, zz + 0.01 * math.sin(f * 0.9)); hand.keyframe_insert("location", frame=f)
     return {"parts": {"root": root}, "anchors": anchors, "noline": [root]}

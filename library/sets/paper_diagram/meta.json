@@ -45,7 +45,11 @@
   },
   "hand": {
    "default": true,
-   "desc_vi": "tay + bút chạy theo nét đang vẽ"
+   "desc_vi": "tay + bút chạy theo nét đang vẽ; nghỉ lâu (> ~50 khung) thì rời khỏi tờ giấy, quay lại trước nét kế"
+  },
+  "hand_scale": {
+   "default": 1.2,
+   "desc_vi": "cỡ bàn tay (tờ 14 × 8); cận cảnh dùng 0,8-1"
   }
  },
  "anchors": {
