@@ -3922,7 +3922,11 @@
         "grade": "dusk",
         "note": "mũi tên vụ cướp vẽ dần",
         "frame": {
-          "subject": "board2.arrow0_mid",
+          "subject": [
+            962.9,
+            0.5,
+            0
+          ],
           "size": 6,
           "move": "push_in"
         }
