@@ -1,0 +1,108 @@
+{
+  "kind": "prop",
+  "name": "cornu_horn",
+  "title_vi": "Kèn đồng La Mã (cornu) 2D",
+  "description_vi": "Kèn cornu 2D để nhân vật cầm trong mặt phẳng của mình. Ống đồng cuốn thành vòng lớn hình chữ G (đường kính 0,7) bao quanh đầu nhân vật. Thanh gỗ chạy chéo qua đường kính vòng, hai đầu có đai đồng. Đầu trên đi thẳng ra trước rồi loe thành loa rộng (miệng loa có vành sáng và lòng tối). Đầu dưới là miệng thổi nhỏ nằm ở gốc tọa độ, đặt sát miệng nhân vật. Màu đồng vàng cam đậm, có nét sáng dọc ống, viền mực 0,035. Nếu có parent (torso) thì gốc đặt tại `at`. `scale2d` phóng to/thu nhỏ cả cây kèn, viền giữ nguyên độ dày. `facing` = -1 để lật cho nhân vật quay trái. `tilt` (độ, dương = nâng loa) xoay quanh miệng thổi.",
+  "dim": "2d",
+  "params": {
+    "at": {
+      "type": "array",
+      "default": [
+        0.2,
+        0.75,
+        0.45
+      ],
+      "desc_vi": "Vị trí miệng thổi trong hệ tọa độ thân (torso), chỉ dùng khi có parent"
+    },
+    "scale2d": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "Hệ số kích thước cả cây kèn (viền mực không đổi)"
+    },
+    "facing": {
+      "type": "integer",
+      "default": 1,
+      "enum": [
+        1,
+        -1
+      ],
+      "desc_vi": "1 = loa chĩa sang phải, -1 = lật sang trái"
+    },
+    "tilt": {
+      "type": "number",
+      "default": 0,
+      "desc_vi": "Góc xoay quanh miệng thổi, đơn vị độ; dương = nâng loa lên"
+    },
+    "loop_d": {
+      "type": "number",
+      "default": 0.7,
+      "desc_vi": "Đường kính vòng ống"
+    },
+    "tube_w": {
+      "type": "number",
+      "default": 0.05,
+      "desc_vi": "Độ dày ống đồng"
+    },
+    "bell_r": {
+      "type": "number",
+      "default": 0.15,
+      "desc_vi": "Bán kính miệng loa"
+    },
+    "bell_len": {
+      "type": "number",
+      "default": 0.26,
+      "desc_vi": "Chiều dài đoạn loe của loa"
+    },
+    "reach": {
+      "type": "number",
+      "default": 0.42,
+      "desc_vi": "Chiều dài đoạn ống thẳng từ vòng ra tới loa"
+    },
+    "color": {
+      "type": "array",
+      "default": [
+        0.85,
+        0.4,
+        0.04
+      ],
+      "desc_vi": "Màu đồng (linear)"
+    },
+    "wood_color": {
+      "type": "array",
+      "default": [
+        0.42,
+        0.18,
+        0.05
+      ],
+      "desc_vi": "Màu thanh gỗ (linear)"
+    }
+  },
+  "parts": [
+    "horn",
+    "bar",
+    "bell"
+  ],
+  "tags": [
+    "roman",
+    "instrument",
+    "horn",
+    "cornu",
+    "brass",
+    "2d",
+    "handheld",
+    "military",
+    "signal"
+  ],
+  "notes_vi": "Tôi chưa dựng thử file này trong Blender: build.py viết xong là gửi luôn, chưa render thumbnail hay ảnh xem lại. Vì vậy cần chạy vòng xem lại của bridge (`tools/thumbs.py --views`) trước khi duyệt.\n\nThông số hình học:\n- Miệng thổi (gốc tọa độ) nằm ở mép phải dưới của vòng.\n- Ống dẫn dài 0,12 chạy xuống, ra sau rồi vào vòng. Ống đi theo chiều kim đồng hồ từ -30° đến -260° (100°), sau đó đi thẳng ra trước thêm `reach` 0,42 rồi loe thành loa.\n- Với mặc định, tâm vòng nằm ở (-0,36; 0,07) so với miệng thổi, nghĩa là ở sau đầu nhân vật. Loa nằm cao hơn miệng thổi khoảng 0,5, ngay trên đầu, chĩa ra trước và hơi chếch lên.\n\nCác phần là empty, mỗi phần gom luôn mảng màu và viền của nó, nên story animate cả phần mà viền không bị bỏ lại:\n- `_horn`: ống và miệng thổi, xoay quanh miệng thổi;\n- `_bar`: thanh gỗ, xoay quanh tâm vòng;\n- `_bell`: loa, xoay quanh chân loa.\n\nThứ tự lớp z, từ dưới lên: thanh gỗ (0) → viền ống (0,01) → ống (0,02) → nét sáng (0,03) → loa (0,04–0,065). Hai đầu thanh gỗ được ống che, nên trông như thanh gắn vào ống.\n\nNếu ảnh xem lại thấy vòng che mặt nhân vật, chỉnh `at` hoặc `tilt`, hoặc giảm `loop_d`.",
+  "status": "draft",
+  "brief_vi": "Kèn đồng La Mã (cornu) 2D cầm tay trong mặt phẳng nhân vật: ống đồng cong hình chữ G lớn (đường kính vòng ~0,7) có thanh gỗ ngang chéo qua vòng, loa kèn rộng ở đầu trên chĩa ra trước, miệng thổi nhỏ ở đầu dưới gần miệng nhân vật; màu đồng vàng cam đậm, viền mực 0,035. Gắn torso, params at (mặc định [0.2, 0.75, 0.45]) và scale2d. Gốc ở miệng thổi. parts: horn, bar, bell.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T12:02:28",
+  "review": {
+    "score": 8,
+    "summary_vi": "Bản r2 đã ổn, tôi chấm 8/10 khi xem lại ảnh render. Ống đồng vàng cam cuốn hình chữ G, có thanh gỗ chéo kèm đai, loa rộng chĩa lên trước và viền mực rõ, nhìn là nhận ra kèn cornu La Mã. Ở vị trí mặc định, miệng thổi hơi thấp so với miệng Joe; trong story có thể nâng `at` lên một chút.",
+    "problems": [
+      "Ở vị trí mặc định `at`, miệng thổi hơi thấp so với miệng Joe và loa nằm sát cằm. Story có thể nâng `at` y lên khoảng 0,1-0,2 hoặc đặt `tilt` để kèn sát miệng hơn (không phải lỗi của đạo cụ)."
+    ]
+  }
+}
