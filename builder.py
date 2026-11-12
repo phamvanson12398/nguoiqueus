@@ -808,7 +808,7 @@ def main(argv):
     opt = {}; i = 1
     while i < len(argv):
         a = argv[i]
-        if a in ("--render", "--check", "--seq"): opt[a[2:]] = True; i += 1
+        if a in ("--render", "--check", "--seq", "--square"): opt[a[2:]] = True; i += 1
         else: opt[a[2:]] = argv[i + 1]; i += 2
     if opt.get("check"):
         errs = check_story(json.load(open(story, encoding="utf-8")), Library())
@@ -828,6 +828,11 @@ def main(argv):
             sc.render.resolution_percentage = 100
         sc.eevee.taa_render_samples = int(opt.get("samples", 16))
         overlay.sync(sc.render.resolution_percentage, sc.eevee.taa_render_samples)
+        if opt.get("square"):                                # the centre square only (character reference pictures)
+            w_, h_ = sc.render.resolution_x, sc.render.resolution_y; f_ = min(w_, h_) / max(w_, h_)
+            sc.render.use_border = True; sc.render.use_crop_to_border = True
+            if w_ >= h_: sc.render.border_min_x, sc.render.border_max_x, sc.render.border_min_y, sc.render.border_max_y = (1 - f_) / 2, (1 + f_) / 2, 0, 1
+            else: sc.render.border_min_x, sc.render.border_max_x, sc.render.border_min_y, sc.render.border_max_y = 0, 1, (1 - f_) / 2, (1 + f_) / 2
         sc.render.image_settings.media_type = 'IMAGE'; sc.render.image_settings.file_format = 'PNG'
         for fr in [int(x) for x in opt["preview"].split(",")]:
             t1 = time.time(); sc.frame_set(fr); sc.render.filepath = os.path.join(pdir, f"p_{fr:04d}.png")

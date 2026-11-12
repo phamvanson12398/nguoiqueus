@@ -1,0 +1,75 @@
+{
+ "style_en": "Stylized 3D cartoon render in a toy-like animated style: characters have a very large, perfectly round white/peach head like a smooth sphere, tiny simple solid-black dot eyes, a hand-drawn black mouth line, a soft pill-shaped rounded body with costume pieces wrapped snugly around it, thin black stick arms and legs ending in round white mitten hands, a clean even black ink outline around every shape, and crisp two-tone cel shading (one light tone, one shadow tone) plus a soft rim light. Environments are clean low-poly 3D with simple chunky shapes, few small details, bold saturated colors and strong contrast, readable on a phone screen. Cinematic lighting, shallow depth of field with a blurred foreground element, polished YouTube-thumbnail look.",
+ "prompts": [
+  {
+   "title_vi": "Hero: Atto sốc trên tường đá, sương và cổng phía sau",
+   "chars": [
+    "atto"
+   ],
+   "prompt_en": "16:9 YouTube thumbnail, toy-like 3D cartoon style, match the attached character reference images exactly. Medium close-up of ATTO, a Roman auxiliary soldier (122 AD), placed in the LEFT THIRD, filling two thirds of the frame height, standing on top of a grey stone wall walkway. He wears an iron auxiliary helmet with two crossed reinforcing bars on top, big cheek guards and a narrow flared neck guard; chainmail shirt to the hips with a doubled shoulder layer; light red wool tunic; brown cloak pinned with a bronze brooch; bright orange neck scarf. Exaggerated SHOCK: huge round eyes, mouth wide open, both white hands pressed to his cheeks, leaf-bladed spear leaning on his shoulder. Behind him the wall snakes over green hills into rolling fog, a small stone gatehouse glowing in the mist. Deep teal-blue twilight with strong warm orange torch rim light on his face and helmet. Blurred stone parapet in foreground. Empty fog sky on the RIGHT half for text. No text, no letters.",
+   "negative_en": "realistic humans, photorealistic skin, detailed realistic faces, anime, extra fingers, five-finger hands, extra limbs, text, letters, watermark, logo, signature, cluttered background, crowd, dark muddy colors, underexposed, pitch black night, gore, blood, legionary rectangular shield, segmented plate armor, plumed helmet, modern objects",
+   "midjourney": "YouTube thumbnail, toy-like 3D cartoon Roman auxiliary soldier with huge round white head and black dot eyes, crossed-bar iron helmet, chainmail, brown cloak, orange scarf, shocked face, hands on cheeks, on top of a stone wall snaking over misty green hills, glowing gatehouse in fog, teal twilight, warm orange torch rim light, blurred foreground parapet, subject left third, empty sky right, thick black ink outline, two-tone cel shading, saturated colors, no text --ar 16:9 --v 7 --style raw",
+   "text_overlay": {
+    "text": "A GATE EVERY MILE?",
+    "where": "nửa phải, 2 dòng (\"A GATE\" / \"EVERY MILE?\"), canh giữa theo chiều dọc, chiếm ~45% chiều rộng",
+    "color": "vàng #FFD91A, viền đen dày 10-14 px + bóng đổ đen",
+    "font": "Anton / Bebas Neue / Impact, in hoa, rất đậm"
+   },
+   "text_in_image_en": "16:9 YouTube thumbnail, toy-like 3D cartoon style, match the attached character reference images exactly. Medium close-up of ATTO, a Roman auxiliary soldier (122 AD), in the LEFT THIRD on top of a stone wall: iron helmet with two crossed bars on top and big cheek guards, chainmail shirt, light red tunic, brown cloak with bronze brooch, orange neck scarf, leaf-bladed spear on shoulder. Exaggerated shock: huge round eyes, mouth wide open, both white hands pressed to his cheeks. Behind him the wall snakes over green hills into fog, a glowing stone gatehouse in the mist; teal twilight, warm orange torch rim light, blurred parapet in foreground. On the RIGHT half, huge bold condensed uppercase text in two lines reading \"A GATE\" and \"EVERY MILE?\", bright yellow with a thick black outline and drop shadow, perfectly spelled. No other text.",
+   "tips_vi": "Đính kèm library/outfits/roman_auxiliary_122ad/thumb.png làm ảnh tham chiếu (có thể kèm projects/why-hadrians-wall/youtube/thumb_1.png để AI hiểu phong cách). Hợp nhất: ChatGPT image hoặc Gemini/Nano Banana (giữ nhân vật tốt). Midjourney: thêm --oref <link ảnh Atto> --ow 100 (v7) hoặc --cref ở v6. Nếu ra quá tối: viết thêm \"bright exposure, glowing teal sky\". Nếu mũ ra kiểu lê dương có gờ gáy chìa ngang/mào lông: nhắc lại \"no plume, crossed bars on top\". Nếu tay ra 5 ngón: thêm \"round mitten hands, no fingers\"."
+  },
+  {
+   "title_vi": "VS: Atto tự mãn chặn cổng — Vepo lo lắng nhún vai",
+   "chars": [
+    "atto",
+    "vepo"
+   ],
+   "prompt_en": "16:9 YouTube thumbnail, toy-like 3D cartoon style, match the attached character reference images exactly. Two characters face each other in front of an arched stone milecastle gate set in a long stone wall, golden-hour sunset. LEFT THIRD: ATTO, Roman auxiliary soldier, iron helmet with crossed top bars and cheek guards, chainmail, light red tunic, brown cloak, orange scarf, flat blue oval shield with white rim and two white crescents, arms crossed, smug closed-eye grin, blocking the gate. RIGHT THIRD: VEPO, a Caledonian Briton farmer, bareheaded, tied hair and goatee, undyed brown knee-length tunic with a green hem stripe, short green checked cloak with iron brooch, leather satchel, tall wooden shepherd's crook with an outward hook, worried eyebrows, shrugging with palms up. Warm orange sunlight from behind the gate, strong rim lights, red Roman vs green Briton color contrast. Blurred grass tufts in foreground. Clear space in the BOTTOM STRIP for text. No text, no letters.",
+   "negative_en": "realistic humans, photorealistic, extra fingers, extra limbs, text, letters, watermark, logo, cluttered background, crowd, dark muddy colors, ethnic caricature, ugly or villainous Briton, gold torc, Briton with weapon or helmet, Roman rectangular shield, plumed helmet, modern objects, blood",
+   "midjourney": "YouTube thumbnail versus layout, toy-like 3D cartoon characters with huge round heads and black dot eyes, left: smug Roman auxiliary soldier arms crossed, crossed-bar iron helmet, chainmail, blue oval shield with white crescents, blocking an arched stone gate in a long wall; right: worried bareheaded Briton farmer with goatee, brown tunic, green checked cloak, tall shepherd's crook, shrugging; golden hour backlight, strong rim light, red vs green contrast, blurred grass foreground, empty bottom strip, thick black outline, two-tone cel shading, saturated --ar 16:9 --v 7 --style raw",
+   "text_overlay": {
+    "text": "PAY TO PASS?",
+    "where": "dải dưới đáy, canh giữa, cao ~22% khung, nằm giữa hai nhân vật không đè mặt",
+    "color": "vàng #FFD91A viền đen dày; có thể thêm chữ \"VS\" trắng viền đỏ nhỏ ở giữa trên cổng",
+    "font": "Anton / Luckiest Guy, in hoa, đậm"
+   },
+   "text_in_image_en": "16:9 YouTube thumbnail, toy-like 3D cartoon style, match the attached character reference images exactly. Arched stone milecastle gate in a long stone wall at golden hour. LEFT: smug Roman auxiliary soldier ATTO (crossed-bar iron helmet, chainmail, light red tunic, brown cloak, orange scarf, flat blue oval shield with white crescents), arms crossed, eyes closed, grinning, blocking the gate. RIGHT: worried Briton farmer VEPO (bareheaded, tied hair, goatee, brown tunic with green hem stripe, green checked cloak, satchel, tall wooden shepherd's crook), shrugging, palms up. Warm backlight, strong rim lights, blurred grass in foreground. Across the bottom strip, huge bold uppercase text reading \"PAY TO PASS?\" in bright yellow with a thick black outline, perfectly spelled, not covering faces. No other text.",
+   "tips_vi": "Đính kèm 2 ảnh: library/outfits/roman_auxiliary_122ad/thumb.png (Atto) và library/outfits/briton_farmer_50ad/thumb.png (Vepo), ghi rõ \"first image = left character, second image = right character\". Ideogram/ChatGPT hợp cho bản có chữ. Midjourney: dùng --oref cho 1 nhân vật, nhân vật thứ hai tạo riêng rồi ghép trong Canva sẽ chắc hơn. Nếu Vepo bị vẽ xấu/hung dữ hơn: thêm \"both characters equally cute and friendly\". Nếu Vepo có vũ khí: nhắc \"unarmed, only a shepherd's crook\"."
+  },
+  {
+   "title_vi": "Bản đồ: Hadrian chỉ tay vào tuyến tường vẽ ngang Britannia",
+   "chars": [
+    "hadrian"
+   ],
+   "prompt_en": "16:9 YouTube thumbnail, toy-like 3D cartoon style, match the attached character reference images exactly. A large aged parchment map of the island of Britannia lies on a wooden table, seen from a low three-quarter angle; a bold glowing red line of a stone wall crosses the narrow neck of northern England coast to coast (Tyne to Solway), with tiny chunky stone towers along it. RIGHT THIRD, medium shot leaning into frame: EMPEROR HADRIAN, short curly hair with forward-combed fringe, full short beard and mustache, bronze muscle cuirass, leather pteruges at shoulders and hips, white tunic, red sash knotted at the belly, long purple cloak with gold brooch. Determined, eyebrows raised, smirking, pointing one white hand at the red line. Warm candle light from below, golden god rays through dusty air, rich sepia map vs purple cloak vs red line. Blurred quill and oil lamp in foreground. Empty parchment area TOP-LEFT for text. No text, no letters.",
+   "negative_en": "realistic humans, photorealistic, readable map labels, text, letters, watermark, logo, extra fingers, extra limbs, wrong geography, wall across Scotland, cluttered table, dark muddy colors, laurel crown, toga only, modern objects",
+   "midjourney": "YouTube thumbnail, toy-like 3D cartoon Roman emperor with huge round head, curly hair and full short beard, bronze muscle cuirass, long purple cloak, smirking and pointing at an old parchment map of Britain with a glowing red wall line across northern England coast to coast, tiny stone towers, warm candle light, golden dusty god rays, blurred quill and oil lamp foreground, emperor right third, empty parchment top left, thick black outline, two-tone cel shading, saturated sepia purple red --ar 16:9 --v 7 --style raw",
+   "text_overlay": {
+    "text": "ROME STOPPED HERE",
+    "where": "góc trên bên trái, 2 dòng (\"ROME\" / \"STOPPED HERE\"), có thể thêm mũi tên trắng chỉ xuống đường tường đỏ",
+    "color": "trắng viền đen dày, chữ \"HERE\" vàng #FFD91A",
+    "font": "Anton / Bebas Neue, in hoa, rất đậm"
+   },
+   "text_in_image_en": "16:9 YouTube thumbnail, toy-like 3D cartoon style, match the attached character reference images exactly. Aged parchment map of Britannia on a wooden table, a glowing red stone-wall line crossing northern England coast to coast with tiny towers. RIGHT THIRD: Emperor Hadrian (curly hair, full short beard, bronze muscle cuirass, leather pteruges, red sash, long purple cloak with gold brooch), smirking, pointing at the red line. Warm candle light, golden god rays, blurred quill in foreground. In the TOP-LEFT, huge bold uppercase text in two lines reading \"ROME\" and \"STOPPED HERE\", white with thick black outline, the word HERE in yellow, perfectly spelled. No map labels, no other text.",
+   "tips_vi": "Đính kèm library/outfits/hadrian_122ad/thumb.png. Có thể kèm ảnh bản đồ thật (Wikimedia) để AI vẽ đúng hình đảo Anh và vị trí tường (eo hẹp Newcastle–Carlisle). Gemini/Nano Banana giữ hình bản đồ tốt nhất; Midjourney hay vẽ chữ giả trên bản đồ → thêm --no text, letters. Nếu đường tường lệch lên Scotland: viết \"wall at the narrowest part of northern England, far south of Scotland\". Nếu Hadrian đội vòng nguyệt quế: thêm \"bareheaded\"."
+  },
+  {
+   "title_vi": "Gag: dê con thản nhiên đi qua cổng, lính gác há hốc",
+   "chars": [
+    "goat",
+    "guard"
+   ],
+   "prompt_en": "16:9 YouTube thumbnail, toy-like 3D cartoon style, match the attached character reference images exactly. Low ground-level wide shot through an open arched stone gate in a long stone wall on green hills, bright sunny afternoon, fluffy white clouds. CENTER-LEFT, big in the foreground: a chubby brown-and-white baby goat with white face, small ivory horns curving back, cream beard, turquoise collar with a gold bell, strutting through the gate, eyes half-closed, smug and unbothered, chewing a grass stalk. Behind it, LEFT, a Roman auxiliary gate guard: crossed-bar iron helmet with cheek guards, small mustache, chainmail, light red tunic, brown cloak, flat blue oval shield with white crescents, leaf-bladed spear; jaw dropped, eyes bulging, one hand raised in a stop gesture. Warm sun rim light, dust motes, saturated green, blue and turquoise. Blurred wildflowers in foreground. Open blue sky on the RIGHT for text. No text, no letters.",
+   "negative_en": "realistic animals, realistic humans, photorealistic fur, extra legs, extra fingers, text, letters, watermark, logo, cluttered background, crowd, dark muddy colors, scary goat, demonic eyes, blood, modern objects, legionary rectangular shield",
+   "midjourney": "YouTube thumbnail, toy-like 3D cartoon chubby brown and white baby goat with turquoise collar and gold bell strutting smugly through an arched stone gate in a long stone wall, chewing grass, behind it a shocked Roman auxiliary guard with huge round head, crossed-bar helmet, chainmail, blue oval shield, hand raised to stop, low ground-level angle, sunny green hills, fluffy clouds, warm rim light, blurred wildflowers foreground, empty sky right, thick black outline, two-tone cel shading, saturated --ar 16:9 --v 7 --style raw",
+   "text_overlay": {
+    "text": "WHY SO MANY GATES?",
+    "where": "nửa phải trên nền trời, 2-3 dòng, canh phải",
+    "color": "trắng viền đen dày, \"GATES?\" vàng #FFD91A to hơn 1,3 lần",
+    "font": "Luckiest Guy / Anton, in hoa, đậm"
+   },
+   "text_in_image_en": "16:9 YouTube thumbnail, toy-like 3D cartoon style, match the attached character reference images exactly. Low ground-level shot through an open arched stone gate in a long stone wall, sunny green hills, fluffy clouds. Foreground center-left: chubby brown-and-white baby goat with ivory horns, cream beard, turquoise collar and gold bell, strutting smugly through the gate chewing grass. Behind it: shocked Roman auxiliary guard (crossed-bar iron helmet, mustache, chainmail, red tunic, brown cloak, blue oval shield with white crescents, spear), jaw dropped, hand raised to stop. Warm rim light, blurred wildflowers in foreground. On the RIGHT sky, huge bold uppercase text reading \"WHY SO MANY GATES?\", white with thick black outline, the word GATES in yellow and larger, perfectly spelled. No other text.",
+   "tips_vi": "Đính kèm library/chars/goat/thumb.png (dê) và library/outfits/roman_auxiliary_122ad/thumb.png (lính gác — nhớ dặn thêm ria mép vì guard khác Atto). Ý này lạ mắt nhất nhưng ít \"nói\" chủ đề, nên thử A/B với ý 1 hoặc 2. Leonardo/Flux hợp vì vẽ con vật hoạt hình dễ thương tốt. Nếu dê ra 5 chân hay tả thực: thêm \"four thin black stick legs, cartoon\". Nếu lính gác che mất dê: \"goat is the largest element, guard smaller in background\"."
+  }
+ ]
+}

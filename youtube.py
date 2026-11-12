@@ -193,7 +193,8 @@ def ref_story(slug, char_id, expression="happy"):
     cs = cast(slug)
     spec = _char_spec(cs, {"id": char_id, "expression": expression, "pose": "stand"}, [0, 0, 0])
     spec.pop("props", None)
-    shot = {"a": 1, "b": 3, "type": "full", "frame": {"subject": [0, 0, 0], "size": 2.9, "move": "static_drift", "y": -0.02}}
+    # framed on the character itself: the builder scales the frame to its real height (a goat is not a person)
+    shot = {"a": 1, "b": 3, "type": "full", "frame": {"subject": char_id, "move": "static_drift"}}
     st = {"meta": {"title": f"ref {char_id}", "fps": 30, "frames": 3, "aspect": "16:9", "samples": 32, "output": "ref.mp4"},
           "factions": list(cs["factions"].values()), "sets": [], "chars": [spec],
           "world": {"clouds": 0},

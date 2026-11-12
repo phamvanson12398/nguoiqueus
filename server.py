@@ -525,7 +525,7 @@ def job_thumb_prompts(job, slug):
         try:
             td = os.path.join(rd, "_" + cid); os.makedirs(td, exist_ok=True); sp = os.path.join(td, "story.json")
             json.dump(youtube.ref_story(slug, cid), open(sp, "w", encoding="utf-8"), indent=1)
-            run_builder(job, slug, ["--preview", "2", "--size", "1280x720", "--samples", "32"], story=sp)
+            run_builder(job, slug, ["--preview", "2", "--size", "1600x900", "--samples", "32", "--square"], story=sp)
             src = os.path.join(td, "preview", "p_0002.png")
             if os.path.exists(src): shutil.copy(src, os.path.join(rd, f"{cid}.png"))
         except Exception as e:
