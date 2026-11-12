@@ -20,6 +20,12 @@ Bản rút gọn của skill `blender-why-shorts` v3. Định dạng dữ liệu
   Hài thưa hơn Shorts. Phụ đề nhỏ dưới đáy (YouTube còn có CC). Luật "Camera v3", "Nhịp hài" mỗi 4-5 giây và "Không bật DOF" bên dưới là của Shorts.
 - Nhiều quốc gia/phe: trang phục, màu, cờ đúng văn hóa và thời kỳ; không vẽ biếm họa sắc tộc; phe "địch" không bị vẽ xấu hơn.
 
+## Hình đẹp, không đơn điệu (cả Shorts và video dài)
+- Mỗi khung có chủ thể rõ và một màu nhấn; không cảnh trống (chỉ cỏ, chỉ tường, chỉ trời).
+- Tiền cảnh – chủ thể – hậu cảnh; cận cảnh nền mềm (dof); đổi bối cảnh, góc máy, cỡ cảnh và ánh sáng thường xuyên.
+- Thêm hiệu ứng làm sống khung hình (bụi, khói, lửa, cờ bay, tia nắng, mưa/tuyết) đúng lúc, không để khung đứng im.
+- Video dài: chi tiết ở LONGFORM_RULES.md mục 10.
+
 ## Ý tưởng
 - Câu hỏi thật của người Mỹ (People also ask, r/explainlikeimfive, câu hỏi trẻ con, đồ vật hằng ngày). Tránh chủ đề trừu tượng phải giải thích bằng bảng chữ.
 - Chấm 5 tiêu chí × 0-2 điểm, chỉ giữ ý từ 8/10:

@@ -405,6 +405,18 @@ class Builder:
                 return f2
         return fr
 
+    def dress_ground(self):
+        """long-form look: big ground and hill meshes get soft colour patches (fields, worn grass, sunlit slopes)"""
+        done = set(); n = 0
+        for o in ctx.sc.objects:
+            if o.type != 'MESH' or o.hide_render: continue
+            d = o.dimensions
+            if d.x > 30 and d.y > 30 and d.z < 0.5 * max(d.x, d.y):
+                for m in o.data.materials:
+                    if m is not None and m.name not in done:
+                        look.ground_variation(m); done.add(m.name); n += 1
+        if n: print(f"GROUND {n} materials with colour patches")
+
     def check_line_of_sight(self, res, shots):
         """framing places the camera by distance only: a wall, a tree or the inside of a building can end up between the
         camera and the subject (seen: a low orbit around a centurion ended inside the milecastle wall). Cast a ray from the
@@ -487,7 +499,9 @@ class Builder:
         self.env = Env(FPS, N, st.get("defs"), st.get("consts"))
 
         w = st.get("world", {})
-        look.sky_world(tuple(tuple(c) for c in w["sky"]) if "sky" in w else look.SKY_DAY, w.get("sky_strength", 1.0))
+        wo = look.sky_world(tuple(tuple(c) for c in w["sky"]) if "sky" in w else look.SKY_DAY, w.get("sky_strength", 1.0))
+        if self.aspect != "9:16" and w.get("clouds", 0.5) > 0:          # long-form: a sky with clouds, never an empty gradient
+            look.add_clouds(wo, w.get("clouds", 0.5), seed=float(meta.get("seed", 7)))
         look.sun_light(**w.get("sun", {}))
 
         # sets, each followed by its props (creation order is part of the result)
@@ -578,6 +592,7 @@ class Builder:
             holds = [c.root.name for c in self.chars.values()] + sorted(n for n in moved if n in self.story_props)
         timing.add_teleport_holds([self.obj(n, "teleport_holds") for n in holds])
 
+        if self.aspect != "9:16": self.dress_ground()
         noline = []
         for c in self.chars.values(): noline += look.descendants(c.root)
         if cap_root: noline += look.descendants(cap_root)

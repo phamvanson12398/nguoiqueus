@@ -960,7 +960,24 @@ def check_long_story(st, content):
             if sh["type"] == "card" and want and not any(len(want & cw) >= 0.8 * len(want) for cw in card_words):
                 e.append(f"màn hình chữ '{sh['card_text']}' (chuỗi {q.get('id')}) chưa có trong cards")
     e += label_overlaps(st)
+    e += variety_problems(st)
     return e
+
+
+def variety_problems(st):
+    """a part that never changes light or never has anything moving in the air looks flat: ask for more"""
+    out = []
+    N = st["meta"]["frames"]; mins = N / 30 / 60
+    if mins < 1.0: return out
+    vfx = st.get("vfx") or []
+    need = max(1, int(mins * 60 / 45))
+    if len(vfx) < need:
+        out.append(f"hình đơn điệu: chỉ {len(vfx)} hiệu ứng (vfx) cho {mins:.1f} phút, cần ≥ {need} (dust, smoke, fire, banner, light_shafts, "
+                   "rain/snow, sparks… — LONGFORM_RULES mục 10)")
+    grades = {s.get("grade") or "day" for s in st.get("camera", {}).get("shots", [])}
+    if mins >= 2.0 and len(grades) < 2:
+        out.append("hình đơn điệu: cả phần chỉ một grade; đổi theo thời điểm/cảm xúc (dawn, warm, dusk, night, cold, storm…)")
+    return out
 
 
 def label_overlaps(st):

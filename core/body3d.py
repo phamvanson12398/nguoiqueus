@@ -33,6 +33,7 @@ EDGE = 0.065             # target edge length when subdividing flat pieces
 TUBE_FLAT = 0.25         # depth squash of stroke tubes lying on a surface
 HULL = 0.010             # ink shell thickness around solids (the rim tube draws the main outline)
 LIGHT = (-0.45, 0.6, -0.66)  # toon light direction in Blender camera space (x right, y up, -z towards the viewer)
+RIM = (0.72, 0.86, 0.45)  # rim light: facing ratio start, full, strength
 SHADE_AT = 0.52          # (dot + 1) / 2 below this is the shade band
 
 
@@ -78,7 +79,17 @@ def toon(m):
     mul = nt.nodes.new("ShaderNodeMix"); mul.data_type = 'RGBA'; mul.blend_type = 'MULTIPLY'
     mul.inputs[0].default_value = 1.0; mul.inputs[6].default_value = (*rgb, 1)
     L.new(ramp.outputs[0], mul.inputs[7])
-    em = nt.nodes.new("ShaderNodeEmission"); L.new(mul.outputs[2], em.inputs[0])
+    # rim light: a thin brighter band on the silhouette, on the lit side only -> characters pop off the background
+    lw = nt.nodes.new("ShaderNodeLayerWeight"); lw.inputs[0].default_value = 0.5
+    rim = nt.nodes.new("ShaderNodeMapRange"); rim.inputs[1].default_value, rim.inputs[2].default_value = RIM[0], RIM[1]
+    L.new(lw.outputs["Facing"], rim.inputs[0])
+    lit = nt.nodes.new("ShaderNodeMapRange"); lit.inputs[1].default_value, lit.inputs[2].default_value = SHADE_AT, SHADE_AT + 0.2
+    L.new(sc.outputs[0], lit.inputs[0])
+    rk = nt.nodes.new("ShaderNodeMath"); rk.operation = 'MULTIPLY'; L.new(rim.outputs[0], rk.inputs[0]); L.new(lit.outputs[0], rk.inputs[1])
+    rk2 = nt.nodes.new("ShaderNodeMath"); rk2.operation = 'MULTIPLY'; rk2.inputs[1].default_value = RIM[2]; L.new(rk.outputs[0], rk2.inputs[0])
+    hi = nt.nodes.new("ShaderNodeMix"); hi.data_type = 'RGBA'; hi.blend_type = 'SCREEN'
+    L.new(rk2.outputs[0], hi.inputs[0]); L.new(mul.outputs[2], hi.inputs[6]); hi.inputs[7].default_value = (1.0, 0.97, 0.9, 1)
+    em = nt.nodes.new("ShaderNodeEmission"); L.new(hi.outputs[2], em.inputs[0])
     out = nt.nodes.new("ShaderNodeOutputMaterial"); L.new(em.outputs[0], out.inputs[0])
     look.MATS[key] = t
     return t

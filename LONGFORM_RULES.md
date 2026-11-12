@@ -120,3 +120,18 @@ cần nhiều bản đồ trong một phần thì thêm nhiều set với `id` v
 - `{"type": "rain"|"snow", "from", "to", "intensity"}` — lớp mưa/tuyết trước ống kính.
 - Chỉnh màu theo cú máy: shot `"grade"`: day, dawn, dusk, night, cold, warm, desert, sepia, storm, fire (shot không ghi grade = day, màu thường).
   Thời đại/nơi mới hoặc đổi giờ trong ngày thì đổi grade. Không vẽ máu me.
+
+## 10. Hình đẹp, bắt mắt, không đơn điệu (luôn áp dụng)
+Người xem phải luôn thấy một khung hình đáng nhìn. Trước khi viết xong mỗi phần, tự soát:
+- **Mỗi khung có chủ thể rõ**: người, con vật, đồ vật, bản đồ, chữ. Không có cảnh chỉ cỏ + trời. Cảnh toàn/cảnh đất trời phải có
+  hành động (người đi, đàn gia súc, khói bếp, cờ bay, quân hành quân) hoặc một vật ở tiền cảnh (cột mốc, hàng rào, cành cây, tường đá).
+- **3 lớp chiều sâu**: tiền cảnh (vật gần máy, mờ nhẹ khi fstop thấp) – chủ thể – hậu cảnh (đồi, tường, làng). Cận cảnh đặt
+  camera.dof fstop 1,8-2,2 để nền mềm.
+- **Đổi bối cảnh và màu thường xuyên**: không ở một bối cảnh quá ~40 giây liền; xen bản đồ / sa bàn / giấy sơ đồ / màn hình chữ /
+  nội thất. Đổi grade theo thời điểm và cảm xúc (dawn, warm, dusk, night, cold, storm) — cả video không chỉ "day".
+- **Hiệu ứng làm sống khung hình** ít nhất 1 cái mỗi ~45 giây: dust khi đi/ngã, smoke bếp, fire đuốc/lò, banner cờ bay, light_shafts
+  trong nhà, rain/snow theo cảnh, sparks khi đập đá/rèn.
+- **Màu nhấn**: mỗi cảnh có một màu nổi (khăn, cờ, khiên, áo choàng) tương phản nền; tránh cả khung chỉ xanh lá hoặc chỉ xám.
+- **Góc máy đa dạng**: không 3 cú liền nhau cùng cỡ cảnh; dùng thấp (low) cho nhân vật quyền lực, cao (high) cho đám đông/bản đồ,
+  orbit/crane cho khoảnh khắc lớn.
+Tool tự thêm mây, mảng màu mặt đất, viền sáng cho nhân vật; kiểm tra plan báo lỗi khi phần quá ít hiệu ứng hoặc chỉ có một grade.

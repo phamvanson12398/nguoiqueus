@@ -149,6 +149,12 @@
       }
      },
      "additionalProperties": false
+    },
+    "clouds": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 1,
+     "description": "video dài: lượng mây trên trời (0 = không mây, mặc định 0,5)"
     }
    }
   },

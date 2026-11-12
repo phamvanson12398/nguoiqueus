@@ -180,6 +180,73 @@ def sky_world(colors=SKY_DAY, strength=1.0):
     return world
 
 
+def add_clouds(world, cover=0.5, tint=(0.99, 0.98, 1.0), scale=2.2, seed=0.0):
+    """soft cartoon clouds in the world shader (no objects, no render cost): stretched 3D noise on the view direction,
+    only in a band above the horizon, soft-edged, slightly shaded underneath. cover 0..1 = how much sky they take"""
+    if world is None or not world.use_nodes: return world
+    wn = world.node_tree; L = wn.links
+    bgn = wn.nodes["Background"]
+    if not bgn.inputs[0].links: return world
+    sky = bgn.inputs[0].links[0].from_socket
+    tco = wn.nodes.new("ShaderNodeTexCoord")
+    mp = wn.nodes.new("ShaderNodeMapping"); mp.inputs["Scale"].default_value = (scale, scale, scale * 3.2)
+    mp.inputs["Location"].default_value = (seed, seed * 0.7, 0.0)
+    L.new(tco.outputs["Generated"], mp.inputs[0])
+    nz = wn.nodes.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = 1.6; nz.inputs["Detail"].default_value = 3.0
+    nz.inputs["Roughness"].default_value = 0.55
+    L.new(mp.outputs[0], nz.inputs["Vector"])
+    thr = 0.62 - 0.14 * cover
+    cr = wn.nodes.new("ShaderNodeValToRGB"); el = cr.color_ramp.elements
+    el[0].position, el[0].color = thr, (0, 0, 0, 1); el[1].position, el[1].color = thr + 0.06, (1, 1, 1, 1)
+    L.new(nz.outputs["Fac"], cr.inputs[0])
+    sep = wn.nodes.new("ShaderNodeSeparateXYZ"); L.new(tco.outputs["Generated"], sep.inputs[0])
+    band = wn.nodes.new("ShaderNodeMapRange"); band.inputs[1].default_value, band.inputs[2].default_value = 0.02, 0.14
+    L.new(sep.outputs[2], band.inputs[0])
+    top = wn.nodes.new("ShaderNodeMapRange"); top.inputs[1].default_value, top.inputs[2].default_value = 0.75, 0.45
+    L.new(sep.outputs[2], top.inputs[0])
+    m1 = wn.nodes.new("ShaderNodeMath"); m1.operation = 'MULTIPLY'; L.new(cr.outputs[0], m1.inputs[0]); L.new(band.outputs[0], m1.inputs[1])
+    m2 = wn.nodes.new("ShaderNodeMath"); m2.operation = 'MULTIPLY'; L.new(m1.outputs[0], m2.inputs[0]); L.new(top.outputs[0], m2.inputs[1])
+    shade = wn.nodes.new("ShaderNodeMix"); shade.data_type = 'RGBA'          # greyer, bluer underside near the horizon
+    shade.inputs[6].default_value = (tint[0] * 0.80, tint[1] * 0.83, tint[2] * 0.92, 1); shade.inputs[7].default_value = (*tint, 1)
+    L.new(band.outputs[0], shade.inputs[0])
+    mix = wn.nodes.new("ShaderNodeMix"); mix.data_type = 'RGBA'
+    L.new(m2.outputs[0], mix.inputs[0]); L.new(sky, mix.inputs[6]); L.new(shade.outputs[2], mix.inputs[7])
+    L.new(mix.outputs[2], bgn.inputs[0])
+    return world
+
+
+def ground_variation(m, scale=0.035, amount=1.6):
+    """big soft patches on a ground/hill material (darker cool, lighter warm), so a meadow reads like real fields
+    instead of one flat green; safe to call twice"""
+    if m is None or not m.use_nodes or m.get("ground_var"): return m
+    nt = m.node_tree; L = nt.links
+    b = next((n for n in nt.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+    if b is None: return m
+    inp = b.inputs["Base Color"]
+    geo_ = nt.nodes.new("ShaderNodeNewGeometry")
+    nz = nt.nodes.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = scale; nz.inputs["Detail"].default_value = 2.0
+    L.new(geo_.outputs["Position"], nz.inputs["Vector"])
+    cr = nt.nodes.new("ShaderNodeValToRGB"); el = cr.color_ramp.elements
+    lo = 1 - 0.16 * amount; hi = 1 + 0.14 * amount
+    el[0].position, el[0].color = 0.32, (lo * 0.95, lo, lo * 0.98, 1)
+    el[1].position, el[1].color = 0.68, (hi * 1.06, hi * 1.03, hi * 0.86, 1)
+    mid = el.new(0.5); mid.color = (1, 1, 1, 1)
+    L.new(nz.outputs["Fac"], cr.inputs[0])
+    fine = nt.nodes.new("ShaderNodeTexNoise"); fine.inputs["Scale"].default_value = scale * 28; fine.inputs["Detail"].default_value = 4.0
+    L.new(geo_.outputs["Position"], fine.inputs["Vector"])
+    fr = nt.nodes.new("ShaderNodeValToRGB"); fe = fr.color_ramp.elements                   # a grassy grain, +-6 %
+    fe[0].position, fe[0].color = 0.35, (0.94, 0.94, 0.94, 1); fe[1].position, fe[1].color = 0.65, (1.06, 1.06, 1.02, 1)
+    L.new(fine.outputs["Fac"], fr.inputs[0])
+    both = nt.nodes.new("ShaderNodeMix"); both.data_type = 'RGBA'; both.blend_type = 'MULTIPLY'; both.inputs[0].default_value = 1.0
+    L.new(cr.outputs[0], both.inputs[6]); L.new(fr.outputs[0], both.inputs[7])
+    mix = nt.nodes.new("ShaderNodeMix"); mix.data_type = 'RGBA'; mix.blend_type = 'MULTIPLY'; mix.inputs[0].default_value = 1.0
+    if inp.links: L.new(inp.links[0].from_socket, mix.inputs[6])
+    else: mix.inputs[6].default_value = inp.default_value[:]
+    L.new(both.outputs[2], mix.inputs[7]); L.new(mix.outputs[2], inp)
+    m["ground_var"] = 1
+    return m
+
+
 def sun_light(energy=3.2, color=(1.0, 0.93, 0.82), angle_deg=4, rot_deg=(48, -28, -35)):
     sun_d = bpy.data.lights.new("Sun", 'SUN'); sun_d.energy = energy; sun_d.color = color; sun_d.angle = math.radians(angle_deg)
     sun = bpy.data.objects.new("Sun", sun_d); ctx.col.objects.link(sun)
