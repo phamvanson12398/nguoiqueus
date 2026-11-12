@@ -209,6 +209,7 @@ def build(params, lib):
                     scale=0.8, coord="Position", bump=0.1)
     gravel = ramp_mat(f"{PFX}_gravel", [(0.2, (0.42, 0.36, 0.28)), (0.6, (0.56, 0.48, 0.36)), (0.9, (0.64, 0.56, 0.42))],
                       scale=4.0, coord="Position", bump=0.2)
+    for m in (flags, gravel, core, block): warm_top(m)
 
     # ---- ground profile (relative y, z) ----
     prof = [(-140.0, 0.0)]

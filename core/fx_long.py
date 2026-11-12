@@ -8,12 +8,16 @@ from . import ctx, geo
 from .look import flat, pbr
 from .timing import ease
 
-GRADES = {   # multiply colour, mix factor, brightness, contrast (Bright/Contrast node, -100..100)
-    "day": ((1.0, 1.0, 1.0), 0.0, 0.0, 0.0), "dawn": ((1.0, 0.80, 0.66), 0.6, -3.0, 4.0),
-    "dusk": ((1.0, 0.60, 0.40), 0.7, -8.0, 10.0), "night": ((0.35, 0.45, 0.85), 0.85, -22.0, 14.0),
-    "cold": ((0.76, 0.86, 1.0), 0.6, -2.0, 6.0), "warm": ((1.0, 0.86, 0.66), 0.5, 2.0, 4.0),
-    "desert": ((1.0, 0.84, 0.58), 0.6, 4.0, 8.0), "sepia": ((0.92, 0.74, 0.52), 0.85, -3.0, 6.0),
-    "storm": ((0.58, 0.64, 0.76), 0.8, -12.0, 12.0), "fire": ((1.0, 0.52, 0.28), 0.65, 0.0, 10.0),
+# multiply colour, mix factor, brightness, contrast (Bright/Contrast node, -100..100).
+# The compositor works in LINEAR light, where Bright is a plain offset: -22 (the first night grade) took 0.29 off every
+# pixel and crushed all shadows to black. Darkness therefore comes from the multiply colour (a gain), and Bright/Contrast
+# stay small.
+GRADES = {
+    "day": ((1.0, 1.0, 1.0), 0.0, 0.0, 0.0), "dawn": ((1.0, 0.80, 0.66), 0.6, 0.0, 2.0),
+    "dusk": ((0.85, 0.55, 0.38), 0.8, 0.0, 4.0), "night": ((0.20, 0.30, 0.68), 1.0, 0.0, 4.0),
+    "cold": ((0.76, 0.86, 1.0), 0.6, 0.0, 3.0), "warm": ((1.0, 0.86, 0.66), 0.5, 1.0, 2.0),
+    "desert": ((1.0, 0.84, 0.58), 0.6, 1.0, 4.0), "sepia": ((0.92, 0.74, 0.52), 0.85, 0.0, 3.0),
+    "storm": ((0.50, 0.56, 0.68), 0.9, 0.0, 4.0), "fire": ((1.0, 0.52, 0.28), 0.65, 0.0, 5.0),
 }
 
 
