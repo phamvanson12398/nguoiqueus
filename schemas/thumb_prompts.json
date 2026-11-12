@@ -1,0 +1,27 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["style_en", "prompts"],
+ "properties": {
+  "style_en": {"type": "string", "description": "one paragraph describing the channel's art style, reused in every prompt"},
+  "prompts": {
+   "type": "array", "minItems": 3, "maxItems": 4,
+   "items": {
+    "type": "object", "additionalProperties": false,
+    "required": ["title_vi", "chars", "prompt_en", "negative_en", "midjourney", "text_overlay", "text_in_image_en", "tips_vi"],
+    "properties": {
+     "title_vi": {"type": "string", "description": "ý tưởng ngắn gọn (tiếng Việt)"},
+     "chars": {"type": "array", "items": {"type": "string"}, "description": "character ids shown (for reference images)"},
+     "prompt_en": {"type": "string", "description": "full prompt for ChatGPT/DALL-E, Gemini (Nano Banana), Flux, Leonardo, Ideogram: no text in the image"},
+     "negative_en": {"type": "string"},
+     "midjourney": {"type": "string", "description": "Midjourney prompt ending with parameters like --ar 16:9 --v 7 --style raw"},
+     "text_overlay": {"type": "object", "additionalProperties": false, "required": ["text", "where", "color", "font"],
+      "properties": {"text": {"type": "string"}, "where": {"type": "string"}, "color": {"type": "string"}, "font": {"type": "string"}}},
+     "text_in_image_en": {"type": "string", "description": "variant of prompt_en that also renders the headline (for Ideogram / GPT image which write text well)"},
+     "tips_vi": {"type": "string"}
+    }
+   }
+  }
+ }
+}

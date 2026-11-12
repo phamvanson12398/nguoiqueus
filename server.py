@@ -165,7 +165,9 @@ def project_state(slug):
     yd = os.path.join(d, "youtube")
     st["youtube"] = dict(jload(os.path.join(yd, "package.json")) or {}, description=open(os.path.join(yd, "description.txt"), encoding="utf-8").read()
                          if os.path.exists(os.path.join(yd, "description.txt")) else None,
-                         thumbs=sorted(f for f in os.listdir(yd) if re.fullmatch(r"thumb_\d(_v1)?\.png", f))) if os.path.isdir(yd) else None
+                         thumbs=sorted(f for f in os.listdir(yd) if re.fullmatch(r"thumb_\d(_v1)?\.png", f)),
+                         ai_prompts=jload(os.path.join(yd, "ai_prompts.json")),
+                         refs=sorted(f for f in os.listdir(os.path.join(yd, "refs")) if f.endswith(".png")) if os.path.isdir(os.path.join(yd, "refs")) else []) if os.path.isdir(yd) else None
     st["chapters"] = longform.status(slug) if st["format"] == "long" else None
     cur = BUSY.get(slug); st["job"] = JOBS[cur].to_json(10 ** 9) if cur and cur in JOBS else None
     return st
@@ -491,7 +493,45 @@ def job_youtube(job, slug, thumbs=True):
             if job.cancelled: raise
             job.say(f"   (không chấm được thumbnail: {e})")
     json.dump(pkg, open(os.path.join(yd, "package.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    try: job_thumb_prompts(job, slug)
+    except Exception as e:
+        if job.cancelled: raise
+        job.say(f"   (chưa viết được prompt AI cho thumbnail: {e})")
     return {"titles": len(pkg["titles"]), "timestamps": len(stamps)}
+
+
+def job_thumb_prompts(job, slug):
+    """prompts for outside image AIs + reference pictures of the characters they show (youtube/ai_prompts.json, refs/<id>.png)"""
+    import youtube
+    yd = os.path.join(pdir(slug), "youtube"); os.makedirs(yd, exist_ok=True)
+    job.say("Claude viết prompt tạo thumbnail bằng AI khác (ChatGPT, Gemini, Midjourney, Ideogram…)…")
+    data = bridge.thumbnail_prompts(slug)
+    json.dump(data, open(os.path.join(yd, "ai_prompts.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    lines = [f"STYLE: {data['style_en']}", ""]
+    for k, p in enumerate(data["prompts"], 1):
+        lines += [f"=== {k}. {p['title_vi']}  (ảnh tham chiếu: {', '.join('refs/' + c + '.png' for c in p['chars']) or '—'})",
+                  "PROMPT:", p["prompt_en"], "NEGATIVE:", p["negative_en"], "MIDJOURNEY:", p["midjourney"],
+                  "CÓ CHỮ (Ideogram / GPT image):", p["text_in_image_en"],
+                  f"CHỮ TỰ THÊM: {p['text_overlay']['text']} — {p['text_overlay']['where']}, {p['text_overlay']['color']}, {p['text_overlay']['font']}",
+                  f"MẸO: {p['tips_vi']}", ""]
+    open(os.path.join(yd, "ai_prompts.txt"), "w", encoding="utf-8").write("\n".join(lines))
+    rd = os.path.join(yd, "refs"); os.makedirs(rd, exist_ok=True)
+    need = []
+    for p in data["prompts"]:
+        for c in p["chars"]:
+            if c not in need: need.append(c)
+    job.say(f"   {len(data['prompts'])} prompt; render ảnh tham chiếu cho {need}")
+    for cid in need:
+        try:
+            td = os.path.join(rd, "_" + cid); os.makedirs(td, exist_ok=True); sp = os.path.join(td, "story.json")
+            json.dump(youtube.ref_story(slug, cid), open(sp, "w", encoding="utf-8"), indent=1)
+            run_builder(job, slug, ["--preview", "2", "--size", "1280x720", "--samples", "32"], story=sp)
+            src = os.path.join(td, "preview", "p_0002.png")
+            if os.path.exists(src): shutil.copy(src, os.path.join(rd, f"{cid}.png"))
+        except Exception as e:
+            if job.cancelled: raise
+            job.say(f"   (không render được ảnh tham chiếu {cid}: {e})")
+    return {"prompts": len(data["prompts"]), "refs": need}
 
 
 def render_thumb(job, slug, yd, k, concept):
@@ -742,6 +782,8 @@ class Handler(BaseHTTPRequestHandler):
             if act == ["youtube"] and method == "POST":
                 b = self.jbody()
                 return self.send_json(start_job("youtube", slug, job_youtube, slug, b.get("thumbs", True)).to_json())
+            if act == ["youtube", "prompts"] and method == "POST":
+                return self.send_json(start_job("thumb_prompts", slug, job_thumb_prompts, slug).to_json())
             if act == ["bench"]:
                 b = self.jbody()
                 return self.send_json(start_job("bench", slug, job_bench, slug, int(b.get("pct", 100)), b.get("quality", "normal")).to_json())

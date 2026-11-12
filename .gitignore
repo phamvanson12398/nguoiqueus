@@ -25,3 +25,4 @@ projects/*/chapters/*/_bench/
 projects/*/youtube/thumb_*/preview/
 projects/*/youtube/thumb_*/*.wav
 projects/*/youtube/thumb_*/frames/
+projects/*/youtube/refs/_*/

@@ -226,6 +226,10 @@ small.err{color:var(--bad)}
       <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Tag và bình luận ghim</h2><button id="ytCopyTags">Sao chép tag</button></div>
         <div id="ytTags" style="margin:8px 0"></div><div class="muted">Bình luận ghim:</div><div id="ytPinned"></div></div>
     </div>
+    <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Thumbnail bằng AI khác</h2><button id="btnAIP">Viết prompt</button></div>
+      <p class="muted">Thumbnail tool dựng chưa đủ đẹp? Dán prompt vào ChatGPT, Gemini (Nano Banana), Midjourney, Ideogram… và <b>đính kèm ảnh
+        tham chiếu nhân vật</b> để AI vẽ đúng người. Chữ tiêu đề: dùng bản "có chữ" với Ideogram/ChatGPT, hoặc tự thêm bằng Canva.</p>
+      <div id="aiRefs" class="thumbs"></div><div id="aiPrompts"></div></div>
   </section>
 
   <!-- LIBRARY -->
@@ -625,11 +629,28 @@ function renderYT() {
   $('#ytTags').innerHTML = (y.tags || []).map(t => `<span class="chip">${esc(t)}</span>`).join('') + ' ' +
     (y.hashtags || []).map(h => `<span class="chip">#${esc(h.replace(/^#/, ''))}</span>`).join('');
   $('#ytPinned').textContent = y.pinned_comment || '';
+  renderAIPrompts(y);
 }
 $('#btnYT').onclick = () => { if (!S.state.content) return toast('Cần có content trước'); run(P('/youtube'), {thumbs: true}, 'Tạo gói YouTube'); };
 $('#ytCopyDesc').onclick = () => copyText($('#ytDesc').value);
 $('#ytCopyTags').onclick = () => copyText((S.state.youtube.tags || []).join(', '));
 $('#ytThumbs').onclick = e => { if (e.target.tagName === 'IMG') zoom([e.target.src]); };
+
+function renderAIPrompts(y) {
+  const a = y && y.ai_prompts;
+  $('#aiRefs').innerHTML = (y && y.refs || []).map(f => `<figure><img src="${P('/file/youtube/refs/' + f)}?t=${Date.now()}"><figcaption>${esc(f)} · <a href="${P('/file/youtube/refs/' + f)}" download>tải</a></figcaption></figure>`).join('');
+  if (!a) { $('#aiPrompts').innerHTML = '<span class="muted">Chưa có prompt (bấm "Viết prompt", khoảng 1-3 phút).</span>'; return; }
+  const box = (lbl, txt) => `<div style="margin:6px 0"><div class="row"><b style="flex:1">${lbl}</b><button data-copy="${encodeURIComponent(txt)}">Chép</button></div><textarea rows="4" readonly>${esc(txt)}</textarea></div>`;
+  $('#aiPrompts').innerHTML = a.prompts.map((p, k) => `<div class="panel" style="padding:10px"><h3 style="margin:0 0 4px">${k + 1}. ${esc(p.title_vi)}</h3>
+    <div class="muted">Ảnh tham chiếu: ${p.chars.map(c => esc(c) + '.png').join(', ') || '—'}</div>
+    ${box('Prompt (ChatGPT, Gemini, Flux, Leonardo)', a.style_en + '\n\n' + p.prompt_en)}${box('Midjourney', p.midjourney)}
+    ${box('Có vẽ chữ (Ideogram / ChatGPT)', a.style_en + '\n\n' + p.text_in_image_en)}${box('Negative prompt', p.negative_en)}
+    <div class="muted">Chữ tự thêm: <b>${esc(p.text_overlay.text)}</b> — ${esc(p.text_overlay.where)}, ${esc(p.text_overlay.color)}, ${esc(p.text_overlay.font)}</div>
+    <div class="muted">Mẹo: ${esc(p.tips_vi)}</div></div>`).join('');
+  $$('#aiPrompts button[data-copy]').forEach(b => b.onclick = () => copyText(decodeURIComponent(b.dataset.copy)));
+}
+$('#btnAIP').onclick = () => { if (!S.state.content) return toast('Cần có content trước'); run(P('/youtube/prompts'), {}, 'Viết prompt thumbnail AI'); };
+$('#aiRefs').onclick = e => { if (e.target.tagName === 'IMG') zoom([e.target.src]); };
 
 // ---------------- library ----------------
 async function loadLibrary() {

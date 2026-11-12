@@ -38,7 +38,7 @@ READ_TOOLS = ["Read", "Glob", "Grep"]
 WEB_TOOLS = ["WebSearch", "WebFetch"]
 JOB_TOOLS = {"ideas": WEB_TOOLS, "write_content": WEB_TOOLS + ["Read"], "rewrite_seq": [], "plan_shots": READ_TOOLS,
              "design_prop": READ_TOOLS, "design_set": READ_TOOLS, "design_char": READ_TOOLS, "review": READ_TOOLS,
-             "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
+             "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "thumb_prompts": READ_TOOLS, "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
              "fix_from_preview": READ_TOOLS}
 
 
@@ -743,6 +743,47 @@ def review_thumbnails(slug, images, concepts, model=None):
               "gây tò mò. best = cái tốt nhất. Nếu cái tốt nhất còn lỗi dễ sửa (chữ đè mặt, nhân vật bị cắt, mũi tên chỉ sai), trả revised = ý tưởng đã sửa "
               "(cùng dạng), không thì null.")
     data, info = call("review_thumbs", prompt, load_schema("review_thumbs"), project=slug, model=model)
+    return data
+
+
+THUMB_PROMPT_RULES = """
+Viết prompt để người dùng tự tạo thumbnail YouTube 16:9 bằng AI tạo ảnh khác (ChatGPT/DALL·E, Gemini/Nano Banana, Midjourney, Ideogram,
+Flux, Leonardo). Thumbnail tool tự dựng bằng Blender chưa đủ đẹp; mục tiêu là ảnh BẮT MẮT nhất có thể nhưng vẫn ĐÚNG nhân vật của video.
+- 3-4 prompt, mỗi cái một ý tưởng khác nhau (dựa trên các ý tưởng thumbnail có sẵn + tiêu đề tốt nhất), tối ưu tỉ lệ nhấp: một điểm nhấn,
+  mặt cường điệu cảm xúc, tương phản màu mạnh, nền gọn, chiều sâu (tiền cảnh mờ), ánh sáng điện ảnh (rim light, nắng chiều, tia sáng).
+- style_en: mô tả đúng phong cách video: nhân vật 3D hoạt hình kiểu đồ chơi, đầu tròn rất to màu trắng/da, mắt chấm đen đơn giản, miệng vẽ,
+  thân tròn như viên thuốc, tay chân là que đen mảnh, viền mực đen đều quanh khối, đổ bóng 2 tông, bối cảnh 3D low-poly sạch, màu bão hòa.
+- prompt_en (tiếng Anh, 80-160 từ): bố cục 16:9 (ai ở đâu, cỡ cảnh), từng nhân vật mô tả CỤ THỂ theo trang phục/màu/vật cầm có trong dữ liệu
+  (đúng sử liệu), nét mặt, tư thế, bối cảnh, ánh sáng, bảng màu, chừa chỗ trống cho chữ (nói rõ bên nào), "no text, no letters".
+  Nhắc rằng có ảnh tham chiếu nhân vật đính kèm: "match the attached character reference images exactly".
+- negative_en: thứ cần tránh (realistic humans, extra fingers, text, watermark, clutter, dark muddy colors…).
+- midjourney: cùng ý, câu ngắn hơn, cuối có tham số --ar 16:9 --v 7 --style raw (gợi ý --cref/--oref với ảnh tham chiếu trong tips).
+- text_overlay: chữ ≤ 4 từ để tự thêm bằng Canva/Photoshop (vị trí, màu, font đậm có viền). text_in_image_en: biến thể có vẽ chữ đó
+  (cho Ideogram/GPT image vốn viết chữ tốt), ghi chữ trong ngoặc kép.
+- tips_vi: mẹo dùng (đính kèm ảnh tham chiếu nào, công cụ nào hợp, chỉnh gì nếu ra sai).
+"""
+
+
+def thumbnail_prompts(slug, model=None):
+    """prompts for outside image AIs (the Blender thumbnails are not pretty enough); uses the YouTube package if there is one"""
+    import youtube
+    d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+    pkg = json.load(open(os.path.join(d, "youtube", "package.json"), encoding="utf-8")) if os.path.exists(os.path.join(d, "youtube", "package.json")) else {}
+    cast = youtube.cast_descriptions(slug)
+    best = (pkg.get("titles") or [{}])[pkg.get("best_title", 0)].get("title") if pkg.get("titles") else content.get("title")
+    prompt = (f"Video: '{content.get('title')}' (tiêu đề tốt nhất: '{best}'). Câu hỏi: {content.get('question')}\n{THUMB_PROMPT_RULES}\n"
+              f"Ý tưởng thumbnail đã có: {json.dumps(pkg.get('thumbnails', []), ensure_ascii=False)}\n"
+              f"Nhân vật (id → mô tả trang phục, phe, màu): {json.dumps(cast, ensure_ascii=False)}")
+
+    def check(x):
+        e = []
+        for i, p in enumerate(x["prompts"]):
+            for c in p["chars"]:
+                if c not in cast: e.append(f"prompts[{i}].chars: không có nhân vật '{c}' (có: {sorted(cast)})")
+            if "--ar 16:9" not in p["midjourney"]: e.append(f"prompts[{i}].midjourney thiếu --ar 16:9")
+            if len(p["text_overlay"]["text"].split()) > 5: e.append(f"prompts[{i}].text_overlay.text quá 5 từ")
+        return e
+    data, info = call("thumb_prompts", prompt, load_schema("thumb_prompts"), project=slug, model=model, check=check)
     return data
 
 

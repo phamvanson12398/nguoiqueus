@@ -187,6 +187,43 @@ def thumb_story(slug, concept):
     return st
 
 
+def ref_story(slug, char_id, expression="happy"):
+    """reference picture of ONE character for outside image AIs (attach it so they draw the same person): full body,
+    front, plain bright background, no text, 3D style of the video"""
+    cs = cast(slug)
+    spec = _char_spec(cs, {"id": char_id, "expression": expression, "pose": "stand"}, [0, 0, 0])
+    spec.pop("props", None)
+    shot = {"a": 1, "b": 3, "type": "full", "frame": {"subject": [0, 0, 0], "size": 2.9, "move": "static_drift", "y": -0.02}}
+    st = {"meta": {"title": f"ref {char_id}", "fps": 30, "frames": 3, "aspect": "16:9", "samples": 32, "output": "ref.mp4"},
+          "factions": list(cs["factions"].values()), "sets": [], "chars": [spec],
+          "world": {"clouds": 0},
+          "camera": {"rig": "long", "shots": [shot]}, "captions": {"style": "off"}, "cards": [], "sound": {"master": {"lufs": -14}}}
+    if not st["factions"]: st.pop("factions")
+    return st
+
+
+def cast_descriptions(slug):
+    """plain-language description of every character (look, outfit, colours) for image prompts"""
+    import storycheck
+    lib = storycheck.LibIndex(); cs = cast(slug); out = {}
+    facs = cs["factions"]
+    for cid, c in cs["chars"].items():
+        d = {"id": cid, "type": c.get("type")}
+        fac = facs.get(c.get("faction")) or {}
+        if fac: d["faction"] = {"label": fac.get("label"), "color_rgb": fac.get("color"), "culture": fac.get("culture")}
+        of = c.get("outfit")
+        if not of and c.get("role") and fac.get("culture") and lib.exists("cultures", fac["culture"]):
+            of = lib.json("cultures", fac["culture"]).get("roles", {}).get(c["role"])
+        if of and lib.exists("outfits", of):
+            o = lib.json("outfits", of); d["outfit"] = {"id": of, "title": o.get("title_vi"), "description": o.get("description_vi"),
+                                                       "silhouette": o.get("silhouette_vi")}
+        elif lib.exists("chars", c.get("type", "")):
+            L = lib.json("chars", c["type"]); d["character"] = {"title": L.get("title_vi"), "description": L.get("description_vi")}
+        if c.get("look"): d["look"] = c["look"]
+        out[cid] = d
+    return out
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "stamps":
         for t, title in timestamps(sys.argv[2]): print(fmt(t), title)
