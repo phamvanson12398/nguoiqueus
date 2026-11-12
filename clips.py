@@ -64,6 +64,13 @@ def make_clip(slug, k, pick):
     m["clip"] = {"from": A, "to": B, "source": f"{slug} phần {c['n']}", "title": pick.get("title", "")}
     m["part_first"] = m["part_last"] = False
     st["captions"] = {"style": "pop"}
+    # a vertical frame shows the same HEIGHT as the wide one but a third of the width: wide/establishing shots would leave the
+    # characters as dots, so a Short frames them tighter
+    PRESET_H = {"establishing": 14.0, "wide": 7.0, "full": 3.5}
+    for s in st["camera"].get("shots", []):
+        fr = s.get("frame")
+        if fr and s.get("type") in ("establishing", "wide", "full") and fr.get("height") != "top" and s.get("type") not in ("map", "board"):
+            fr["size"] = round(float(fr.get("size", PRESET_H[s["type"]])) * (0.55 if s["type"] != "full" else 0.8), 2)
     keep = [cd for cd in st.get("cards", []) if cd.get("style") not in ("fade", "chapter", "endscreen", "watermark")
             and cd.get("to", 0) >= A and cd.get("from", 0) <= B]
     hook = (pick.get("hook_text") or "").upper()

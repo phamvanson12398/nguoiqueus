@@ -734,7 +734,7 @@ class Builder:
         mixer.attach_audio(wav, None, sfx_volume=1.0)
 
     def build_sound(self):
-        if self.aspect != "9:16" or "master" in self.st.get("sound", {}): return self.build_sound_long()
+        if self.aspect != "9:16" or "master" in self.st.get("sound", {}) or self.st["meta"].get("clip"): return self.build_sound_long()
         S = self.st.get("sound", {}); N, FPS = ctx.N, ctx.FPS
         TOTAL = N / FPS
         vo = os.path.join(self.dir, self.st["meta"].get("voice", "voice.wav"))
