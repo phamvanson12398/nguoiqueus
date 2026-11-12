@@ -795,6 +795,13 @@ class Handler(BaseHTTPRequestHandler):
         if api == ["estimate"]:
             return self.send_json(estimate(float(q.get("minutes", ["1"])[0]), float(q["wpm"][0]) if q.get("wpm") else None,
                                            q.get("format", ["short"])[0]))
+        if api == ["channel"]:
+            p = os.path.join(bridge.LIB, "channel.json")
+            if method == "POST":
+                b = self.jbody(); ch = {k: b[k] for k in ("name", "tagline", "host", "host_note_vi", "watermark", "end_screen", "end_screen_sec", "color") if k in b}
+                if ch.get("name"): json.dump(ch, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+                elif os.path.exists(p): os.remove(p)
+            return self.send_json({"channel": jload(p), "chars": storycheck.LibIndex().list("chars")})
         if api == ["usage"]:
             return self.send_json(bridge.usage())
         if api[:1] == ["jobs"] and len(api) >= 2:

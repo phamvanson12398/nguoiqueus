@@ -240,6 +240,16 @@ small.err{color:var(--bad)}
       <p class="muted">Thumbnail tool dựng chưa đủ đẹp? Dán prompt vào ChatGPT, Gemini (Nano Banana), Midjourney, Ideogram… và <b>đính kèm ảnh
         tham chiếu nhân vật</b> để AI vẽ đúng người. Chữ tiêu đề: dùng bản "có chữ" với Ideogram/ChatGPT, hoặc tự thêm bằng Canva.</p>
       <div id="aiRefs" class="thumbs"></div><div id="aiPrompts"></div></div>
+    <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Nhận diện kênh (mọi video)</h2><button id="btnChSave">Lưu</button></div>
+      <p class="muted">Tên kênh hiện nhỏ ở góc mọi video; video dài có màn hình kết (End screen) ở các giây cuối, chừa chỗ cho ô video gợi ý và nút
+        đăng ký của YouTube (thêm chúng trong YouTube Studio → Màn hình kết thúc). Nhân vật dẫn chuyện xuất hiện trong content mới. Để trống tên = tắt.</p>
+      <div class="row" style="flex-wrap:wrap;gap:10px">
+        <label>Tên kênh <input id="chName" style="width:220px"></label>
+        <label>Khẩu hiệu <input id="chTag" style="width:360px"></label>
+        <label>Nhân vật dẫn <select id="chHost"></select></label>
+        <label><input type="checkbox" id="chWm" checked> Tên kênh ở góc</label>
+        <label><input type="checkbox" id="chEnd" checked> Màn hình kết</label>
+        <label>Dài <input type="number" id="chSec" min="5" max="20" value="15" style="width:60px"> giây</label></div></div>
     <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Phụ đề và lồng tiếng nhiều thứ tiếng</h2><button id="btnSubs">Tạo phụ đề</button></div>
       <p class="muted">Phụ đề tiếng Anh lấy đúng thời gian giọng đọc; Claude dịch sang các thứ tiếng chọn dưới đây (giữ thời gian) và viết kịch bản
         lồng tiếng tự nhiên (làm giọng rồi tải lên YouTube Studio → Phụ đề / Lồng tiếng). Mỗi thứ tiếng khoảng 1-3 phút.</p>
@@ -684,6 +694,20 @@ function renderAIPrompts(y) {
     <div class="muted">Mẹo: ${esc(p.tips_vi)}</div></div>`).join('');
   $$('#aiPrompts button[data-copy]').forEach(b => b.onclick = () => copyText(decodeURIComponent(b.dataset.copy)));
 }
+async function loadChannel() {
+  try {
+    const r = await api('/api/channel'); const c = r.channel || {};
+    $('#chHost').innerHTML = '<option value="">(không)</option>' + r.chars.map(x => `<option value="${esc(x)}">${esc(x)}</option>`).join('');
+    $('#chName').value = c.name || ''; $('#chTag').value = c.tagline || ''; $('#chHost').value = c.host || '';
+    $('#chWm').checked = c.watermark !== false; $('#chEnd').checked = c.end_screen !== false; $('#chSec').value = c.end_screen_sec || 15;
+  } catch (e) {}
+}
+$('#btnChSave').onclick = async () => {
+  try { await api('/api/channel', {body: {name: $('#chName').value.trim(), tagline: $('#chTag').value.trim(), host: $('#chHost').value,
+        watermark: $('#chWm').checked, end_screen: $('#chEnd').checked, end_screen_sec: +$('#chSec').value || 15}}); toast('Đã lưu nhận diện kênh'); }
+  catch (e) { toast(e.message); }
+};
+loadChannel();
 const SUB_LANGS = {es: 'Tây Ban Nha', pt: 'Bồ Đào Nha (Brazil)', hi: 'Hindi', id: 'Indonesia', fr: 'Pháp', de: 'Đức', ja: 'Nhật',
                    ko: 'Hàn', vi: 'Việt', ar: 'Ả Rập', ru: 'Nga', it: 'Ý', tr: 'Thổ Nhĩ Kỳ', th: 'Thái', zh: 'Trung'};
 $('#subLangs').innerHTML = Object.entries(SUB_LANGS).map(([k, v]) => `<label><input type="checkbox" value="${k}" ${['es', 'pt', 'hi', 'id'].includes(k) ? 'checked' : ''}> ${v}</label>`).join('');

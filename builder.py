@@ -405,6 +405,27 @@ class Builder:
                 return f2
         return fr
 
+    def channel_cards(self):
+        """library/channel.json: watermark on every video, YouTube end screen on the last 20 s of a long video"""
+        ch = json.load(open(os.path.join(ROOT, "library", "channel.json"), encoding="utf-8")) if os.path.exists(os.path.join(ROOT, "library", "channel.json")) else None
+        if not ch or not ch.get("name"): return []
+        meta = self.st["meta"]; N = meta["frames"]; FPS = meta["fps"]; cards = self.st.get("cards", [])
+        out = []
+        if ch.get("watermark", True) and not any(c.get("style") == "watermark" for c in cards):
+            pos = [0.84, -0.9] if self.aspect != "9:16" else [0.62, 0.9]
+            out.append({"style": "watermark", "text": ch["name"], "pos": pos, "from": 1, "to": N})
+        last = meta.get("part_last", True) and not meta.get("clip")
+        if self.aspect != "9:16" and last and ch.get("end_screen", True) and not any(c.get("style") == "endscreen" for c in cards):
+            sec = max(5, min(20, int(ch.get("end_screen_sec", 15))))
+            a = max(1, N - sec * FPS)
+            out.append({"style": "endscreen", "text": ch["name"], "sub": ch.get("tagline", ""), "color": ch.get("color", [1.0, 0.82, 0.1]),
+                        "from": a, "to": N})
+            for c in cards:                       # story cards end before the end screen (no text on top of it)
+                if c.get("style") not in ("fade", "watermark") and c.get("to", 0) >= a:
+                    c["to"] = a - 1
+            self.st["cards"] = [c for c in cards if c.get("style") in ("fade", "watermark") or c.get("to", 0) >= c.get("from", 1)]
+        return out
+
     def dress_ground(self):
         """long-form look: big ground and hill meshes get soft colour patches (fields, worn grass, sunlit slopes)"""
         done = set(); n = 0
@@ -573,7 +594,8 @@ class Builder:
         else:
             cap_root = None
 
-        cards_root = cards.build_cards(st.get("cards"), self.lens)
+        extra = self.channel_cards() if N > 90 else []          # not on thumbnails / reference pictures
+        cards_root = cards.build_cards((st.get("cards") or []) + extra, self.lens)
         vfx_noline = fx_long.build(st.get("vfx"), {f["id"]: f for f in st.get("factions", [])}, self.cam, meta.get("seed", 7)) if st.get("vfx") else []
 
         fxs = st.get("fx", {})

@@ -841,11 +841,22 @@ LONG_CONTENT_RULES = """
 """ + "{RULES}"
 
 
+def channel_note():
+    """the channel's fixed host character (library/channel.json) for content prompts"""
+    p = os.path.join(LIB, "channel.json")
+    if not os.path.exists(p): return ""
+    ch = json.load(open(p, encoding="utf-8"))
+    if not ch.get("host"): return ""
+    return (f"\nKênh '{ch.get('name', '')}' có nhân vật dẫn chuyện cố định: '{ch['host']}' (chars/{ch['host']} trong thư viện). "
+            + (ch.get("host_note_vi") or "Cho nhân vật này xuất hiện phản ứng/bình luận vài lần để người xem nhận ra kênh.") + "\n")
+
+
 def write_content(slug, idea, minutes=1.0, model=None, wpm=190, fmt="short"):
     if fmt == "long": return write_content_long(slug, idea, minutes, model=model, wpm=wpm)
     words = int(round(minutes * wpm))
     n_seq = max(4, min(7, int(round(minutes * 6)))) if minutes <= 1.25 else int(round(minutes * 5.5))
     prompt = (f"Viết content cho ý tưởng sau (JSON):\n{json.dumps(idea, ensure_ascii=False)}\n\n"
+              + channel_note() +
               f"Độ dài: {minutes} phút ≈ {words} từ lời đọc tiếng Anh (±10 %), khoảng {n_seq} chuỗi máy"
               + (" chia thành chương, mỗi chương 4-7 chuỗi" if minutes > 1.25 else "") + ".\n"
               "Theo STYLE.md: lời đọc, bản dịch Việt, bảng chuỗi máy (mỗi chuỗi: lời đọc của chuỗi, hành động, bối cảnh, đạo cụ, "
@@ -880,6 +891,7 @@ def check_long_content(x, minutes):
 def write_content_long(slug, idea, minutes, model=None, wpm=190):
     words = int(round(minutes * wpm)); n_ch = max(2, round(minutes / 3)); n_seq = max(n_ch * 3, round(minutes * 60 / 35))
     prompt = (f"Viết content cho ý tưởng sau (JSON):\n{json.dumps(idea, ensure_ascii=False)}\n\n"
+              + channel_note() +
               f"Độ dài: {minutes} phút ≈ {words} từ lời đọc tiếng Anh (±8 %), khoảng {n_ch} chương, {n_seq} chuỗi.\n"
               + LONG_CONTENT_RULES.replace("{RULES}", long_rules()) +
               "Theo STYLE.md cho phong cách nhân vật/bối cảnh. Mỗi chuỗi: lời đọc, bản dịch Việt, hành động, bối cảnh, đạo cụ, nhân vật, "

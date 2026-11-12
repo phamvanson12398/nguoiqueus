@@ -15,7 +15,8 @@ from .timing import ease, ease_out_back
 
 HALF_H = 36 / 28 / 2            # 0.643: half the visible height at depth lens/28 (9:16; 16:9 -> ctx.frame_half())
 HALF_W = HALF_H * 9 / 16
-STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris", "fade", "chapter", "screen", "thumb_text", "arrow", "circle")
+STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris", "fade", "chapter", "screen", "thumb_text", "arrow", "circle",
+          "endscreen", "watermark")
 # key-moment text screens (long-form): big text height + colour of the big text per variant
 SCREEN = {"year": (0.17, None), "number": (0.15, None), "question": (0.085, (1, 1, 1)), "quote": (0.07, (1, 1, 1)),
           "name": (0.095, (1, 1, 1)), "place": (0.11, (1, 1, 1)), "fact": (0.08, (1, 1, 1))}
@@ -79,7 +80,7 @@ def build_card(root, i, c):
             body_ = "\n".join(best); c["text"] = body_
         need = _text_width(body_, size) + size * extra
         if need > maxw: size *= maxw / need
-    rgb = tuple(c.get("color") or DEFAULT_COLOR[style]); body = c.get("text", "")   # (may have been wrapped above)
+    rgb = tuple(c.get("color") or DEFAULT_COLOR.get(style, (1.0, 0.82, 0.1))); body = c.get("text", "")   # (may have been wrapped above)
     x, y = c.get("pos") or ((0, 0.55) if style == "title" else (0, -0.6) if style == "iris" else (0, 0))
     if style == "fade": x, y = 0, 0
     h = empty(f"card{i}", root, (x * HALF_W, y * HALF_H, -0.02 - 0.0005 * i))
@@ -176,6 +177,29 @@ def build_card(root, i, c):
         wl = min(_text_width(body or "x", size) * 0.45, HALF_W * 0.8)
         shape(inner, f"card{i}_line", rrect(0, yb + (0.035 if cap else 0.0) + size * 0.1, wl, max(0.004, size * 0.05), 0.0005),
               flat(f"card_line{rgb}", rgb), 0.0, outline=0)
+    elif style == "endscreen":
+        # YouTube end screen (last 5-20 s): dimmed scene, channel name, two 16:9 boxes and a round slot where YouTube's own
+        # end-screen elements (video tiles, subscribe button) will sit, plus "WATCH NEXT"
+        m, fac = _alpha_mat(f"card{i}_plate", (0.02, 0.02, 0.04))
+        shape(h, f"card{i}_plate", rrect(0, 0, HALF_W * 2.4, HALF_H * 2.4, 0.001), m, -0.01, outline=0)
+        c["_fade"] = fac
+        def line(nm, txt, size, col, y, outline=True):          # every text layer (rim + fill) moves together
+            g = empty(f"card{i}_{nm}_g", h, (0, y, 0)); _text(g, f"card{i}_{nm}", txt, size, col, 0.0, outline=outline)
+        name = c.get("text") or ""
+        if name: line("name", name, 0.075, rgb, HALF_H * 0.74)
+        if c.get("sub"): line("sub", c["sub"], 0.032, (0.95, 0.95, 0.92), HALF_H * 0.56, outline=False)
+        bw, bh = HALF_W * 0.62, HALF_W * 0.62 * 9 / 16
+        white = flat("end_box", (0.97, 0.97, 0.95))
+        for k, sx in enumerate((-1, 1)):
+            cx, cy = sx * HALF_W * 0.40, HALF_H * 0.02
+            pts = rrect(cx, cy, bw, bh, bh * 0.08); stroke(h, f"card{i}_box{k}", pts + [pts[0]], 0.006, 0.0, m=white)
+        line("next", c.get("caption") or "WATCH NEXT", 0.032, (0.95, 0.95, 0.92), HALF_H * 0.02 + bh / 2 + 0.035, outline=False)
+        r = HALF_H * 0.17
+        cpts = ellipse(0, -HALF_H * 0.62, r, r, 48); stroke(h, f"card{i}_sub_slot", cpts + [cpts[0]], 0.006, 0.0, m=flat("end_red", (0.95, 0.15, 0.1)))
+    elif style == "watermark":
+        # small channel name in a corner, quiet (not a pop card)
+        t = _text(h, f"card{i}", c.get("text") or "", float(c.get("size", 0.026)), (0.97, 0.97, 0.95), 0.0, outline=True)
+        h["static_card"] = 1
     elif style in ("fade", "chapter"):
         # full-frame plate whose opacity is keyed; 'chapter' = dark plate + chapter label (small, colour) + title (big, white)
         m, fac = _alpha_mat(f"card{i}_plate", (0.0, 0.0, 0.0) if style == "chapter" else rgb)
@@ -196,6 +220,13 @@ def bake_card(h, c):
     N = ctx.N; a, b = int(c["from"]), int(c["to"]); style = c.get("style", "title")
     if style in ("thumb_text", "arrow", "circle") and c.get("static", True):   # thumbnails: just there
         h.scale = (1, 1, 1); return
+    if style == "watermark":                                                   # on from 'from' to 'to', no pop
+        for f, s in ((1, 0.0), (max(1, a - 1), 0.0), (a, 1.0), (b, 1.0), (min(N, b + 1), 0.0)):
+            h.scale = (s, s, s); h.keyframe_insert("scale", frame=f)
+        from .timing import fcurves_of
+        for fc in fcurves_of(h):
+            for kp in fc.keyframe_points: kp.interpolation = 'CONSTANT'
+        return
     h.scale = (0, 0, 0); h.keyframe_insert("scale", frame=1)
     if style == "iris":
         o = c["_iris"]
@@ -225,6 +256,8 @@ def bake_card(h, c):
             else: si = 1 + 0.05 * (f - a) / max(1, b - a)
             inner.scale = (si, si, si); inner.keyframe_insert("scale", frame=f)
         return
+    if style == "endscreen":
+        c = dict(c, style="chapter", opacity=c.get("opacity", 0.78)); style = "chapter"
     if style in ("fade", "chapter"):
         # fade: opacity 0 -> 1 over 'in' frames (default to-from), hold, 1 -> 0 over 'out' frames if given
         # chapter: plate 0.94 opaque; plate + text fade in 8 f, hold, fade out 8 f

@@ -663,7 +663,9 @@
        "screen",
        "thumb_text",
        "arrow",
-       "circle"
+       "circle",
+       "endscreen",
+       "watermark"
       ]
      },
      "text": {
