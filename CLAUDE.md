@@ -305,4 +305,4 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   3. Grade đêm/hoàng hôn/bão làm đen kịt vùng tối: compositor chạy ở không gian tuyến tính, Bright −22 là trừ 0,29 mỗi điểm ảnh
      → bóng tối lấy từ màu nhân (gain), Bright/Contrast giữ nhỏ (thử trước bằng numpy trên ảnh ban ngày).
   4. Ánh trời nhuộm xanh mặt ngửa lặp lại ở tường và đá → `look.warm_top(m)` (nhân sắc ấm theo pháp tuyến Z), ghi vào AUTHORING.md.
-- Lưu ý khi chạy tay: `python tools/bpy_run.py tools/thumbs.py props/<x>` (không thêm `--`, nếu không thumbs.py render lại cả thư viện).
+- `tools/bpy_run.py` bỏ `--` thừa (trước đây `bpy_run.py thumbs.py -- props/x` làm thumbs.py render lại cả thư viện).
