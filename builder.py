@@ -688,6 +688,11 @@ def main(argv):
     if "preview" in opt:
         pdir = os.path.join(B.out, "preview"); os.makedirs(pdir, exist_ok=True)
         sc.render.resolution_percentage = int(opt.get("pct", 35))
+        if "size" in opt:                                    # exact pixel size (e.g. 1280x720 thumbnails)
+            w_, h_ = [int(x) for x in opt["size"].lower().split("x")]
+            for scn in [sc] + ([overlay.SCENE] if overlay.SCENE else []):
+                scn.render.resolution_x, scn.render.resolution_y = w_, h_
+            sc.render.resolution_percentage = 100
         sc.eevee.taa_render_samples = int(opt.get("samples", 16))
         overlay.sync(sc.render.resolution_percentage, sc.eevee.taa_render_samples)
         sc.render.image_settings.media_type = 'IMAGE'; sc.render.image_settings.file_format = 'PNG'

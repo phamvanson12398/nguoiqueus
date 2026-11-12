@@ -277,3 +277,19 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   Container ~13 s/ảnh ở 25 % (CPU, đang chạy song song); số thật trên máy người dùng: bấm "Đo tốc độ máy".
 - Âm thanh: vòng bù độ lớn 10 lần (giọng nhỏ cần tăng 13-15 dB vẫn ra −14,1 LUFS, đỉnh thật −1,1 dB).
 
+### Bước 7 — xong (gói YouTube + thumbnail)
+- `claude_bridge.youtube_package` (schema `youtube`, có tra web): 8-12 tiêu đề ≤ 70 ký tự (góc khác nhau, best_title), câu móc + tóm tắt,
+  `beat_titles` (tên ngắn từng chuỗi), nguồn, 10-15 tag, 3 hashtag, bình luận ghim, 3 ý tưởng thumbnail (layout hero/vs/map/object,
+  nhân vật + nét mặt + pose, chữ ≤ 4 từ). Kiểm: độ dài, tag ≤ 480 ký tự, nhân vật/bối cảnh/nét mặt có thật.
+- `youtube.py`: mốc chương từ thời gian giọng đọc thật (đầu chuỗi, 00:00 đầu tiên, ≥ 10 s, ≥ 3 mốc, tên chương + tên đoạn không lặp chữ),
+  mô tả hoàn chỉnh; `thumb_story`: bố cục cố định do tool đặt (hero = 1 người to một bên + chữ nửa kia; vs = 2 người hai phần ba + VS +
+  chữ dải dưới; map = bản đồ "đã vẽ xong" + chữ dải trên; object = cận vật + mũi tên) — Claude chỉ chọn người/mặt/pose/chữ.
+- Thẻ mới `thumb_text` (chữ khổng lồ, viền đen + viền trắng "đóng dấu" 12-16 bản sao, tự co vừa ô), `arrow` (khối mũi tên có viền),
+  `circle`. `builder --preview N --size 1280x720`.
+- Server `job_youtube` → `projects/<slug>/youtube/` (package.json, description.txt, titles.txt, thumb_1..3.png); Claude xem 3 ảnh,
+  chấm, chọn và sửa cái tốt nhất 1 lần (bản cũ `thumb_k_v1.png`). Tab "6 YouTube": thumbnail, tiêu đề (chép), mô tả (chép), tag, bình luận ghim.
+- Chạy thật video La Mã (~5 phút/lần): 10 tiêu đề (chọn "The Real Reason Roman Roads Were So Straight"), 9 mốc chương thật, 10 nguồn có link,
+  15 tag. Thumbnail: lần 1 (Claude tự đặt tọa độ) chữ đè mặt, người chồng nhau, đầu nghiêng (độ hiểu thành radian) → chuyển sang bố cục cố định;
+  lần 3 Claude chấm 5/7/4, chọn VS và sửa; Claude còn phát hiện chữ nhỏ dính nhau do viền dày → giãn chữ + viền mỏng cho chữ nhỏ.
+  Mũi tên bản đồ thêm `smooth: false` (đường La Mã phải thẳng).
+

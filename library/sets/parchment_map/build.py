@@ -97,7 +97,7 @@ def build(params, lib):
     for k, ar in enumerate(p["arrows"]):
         pts = pr.pts(ar["path"]); rgb = maps.faction_rgb(ar, fac)
         maps.arrow(root, f"map_arrow{k}", pts, ar.get("width", W / 110), 0.010 + k * 0.0004, rgb,
-                   int(ar["from"]) if "from" in ar else None, int(ar.get("to", ar.get("from", 1) + 45)))
+                   int(ar["from"]) if "from" in ar else None, int(ar.get("to", ar.get("from", 1) + 45)), smooth_path=ar.get("smooth", True))
         anchors[f"arrow{k}_start"] = world(pts[0]); anchors[f"arrow{k}_end"] = world(pts[-1])
         anchors[f"arrow{k}_mid"] = world(maps.point_at(pts, maps.path_len(pts), 0.5)[0])
     for k, c in enumerate(p["cities"]):

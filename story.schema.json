@@ -636,7 +636,10 @@
        "iris",
        "fade",
        "chapter",
-       "screen"
+       "screen",
+       "thumb_text",
+       "arrow",
+       "circle"
       ]
      },
      "text": {
@@ -662,7 +665,7 @@
      "size": {
       "type": "number",
       "minimum": 0.03,
-      "maximum": 0.3,
+      "maximum": 0.4,
       "description": "letter height in scene units at the captions depth (frame is 1.29 tall): title 0.075, label 0.06, bubble 0.065, stamps 0.16. NOT a multiplier."
      },
      "color": {
@@ -718,6 +721,30 @@
      "caption": {
       "type": "string",
       "description": "screen: small line under the big text"
+     },
+     "tail": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "arrow: screen x,y of the tail (the head is at pos)"
+     },
+     "rim": {
+      "$ref": "#/$defs/rgb"
+     },
+     "static": {
+      "type": "boolean"
+     },
+     "aspect": {
+      "type": "number"
+     },
+     "max_w": {
+      "type": "number"
+     },
+     "max_h": {
+      "type": "number"
      }
     }
    }

@@ -15,13 +15,14 @@ from .timing import ease, ease_out_back
 
 HALF_H = 36 / 28 / 2            # 0.643: half the visible height at depth lens/28 (9:16; 16:9 -> ctx.frame_half())
 HALF_W = HALF_H * 9 / 16
-STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris", "fade", "chapter", "screen")
+STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris", "fade", "chapter", "screen", "thumb_text", "arrow", "circle")
 # key-moment text screens (long-form): big text height + colour of the big text per variant
 SCREEN = {"year": (0.17, None), "number": (0.15, None), "question": (0.085, (1, 1, 1)), "quote": (0.07, (1, 1, 1)),
           "name": (0.095, (1, 1, 1)), "place": (0.11, (1, 1, 1)), "fact": (0.08, (1, 1, 1))}
 DEFAULT_COLOR = {"title": (0.98, 0.30, 0.02), "label": (1.0, 0.85, 0.1), "stamp_x": (0.9, 0.1, 0.08),
                  "stamp_check": (0.1, 0.75, 0.25), "bubble": (0.98, 0.98, 0.97), "iris": (0.0, 0.0, 0.0),
-                 "fade": (0.0, 0.0, 0.0), "chapter": (0.80, 0.62, 0.30), "screen": (1.0, 0.80, 0.18)}
+                 "fade": (0.0, 0.0, 0.0), "chapter": (0.80, 0.62, 0.30), "screen": (1.0, 0.80, 0.18),
+                 "thumb_text": (1.0, 0.86, 0.05), "arrow": (0.92, 0.08, 0.05), "circle": (0.92, 0.08, 0.05)}
 
 
 def _alpha_mat(name, rgb):
@@ -119,6 +120,45 @@ def build_card(root, i, c):
         o = bpy.data.objects.new(f"card{i}_iris", cu); ctx.col.objects.link(o); o.parent = h; o.location = (0, 0, 0.01)
         o.data.materials.append(flat("card_iris", rgb))
         c["_iris"] = o
+    elif style == "thumb_text":
+        # thumbnail headline: huge letters, thick ink rim + a second coloured rim, slight tilt (static, no animation)
+        size = c.get("size") or 0.16
+        lines = body.split("\n")
+        maxw = float(c.get("max_w", 0.9)) * 2 * HALF_W              # shrink to fit the given share of the frame width
+        need = max(_text_width(l, size) for l in lines) * 1.2 + size * 0.3
+        if need > maxw: size *= maxw / need
+        maxh = float(c.get("max_h", 0.8)) * 2 * HALF_H
+        if len(lines) * size * 1.12 > maxh: size = maxh / (len(lines) * 1.12)
+        font = bpy.data.fonts.load(ctx.FONT_PATH, check_existing=True) if ctx.FONT_PATH else None
+        for li, line in enumerate(lines):
+            g = empty(f"card{i}_l{li}", h, (0, -li * size * 1.12 + (len(lines) - 1) * size * 0.56, 0))
+            # rims "stamped": copies of the text shifted around a circle (round outline, no miter spikes)
+            th_ = 1.0 if size >= 0.12 else 0.7                      # small lines get thinner rims (letters must not merge)
+            for k, (rgb_, rad, z, n) in enumerate((((0, 0, 0), size * 0.13 * th_, -0.006, 16), (tuple(c.get("rim") or (1, 1, 1)), size * 0.065 * th_, -0.003, 12),
+                                                   (rgb, 0.0, 0.0, 1))):
+                m_ = geo.INK if k == 0 else flat(f"card_txt{tuple(round(x, 3) for x in rgb_)}", rgb_)
+                for j in range(n):
+                    a_ = 2 * math.pi * j / n
+                    cu = bpy.data.curves.new(f"card{i}_l{li}_{k}_{j}", 'FONT'); cu.body = line; cu.size = size
+                    cu.align_x = 'CENTER'; cu.align_y = 'CENTER'; cu.space_character = 1.12
+                    if font: cu.font = font
+                    o = bpy.data.objects.new(f"card{i}_l{li}_{k}_{j}", cu); ctx.col.objects.link(o); o.parent = g
+                    o.location = (rad * math.cos(a_), rad * math.sin(a_), z); o.data.materials.append(m_)
+    elif style == "arrow":
+        # bold arrow polygon from "tail" to "pos" (screen coords) with an ink outline: one clean shape
+        fx_, fy_ = c.get("tail") or (x - 0.3, y + 0.3); w = c.get("size") or 0.05
+        tx, ty = (fx_ - x) * HALF_W, (fy_ - y) * HALF_H; L = math.hypot(tx, ty) or 1
+        ux, uy = -tx / L, -ty / L; nx, ny = -uy, ux                     # direction tail->tip and its normal
+        hl = min(L * 0.45, w * 3.0); hw = w * 1.9
+        bx, by = -ux * hl, -uy * hl                                       # base of the head (tip at 0,0)
+        pts = [(tx + nx * w / 2, ty + ny * w / 2), (bx + nx * w / 2, by + ny * w / 2), (bx + nx * hw, by + ny * hw), (0.0, 0.0),
+               (bx - nx * hw, by - ny * hw), (bx - nx * w / 2, by - ny * w / 2), (tx - nx * w / 2, ty - ny * w / 2)]
+        shape(h, f"card{i}_arrow", pts, flat(f"card_arrow{rgb}", rgb), 0.0, outline=w * 0.32)
+    elif style == "circle":
+        r = c.get("size") or 0.12; asp = c.get("aspect", 1.0)
+        pts = ellipse(0, 0, r * asp, r, 48)
+        stroke(h, f"card{i}_rim", pts + [pts[0]], r * 0.22, -0.003, m=flat("card_white", (1, 1, 1)))
+        stroke(h, f"card{i}_c", pts + [pts[0]], r * 0.13, (0.22 - 0.13) / 2 * r + 0.002, m=flat(f"card_circ{rgb}", rgb))   # tubes: lift the colour
     elif style == "screen":
         # dark see-through plate (the blurred scene shows behind), accent sub line, big text, caption, accent rule
         var = c.get("variant", "fact")
@@ -154,6 +194,8 @@ def build_card(root, i, c):
 def bake_card(h, c):
     """pop in (5 f, overshoot) with a small wobble, hold, pop out (3 f); iris closes from big to 0 and stays black"""
     N = ctx.N; a, b = int(c["from"]), int(c["to"]); style = c.get("style", "title")
+    if style in ("thumb_text", "arrow", "circle") and c.get("static", True):   # thumbnails: just there
+        h.scale = (1, 1, 1); return
     h.scale = (0, 0, 0); h.keyframe_insert("scale", frame=1)
     if style == "iris":
         o = c["_iris"]

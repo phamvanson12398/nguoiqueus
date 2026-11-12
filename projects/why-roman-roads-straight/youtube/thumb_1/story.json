@@ -1,0 +1,359 @@
+{
+ "meta": {
+  "title": "thumbnail 1",
+  "fps": 30,
+  "frames": 3,
+  "aspect": "16:9",
+  "samples": 48,
+  "output": "thumb.mp4"
+ },
+ "factions": [
+  {
+   "id": "roman_empire_britain",
+   "culture": "roman_empire_50ad",
+   "color": [
+    0.7,
+    0.06,
+    0.04
+   ],
+   "label": "ROME",
+   "note": "Marcus, centurion, legionaries (Britannia, AD 50)"
+  },
+  {
+   "id": "britons",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.08,
+    0.4,
+    0.12
+   ],
+   "label": "BRITONS",
+   "note": "Bran and his people"
+  },
+  {
+   "id": "roman_republic",
+   "culture": "roman_republic_312bc",
+   "color": [
+    0.62,
+    0.1,
+    0.04
+   ],
+   "label": "ROME",
+   "note": "Appius Claudius, Republican soldiers"
+  },
+  {
+   "id": "samnites",
+   "culture": "samnite_312bc",
+   "color": [
+    0.06,
+    0.22,
+    0.55
+   ],
+   "label": "SAMNITES",
+   "note": "blue + tall feathers, drawn as proud as the Romans"
+  }
+ ],
+ "sets": [
+  {
+   "id": "brit",
+   "type": "roman_countryside",
+   "params": {
+    "origin": [
+     0,
+     0
+    ],
+    "region": "britain",
+    "swamp": {
+     "at": [
+      8,
+      4
+     ],
+     "r": 6
+    },
+    "hills": [
+     {
+      "at": [
+       -30,
+       70
+      ],
+      "h": 7
+     },
+     {
+      "at": [
+       0,
+       75
+      ],
+      "h": 8
+     },
+     {
+      "at": [
+       30,
+       80
+      ],
+      "h": 7
+     }
+    ],
+    "steep_slope": {
+     "at": [
+      40,
+      30
+     ]
+    },
+    "trackway": [
+     [
+      1.9,
+      2.6
+     ],
+     [
+      4.5,
+      -1.5
+     ],
+     [
+      8,
+      -3
+     ],
+     [
+      12,
+      -1.5
+     ]
+    ],
+    "huts": true,
+    "mist": true
+   },
+   "props": [
+    {
+     "id": "road_brit",
+     "type": "roman_road",
+     "params": {
+      "length": 60,
+      "width": 4
+     },
+     "loc": [
+      -60,
+      4,
+      0
+     ]
+    },
+    {
+     "id": "groma_brit",
+     "type": "groma",
+     "loc": [
+      -0.6,
+      3.6,
+      0
+     ]
+    },
+    {
+     "id": "pole1",
+     "type": "ranging_pole",
+     "loc": [
+      2.5,
+      4,
+      -0.2
+     ]
+    },
+    {
+     "id": "pole2",
+     "type": "ranging_pole",
+     "loc": [
+      5,
+      4,
+      -0.2
+     ]
+    },
+    {
+     "id": "pole3",
+     "type": "ranging_pole",
+     "loc": [
+      7.5,
+      4,
+      -0.2
+     ]
+    },
+    {
+     "id": "pole4",
+     "type": "ranging_pole",
+     "loc": [
+      10,
+      4,
+      -0.2
+     ]
+    },
+    {
+     "id": "beacon1",
+     "type": "beacon_fire",
+     "params": {
+      "lit": true,
+      "smoke_height": 5
+     },
+     "loc": [
+      -30,
+      70,
+      7
+     ],
+     "scale": [
+      3,
+      3,
+      3
+     ]
+    },
+    {
+     "id": "beacon2",
+     "type": "beacon_fire",
+     "params": {
+      "lit": true,
+      "smoke_height": 5
+     },
+     "loc": [
+      0,
+      75,
+      8
+     ],
+     "scale": [
+      3,
+      3,
+      3
+     ]
+    },
+    {
+     "id": "beacon3",
+     "type": "beacon_fire",
+     "params": {
+      "lit": true,
+      "smoke_height": 5
+     },
+     "loc": [
+      30,
+      80,
+      7
+     ],
+     "scale": [
+      3,
+      3,
+      3
+     ]
+    }
+   ]
+  }
+ ],
+ "chars": [
+  {
+   "id": "marcus",
+   "type": "person",
+   "faction": "roman_empire_britain",
+   "outfit": "roman_surveyor_50ad",
+   "look": {
+    "hair": "short",
+    "hair_color": [
+     0.05,
+     0.03,
+     0.02
+    ],
+    "beard": "none",
+    "accent": [
+     0.55,
+     0.12,
+     0.05
+    ],
+    "seed": 3
+   },
+   "loc": [
+    -1.3,
+    3.4,
+    0.0
+   ],
+   "expressions": [
+    [
+     1,
+     "smug_closed"
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.75,
+       0.62
+      ],
+      -1
+     ],
+     "tilt": 0.0
+    }
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "dof": {
+   "fstop": 1.8
+  },
+  "shots": [
+   {
+    "type": "closeup",
+    "frame": {
+     "subject": [
+      -1.3,
+      3.4,
+      0.0
+     ],
+     "move": "static_drift",
+     "x": 0.33,
+     "angle": -12,
+     "size": 2.0
+    },
+    "a": 1,
+    "b": 3,
+    "grade": "dusk"
+   }
+  ]
+ },
+ "captions": {
+  "style": "off"
+ },
+ "cards": [
+  {
+   "style": "thumb_text",
+   "text": "THROUGH THE\nSWAMP?!",
+   "pos": [
+    -0.47,
+    0.12
+   ],
+   "size": 0.17,
+   "max_w": 0.46,
+   "max_h": 0.8,
+   "color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "rot": 4,
+   "from": 1,
+   "to": 3
+  },
+  {
+   "style": "thumb_text",
+   "text": "THE ROMAN WAY",
+   "pos": [
+    0,
+    -0.78
+   ],
+   "size": 0.08,
+   "max_w": 0.8,
+   "max_h": 0.18,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "rot": 0,
+   "from": 1,
+   "to": 3
+  }
+ ],
+ "sound": {
+  "master": {
+   "lufs": -14
+  }
+ }
+}

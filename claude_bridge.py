@@ -38,7 +38,7 @@ READ_TOOLS = ["Read", "Glob", "Grep"]
 WEB_TOOLS = ["WebSearch", "WebFetch"]
 JOB_TOOLS = {"ideas": WEB_TOOLS, "write_content": WEB_TOOLS + ["Read"], "rewrite_seq": [], "plan_shots": READ_TOOLS,
              "design_prop": READ_TOOLS, "design_set": READ_TOOLS, "design_char": READ_TOOLS, "review": READ_TOOLS,
-             "design_culture": WEB_TOOLS + ["Read"], "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
+             "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
              "fix_from_preview": READ_TOOLS}
 
 
@@ -681,6 +681,69 @@ def design_outfit(name, brief=None, culture=None, compare=(), feedback=None, mod
             shutil.copy(os.path.join(ROOT, report["images"][0]), os.path.join(LIB, "outfits", name, "thumb.png"))
     report.update(ok="images" in report, seconds=round(time.time() - t0, 1), cost_usd_list_price=round(cost, 3))
     return report
+
+
+# =====================================================================
+#  YouTube package (titles, description, tags, thumbnails)
+# =====================================================================
+YT_RULES = """
+Gói YouTube cho video "Why…" (khán giả Mỹ, tiếng Anh):
+- titles: 8-12 phương án ≤ 60 ký tự (tối đa 70), mỗi cái một góc khác (câu hỏi Why…, con số, bí ẩn, phản trực giác, 'the real reason');
+  không clickbait sai sự thật, không VIẾT HOA cả câu. best_title = chỉ số cái tốt nhất.
+- description_hook: 1-2 câu đầu (hiện trên nút 'more'), móc tò mò, có từ khóa chính. description_body: 2-4 câu tóm nội dung, không spoil hết.
+  KHÔNG tự viết mốc thời gian: tool tự chèn từ thời gian giọng đọc thật; chỉ trả beat_titles = tên ngắn cho từng chuỗi (id → ≤ 6 từ).
+- sources: nguồn đã dùng (giữ từ content, thêm url nếu có). tags: 10-15 tag tiếng Anh (tổng ≤ 450 ký tự), hashtags: 3.
+- pinned_comment: một câu hỏi gợi bình luận.
+- thumbnails: 3 ý tưởng KHÁC NHAU (layout hero / vs / map / object), dựng bằng chính nhân vật và bối cảnh của video (cast bên dưới):
+  - text ≤ 4 từ, chữ to (không lặp nguyên tiêu đề; bổ sung tò mò), đặt ở vùng trống (text_pos), màu vàng/trắng nổi;
+  - mặt nhân vật cường điệu (shock, angry, worried, smug_closed…) và pose (arms_up, point_right/left, hands_cheeks, cross_arms, fist_up, shrug);
+  - bố cục do tool tự đặt (không cần tọa độ): hero = MỘT nhân vật to ở một bên (x > 0: bên phải), chữ ở nửa kia;
+    vs = đúng 2 nhân vật hai phe (tool thêm chữ VS, chữ của bạn nằm dải dưới); map = set bản đồ làm nền (subject = anchor như
+    city_roma / arrow0_mid / center), chữ ở dải trên, không nhân vật; object = cận một vật (subject = tên vật/anchor) + arrow: true;
+  - grade để đổi không khí; text2 (tùy chọn) = dòng nhỏ ở dưới.
+"""
+
+
+def youtube_package(slug, model=None):
+    import youtube
+    d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+    cs = youtube.cast(slug)
+    lib = storycheck.LibIndex()
+    cast_txt = {"chars": {k: {"type": v["type"], "faction": v.get("faction"), "outfit": v.get("outfit") or v.get("role"),
+                              "faces": (lib.json("chars", v["type"]).get("faces") if lib.exists("chars", v["type"]) else None)} for k, v in cs["chars"].items()},
+                "sets": {k: {"type": v["type"], "anchors_hint": "center" + (", city_*/arrow*_mid (map)" if v["type"] == "parchment_map" else "")} for k, v in cs["sets"].items()}}
+    seqs = [{"id": q.get("id"), "chapter": q.get("chapter"), "vo_en": q.get("vo_en", "")[:300]} for q in content["sequences"]]
+    prompt = (f"Viết gói YouTube cho video '{content.get('title')}'.\n{YT_RULES}\nContent (rút gọn): "
+              + json.dumps({"title": content.get("title"), "question": content.get("question"), "chapters": content.get("chapters"),
+                            "sequences": seqs, "sources": content.get("sources")}, ensure_ascii=False)
+              + f"\n\nCast cho thumbnail (id dùng được):\n{json.dumps(cast_txt, ensure_ascii=False)}")
+
+    def check(x):
+        e = []
+        for i, t in enumerate(x["titles"]):
+            if len(t["title"]) > 70: e.append(f"titles[{i}] dài {len(t['title'])} ký tự (≤ 70)")
+        if x["best_title"] >= len(x["titles"]): e.append("best_title ngoài danh sách")
+        if sum(len(t) for t in x["tags"]) > 480: e.append("tags quá 480 ký tự")
+        for i, th in enumerate(x["thumbnails"]):
+            if len(th["text"].replace("\n", " ").split()) > 5: e.append(f"thumbnails[{i}].text quá 5 từ")
+            if th.get("set") and th["set"] not in cs["sets"]: e.append(f"thumbnails[{i}].set '{th['set']}' không có (có: {sorted(cs['sets'])})")
+            for c in th["chars"]:
+                if c["id"] not in cs["chars"]: e.append(f"thumbnails[{i}]: không có nhân vật '{c['id']}'"); continue
+                faces = cast_txt["chars"][c["id"]]["faces"]
+                if faces and c["expression"] not in faces: e.append(f"thumbnails[{i}]: {c['id']} không có mặt '{c['expression']}' (có {faces})")
+        return e
+    data, info = call("youtube_package", prompt, load_schema("youtube"), project=slug, model=model, check=check)
+    return data
+
+
+def review_thumbnails(slug, images, concepts, model=None):
+    prompt = ("Ba thumbnail 1280x720 tool vừa render cho video (dùng Read để xem):\n" + "\n".join(f"{k + 1}. {p}" for k, p in enumerate(images))
+              + f"\nÝ tưởng gốc: {json.dumps(concepts, ensure_ascii=False)}\n"
+              "Chấm từng cái (1-10) theo: đọc được ở cỡ nhỏ (điện thoại), chữ không che mặt, mặt cường điệu rõ, bố cục một điểm nhấn, tương phản màu, "
+              "gây tò mò. best = cái tốt nhất. Nếu cái tốt nhất còn lỗi dễ sửa (chữ đè mặt, nhân vật bị cắt, mũi tên chỉ sai), trả revised = ý tưởng đã sửa "
+              "(cùng dạng), không thì null.")
+    data, info = call("review_thumbs", prompt, load_schema("review_thumbs"), project=slug, model=model)
+    return data
 
 
 def approve(item):

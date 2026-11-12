@@ -25,6 +25,9 @@ Bấm "+ Dự án mới" rồi chọn **OK = video dài** (hoặc đổi "Khổ 
 - "Duyệt & dựng" dựng lần lượt từng chương; mỗi chương có ảnh xem trước, nút dựng lại và ô "Nhờ Claude sửa" chọn chương.
 - Render lần lượt các chương chưa có video rồi ghép thành `out.mp4` (cần ffmpeg). Bị ngắt giữa chừng thì bấm Render lại để làm tiếp.
 
+Tab **YouTube**: "Tạo gói YouTube" → 10 tiêu đề, mô tả có mốc chương thật và nguồn, tag, bình luận ghim; video dài có thêm 3 thumbnail
+1280x720 dựng từ chính nhân vật của video (Claude tự chấm và chọn). Bấm "Chép"/"Sao chép" rồi dán vào YouTube Studio.
+
 Tab **Thư viện**: duyệt đồ Claude vừa thiết kế, gõ góp ý ("to hơn", "đổi màu"), hoặc nhờ thiết kế đồ mới.
 
 ## Cập nhật

@@ -52,7 +52,7 @@
   },
   "arrows": {
    "default": [],
-   "desc_vi": "[{path:[[x,y],...], faction|color, from, to, width}]"
+   "desc_vi": "[{path:[[x,y],...], faction|color, from, to, width}] ; smooth: false = đường thẳng (đường La Mã, đường ray…)"
   },
   "labels": {
    "default": [],

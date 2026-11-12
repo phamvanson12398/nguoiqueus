@@ -1,0 +1,413 @@
+{
+ "meta": {
+  "title": "thumbnail 2",
+  "fps": 30,
+  "frames": 3,
+  "aspect": "16:9",
+  "samples": 48,
+  "output": "thumb.mp4"
+ },
+ "factions": [
+  {
+   "id": "roman_empire_britain",
+   "culture": "roman_empire_50ad",
+   "color": [
+    0.7,
+    0.06,
+    0.04
+   ],
+   "label": "ROME",
+   "note": "Marcus, centurion, legionaries (Britannia, AD 50)"
+  },
+  {
+   "id": "britons",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.08,
+    0.4,
+    0.12
+   ],
+   "label": "BRITONS",
+   "note": "Bran and his people"
+  },
+  {
+   "id": "roman_republic",
+   "culture": "roman_republic_312bc",
+   "color": [
+    0.62,
+    0.1,
+    0.04
+   ],
+   "label": "ROME",
+   "note": "Appius Claudius, Republican soldiers"
+  },
+  {
+   "id": "samnites",
+   "culture": "samnite_312bc",
+   "color": [
+    0.06,
+    0.22,
+    0.55
+   ],
+   "label": "SAMNITES",
+   "note": "blue + tall feathers, drawn as proud as the Romans"
+  }
+ ],
+ "sets": [
+  {
+   "id": "brit",
+   "type": "roman_countryside",
+   "params": {
+    "origin": [
+     0,
+     0
+    ],
+    "region": "britain",
+    "swamp": {
+     "at": [
+      8,
+      4
+     ],
+     "r": 6
+    },
+    "hills": [
+     {
+      "at": [
+       -30,
+       70
+      ],
+      "h": 7
+     },
+     {
+      "at": [
+       0,
+       75
+      ],
+      "h": 8
+     },
+     {
+      "at": [
+       30,
+       80
+      ],
+      "h": 7
+     }
+    ],
+    "steep_slope": {
+     "at": [
+      40,
+      30
+     ]
+    },
+    "trackway": [
+     [
+      1.9,
+      2.6
+     ],
+     [
+      4.5,
+      -1.5
+     ],
+     [
+      8,
+      -3
+     ],
+     [
+      12,
+      -1.5
+     ]
+    ],
+    "huts": true,
+    "mist": true
+   },
+   "props": [
+    {
+     "id": "road_brit",
+     "type": "roman_road",
+     "params": {
+      "length": 60,
+      "width": 4
+     },
+     "loc": [
+      -60,
+      4,
+      0
+     ]
+    },
+    {
+     "id": "groma_brit",
+     "type": "groma",
+     "loc": [
+      -0.6,
+      3.6,
+      0
+     ]
+    },
+    {
+     "id": "pole1",
+     "type": "ranging_pole",
+     "loc": [
+      2.5,
+      4,
+      -0.2
+     ]
+    },
+    {
+     "id": "pole2",
+     "type": "ranging_pole",
+     "loc": [
+      5,
+      4,
+      -0.2
+     ]
+    },
+    {
+     "id": "pole3",
+     "type": "ranging_pole",
+     "loc": [
+      7.5,
+      4,
+      -0.2
+     ]
+    },
+    {
+     "id": "pole4",
+     "type": "ranging_pole",
+     "loc": [
+      10,
+      4,
+      -0.2
+     ]
+    },
+    {
+     "id": "beacon1",
+     "type": "beacon_fire",
+     "params": {
+      "lit": true,
+      "smoke_height": 5
+     },
+     "loc": [
+      -30,
+      70,
+      7
+     ],
+     "scale": [
+      3,
+      3,
+      3
+     ]
+    },
+    {
+     "id": "beacon2",
+     "type": "beacon_fire",
+     "params": {
+      "lit": true,
+      "smoke_height": 5
+     },
+     "loc": [
+      0,
+      75,
+      8
+     ],
+     "scale": [
+      3,
+      3,
+      3
+     ]
+    },
+    {
+     "id": "beacon3",
+     "type": "beacon_fire",
+     "params": {
+      "lit": true,
+      "smoke_height": 5
+     },
+     "loc": [
+      30,
+      80,
+      7
+     ],
+     "scale": [
+      3,
+      3,
+      3
+     ]
+    }
+   ]
+  }
+ ],
+ "chars": [
+  {
+   "id": "centurion",
+   "type": "person",
+   "faction": "roman_empire_britain",
+   "role": "officer",
+   "outfit": "roman_centurion_50ad",
+   "look": {
+    "hair": "short",
+    "beard": "none",
+    "accent": [
+     0.8,
+     0.06,
+     0.04
+    ],
+    "seed": 7
+   },
+   "loc": [
+    -4.155555555555556,
+    3.0,
+    0.0
+   ],
+   "expressions": [
+    [
+     1,
+     "angry"
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       0.22,
+       0.45
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       -0.22,
+       0.5
+      ],
+      1
+     ],
+     "tilt": 0.0
+    }
+   }
+  },
+  {
+   "id": "bran",
+   "type": "person",
+   "faction": "britons",
+   "outfit": "briton_guide_50ad",
+   "look": {
+    "hair": "tied",
+    "hair_color": [
+     0.35,
+     0.12,
+     0.04
+    ],
+    "beard": "mustache",
+    "accent": [
+     0.08,
+     0.4,
+     0.12
+    ],
+    "seed": 5
+   },
+   "loc": [
+    -1.8444444444444443,
+    3.0,
+    0.0
+   ],
+   "expressions": [
+    [
+     1,
+     "smug_closed"
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.6,
+       0.62
+      ],
+      1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.6,
+       0.62
+      ],
+      -1
+     ],
+     "tilt": 0.0
+    }
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "dof": {
+   "fstop": 1.8
+  },
+  "shots": [
+   {
+    "type": "medium",
+    "frame": {
+     "subject": [
+      -3.0,
+      3.0,
+      0.0
+     ],
+     "size": 2.6,
+     "move": "static_drift",
+     "y": -0.18
+    },
+    "a": 1,
+    "b": 3,
+    "grade": "warm"
+   }
+  ]
+ },
+ "captions": {
+  "style": "off"
+ },
+ "cards": [
+  {
+   "style": "thumb_text",
+   "text": "VS",
+   "pos": [
+    0,
+    0.1
+   ],
+   "size": 0.2,
+   "color": [
+    0.95,
+    0.12,
+    0.05
+   ],
+   "rot": -4,
+   "from": 1,
+   "to": 3
+  },
+  {
+   "style": "thumb_text",
+   "text": "STRAIGHT?",
+   "pos": [
+    0,
+    -0.74
+   ],
+   "size": 0.13,
+   "max_w": 0.94,
+   "max_h": 0.24,
+   "color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "rot": 0,
+   "from": 1,
+   "to": 3
+  }
+ ],
+ "sound": {
+  "master": {
+   "lufs": -14
+  }
+ }
+}

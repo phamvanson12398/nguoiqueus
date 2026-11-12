@@ -91,7 +91,7 @@ def build(params, lib):
     for k, ar in enumerate(p["arrows"]):
         rgb = maps.faction_rgb(ar, fac)
         maps.arrow(root, f"board_arrow{k}", [tuple(q) for q in ar["path"]], ar.get("width", 0.22), 0.006 + k * 0.0005, rgb,
-                   int(ar["from"]) if "from" in ar else None, int(ar.get("to", ar.get("from", 1) + 45)))
+                   int(ar["from"]) if "from" in ar else None, int(ar.get("to", ar.get("from", 1) + 45)), smooth_path=ar.get("smooth", True))
         anchors[f"arrow{k}_end"] = world(ar["path"][-1]); anchors[f"arrow{k}_start"] = world(ar["path"][0])
     for k, lb in enumerate(p["labels"]):
         objs = maps.label(root, f"board_lbl{k}", lb["text"], lb["at"], lb.get("size", 0.35), flat("board_lbl", (0.95, 0.93, 0.85)), 0.012,

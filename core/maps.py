@@ -235,9 +235,9 @@ def fade_between(fac, a, b=None, top=1.0, dur=10):
             fac.default_value = top if f == b else 0.0; fac.keyframe_insert("default_value", frame=min(N, f))
 
 
-def arrow(parent, name, pts, w, z, rgb, a=None, b=None, ink_w=None, head=True, dashed=False):
-    """thick arrow (colour over a dark rim), drawn on between a and b, head riding on the tip"""
-    pts = smooth(pts) if len(pts) > 2 else list(pts)
+def arrow(parent, name, pts, w, z, rgb, a=None, b=None, ink_w=None, head=True, dashed=False, smooth_path=True):
+    """thick arrow (colour over a dark rim), drawn on between a and b, head riding on the tip; smooth_path=False keeps straight segments"""
+    pts = smooth(pts) if len(pts) > 2 and smooth_path else list(pts)
     col = flat(f"map_arrow{tuple(round(c, 3) for c in rgb)}", rgb)
     ink = flat("map_ink", (0.10, 0.07, 0.05))
     rw = w + (ink_w or w * 0.45)

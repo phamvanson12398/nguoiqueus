@@ -1,0 +1,323 @@
+{
+ "type": "object",
+ "required": [
+  "titles",
+  "best_title",
+  "description_hook",
+  "description_body",
+  "beat_titles",
+  "sources",
+  "tags",
+  "hashtags",
+  "pinned_comment",
+  "thumbnails"
+ ],
+ "properties": {
+  "titles": {
+   "type": "array",
+   "minItems": 8,
+   "maxItems": 12,
+   "items": {
+    "type": "object",
+    "required": [
+     "title",
+     "angle_vi"
+    ],
+    "properties": {
+     "title": {
+      "type": "string"
+     },
+     "angle_vi": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "best_title": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "description_hook": {
+   "type": "string",
+   "description": "first 2 lines (shown above 'more'), English"
+  },
+  "description_body": {
+   "type": "string",
+   "description": "short summary paragraph(s), English, no timestamps"
+  },
+  "beat_titles": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string"
+   },
+   "description": "sequence id -> short chapter title (English, <= 6 words)"
+  },
+  "sources": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "source"
+    ],
+    "properties": {
+     "source": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "tags": {
+   "type": "array",
+   "maxItems": 20,
+   "items": {
+    "type": "string"
+   }
+  },
+  "hashtags": {
+   "type": "array",
+   "maxItems": 3,
+   "items": {
+    "type": "string"
+   }
+  },
+  "pinned_comment": {
+   "type": "string"
+  },
+  "credits": {
+   "type": "string"
+  },
+  "thumbnails": {
+   "type": "array",
+   "minItems": 3,
+   "maxItems": 3,
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "idea_vi",
+     "layout",
+     "chars",
+     "text"
+    ],
+    "properties": {
+     "id": {
+      "type": "integer"
+     },
+     "idea_vi": {
+      "type": "string"
+     },
+     "layout": {
+      "enum": [
+       "hero",
+       "vs",
+       "map",
+       "object"
+      ]
+     },
+     "set": {
+      "type": "string",
+      "description": "set id from the cast (background)"
+     },
+     "chars": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+       "type": "object",
+       "required": [
+        "id",
+        "expression"
+       ],
+       "properties": {
+        "id": {
+         "type": "string"
+        },
+        "expression": {
+         "type": "string"
+        },
+        "pose": {
+         "enum": [
+          "stand",
+          "arms_up",
+          "point_right",
+          "point_left",
+          "hands_cheeks",
+          "cross_arms",
+          "fist_up",
+          "shrug"
+         ]
+        },
+        "x": {
+         "type": "number"
+        },
+        "tilt": {
+         "type": "number"
+        }
+       }
+      }
+     },
+     "shot": {
+      "enum": [
+       "closeup",
+       "medium",
+       "full",
+       "wide",
+       "map",
+       "board",
+       "insert",
+       "ecu"
+      ]
+     },
+     "subject": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "array",
+        "items": {
+         "type": "number"
+        }
+       }
+      ]
+     },
+     "size": {
+      "type": "number"
+     },
+     "angle": {
+      "type": "number"
+     },
+     "text": {
+      "type": "string",
+      "description": "headline, <= 4 words, may contain one \\n"
+     },
+     "text_pos": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": -1.2,
+       "maximum": 1.2
+      },
+      "minItems": 2,
+      "maxItems": 2
+     },
+     "text_color": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1
+      },
+      "minItems": 3,
+      "maxItems": 3
+     },
+     "text_size": {
+      "type": "number",
+      "minimum": 0.08,
+      "maximum": 0.22
+     },
+     "text_rot": {
+      "type": "number"
+     },
+     "text2": {
+      "type": "string"
+     },
+     "text2_pos": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": -1.2,
+       "maximum": 1.2
+      },
+      "minItems": 2,
+      "maxItems": 2
+     },
+     "text2_color": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1
+      },
+      "minItems": 3,
+      "maxItems": 3
+     },
+     "arrow": {
+      "type": "object",
+      "properties": {
+       "pos": {
+        "type": "array",
+        "items": {
+         "type": "number",
+         "minimum": -1.2,
+         "maximum": 1.2
+        },
+        "minItems": 2,
+        "maxItems": 2
+       },
+       "tail": {
+        "type": "array",
+        "items": {
+         "type": "number",
+         "minimum": -1.2,
+         "maximum": 1.2
+        },
+        "minItems": 2,
+        "maxItems": 2
+       }
+      },
+      "required": [
+       "pos"
+      ]
+     },
+     "circle": {
+      "type": "object",
+      "properties": {
+       "pos": {
+        "type": "array",
+        "items": {
+         "type": "number",
+         "minimum": -1.2,
+         "maximum": 1.2
+        },
+        "minItems": 2,
+        "maxItems": 2
+       },
+       "size": {
+        "type": "number"
+       }
+      },
+      "required": [
+       "pos"
+      ]
+     },
+     "grade": {
+      "enum": [
+       "day",
+       "dawn",
+       "dusk",
+       "night",
+       "cold",
+       "warm",
+       "desert",
+       "sepia",
+       "storm",
+       "fire"
+      ]
+     },
+     "fstop": {
+      "type": "number"
+     },
+     "vfx": {
+      "type": "array",
+      "items": {
+       "type": "object"
+      }
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,268 @@
+{
+ "type": "object",
+ "required": [
+  "best",
+  "scores",
+  "problems_vi",
+  "summary_vi"
+ ],
+ "properties": {
+  "best": {
+   "type": "integer",
+   "minimum": 1,
+   "maximum": 3
+  },
+  "scores": {
+   "type": "array",
+   "items": {
+    "type": "integer",
+    "minimum": 1,
+    "maximum": 10
+   },
+   "minItems": 3,
+   "maxItems": 3
+  },
+  "problems_vi": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "summary_vi": {
+   "type": "string"
+  },
+  "revised": {
+   "anyOf": [
+    {
+     "type": "object",
+     "required": [
+      "id",
+      "idea_vi",
+      "layout",
+      "chars",
+      "text"
+     ],
+     "properties": {
+      "id": {
+       "type": "integer"
+      },
+      "idea_vi": {
+       "type": "string"
+      },
+      "layout": {
+       "enum": [
+        "hero",
+        "vs",
+        "map",
+        "object"
+       ]
+      },
+      "set": {
+       "type": "string",
+       "description": "set id from the cast (background)"
+      },
+      "chars": {
+       "type": "array",
+       "maxItems": 3,
+       "items": {
+        "type": "object",
+        "required": [
+         "id",
+         "expression"
+        ],
+        "properties": {
+         "id": {
+          "type": "string"
+         },
+         "expression": {
+          "type": "string"
+         },
+         "pose": {
+          "enum": [
+           "stand",
+           "arms_up",
+           "point_right",
+           "point_left",
+           "hands_cheeks",
+           "cross_arms",
+           "fist_up",
+           "shrug"
+          ]
+         },
+         "x": {
+          "type": "number"
+         },
+         "tilt": {
+          "type": "number"
+         }
+        }
+       }
+      },
+      "shot": {
+       "enum": [
+        "closeup",
+        "medium",
+        "full",
+        "wide",
+        "map",
+        "board",
+        "insert",
+        "ecu"
+       ]
+      },
+      "subject": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "array",
+         "items": {
+          "type": "number"
+         }
+        }
+       ]
+      },
+      "size": {
+       "type": "number"
+      },
+      "angle": {
+       "type": "number"
+      },
+      "text": {
+       "type": "string",
+       "description": "headline, <= 4 words, may contain one \\n"
+      },
+      "text_pos": {
+       "type": "array",
+       "items": {
+        "type": "number",
+        "minimum": -1.2,
+        "maximum": 1.2
+       },
+       "minItems": 2,
+       "maxItems": 2
+      },
+      "text_color": {
+       "type": "array",
+       "items": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+       },
+       "minItems": 3,
+       "maxItems": 3
+      },
+      "text_size": {
+       "type": "number",
+       "minimum": 0.08,
+       "maximum": 0.22
+      },
+      "text_rot": {
+       "type": "number"
+      },
+      "text2": {
+       "type": "string"
+      },
+      "text2_pos": {
+       "type": "array",
+       "items": {
+        "type": "number",
+        "minimum": -1.2,
+        "maximum": 1.2
+       },
+       "minItems": 2,
+       "maxItems": 2
+      },
+      "text2_color": {
+       "type": "array",
+       "items": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+       },
+       "minItems": 3,
+       "maxItems": 3
+      },
+      "arrow": {
+       "type": "object",
+       "properties": {
+        "pos": {
+         "type": "array",
+         "items": {
+          "type": "number",
+          "minimum": -1.2,
+          "maximum": 1.2
+         },
+         "minItems": 2,
+         "maxItems": 2
+        },
+        "tail": {
+         "type": "array",
+         "items": {
+          "type": "number",
+          "minimum": -1.2,
+          "maximum": 1.2
+         },
+         "minItems": 2,
+         "maxItems": 2
+        }
+       },
+       "required": [
+        "pos"
+       ]
+      },
+      "circle": {
+       "type": "object",
+       "properties": {
+        "pos": {
+         "type": "array",
+         "items": {
+          "type": "number",
+          "minimum": -1.2,
+          "maximum": 1.2
+         },
+         "minItems": 2,
+         "maxItems": 2
+        },
+        "size": {
+         "type": "number"
+        }
+       },
+       "required": [
+        "pos"
+       ]
+      },
+      "grade": {
+       "enum": [
+        "day",
+        "dawn",
+        "dusk",
+        "night",
+        "cold",
+        "warm",
+        "desert",
+        "sepia",
+        "storm",
+        "fire"
+       ]
+      },
+      "fstop": {
+       "type": "number"
+      },
+      "vfx": {
+       "type": "array",
+       "items": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "description": "improved concept for the best one, or null if it is good"
+  }
+ }
+}

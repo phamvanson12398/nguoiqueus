@@ -162,6 +162,10 @@ def project_state(slug):
     st["estimate"] = estimate((st["settings"] or {}).get("minutes", 1.0), (st["settings"] or {}).get("wpm_measured"),
                               (st["settings"] or {}).get("format", "short"))
     st["format"] = (st["settings"] or {}).get("format", "short")
+    yd = os.path.join(d, "youtube")
+    st["youtube"] = dict(jload(os.path.join(yd, "package.json")) or {}, description=open(os.path.join(yd, "description.txt"), encoding="utf-8").read()
+                         if os.path.exists(os.path.join(yd, "description.txt")) else None,
+                         thumbs=sorted(f for f in os.listdir(yd) if re.fullmatch(r"thumb_\d(_v1)?\.png", f))) if os.path.isdir(yd) else None
     st["chapters"] = longform.status(slug) if st["format"] == "long" else None
     cur = BUSY.get(slug); st["job"] = JOBS[cur].to_json(10 ** 9) if cur and cur in JOBS else None
     return st
@@ -222,9 +226,9 @@ def job_align(job, slug):
     return {"duration": r["duration"], "frames": r["frames"]}
 
 
-def run_builder(job, slug, args, progress_total=None):
+def run_builder(job, slug, args, progress_total=None, story=None):
     """run builder.py in Blender, stream its output into the job log, parse RENDER FRAME lines"""
-    story = os.path.join(pdir(slug), "story.json")
+    story = story or os.path.join(pdir(slug), "story.json")
     b = bridge.blender_cmd()
     if os.path.basename(b).lower().startswith("python"):
         cmd = [b, os.path.join(ROOT, "tools", "bpy_run.py"), os.path.join(ROOT, "builder.py"), story] + args
@@ -430,6 +434,57 @@ def job_render_long(job, slug, pct=100, samples=None, quality="normal"):
     if int(pct or 100) != 100: job.say("(render thử dưới 100 %: vẫn ghép để xem)")
     out = longform.concat(slug, log=job.say)
     return {"file": os.path.basename(out)}
+
+
+def job_youtube(job, slug, thumbs=True):
+    """YouTube package: Claude writes titles/description/tags/thumbnail ideas; the tool adds real chapter timestamps,
+    renders 3 thumbnails (1280x720) from the video's own characters and sets, and lets Claude pick/fix the best one"""
+    import youtube
+    yd = os.path.join(pdir(slug), "youtube"); os.makedirs(yd, exist_ok=True)
+    job.say("Claude viết gói YouTube (tiêu đề, mô tả, tag, 3 ý tưởng thumbnail)…")
+    pkg = bridge.youtube_package(slug)
+    stamps = youtube.timestamps(slug, pkg.get("beat_titles"))
+    desc = youtube.description(pkg, stamps)
+    open(os.path.join(yd, "description.txt"), "w", encoding="utf-8").write(desc)
+    open(os.path.join(yd, "titles.txt"), "w", encoding="utf-8").write("\n".join(t["title"] for t in pkg["titles"]) + "\n")
+    pkg["timestamps"] = [[round(t, 2), title] for t, title in stamps]
+    job.say(f"   {len(pkg['titles'])} tiêu đề, {len(stamps)} mốc chương, {len(pkg['tags'])} tag.")
+    st0, _ = youtube.source_story(slug)
+    if thumbs and st0 and st0["meta"].get("aspect") == "16:9":
+        imgs = []
+        for k, concept in enumerate(pkg["thumbnails"], 1):
+            job.say(f"Render thumbnail {k}/3: {concept.get('idea_vi', '')}")
+            try: imgs.append(render_thumb(job, slug, yd, k, concept))
+            except ValueError as e:
+                if job.cancelled: raise
+                job.say(f"   thumbnail {k} lỗi: {str(e)[:200]}"); imgs.append(None)
+        try:
+            if not any(imgs): raise ValueError("không render được thumbnail nào")
+            rv = bridge.review_thumbnails(slug, [i or "(lỗi, không có ảnh)" for i in imgs], pkg["thumbnails"])
+            pkg["thumb_review"] = rv
+            job.say(f"   Claude chấm: {rv['scores']}, chọn số {rv['best']}. {rv['summary_vi']}")
+            if rv.get("revised"):
+                b = rv["best"]; job.say(f"   Sửa thumbnail {b}: {'; '.join(rv['problems_vi'])[:300]}")
+                old = os.path.join(yd, f"thumb_{b}.png")
+                if os.path.exists(old): shutil.copy(old, os.path.join(yd, f"thumb_{b}_v1.png"))
+                render_thumb(job, slug, yd, b, dict(rv["revised"], id=b)); pkg["thumbnails"][b - 1] = dict(rv["revised"], id=b)
+        except Exception as e:
+            if job.cancelled: raise
+            job.say(f"   (không chấm được thumbnail: {e})")
+    json.dump(pkg, open(os.path.join(yd, "package.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return {"titles": len(pkg["titles"]), "timestamps": len(stamps)}
+
+
+def render_thumb(job, slug, yd, k, concept):
+    import youtube
+    td = os.path.join(yd, f"thumb_{k}"); os.makedirs(td, exist_ok=True)
+    sp = os.path.join(td, "story.json"); json.dump(youtube.thumb_story(slug, concept), open(sp, "w", encoding="utf-8"), indent=1)
+    errs = storycheck.check_story(jload(sp))
+    if errs: job.say("   story thumbnail lỗi: " + "; ".join(errs[:3])); return None
+    run_builder(job, slug, ["--preview", "2", "--size", "1280x720", "--samples", "48"], story=sp)
+    src = os.path.join(td, "preview", "p_0002.png"); dst = os.path.join(yd, f"thumb_{k}.png")
+    if os.path.exists(src): shutil.copy(src, dst); return dst
+    return None
 
 
 def job_bench(job, slug, pct=100, quality="normal"):
@@ -665,6 +720,9 @@ class Handler(BaseHTTPRequestHandler):
                 b = self.jbody(); t = sub_target(slug, b.get("chapter"))
                 return self.send_json(start_job("render", slug, job_render, t, b.get("pct", 100), b.get("frames"), b.get("samples"),
                                                 b.get("quality", "normal")).to_json())
+            if act == ["youtube"] and method == "POST":
+                b = self.jbody()
+                return self.send_json(start_job("youtube", slug, job_youtube, slug, b.get("thumbs", True)).to_json())
             if act == ["bench"]:
                 b = self.jbody()
                 return self.send_json(start_job("bench", slug, job_bench, slug, int(b.get("pct", 100)), b.get("quality", "normal")).to_json())

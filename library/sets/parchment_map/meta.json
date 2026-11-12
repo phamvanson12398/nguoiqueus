@@ -46,7 +46,7 @@
   },
   "arrows": {
    "default": [],
-   "desc_vi": "[{path:[[lon,lat],...], faction|color, from, to, width (mặc định W/110)}] mũi tên vẽ dần từ from tới to"
+   "desc_vi": "[{path:[[lon,lat],...], faction|color, from, to, width (mặc định W/110)}] mũi tên vẽ dần từ from tới to ; smooth: false = đường thẳng (đường La Mã, đường ray…)"
   },
   "units": {
    "default": [],

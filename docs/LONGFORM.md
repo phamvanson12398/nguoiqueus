@@ -162,6 +162,7 @@ Nguồn: danh sách video công khai của kênh (lấy ngày 11/11/2026) và th
    (20 phút ≈ 36.000 khung × 1,4 s ≈ 14 giờ; cần tối ưu số mẫu, độ sâu trường ảnh, đám đông instance).
    - **Trạng thái:** xong (CLAUDE.md, "Video dài — Bước 6").
 7. **Thumbnail 1280x720 + gói YouTube** (tiêu đề "Why…", mô tả có mốc chương, nguồn).
+   - **Trạng thái:** xong (CLAUDE.md, "Video dài — Bước 7").
 8. Làm trọn một video 10 phút; ghi lỗi, sửa; cập nhật skill.
 
 **Lưu ý bản quyền và khác biệt:** không chép nhân vật, thumbnail, kịch bản hay khung hình của Squire Explains. Giữ nhân vật của tool,

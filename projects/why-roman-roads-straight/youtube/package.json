@@ -1,0 +1,290 @@
+{
+ "titles": [
+  {
+   "title": "Why Were Roman Roads So Straight?",
+   "angle_vi": "Câu hỏi Why… thẳng, khớp từ khóa tìm kiếm"
+  },
+  {
+   "title": "The Real Reason Roman Roads Were So Straight",
+   "angle_vi": "'The real reason' – hứa câu trả lời khác lời giải quen thuộc (tốc độ)"
+  },
+  {
+   "title": "200 Miles, Barely a Bend: The Roman Road Mystery",
+   "angle_vi": "Con số: Fosse Way ~200 dặm lệch dưới 6 dặm khỏi đường thẳng"
+  },
+  {
+   "title": "Romans Built a Road Straight Into a Swamp. Why?",
+   "angle_vi": "Cảnh mở đầu vô lý (đầm lầy) làm móc tò mò"
+  },
+  {
+   "title": "How Romans Drew Perfect Lines Without GPS",
+   "angle_vi": "Bí ẩn kỹ thuật: groma, cọc ngắm, khói trên đồi"
+  },
+  {
+   "title": "Roman Roads Weren't Straight Just for Speed",
+   "angle_vi": "Phản trực giác: bác bỏ lời giải 'đi nhanh hơn'"
+  },
+  {
+   "title": "The Wooden Cross That Made Roman Roads Straight",
+   "angle_vi": "Vật thể bí ẩn (groma) là chìa khóa"
+  },
+  {
+   "title": "80,000 km of Stone Roads… and Almost No Curves",
+   "angle_vi": "Con số quy mô đế chế"
+  },
+  {
+   "title": "Why Some British Roads Still Refuse to Turn",
+   "angle_vi": "Liên hệ hiện tại: A5 / Watling Street ngày nay"
+  },
+  {
+   "title": "The Roman Road Secret Hidden on Hilltops",
+   "angle_vi": "Bí ẩn: lửa/khói trên đỉnh đồi để ngắm thẳng"
+  }
+ ],
+ "best_title": 1,
+ "description_hook": "Why were Roman roads so straight, straight enough to march right into a swamp? The obvious answer is speed. The real answer starts with a wooden stick and smoke on the hilltops.",
+ "description_body": "In 312 BC, at war with the Samnites, Rome began the Via Appia, and the straight Roman road was born. But going straight was expensive, and on steep hills Roman roads didn't stay straight at all. So what was really going on?\n\nFollow a young surveyor named Marcus, a furious centurion and a doubtful local guide named Bran on the edge of Roman Britain. Along the way you'll see how the groma worked, how surveyors sighted from hill to hill, and why some of those 2,000-year-old lines still sit under modern roads like the A5.",
+ "beat_titles": {
+  "1": "Straight Through the Swamp",
+  "2": "Let's Go Back",
+  "3": "312 BC: The Appian Way",
+  "4": "Was It Just Speed?",
+  "5": "Smoke on the Hilltops",
+  "6": "Meet the Groma",
+  "7": "Hill to Hill, Pole by Pole",
+  "8": "The Real Answer",
+  "9": "Roads That Refuse to Turn"
+ },
+ "sources": [
+  {
+   "source": "Britannica – Appian Way (begun 312 BC by Appius Claudius Caecus, Samnite Wars)",
+   "url": "https://www.britannica.com/topic/Appian-Way"
+  },
+  {
+   "source": "National Geographic – 200,000 miles of Roman roads; Via Appia straight stretch Rome–Terracina",
+   "url": "https://www.nationalgeographic.com/history/world-history-magazine/article/200000-miles-roman-roads-provided-framework-empire"
+  },
+  {
+   "source": "Wikipedia – Appian Way (Pontine Marshes, route to Capua)",
+   "url": "https://en.wikipedia.org/wiki/Appian_Way"
+  },
+  {
+   "source": "Britannica – Roman road system (~80,000 km stone-paved)",
+   "url": "https://www.britannica.com/technology/Roman-road-system"
+  },
+  {
+   "source": "Hucker, FIG 2009 – Fosse Way alignment and Roman surveying from high ground",
+   "url": "https://www.fig.net/resources/proceedings/fig_proceedings/fig2009/papers/hs01/hs01_hucker_3471.pdf"
+  },
+  {
+   "source": "Wikipedia – Groma (surveying)",
+   "url": "https://en.wikipedia.org/wiki/Groma_(surveying)"
+  },
+  {
+   "source": "Historic UK – Roman Roads in England (hilltop markers, direction changes at high points)",
+   "url": "https://historic-uk.com/HistoryUK/HistoryofEngland/Roman-Roads-in-England"
+  },
+  {
+   "source": "Vegetius, De Re Militari, Book 1 (20 Roman miles in five summer hours)",
+   "url": "https://en.wikipedia.org/wiki/De_re_militari"
+  },
+  {
+   "source": "Wikipedia – Watling Street (route largely followed by the A5)",
+   "url": "https://en.wikipedia.org/wiki/Watling_Street"
+  },
+  {
+   "source": "Today I Found Out – Roman roads and switchbacks on steep slopes",
+   "url": "https://www.todayifoundout.com/?p=55621"
+  }
+ ],
+ "tags": [
+  "roman roads",
+  "why were roman roads straight",
+  "ancient rome",
+  "roman empire",
+  "appian way",
+  "via appia",
+  "groma",
+  "roman engineering",
+  "roman surveyors",
+  "fosse way",
+  "watling street",
+  "roman britain",
+  "ancient engineering",
+  "history explained",
+  "animated history"
+ ],
+ "hashtags": [
+  "#history",
+  "#ancientrome",
+  "#romanroads"
+ ],
+ "pinned_comment": "If you were Marcus, would you send the road straight through the swamp or go around it? Tell us what you'd do 👇",
+ "thumbnails": [
+  {
+   "id": 1,
+   "idea_vi": "Hero: Marcus to bên phải, mặt tự mãn nhắm mắt, chỉ tay sang trái về phía đầm lầy ở vùng quê Britannia; chữ vàng ở nửa trái hỏi lại cảnh mở đầu vô lý.",
+   "layout": "hero",
+   "set": "brit",
+   "shot": "medium",
+   "grade": "dusk",
+   "chars": [
+    {
+     "id": "marcus",
+     "expression": "smug_closed",
+     "pose": "point_left",
+     "x": 0.45
+    }
+   ],
+   "text": "THROUGH THE\nSWAMP?!",
+   "text_color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "text2": "the Roman way",
+   "text2_color": [
+    1,
+    1,
+    1
+   ]
+  },
+  {
+   "id": 2,
+   "idea_vi": "VS: đội trưởng La Mã giận dữ khoanh tay, đối đầu người dẫn đường Briton nhún vai cười tự tin. Chữ dưới rút ngắn còn 'STRAIGHT?' cho dễ đọc trên điện thoại, đặt sát đáy, nhỏ hơn để không che tay và mặt. Bran đổi sang biểu cảm cười tự tin để mặt dễ hiểu hơn.",
+   "layout": "vs",
+   "set": "brit",
+   "shot": "medium",
+   "grade": "warm",
+   "chars": [
+    {
+     "id": "centurion",
+     "expression": "angry",
+     "pose": "cross_arms"
+    },
+    {
+     "id": "bran",
+     "expression": "smug_closed",
+     "pose": "shrug"
+    }
+   ],
+   "text": "STRAIGHT?",
+   "text_color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "text_pos": [
+    0,
+    -0.84
+   ],
+   "text_size": 0.13
+  },
+  {
+   "id": 3,
+   "idea_vi": "Map: bản đồ giấy da của đế chế, các con đường thẳng tắp tỏa khắp nơi, tông sepia; chữ dải trên hỏi vì sao không có đường cong.",
+   "layout": "map",
+   "set": "empire",
+   "subject": "center",
+   "shot": "map",
+   "grade": "sepia",
+   "chars": [],
+   "text": "WHY NO CURVES?",
+   "text_color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "text2": "80,000 km of stone",
+   "text2_color": [
+    1,
+    1,
+    1
+   ]
+  }
+ ],
+ "timestamps": [
+  [
+   0.0,
+   "The Road Into the Swamp: Straight Through the Swamp"
+  ],
+  [
+   32.16,
+   "Let's Go Back"
+  ],
+  [
+   62.78,
+   "312 BC: The Appian Way"
+  ],
+  [
+   103.04,
+   "Was It Just Speed?"
+  ],
+  [
+   142.56,
+   "Smoke on the Hilltops"
+  ],
+  [
+   172.2,
+   "The Stick That Sees Straight: Meet the Groma"
+  ],
+  [
+   210.96,
+   "Hill to Hill, Pole by Pole"
+  ],
+  [
+   253.64,
+   "The Real Answer"
+  ],
+  [
+   297.1,
+   "Roads That Refuse to Turn"
+  ]
+ ],
+ "thumb_review": {
+  "best": 2,
+  "scores": [
+   5,
+   7,
+   4
+  ],
+  "problems_vi": [
+   "Lỗi chung của tool (cả 3 ảnh): chữ phụ (text2/dải dưới) viền quá dày so với khoảng cách chữ nên các chữ dính vào nhau, ở cỡ điện thoại gần như không đọc được ('THE ROMAN WAY', 'STRAIGHT OR AROUND?', '80,000 KM OF STONE'). Cần tăng letter-spacing hoặc giảm viền cho chữ đậm.",
+   "Ảnh 1: không thấy đầm lầy nào, tay Marcus gập lên như vẫy chào chứ không chỉ sang trái, nên câu 'THROUGH THE SWAMP?!' không có hình đi kèm. Nền sương dusk nhạt, tương phản thấp; chữ vàng nhạt trên nền hồng xám bị chìm. 'THE ROMAN WAY' đè lên tay và thân nhân vật. Cây giàn groma bên phải bị cắt.",
+   "Ảnh 2: mặt hai nhân vật cường điệu rõ, tương phản đỏ/xanh lá tốt, có VS ở giữa. Nhưng dải chữ dưới quá dài (19 ký tự), đè lên tay khoanh và thân cả hai người, chữ lại dính nhau. Miệng cười nhếch của Bran trông như mỏ vịt/ria, khó hiểu cảm xúc. Nền có 3 cột khói và lửa hơi rối.",
+   "Ảnh 3: mâu thuẫn với tiêu đề. Chữ hỏi 'WHY NO CURVES?' nhưng mũi tên đỏ trên bản đồ lại uốn cong rõ rệt. Không có nhân vật hay mặt người nên ít cảm xúc. Mũi tên trên cùng bên trái và chữ 'Londinium' bị cắt mép; text2 khó đọc."
+  ],
+  "summary_vi": "Ảnh 2 (VS) tốt nhất: mặt giận và mặt nhếch rõ, màu hai phe tương phản, chỉ có một điểm nhấn là chữ VS. Chỉ cần rút ngắn dải chữ dưới và đặt nó thấp, nhỏ hơn để không đè lên tay và thân. Ảnh 1 thiếu đầm lầy và tay chưa chỉ đúng hướng. Ảnh 3 tự mâu thuẫn vì mũi tên cong trong khi chữ hỏi 'không có đường cong'. Riêng lỗi chữ dính nhau khi viền dày là lỗi của tool, cần sửa trong code render chữ.",
+  "revised": {
+   "id": 2,
+   "idea_vi": "VS: đội trưởng La Mã giận dữ khoanh tay, đối đầu người dẫn đường Briton nhún vai cười tự tin. Chữ dưới rút ngắn còn 'STRAIGHT?' cho dễ đọc trên điện thoại, đặt sát đáy, nhỏ hơn để không che tay và mặt. Bran đổi sang biểu cảm cười tự tin để mặt dễ hiểu hơn.",
+   "layout": "vs",
+   "set": "brit",
+   "shot": "medium",
+   "grade": "warm",
+   "chars": [
+    {
+     "id": "centurion",
+     "expression": "angry",
+     "pose": "cross_arms"
+    },
+    {
+     "id": "bran",
+     "expression": "smug_closed",
+     "pose": "shrug"
+    }
+   ],
+   "text": "STRAIGHT?",
+   "text_color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "text_pos": [
+    0,
+    -0.84
+   ],
+   "text_size": 0.13
+  }
+ }
+}

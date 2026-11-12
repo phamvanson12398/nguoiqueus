@@ -82,6 +82,7 @@ small.err{color:var(--bad)}
     <button data-tab="voice"><span class="n">3</span>Giọng đọc</button>
     <button data-tab="build"><span class="n">4</span>Duyệt &amp; dựng</button>
     <button data-tab="render"><span class="n">5</span>Render</button>
+    <button data-tab="youtube"><span class="n">6</span>YouTube</button>
     <button data-tab="library">Thư viện</button>
   </nav>
   <span style="flex:1"></span>
@@ -209,6 +210,24 @@ small.err{color:var(--bad)}
     <div class="panel"><h2>File đã render</h2><div id="outputs"></div><video id="player" controls class="hidden" style="max-height:70vh;margin-top:10px;border-radius:8px"></video></div>
   </section>
 
+  <!-- 6. YOUTUBE -->
+  <section id="tab-youtube" class="hidden">
+    <div class="panel">
+      <h2>Gói YouTube</h2>
+      <p class="muted">Claude viết tiêu đề, mô tả, tag, bình luận ghim và 3 ý tưởng thumbnail. Tool chèn mốc chương theo thời gian giọng đọc thật
+        và (video dài) render 3 thumbnail 1280x720 bằng chính nhân vật, trang phục, bối cảnh của video; Claude tự xem, chấm và sửa cái tốt nhất.</p>
+      <div class="row"><button id="btnYT" class="primary">Tạo gói YouTube</button><span class="muted">khoảng 3-8 phút</span></div>
+    </div>
+    <div id="ytBox" class="hidden">
+      <div class="panel"><h2>Thumbnail</h2><div id="ytThumbs" class="thumbs wide"></div><div id="ytReview" class="muted" style="margin-top:6px"></div></div>
+      <div class="panel"><h2>Tiêu đề</h2><div id="ytTitles"></div></div>
+      <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Mô tả</h2><button id="ytCopyDesc" class="blue">Sao chép mô tả</button></div>
+        <textarea id="ytDesc" rows="14" style="margin-top:8px"></textarea></div>
+      <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Tag và bình luận ghim</h2><button id="ytCopyTags">Sao chép tag</button></div>
+        <div id="ytTags" style="margin:8px 0"></div><div class="muted">Bình luận ghim:</div><div id="ytPinned"></div></div>
+    </div>
+  </section>
+
   <!-- LIBRARY -->
   <section id="tab-library" class="hidden">
     <div class="panel">
@@ -287,7 +306,7 @@ async function loadProject() {
   const done = {idea: !!st.idea, content: !!st.content, voice: !!st.words,
     build: st.format === 'long' ? (st.chapters || []).length > 0 && st.chapters.every(c => c.story) : !!st.story, render: st.outputs.length > 0};
   $$('#tabs button').forEach(b => b.classList.toggle('done', !!done[b.dataset.tab]));
-  renderIdeas(); renderContent(); renderVoice(); renderBuild(); renderRender();
+  renderIdeas(); renderContent(); renderVoice(); renderBuild(); renderRender(); renderYT();
   if (st.job && st.job.status === 'running' && (!S.job || S.job !== st.job.id)) watchJob(st.job.id, st.job.kind);
 }
 
@@ -584,6 +603,33 @@ $('#btnRender').onclick = () => { if (S.state.format === 'long') { if (!(S.state
   run(P('/render'), {pct: parseInt($('#rPct').value), frames: $('#rFrames').value.trim() || null, quality: $('#rQual').value}, 'Render'); };
 $('#btnBench').onclick = () => { if (!S.state.story && !(S.state.chapters || []).some(c => c.story)) return toast('Cần dựng xong story (bước 4) để đo');
   run(P('/bench'), {pct: 100, quality: 'normal'}, 'Đo tốc độ máy', () => loadStatus().then(() => renderRender())); };
+
+// ---------------- 6. youtube ----------------
+function copyText(t) { navigator.clipboard.writeText(t); toast('Đã sao chép'); }
+function renderYT() {
+  const y = S.state.youtube; const ok = !!(y && y.titles);
+  $('#ytBox').classList.toggle('hidden', !ok);
+  $$('#tabs button').forEach(b => { if (b.dataset.tab === 'youtube') b.classList.toggle('done', ok); });
+  if (!ok) return;
+  const rv = y.thumb_review || {}; const best = rv.best;
+  $('#ytThumbs').innerHTML = (y.thumbs || []).filter(f => !f.includes('_v1')).map(f => {
+    const k = parseInt(f.slice(6)); const c = (y.thumbnails || [])[k - 1] || {};
+    return `<figure><img src="${P('/file/youtube/' + f)}?t=${Date.now()}"><figcaption>${k === best ? '⭐ ' : ''}${k}. ${esc(c.idea_vi || '')}` +
+      `${rv.scores ? ' · ' + rv.scores[k - 1] + '/10' : ''} · <a href="${P('/file/youtube/' + f)}" download>tải</a></figcaption></figure>`;
+  }).join('') || '<span class="muted">Không có thumbnail (Shorts dùng khung hình trong video).</span>';
+  $('#ytReview').textContent = rv.summary_vi || '';
+  $('#ytTitles').innerHTML = y.titles.map((t, i) => `<div class="row" style="padding:3px 0"><b style="flex:1">${i === y.best_title ? '⭐ ' : ''}${esc(t.title)}</b>` +
+    `<span class="muted">${t.title.length} ký tự · ${esc(t.angle_vi)}</span><button data-title="${i}">Chép</button></div>`).join('');
+  $$('#ytTitles button').forEach(b => b.onclick = () => copyText(y.titles[+b.dataset.title].title));
+  $('#ytDesc').value = y.description || '';
+  $('#ytTags').innerHTML = (y.tags || []).map(t => `<span class="chip">${esc(t)}</span>`).join('') + ' ' +
+    (y.hashtags || []).map(h => `<span class="chip">#${esc(h.replace(/^#/, ''))}</span>`).join('');
+  $('#ytPinned').textContent = y.pinned_comment || '';
+}
+$('#btnYT').onclick = () => { if (!S.state.content) return toast('Cần có content trước'); run(P('/youtube'), {thumbs: true}, 'Tạo gói YouTube'); };
+$('#ytCopyDesc').onclick = () => copyText($('#ytDesc').value);
+$('#ytCopyTags').onclick = () => copyText((S.state.youtube.tags || []).join(', '));
+$('#ytThumbs').onclick = e => { if (e.target.tagName === 'IMG') zoom([e.target.src]); };
 
 // ---------------- library ----------------
 async function loadLibrary() {
