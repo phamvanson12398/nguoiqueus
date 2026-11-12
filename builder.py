@@ -312,7 +312,8 @@ class Builder:
             for k, s in enumerate(cs["shots"]):
                 if "frame" in s and "keys" not in s:       # shot preset -> two camera keys
                     sp = self.subject_pos(s["frame"].get("subject", [0, 0, 0]), (s["a"] + s["b"]) // 2, f"camera.shots[{k}].frame")
-                    fr = self.clear_angle(s, sp)
+                    fr = self.subject_scale(s, s["frame"])
+                    fr = self.clear_angle(dict(s, frame=fr), sp)
                     s = dict(s, frame=fr, keys=framing.frame_keys(fr, s.get("type", "medium"), s["a"], s["b"], sp))
                     self.report.setdefault("framed", []).append([s["a"], s["b"], s.get("type")])
                 d = dict(a=s["a"], b=s["b"], keys=[tuple(k) for k in s["keys"]])
@@ -356,6 +357,22 @@ class Builder:
         if hit and ob is not None and ob.name not in mine and not ob.name.startswith(("vfx_", "Overlay", "cap_", "card_")):
             return ob.name
         return None
+
+    HEAD_REF = 1.85      # head height of a standard character (framing presets aim at it)
+
+    def subject_scale(self, s, fr):
+        """framing presets are sized for a person; a goat's or cow's head sits much lower, so a 'closeup' showed the wall
+        behind it with the animal at the bottom edge. Scale frame size and look height by the real head height."""
+        subj = fr.get("subject")
+        if not isinstance(subj, str) or subj not in self.chars: return fr
+        c = self.chars[subj]
+        if getattr(c, "head", None) is None: return fr
+        ctx.sc.frame_set((s["a"] + s["b"]) // 2)
+        hz = c.head.matrix_world.translation.z - c.root.matrix_world.translation.z
+        k = hz / self.HEAD_REF
+        if abs(k - 1) <= 0.15: return fr
+        print(f"NOTE shot {s['a']}-{s['b']}: '{subj}' head at {hz:.2f} -> framing scaled x{k:.2f}")
+        return dict(fr, _scale=k)
 
     def clear_angle(self, s, sp):
         """the shot preset puts the camera at a fixed angle/distance from the subject; when a wall (or the inside of a

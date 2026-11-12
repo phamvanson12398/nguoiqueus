@@ -42,6 +42,9 @@ def preset(type_):
 def frame_keys(fr, type_, a, b, subject_pos, aspect=16 / 9):
     """-> [(a, cam, look, lens, roll), (b, cam, look, lens, roll)]"""
     t, (H, look_h, lens) = preset(fr.get("type", type_))
+    k = max(0.35, min(2.0, float(fr.get("_scale", 1.0))))   # subject head height / a person's (goat, cow, child, giant)
+    if t in ("ecu", "closeup", "medium", "full", "pov") and "size" not in fr: H *= max(k, 0.6)
+    look_h *= k
     H = float(fr.get("size", H)); lens = float(fr.get("lens", lens))
     sx, sy, sz = subject_pos
     if t == "insert" and "size" not in fr: H = 0.9
