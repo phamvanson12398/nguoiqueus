@@ -28,3 +28,9 @@ projects/*/youtube/thumb_*/frames/
 projects/*/youtube/refs/_*/
 library/music/*/
 library/channel.json
+projects/*/clips/*/voice.wav
+projects/*/clips/*/frames/
+projects/*/clips/*/parts/
+projects/*/clips/*/*.mp4
+projects/*/clips/*/mix.wav
+projects/*/analytics/*.csv
