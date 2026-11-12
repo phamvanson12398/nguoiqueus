@@ -20,7 +20,7 @@ import bpy
 import bmesh
 from mathutils import Matrix
 from core import ctx
-from core.look import pbr, flat, ramp_mat, MATS
+from core.look import pbr, flat, ramp_mat, MATS, warm_top
 from core.geo import cube, cyl, sphere, cone, lathe, extrude, torus, group3d, attach, keep_hidden
 
 PFX = "hadrians_wall"
@@ -173,6 +173,7 @@ def build(params, lib):
     tag = "%.2f_%.2f_%.2f" % tuple(sc)
     ashlar = _ashlar(f"{PFX}_ashlar_{tag}", sc, (sc[0] * 0.82, sc[1] * 0.84, sc[2] * 0.9),
                      (sc[0] * 0.45, sc[1] * 0.45, sc[2] * 0.45))
+    warm_top(ashlar)
     turfm = ramp_mat(f"{PFX}_turf", [(0.2, (0.20, 0.14, 0.05)), (0.5, (0.29, 0.23, 0.09)), (0.8, (0.17, 0.24, 0.07))],
                      tex="wave", wave_dir='Z', scale=1.6, coord="Position", distortion=1.5, bump=0.25)
     grass = ramp_mat(f"{PFX}_grass", [(0.2, (0.09, 0.26, 0.04)), (0.55, (0.14, 0.34, 0.06)), (0.9, (0.22, 0.42, 0.08))],
@@ -201,7 +202,7 @@ def build(params, lib):
     dark = flat(f"{PFX}_opening", (0.015, 0.012, 0.01))
     lit = flat(f"{PFX}_window_lit", (1.0, 0.55, 0.12))
     tile = pbr(f"{PFX}_roof_tile", (0.72, 0.20, 0.07), rough=0.7)
-    block = pbr(f"{PFX}_block", (0.58, 0.48, 0.32), rough=0.85)
+    block = warm_top(pbr(f"{PFX}_block", (0.58, 0.48, 0.32), rough=0.85))
     rock = ramp_mat(f"{PFX}_whinstone", [(0.2, (0.03, 0.03, 0.035)), (0.6, (0.07, 0.07, 0.075)), (0.9, (0.13, 0.13, 0.13))],
                     scale=0.5, coord="Position", bump=0.4, voronoi=True)
     dirt = ramp_mat(f"{PFX}_dirt", [(0.2, (0.36, 0.23, 0.10)), (0.6, (0.48, 0.32, 0.14)), (0.9, (0.56, 0.40, 0.18))],

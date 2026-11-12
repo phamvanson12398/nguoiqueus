@@ -39,6 +39,27 @@ def pbr(name, rgb, rough=0.8, metal=0.0):
     return m
 
 
+def warm_top(m, tint=(1.22, 1.0, 0.68)):
+    """cancel the blue sky tint on faces that look up (stone tops, table tops, bread): multiply the base colour by a warm
+    tint weighted by the world normal's Z. Works on pbr/ramp_mat materials; safe to call twice. Shorts never call it."""
+    if m is None or not m.use_nodes or m.get("warm_top"): return m
+    nt = m.node_tree; L = nt.links
+    b = next((n for n in nt.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+    if b is None: return m
+    inp = b.inputs["Base Color"]
+    mix = nt.nodes.new("ShaderNodeMix"); mix.data_type = 'RGBA'; mix.blend_type = 'MULTIPLY'; mix.clamp_result = True
+    if inp.links: L.new(inp.links[0].from_socket, mix.inputs[6])
+    else: mix.inputs[6].default_value = inp.default_value[:]
+    mix.inputs[7].default_value = (*tint, 1)
+    geo = nt.nodes.new("ShaderNodeNewGeometry"); sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+    L.new(geo.outputs["Normal"], sep.inputs[0])
+    mr = nt.nodes.new("ShaderNodeMapRange"); mr.inputs[1].default_value, mr.inputs[2].default_value = 0.2, 0.95
+    L.new(sep.outputs[2], mr.inputs[0]); L.new(mr.outputs[0], mix.inputs[0])
+    L.new(mix.outputs[2], inp)
+    m["warm_top"] = 1
+    return m
+
+
 def ramp_mat(name, stops, tex="noise", scale=1.0, coord="Object", bump=0.0, rough=0.9,
              wave_dir='Z', distortion=2.0, detail=4.0, mapping_scale=(1, 1, 1), voronoi=False):
     if name in MATS: return MATS[name]

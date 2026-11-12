@@ -70,7 +70,9 @@ Màu là linear: muốn màu tươi thì dùng giá trị đậm (đỏ (0.85, 0
 bị pha xanh. Màu nhạt hoặc vàng sẽ ngả xám xanh hay ô liu (đã gặp ở `toast`: ruột (0.95, 0.85, 0.6) thành xám xanh,
 bơ vàng thành ô liu). Với mặt ngửa có màu nhận diện quan trọng:
 - dùng màu ấm và đậm hơn hẳn, ví dụ ruột bánh (0.95, 0.62, 0.25), bơ (1.0, 0.72, 0.08), roughness ≥ 0.6;
-- hoặc dùng `flat()` (emission, không bị nhuộm) cho mảng màu nhỏ như bơ, nhãn, đèn.
+- hoặc dùng `flat()` (emission, không bị nhuộm) cho mảng màu nhỏ như bơ, nhãn, đèn;
+- hoặc bọc vật liệu bằng `warm_top(m)` (`from core.look import warm_top`): nhân màu với sắc ấm theo pháp tuyến hướng lên,
+  mặt bên giữ nguyên. Dùng cho đá, gạch, gỗ, giấy, vải sáng màu có mặt trên lộ ra (đã dùng ở `hadrians_wall`, `wall_stone`).
 Đây không phải lỗi pháp tuyến: dựng lại lưới sẽ không hết.
 
 ## Phong cách

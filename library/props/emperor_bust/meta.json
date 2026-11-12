@@ -1,0 +1,95 @@
+{
+  "kind": "prop",
+  "name": "emperor_bust",
+  "title_vi": "Tượng bán thân hoàng đế (cẩm thạch, trên bệ)",
+  "description_vi": "Tượng bán thân hoàng đế La Mã kiểu khái quát (không phải chân dung thật) bằng cẩm thạch trắng ngà ấm, đặt trên bệ đá vuông cao 1,2 (đế, thân bệ, mũ bệ, tấm biển trơn phía trước). Tổng cao khoảng 2,1; mặt quay về -Y; gốc ở tâm đáy bệ. Ngực có nếp áo choàng chéo vai, cổ, đầu tóc ngắn với lọn tóc xoăn trước trán, mũi, tai, gờ mày, mí mắt và con ngươi khoan (có thể tắt), miệng. Tham số seed đổi nhẹ kiểu tóc (3 kiểu lọn), độ cao chân tóc, mũi, tai, gờ mày, bề ngang đầu để hàng 6 tượng trông khác nhau. beard=full tạo lưới râu riêng '<id>_beard' có gốc ở cằm (scale 0→1 cho gag râu mọc 'pop'), có khoét chỗ miệng và lọn xoăn; beard=none thì không tạo phần này. Phần đầu là nhóm '<id>_head' xoay quanh gốc cổ (z 1,72) để quay/gật đầu, râu đi theo đầu.",
+  "dim": "3d",
+  "params": {
+    "beard": {
+      "type": "string",
+      "default": "none",
+      "enum": [
+        "none",
+        "full"
+      ],
+      "desc_vi": "Râu: none = mặt nhẵn, full = râu quai nón (lưới riêng '<id>_beard', gốc ở cằm)"
+    },
+    "seed": {
+      "type": "int",
+      "default": 1,
+      "desc_vi": "Đổi nhẹ kiểu tóc, mũi, tai, gờ mày, bề ngang đầu để các tượng trong hàng khác nhau"
+    },
+    "eyes": {
+      "type": "string",
+      "default": "drilled",
+      "enum": [
+        "drilled",
+        "blank"
+      ],
+      "desc_vi": "Mắt: drilled = con ngươi khoan tối (dễ đọc trên điện thoại), blank = mắt trơn kiểu cổ điển"
+    },
+    "plaque": {
+      "type": "bool",
+      "default": true,
+      "desc_vi": "Tấm biển trơn ở mặt trước bệ"
+    },
+    "marble_color": {
+      "type": "color",
+      "default": [
+        0.9,
+        0.76,
+        0.56
+      ],
+      "desc_vi": "Màu cẩm thạch (ngà ấm, đừng chỉnh sang xám/trắng lạnh vì trời sẽ nhuộm xanh)"
+    },
+    "pedestal_color": {
+      "type": "color",
+      "default": [
+        0.5,
+        0.38,
+        0.27
+      ],
+      "desc_vi": "Màu đá bệ (ấm, đậm hơn tượng để tương phản)"
+    },
+    "pupil_color": {
+      "type": "color",
+      "default": [
+        0.36,
+        0.25,
+        0.15
+      ],
+      "desc_vi": "Màu con ngươi khoan và đường miệng"
+    }
+  },
+  "parts": [
+    "pedestal",
+    "plaque",
+    "bust",
+    "head",
+    "hair",
+    "nose",
+    "beard"
+  ],
+  "tags": [
+    "tượng",
+    "statue",
+    "bust",
+    "cẩm thạch",
+    "marble",
+    "la mã",
+    "roman",
+    "hoàng đế",
+    "emperor",
+    "bệ",
+    "pedestal",
+    "bảo tàng",
+    "museum",
+    "râu",
+    "beard"
+  ],
+  "notes_vi": "Mình chưa dựng thử build.py trong Blender nên chưa có ảnh xem lại; vòng thumbnail của tool sẽ cho thấy kết quả thật.\n\nKích thước: bệ (đế 0,86 + thân 0,66 + mũ 0,84) cao đúng 1,2. Ngực dẹt đáy rộng 0,8. Đỉnh tóc ở khoảng 2,07–2,11 nên tổng cao khoảng 2,1. Ngang nhất là 0,86 (đế bệ), nên hàng 6 tượng cách nhau 2 đơn vị vẫn còn khoảng hở rộng.\n\nMàu: cẩm thạch ngà ấm (0,90; 0,76; 0,56), roughness 0,6, vân rất nhẹ để ánh trời không nhuộm xám. Tóc và râu tối hơn khoảng 10 % để đọc rõ trên điện thoại. Bệ đá nâu ấm, đậm hơn tượng.\n\nCách animate:\n- Râu: một lưới duy nhất tên '<id>_beard', gốc ở cằm (0; −0,15; 1,72), con của '<id>_head'. Scale lưu trong lưới, scale của object = 1, nên story key scale 0 → 1 được ngay. Có khoét chỗ miệng để thấy môi và 8 lọn xoăn. beard=none thì không tạo.\n- Đầu: '<id>_head' là empty xoay quanh gốc cổ z = 1,72; quay hay gật đầu thì râu đi theo.\n\nSeed đổi các thứ sau: 3 kiểu lọn tóc (lọn dấu phẩy, xoăn nhỏ hai hàng, lọn rộng chải ngang), độ cao chân tóc, độ dài và bề ngang mũi, cỡ tai, độ cao gờ mày, bề ngang đầu (±3 %).\n\nMặt: mắt mặc định là con ngươi khoan tối (eyes=drilled) cho dễ đọc. Muốn mắt trơn kiểu cổ điển thì chọn eyes=blank.\n\nCần kiểm khi xem thumbnail:\n- Các chi tiết mặt (gờ mày, mí, con ngươi, miệng) được uốn ôm theo mặt elip. Nếu con ngươi lún hẳn vào trong thì tăng `out` của pupil (đang là 0,017).\n- Nếp áo chéo ngực có thể hơi nổi ở đầu trên vai.",
+  "status": "draft",
+  "brief_vi": "Tượng bán thân hoàng đế bằng cẩm thạch trắng ngà ấm (màu ấm để ánh trời không nhuộm xám) trên bệ đá vuông cao 1,2; tổng cao khoảng 2,1; mặt quay về -Y; gốc ở tâm đáy bệ. Đầu tóc ngắn, mặt khái quát (không phải chân dung thật). Params: beard none|full, seed (đổi nhẹ kiểu tóc/mũi/tai để các tượng trong hàng khác nhau). Part 'beard' là lưới riêng tên '<id>_beard', gốc đặt ở cằm, để story scale từ 0 lên 1 (gag râu mọc 'pop'); beard none thì không tạo part này. Story đặt hàng 6 tượng cách nhau 2 đơn vị.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T06:47:45"
+}

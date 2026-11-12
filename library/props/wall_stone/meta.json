@@ -1,0 +1,154 @@
+{
+  "kind": "prop",
+  "name": "wall_stone",
+  "title_vi": "Viên đá tường La Mã (đá / khối đất cỏ, 3D hoặc 2D, có đống)",
+  "description_vi": "Viên đá mặt tường La Mã đẽo thô cỡ 0,45 (ngang) × 0,28 (cao) × 0,32 (sâu), màu đá cát vàng xám ấm, cạnh vát và mặt hơi méo kiểu đẽo tay. Bản 3D (dim '3d') có gốc ở tâm khối nên lật và rơi tự nhiên. Bản 2D (dim '2d') vẽ phẳng có viền mực để lính ôm trước ngực, tự đặt tại [0, 0.66, 0.42] trên torso. Đặt pile N để có đống N viên xếp lộn xộn (gốc ở tâm đáy đống, từ 6 viên trở lên có 1 viên lăn ra nằm bên cạnh). Đặt kind 'turf' để ra khối đất nâu phủ lớp cỏ xanh dày (bản đơn có vài túm cỏ).",
+  "dim": "3d",
+  "params": {
+    "dim": {
+      "type": "string",
+      "default": "3d",
+      "enum": [
+        "3d",
+        "2d"
+      ],
+      "desc_vi": "3d: đặt/rơi/chồng/lật (gốc ở tâm khối). 2d: vẽ phẳng trong mặt phẳng nhân vật, gắn torso"
+    },
+    "kind": {
+      "type": "string",
+      "default": "stone",
+      "enum": [
+        "stone",
+        "turf"
+      ],
+      "desc_vi": "stone: đá cát đẽo; turf: khối đất nâu có mặt cỏ xanh"
+    },
+    "pile": {
+      "type": "integer",
+      "default": 1,
+      "desc_vi": "Chỉ dùng cho 3D: số viên trong đống (1 = một viên). Khi > 1 gốc ở tâm đáy đống"
+    },
+    "size": {
+      "type": "array",
+      "default": [
+        0.45,
+        0.32,
+        0.28
+      ],
+      "desc_vi": "Kích thước một viên [ngang x, sâu y, cao z]"
+    },
+    "chamfer": {
+      "type": "number",
+      "default": 0.035,
+      "desc_vi": "Độ vát cạnh"
+    },
+    "rough": {
+      "type": "number",
+      "default": 0.014,
+      "desc_vi": "Độ méo đẽo thô của các góc (0 = vuông vắn)"
+    },
+    "seed": {
+      "type": "integer",
+      "default": 7,
+      "desc_vi": "Hạt ngẫu nhiên (độ méo, cách xếp đống)"
+    },
+    "origin": {
+      "type": "string",
+      "default": "center",
+      "enum": [
+        "center",
+        "bottom"
+      ],
+      "desc_vi": "Gốc của viên đơn 3D: tâm khối (để lật) hoặc tâm đáy (đặt z=0 là đứng trên đất)"
+    },
+    "stone_color": {
+      "type": "array",
+      "default": [
+        0.66,
+        0.54,
+        0.36
+      ],
+      "desc_vi": "Màu đá (linear, nên để ấm để trời xanh không nhuộm xám)"
+    },
+    "soil_color": {
+      "type": "array",
+      "default": [
+        0.3,
+        0.17,
+        0.08
+      ],
+      "desc_vi": "Màu đất của khối turf"
+    },
+    "grass_color": {
+      "type": "array",
+      "default": [
+        0.16,
+        0.4,
+        0.05
+      ],
+      "desc_vi": "Màu cỏ của khối turf"
+    },
+    "tufts": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Túm cỏ trên khối turf đơn"
+    },
+    "at": {
+      "type": "array",
+      "default": [
+        0,
+        0.66,
+        0.42
+      ],
+      "desc_vi": "2D: vị trí trên torso khi có parent (loc trong story sẽ ghi đè)"
+    },
+    "scale2d": {
+      "type": "number",
+      "default": 1,
+      "desc_vi": "2D: hệ số phóng to bản vẽ phẳng"
+    },
+    "marks": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "2D đá: vết đục trên mặt"
+    }
+  },
+  "parts": [
+    "body",
+    "top",
+    "face",
+    "inner",
+    "grass",
+    "s0",
+    "s1",
+    "s2",
+    "s3",
+    "s4"
+  ],
+  "tags": [
+    "roman",
+    "stone",
+    "wall",
+    "construction",
+    "turf",
+    "pile",
+    "3d",
+    "2d",
+    "handheld",
+    "longform"
+  ],
+  "notes_vi": "Mình đã viết xong build.py nhưng chưa chạy thử trong Blender, chưa render ảnh nên chưa tự chấm điểm. Bước thumbs/xem lại của bridge sẽ kiểm tra.\n\nCách hiểu kích thước: size = [ngang x 0,45, sâu y 0,32, cao z 0,28]. Như vậy mặt nhìn từ phía trước là 0,45 × 0,28, khớp với bản 2D.\n\n**Bản 3D, một viên**\n- Gốc nằm ở tâm khối như bạn yêu cầu (lệch với luật chung \"tâm đáy\"), để track lật và rơi xoay quanh tâm.\n- Muốn đặt thẳng xuống đất ở z=0 thì dùng `origin: \"bottom\"`.\n- Object gốc luôn là một empty. Đá có phần `{id}_body`. Turf có thêm `{id}_top` (lớp cỏ) và `{id}_tuft0..4`.\n\n**Đống (pile N, chỉ 3D)**\n- Gốc ở tâm đáy đống. Mỗi viên là một nhóm `{id}_s<i>` (bên trong có `_body`/`_top`), nên story có thể animate từng viên.\n- Đá xếp thành tầng: tầng dưới đủ viên, tầng trên ít dần và ngẫu nhiên theo seed. Mỗi viên lệch nhẹ ±3 cm và xoay ±10°, các tầng trên nghiêng ±4°.\n- Từ 6 viên trở lên, 1 viên lăn ra nằm nghiêng bên cạnh.\n\n**Bản 2D**\n- Khi có parent, empty tự đặt tại `at` = [0, 0.66, 0.42] trên torso; `loc` trong story sẽ ghi đè.\n- Đá: viền vát màu đậm, viền mực 0,035, mặt trong sáng hơn, 3 vết đục.\n- Turf: thân đất nâu, dải cỏ có mép răng cưa, vài vệt đất.\n\n**Màu sắc**\n- Màu đá để ấm (0.66, 0.54, 0.36) để ánh trời xanh không nhuộm mặt trên thành xám xanh.\n- Cỏ dùng xanh đậm và ấm.\n- Vật liệu đặt tên `wall_stone_*_<màu>`, nên đổi màu không đụng vật liệu cũ.",
+  "status": "draft",
+  "brief_vi": "Viên đá mặt tường La Mã đẽo thô (khoảng 0,45 × 0,28 × 0,32, đá cát vàng xám ấm, cạnh vát), gốc ở tâm khối. Params: dim '3d' (đặt, rơi, chồng; story có track rơi và lật) | '2d' (vẽ phẳng trong mặt phẳng nhân vật, viền mực, để lính ôm trước ngực, gắn torso tại [0, 0.66, 0.42]); pile N (chỉ 3D: đống N viên xếp lộn xộn, gốc ở tâm đáy đống); kind stone|turf (khối đất nâu mặt cỏ xanh).",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T06:44:37",
+  "review": {
+    "score": 7,
+    "summary_vi": "Viên đá tường La Mã đã đạt 7/10 với bản một viên đá: khối vát cạnh có viền mực rõ, các mặt bên màu cát vàng ấm, đúng tỉ lệ cạnh Joe. Mặt trên nhìn từ trên xuống vẫn hơi ô liu, ở góc máy thấp thì gần như không thấy. Đống, khối đất cỏ và bản 2D chưa render nên chưa kiểm bằng mắt.",
+    "problems": [
+      "Mặt trên nhìn thẳng từ trên xuống vẫn hơi ô liu vì ánh trời xanh. Ở góc máy thấp ngang ngực của phong cách thì gần như không thấy. Nếu cần cảnh nhìn từ trên thì đặt stone_color đậm hơn nữa, ví dụ [0.75, 0.42, 0.16].",
+      "Không phải lỗi: gốc đặt ở tâm khối theo yêu cầu (để lật, rơi), nên trong ảnh front/side viên đá ngập một nửa dưới đất. Muốn viên đá đứng trên mặt đất thì đặt loc z = 0.14 hoặc dùng origin: 'bottom'.",
+      "Mới xem bản một viên đá. Đống (pile), khối đất cỏ (turf) và bản 2D chưa được render nên chưa kiểm bằng mắt."
+    ]
+  }
+}
