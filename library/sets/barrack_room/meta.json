@@ -1,0 +1,230 @@
+{
+  "kind": "set",
+  "name": "barrack_room",
+  "title_vi": "Phòng doanh trại La Mã ban đêm (contubernium)",
+  "description_vi": "Nội thất phòng ngủ của một contubernium La Mã ban đêm, mở về phía -Y để camera đứng ngoài nhìn vào. Tường đá quét vôi ố vàng, có dải chân tường bẩn màu nâu, xà gỗ sẫm ở z 4,5, trần ván, sàn đất nện. Giữa phòng có bàn gỗ thô 1,6 × 0,8 (mặt bàn z 0,9) và một ghế đẩu phía sau. Trên bàn: đèn dầu đất nung (có ngọn lửa và đèn điểm ấm thật), cốc gốm đỏ úp ngược (part cup, gốc ở tâm đáy để nhấc lên hoặc lật), vò gốm có quai, chồng thư gỗ có mặt sáp. Dọc tường phải: giường tầng gỗ, chăn len kẻ ô đỏ/vàng; mặc định thêm một giường tầng thứ hai phía trước (chăn xanh). Tường sau: giá gỗ treo khiên bầu dục đỏ viền vàng, hai cây giáo, mũ đồng có má che. Lò sưởi vòng đá nhỏ, than hồng phát sáng nhẹ, kèm đèn cam thật. Tường trái: cửa gỗ có khung, mở hé vào trong (bản lề ở mép sau, xoay quanh trục Z). Ngoài cửa là sân dưới ánh trăng: nền xanh, dãy nhà đối diện, trời phát sáng xanh, đèn trăng xanh hắt vào sàn. Góc trái phía sau có rương gỗ đai sắt.",
+  "params": {
+    "origin": {
+      "type": "array",
+      "default": [
+        1300,
+        0
+      ],
+      "desc_vi": "Vị trí gốc [x, y] của phòng. Mọi tọa độ trong mô tả đều tính từ đây."
+    },
+    "wall_color": {
+      "type": "array",
+      "default": [
+        0.7,
+        0.55,
+        0.32
+      ],
+      "desc_vi": "Màu vôi tường ố vàng (linear). Nên giữ tông ấm."
+    },
+    "door_open": {
+      "type": "number",
+      "default": 70,
+      "desc_vi": "Góc mở cửa tính bằng độ: 0 là đóng, 70 là mở vào trong phòng. Story animate rotation Z (radian) của part door."
+    },
+    "lamp_on": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Đèn dầu có cháy không. Khi tắt thì ẩn ngọn lửa và bỏ đèn điểm."
+    },
+    "lamp_light": {
+      "type": "number",
+      "default": 60,
+      "desc_vi": "Công suất (W) đèn điểm ấm ở ngọn lửa đèn dầu."
+    },
+    "embers": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Than hồng phát sáng. Tắt thì chỉ còn than đen và tro."
+    },
+    "hearth_light": {
+      "type": "number",
+      "default": 120,
+      "desc_vi": "Công suất (W) đèn cam ở lò sưởi."
+    },
+    "moon_light": {
+      "type": "number",
+      "default": 500,
+      "desc_vi": "Công suất (W) đèn trăng xanh đặt ngoài cửa."
+    },
+    "moon_color": {
+      "type": "array",
+      "default": [
+        0.06,
+        0.16,
+        0.42
+      ],
+      "desc_vi": "Màu trời đêm phát sáng nhìn thấy qua cửa."
+    },
+    "bunks": {
+      "type": "integer",
+      "default": 2,
+      "enum": [
+        1,
+        2
+      ],
+      "desc_vi": "Số giường tầng: 1 là chỉ giường ở y 5..6,8; 2 là thêm giường ở y 0,4..2,2 làm tiền cảnh bên phải."
+    },
+    "blanket_colors": {
+      "type": "array",
+      "default": [
+        [
+          0.55,
+          0.08,
+          0.05
+        ],
+        [
+          0.85,
+          0.58,
+          0.12
+        ]
+      ],
+      "desc_vi": "Chăn kẻ ô của giường sau: [màu nền, màu sọc]."
+    },
+    "blanket2_colors": {
+      "type": "array",
+      "default": [
+        [
+          0.06,
+          0.2,
+          0.32
+        ],
+        [
+          0.8,
+          0.7,
+          0.45
+        ]
+      ],
+      "desc_vi": "Chăn kẻ ô của giường trước: [màu nền, màu sọc]."
+    },
+    "shield_color": {
+      "type": "array",
+      "default": [
+        0.62,
+        0.06,
+        0.04
+      ],
+      "desc_vi": "Màu mặt khiên bầu dục treo trên tường."
+    },
+    "cup_color": {
+      "type": "array",
+      "default": [
+        0.6,
+        0.13,
+        0.04
+      ],
+      "desc_vi": "Màu cốc gốm úp ngược (đỏ terra sigillata)."
+    },
+    "seed": {
+      "type": "integer",
+      "default": 3,
+      "desc_vi": "Seed riêng cho đá lò sưởi và than (không dùng random chung)."
+    }
+  },
+  "parts": [
+    "walls",
+    "table",
+    "lamp",
+    "lamp_flame",
+    "cup",
+    "jug",
+    "tablets",
+    "bunks",
+    "bunk_back",
+    "bunk_front",
+    "rack",
+    "hearth",
+    "door",
+    "chest",
+    "outside"
+  ],
+  "space": "Khoảng diễn trống trên sàn đất x -2,5..2,5, y 0..3,2 trước bàn: Atto đứng ở (-0,9; 2,9), bách phu trưởng ở (1,5; 3,3). Phía sau bàn chỉ có ghế đẩu (0,3; 4,55). Giường tầng nằm sát tường phải (x ≥ 3,0); lò sưởi ở (2,6; 5,2) với than ở z 0,1-0,15, thêm fx lửa ở z 0,35. Cửa ở tường trái (lỗ cửa y 3,45..4,95, cao 2,6), cánh mở vào trong về phía +X. Mọi tọa độ tính từ origin.\n\nCảnh rộng: lens 28-32 ở (0,5; -3; 1,8) nhìn (0; 3,6; 1,3). Cận cốc hoặc đèn: nhắm anchor cup/lamp ở z 0,9, máy hạ xuống z khoảng 1,2. Cận cửa: máy ở khoảng (-1; 1,5; 1,6) nhìn anchor door, thấy sân xanh trăng phía sau. Cận lò sưởi hoặc giường: máy ở khoảng (1,2; 2,5; 1,2) nhìn hearth. Đừng đặt máy ở x < -4, x > 4 hoặc y > 7 (ngoài tường); camera cũng không nên lên quá z 4,3 (vướng xà).",
+  "anchors": {
+    "table": "Tâm mặt bàn (0; 3,6; 0,9)",
+    "cup": "Cốc gốm úp ngược trên bàn (0,55; 3,75; 0,9)",
+    "lamp": "Ngọn lửa đèn dầu (-0,5; 3,7; 1,02)",
+    "bunk": "Giường dưới của giường tầng sau (3,4; 5,9; 0,62)",
+    "bunk_front": "Giường dưới của giường tầng trước (3,4; 1,3; 0,62), chỉ có khi bunks=2",
+    "hearth": "Lò sưởi, độ cao đặt fx lửa (2,6; 5,2; 0,35)",
+    "door": "Tâm ngưỡng cửa trên tường trái (-4; 4,2; 0)",
+    "center": "Tâm khoảng diễn (0; 3; 0)",
+    "rack": "Giá vũ khí trên tường sau (-0,7; 6,8; 2,0)",
+    "shield": "Tâm khiên bầu dục (-1,7; 6,75; 1,75)",
+    "atto": "Chỗ đứng của Atto (-0,9; 2,9; 0)",
+    "centurion": "Chỗ đứng của bách phu trưởng (1,5; 3,3; 0)"
+  },
+  "views": [
+    {
+      "pos": [
+        1300.5,
+        -3,
+        1.8
+      ],
+      "look": [
+        1300,
+        3.6,
+        1.3
+      ],
+      "lens": 28
+    },
+    {
+      "pos": [
+        1300.9,
+        1.8,
+        1.25
+      ],
+      "look": [
+        1300.1,
+        3.7,
+        0.95
+      ],
+      "lens": 40
+    },
+    {
+      "pos": [
+        1299,
+        1.2,
+        1.6
+      ],
+      "look": [
+        1296,
+        4.2,
+        1.3
+      ],
+      "lens": 30
+    },
+    {
+      "pos": [
+        1301,
+        2.4,
+        1.3
+      ],
+      "look": [
+        1302.9,
+        5.5,
+        0.6
+      ],
+      "lens": 30
+    }
+  ],
+  "tags": [
+    "roman",
+    "barracks",
+    "contubernium",
+    "interior",
+    "night",
+    "military",
+    "ancient",
+    "room",
+    "longform"
+  ],
+  "notes_vi": "Tôi chưa dựng hay render thử bản này trong Blender, nên cần chạy thumbs.py để kiểm tra.\n\nMô tả có một chỗ mâu thuẫn: lò sưởi đặt ở (2,6; 5,2) nằm ngay trong vùng giường \"x 2,5..3,8, y 5..6,8\". Tôi giữ lò sưởi đúng tọa độ (story đặt lửa ở đó) và thu giường lại còn x 3,0..3,8, nên mép đá lò cách cột giường khoảng 5 cm. \"Hai giường tầng\" được hiểu là hai cái giường tầng: một cái theo mô tả ở y 5..6,8, một cái ở y 0,4..2,2 làm tiền cảnh bên phải. Đặt bunks=1 nếu chỉ muốn một cái.\n\nCách dùng các part:\n- door: empty ở bản lề mép sau (y 4,95). Rotation Z = 0 là đóng, góc dương thì cửa xoay vào trong phòng, mặc định 70°.\n- cup: một mesh, gốc ở tâm miệng cốc trên mặt bàn, nên nhấc hoặc lật đều được.\n- lamp_flame: có thể ẩn hoặc hiện riêng.\n\nÁnh sáng thật gồm: đèn dầu (60 W), lò sưởi (120 W) và trăng xanh ngoài cửa (500 W). Trần đóng kín nên nắng không lọt vào phòng. Màu ban đêm nên lấy từ grade 'night' của shot.\n\nCác vật liệu tường, sàn, gỗ, gốm, nệm và chăn đều qua warm_top. Than hồng, ngọn lửa và trời đêm dùng flat. Sàn, sân, trời, ngọn lửa và than hồng không có viền.\n\nTính khung hình (chưa render): ở khổ 16:9 với lens 28 từ (0,5; -3; 1,8), cảnh thấy khoảng x -3,7..4,7 ở chiều sâu cái bàn. Xà trần (đáy ở z 4,37) có thể ló sát mép trên khi nhìn tới tường sau. Nếu bị thấy thì hạ điểm nhìn xuống z 1,2 hoặc dùng lens 30-32. Ở khổ 9:16 thì cửa và giường sẽ nằm ngoài khung rộng.",
+  "status": "draft",
+  "brief_vi": "Nội thất phòng doanh trại La Mã (contubernium) ban đêm, mở về -Y để camera đứng phía -Y nhìn vào. Param origin [x, y] (story dùng [1300, 0]); mọi vị trí dưới đây tính từ origin. Tường đá quét vôi ố vàng (Principled, màu ấm để ánh trời không nhuộm xám), xà gỗ trên trần (z 4,5), sàn đất nện. Tường sau ở y = 7, tường trái ở x = -4, tường phải ở x = 4. Bàn gỗ thô 1,6 × 0,8, tâm ở (0, 3,6), mặt bàn z = 0,9; trên bàn có đèn dầu đất nung ở (-0,5, 3,7, 0,9) (kèm đèn điểm ấm thật), cốc gốm úp ngược ở (0,55, 3,75, 0,9) (part cup), vò gốm, chồng thư gỗ nhỏ. Hai giường tầng gỗ phủ chăn len kẻ ô dọc tường phải (x 2,5..3,8, y 5..6,8). Giá treo khiên bầu dục, giáo, mũ sắt trên tường sau. Lò sưởi than hồng nhỏ ở (2,6, 5,2) (than phát sáng nhẹ; story thêm fx lửa ở z 0,35). Cửa gỗ mở ra sân ở tường trái, tâm (-4, 4,2), cao 2,6; ngoài cửa là màu xanh trăng. Khoảng diễn trống quanh (0, 3) cho 2-3 nhân vật cao 2,5 (Atto đứng ở (-0,9, 2,9) trước bàn bên trái, bách phu trưởng ở (1,5, 3,3)). Anchors: table (tâm mặt bàn, z 0,9), bunk, hearth, door, cup, center. parts: walls, table, lamp, cup, bunks, rack, hearth, door. Camera: cảnh rộng lens 28-32 ở (0,5, -3, 1,8) nhìn (0, 3,6, 1,3); không thấy trần ở góc này.",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-12T07:22:33"
+}
