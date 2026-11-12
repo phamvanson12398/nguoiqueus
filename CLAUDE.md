@@ -344,3 +344,15 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
 - Render (đo khung 4646 chương 1, 50 %, CPU): gốc 69 s → phụ đề 4 mẫu 50 s → cảnh 16 mẫu 43,5 s (−37 %, PSNR ≥ 47 dB so với gốc).
   Không đáng: vignette làm mờ nhanh (68,6 dB nhưng chỉ −2 s), giảm bước bóng (không nhanh hơn). Compositor chạy GPU trên Windows
   (`WHYSHORTS_GPU_COMPOSITOR`). Chất lượng: fast 8 mẫu + on twos, normal 16, high 32.
+
+## Bộ công cụ "dễ viral" (6 việc)
+- Soát giữ chân người xem (`retention_review`, tab Content): chấm câu móc, chỉ chỗ dễ bỏ đi, nút Áp dụng sửa từng chỗ.
+- Học từ số liệu thật (`analytics.py`, `learn_retention`): tải CSV "Tỷ lệ giữ chân" của YouTube Studio → chỗ tụt + câu/cảnh lúc đó →
+  bài học vào `library/LESSONS.md`; mọi lần viết content/soát sau đều đọc.
+- Phụ đề nhiều thứ tiếng (`translate_subs`, 15 ngôn ngữ → `youtube/subs/*.srt`) + kịch bản lồng tiếng.
+- Nhạc thật theo mood: `library/music/<mood>/*.wav|ogg|mp3` thay nhạc tổng hợp (AUDIO in tên bài).
+- Nhận diện kênh (`library/channel.json`, tab YouTube): watermark, màn hình kết (end screen) ở phần cuối video dài, nhân vật dẫn chuyện cố định.
+- Shorts cắt từ video dài (`clips.py`, `pick_clips`, tab Render): Claude chọn 3-5 đoạn 25-60 s trong một phần → `clips/NN/` dựng lại
+  khổ 9:16 (cùng cảnh 3D, camera đóng khung lại, wide/establishing ×0,55), phụ đề pop, chữ móc 2,5 s đầu, "FULL VIDEO ON THE CHANNEL"
+  2 s cuối (không thẻ nào đè), âm thanh lấy đúng đoạn mix của video dài + fade. Thử: 5 Short Hadrian, xem trước `docs/img/hadrian_shorts.jpg`,
+  render thử Short 3 (3 s, −14 LUFS, có tiếng).
