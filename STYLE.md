@@ -5,7 +5,9 @@ Bản rút gọn của skill `blender-why-shorts` v3. Định dạng dữ liệu
 ## Video
 - Shorts: dọc 1080x1920, 30 fps, mặc định 45-75 giây (tối đa 10 phút). Video dài 16:9: xem mục riêng bên dưới.
 - Một câu hỏi "Why…" kể thành chuyện ngắn có nhân vật và xung đột; cú twist cuối chính là lời giải thích.
-- Nhân vật 2D phẳng (đầu tròn to, viền đen, tay chân là nét) đứng trong bối cảnh 3D có ánh sáng thật và viền hoạt hình.
+- Nhân vật 3D hoạt hình (đầu tròn to như quả cầu, thân phồng, tay chân là nét đen, viền mực đều, đổ bóng 2 tông) đứng trong bối cảnh 3D.
+  Nhân vật vẫn được KHAI BÁO bằng mảnh 2D (char.json, outfit.json); tool tự phồng đầu/thân thành khối, uốn mảnh trang phục ôm theo,
+  bo tròn mọi góc (`core/body3d.py`). Story có thể đặt `meta.char_style: "2d"` để giữ kiểu phẳng cũ.
 - Camera trôi liên tục như một cú máy dài; phụ đề từng chữ nảy lên; nhạc nền vui; mọi hành động đều có tiếng động.
 
 ## Video dài YouTube 16:9 (khi content có `format: "long"`)

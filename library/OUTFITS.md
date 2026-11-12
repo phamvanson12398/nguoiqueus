@@ -15,7 +15,11 @@ Màu là **emission tuyến tính**, phải đậm, bão hòa (STYLE.md). Không
 khác nhau ở tóc, râu, trang phục (skin_tones chỉ dùng khi story bật `look.skin_mode: "tones"`).
 
 ## Trang phục — `library/outfits/<id>/outfit.json`
-Các mảnh 2D vẽ lên nhân vật `person` (cùng cú pháp `extras` của char.json):
+Các mảnh 2D vẽ lên nhân vật `person` (cùng cú pháp `extras` của char.json). Khi dựng, tool chuyển nhân vật sang 3D
+(`core/body3d.py`): mảnh trên `head`/`torso` được uốn ôm theo khối đầu/thân, theo thứ tự `z` (z lớn hơn nằm ngoài; z nhỏ hơn mặt/áo
+nền thì nằm phía sau khối, ví dụ tóc sau gáy, áo choàng sau lưng); mảnh trên tay/chân và đồ cầm tay thành khối riêng; mảnh nhỏ vẽ lên
+mảnh lớn cùng nhóm (hoa văn khiên) ôm theo mảnh lớn. Mọi góc nhọn tự bo tròn ~0,035, nên không cần vẽ bo tay. Giữ các lớp z khác nhau
+rõ ràng (≥ 0,002); nét viền đen dày đặt dưới nét màu (z nhỏ hơn) như bản 2D.
 ```json
 {"kind": "outfit", "name": "roman_legionary_50ad", "culture": "roman_empire_50ad", "role": "soldier", "title_vi": "...",
  "description_vi": "...", "silhouette_vi": "nhận ra ngay nhờ: mũ có gờ che gáy, khiên chữ nhật cong",
