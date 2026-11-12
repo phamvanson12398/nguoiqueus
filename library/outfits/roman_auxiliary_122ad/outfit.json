@@ -1,0 +1,758 @@
+{
+ "name": "roman_auxiliary_122ad",
+ "culture": "roman_empire_50ad",
+ "role": "soldier",
+ "title_vi": "Lính bộ binh phụ trợ Tungri (~năm 122)",
+ "description_vi": "Lính auxilia của cohors I Tungrorum (đồn Vindolanda, Britannia) thời Hadrian. Mũ sắt bộ binh phụ trợ có hai thanh gia cố bắt chéo trên đỉnh, gờ che gáy hẹp xòe xuống, miếng che má lớn. Giáp xích lorica hamata dài tới hông, lớp xích đôi phủ vai. Tunic len đỏ nhạt lộ dưới giáp, viền gấu màu phe. Quần chẽn bracae nâu tới gối. Áo choàng len nâu (sagum) xòe sau lưng, gài trâm đồng ở vai phải. Tay trái cầm khiên bầu dục PHẲNG nền xanh, viền trắng, gờ dọc (spina), hai trăng lưỡi liềm trắng, vòng màu phe quanh núm sắt. Tay phải cầm giáo hasta lưỡi lá liễu. Kiếm gladius bên hông phải, chân đi dép caligae.",
+ "silhouette_vi": "Khiên bầu dục to, không góc cạnh; lưỡi giáo hình lá nhô cao trên đầu; áo choàng xòe rộng hơn thân hai bên; mũ có thanh chéo và gờ gáy hẹp. Khác lê dương: không có khiên chữ nhật cong, không có giáp lá sọc ngang, không có gờ gáy chìa ngang.",
+ "sources": [
+  {
+   "claim": "Bộ binh phụ trợ mặc giáp xích hoặc vảy, cầm khiên bầu dục phẳng, mặc quần chẽn tới gối; lê dương mặc lorica segmentata với scutum cong",
+   "source": "Cột Trajan (Roma, năm 113), các cảnh chiến tranh Dacia; Goldsworthy, The Complete Roman Army (2003)"
+  },
+  {
+   "claim": "Cohors I Tungrorum đóng ở Vindolanda cuối thế kỷ 1 và lại từ khoảng năm 120-140",
+   "source": "Vindolanda Tablets, Tab. Vindol. II 154; Bowman, Life and Letters on the Roman Frontier (1994)"
+  },
+  {
+   "claim": "Mũ bộ binh phụ trợ có thanh gia cố chéo trên đỉnh từ thời Trajan, má che lớn",
+   "source": "Bishop & Coulston, Roman Military Equipment (2006)"
+  },
+  {
+   "claim": "Lính ở biên giới Britannia dùng áo choàng len, tất, đồ lót ấm",
+   "source": "Tab. Vindol. II 346"
+  },
+  {
+   "claim": "Hasta là giáo đâm của lính phụ trợ, gladius đeo bên phải",
+   "source": "Bishop & Coulston (2006); Goldsworthy (2003)"
+  }
+ ],
+ "torso": "$cloth",
+ "hair": "none",
+ "beard": null,
+ "palette": {
+  "cloth": [
+   0.8,
+   0.28,
+   0.2
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "sagum_cloak",
+   "pts": [
+    [
+     -0.46,
+     0.8
+    ],
+    [
+     0.46,
+     0.8
+    ],
+    [
+     0.66,
+     0.4
+    ],
+    [
+     0.76,
+     -0.32
+    ],
+    [
+     0.36,
+     -0.38
+    ],
+    [
+     -0.36,
+     -0.38
+    ],
+    [
+     -0.76,
+     -0.32
+    ],
+    [
+     -0.66,
+     0.4
+    ]
+   ],
+   "mat": [
+    0.42,
+    0.25,
+    0.1
+   ],
+   "z": -0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "bracae",
+   "pts": {
+    "rrect": [
+     0,
+     -0.17,
+     0.64,
+     0.24,
+     0.06
+    ]
+   },
+   "mat": [
+    0.26,
+    0.14,
+    0.06
+   ],
+   "z": 0.1,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tunic_skirt",
+   "pts": {
+    "rrect": [
+     0,
+     -0.07,
+     0.84,
+     0.18,
+     0.05
+    ]
+   },
+   "mat": "$cloth",
+   "z": 0.11,
+   "outline": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "tunic_hem",
+   "pts": [
+    [
+     -0.4,
+     -0.14
+    ],
+    [
+     0.4,
+     -0.14
+    ]
+   ],
+   "w": 0.03,
+   "mat": "$team",
+   "z": 0.115
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "lorica_hamata",
+   "pts": {
+    "rrect": [
+     0,
+     0.35,
+     0.86,
+     0.8,
+     0.12
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.15,
+   "outline": 0.028
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "mail_row1",
+   "pts": [
+    [
+     -0.34,
+     0.24
+    ],
+    [
+     -0.22,
+     0.2
+    ],
+    [
+     -0.1,
+     0.24
+    ],
+    [
+     0.02,
+     0.2
+    ],
+    [
+     0.14,
+     0.24
+    ],
+    [
+     0.26,
+     0.2
+    ],
+    [
+     0.34,
+     0.23
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "mail_row2",
+   "pts": [
+    [
+     -0.34,
+     0.42
+    ],
+    [
+     -0.22,
+     0.38
+    ],
+    [
+     -0.1,
+     0.42
+    ],
+    [
+     0.02,
+     0.38
+    ],
+    [
+     0.14,
+     0.42
+    ],
+    [
+     0.26,
+     0.38
+    ],
+    [
+     0.34,
+     0.41
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$metal_dark",
+   "z": 0.16
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "mail_shoulder_doubling",
+   "pts": [
+    [
+     -0.44,
+     0.8
+    ],
+    [
+     0.44,
+     0.8
+    ],
+    [
+     0.44,
+     0.6
+    ],
+    [
+     0.3,
+     0.55
+    ],
+    [
+     0.14,
+     0.62
+    ],
+    [
+     -0.14,
+     0.62
+    ],
+    [
+     -0.3,
+     0.55
+    ],
+    [
+     -0.44,
+     0.6
+    ]
+   ],
+   "mat": "$metal",
+   "z": 0.17,
+   "outline": 0.024
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "cloak_brooch",
+   "c": [
+    0.3,
+    0.7
+   ],
+   "r": 0.06,
+   "mat": "$trim",
+   "z": 0.18
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.08,
+     0.9,
+     0.08,
+     0.02
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.18,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "gladius",
+   "pts": {
+    "rrect": [
+     0.39,
+     -0.04,
+     0.08,
+     0.34,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.19,
+   "outline": 0.02
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "gladius_pommel",
+   "c": [
+    0.39,
+    0.15
+   ],
+   "r": 0.035,
+   "mat": "$trim",
+   "z": 0.195
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "neckguard",
+   "pts": [
+    [
+     -0.48,
+     0.22
+    ],
+    [
+     0.48,
+     0.22
+    ],
+    [
+     0.6,
+     0.04
+    ],
+    [
+     -0.6,
+     0.04
+    ]
+   ],
+   "mat": "$metal",
+   "z": -0.03,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "helmet",
+   "pts": {
+    "ellipse": [
+     0,
+     0.2,
+     0.53,
+     0.48,
+     30,
+     0,
+     3.141592653589793
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.08,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "brow",
+   "pts": [
+    [
+     -0.5,
+     0.22
+    ],
+    [
+     0.5,
+     0.22
+    ]
+   ],
+   "w": 0.055,
+   "mat": "$metal_dark",
+   "z": 0.09
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "crossbar_v",
+   "pts": [
+    [
+     0,
+     0.24
+    ],
+    [
+     0,
+     0.68
+    ]
+   ],
+   "w": 0.075,
+   "mat": "$metal_dark",
+   "z": 0.09
+  },
+  {
+   "op": "stroke",
+   "on": "head",
+   "name": "crossbar_h",
+   "pts": [
+    [
+     -0.45,
+     0.38
+    ],
+    [
+     -0.26,
+     0.5
+    ],
+    [
+     0,
+     0.54
+    ],
+    [
+     0.26,
+     0.5
+    ],
+    [
+     0.45,
+     0.38
+    ]
+   ],
+   "w": 0.075,
+   "mat": "$metal_dark",
+   "z": 0.09
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "crown_rivet",
+   "c": [
+    0,
+    0.54
+   ],
+   "r": 0.06,
+   "mat": "$trim",
+   "z": 0.095
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekL",
+   "pts": {
+    "ellipse": [
+     -0.43,
+     -0.1,
+     0.12,
+     0.25,
+     16
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "cheekR",
+   "pts": {
+    "ellipse": [
+     0.43,
+     -0.1,
+     0.12,
+     0.25,
+     16
+    ]
+   },
+   "mat": "$metal",
+   "z": 0.07,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "handL",
+   "name": "clipeus_oval",
+   "pts": {
+    "ellipse": [
+     0.02,
+     0.04,
+     0.38,
+     0.52,
+     36
+    ]
+   },
+   "mat": [
+    0.04,
+    0.2,
+    0.58
+   ],
+   "z": 0.05,
+   "outline": 0.035
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "clipeus_rim",
+   "pts": {
+    "ring": [
+     0.02,
+     0.04,
+     0.33,
+     0.47,
+     40
+    ]
+   },
+   "w": 0.035,
+   "mat": "$white",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "spina",
+   "pts": [
+    [
+     0.02,
+     -0.3
+    ],
+    [
+     0.02,
+     0.38
+    ]
+   ],
+   "w": 0.05,
+   "mat": "$white",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "crescent_top",
+   "pts": [
+    [
+     -0.18,
+     0.36
+    ],
+    [
+     -0.1,
+     0.27
+    ],
+    [
+     0.02,
+     0.23
+    ],
+    [
+     0.14,
+     0.27
+    ],
+    [
+     0.22,
+     0.36
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$white",
+   "z": 0.06
+  },
+  {
+   "op": "stroke",
+   "on": "handL",
+   "name": "crescent_bottom",
+   "pts": [
+    [
+     -0.18,
+     -0.28
+    ],
+    [
+     -0.1,
+     -0.19
+    ],
+    [
+     0.02,
+     -0.15
+    ],
+    [
+     0.14,
+     -0.19
+    ],
+    [
+     0.22,
+     -0.28
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$white",
+   "z": 0.06
+  },
+  {
+   "op": "disc",
+   "on": "handL",
+   "name": "boss_team_ring",
+   "c": [
+    0.02,
+    0.04
+   ],
+   "r": 0.13,
+   "mat": "$team",
+   "z": 0.062
+  },
+  {
+   "op": "disc",
+   "on": "handL",
+   "name": "boss",
+   "c": [
+    0.02,
+    0.04
+   ],
+   "r": 0.085,
+   "mat": "$metal",
+   "z": 0.065
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "hasta_shaft",
+   "pts": [
+    [
+     0,
+     -0.6
+    ],
+    [
+     0,
+     2.05
+    ]
+   ],
+   "w": 0.05,
+   "mat": "$leather",
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "handR",
+   "name": "hasta_blade",
+   "pts": [
+    [
+     0,
+     1.98
+    ],
+    [
+     0.1,
+     2.18
+    ],
+    [
+     0.075,
+     2.36
+    ],
+    [
+     0,
+     2.56
+    ],
+    [
+     -0.075,
+     2.36
+    ],
+    [
+     -0.1,
+     2.18
+    ]
+   ],
+   "mat": "$metal",
+   "z": -0.02,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "handR",
+   "name": "hasta_butt",
+   "pts": [
+    [
+     -0.035,
+     -0.6
+    ],
+    [
+     0.035,
+     -0.6
+    ],
+    [
+     0,
+     -0.7
+    ]
+   ],
+   "mat": "$metal_dark",
+   "z": -0.02,
+   "outline": 0.012
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.02
+    ],
+    [
+     0.12,
+     0.02
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$leather",
+   "z": 0.01
+  }
+ ],
+ "kind": "outfit",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Lính bộ binh phụ trợ Tungri năm 122 (vai auxiliary) cho Atto: mũ sắt có che má, giáp xích (lorica hamata) dài tới hông, tunic đỏ nhạt, quần chẽn bracae nâu tới gối, áo choàng len nâu (đêm lạnh), khiên bầu dục PHẲNG màu xanh-trắng có hoa văn (khác khiên chữ nhật cong đỏ của lê dương) ở tay trái, giáo hasta ở tay phải, kiếm ngắn bên hông. Khăn cổ cam đến từ look.accent. Bóng đen phải khác lê dương.",
+ "created": "2026-11-12T06:19:45",
+ "review": {
+  "score": 8,
+  "summary_vi": "Đạt. Lưỡi giáo hình lá đã nhô hẳn trên đầu. Áo choàng nâu đã xòe ra hai bên thân, khiến bóng đen có hình chuông. Thanh chéo trên mũ đã rõ. Khiên bầu dục xanh-trắng khác hẳn khiên chữ nhật đỏ. Mặt không bị che, khiên theo tay trái, giáo theo tay phải.",
+  "accuracy_vi": "Đúng với bộ binh phụ trợ thời Hadrian (khoảng năm 122), dựa theo Cột Trajan và Bishop & Coulston: giáp xích có lớp xích đôi phủ vai, khiên bầu dục phẳng, giáo hasta, mũ có thanh gia cố chéo và má che lớn, quần chẽn bracae, áo choàng sagum, gladius đeo bên phải. Không lẫn giáp lá hay khiên scutum của lê dương. Hoa văn khiên chỉ là kiểu chung, không có bằng chứng riêng cho đơn vị cohors I Tungrorum.",
+  "problems": [
+   "Hai trăng lưỡi liềm ở cỡ lớn trông hơi giống một chữ hoặc ký hiệu trừu tượng. Không ảnh hưởng nhận diện, có thể giữ nguyên.",
+   "Mép áo choàng xòe gần chạm mép áo choàng tím của Hadrian khi đứng sát nhau. Đây chỉ là chuyện khoảng cách trong ảnh xếp hàng, không phải lỗi trang phục."
+  ]
+ }
+}

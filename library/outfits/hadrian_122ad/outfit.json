@@ -1,0 +1,882 @@
+{
+ "kind": "outfit",
+ "name": "hadrian_122ad",
+ "culture": "roman_empire_50ad",
+ "role": "soldier",
+ "title_vi": "Hoàng đế Hadrian (năm 122)",
+ "description_vi": "Hoàng đế Hadrian lúc sang Britannia năm 122. Tóc xoăn ngắn, lọn tóc mái chải về trước. Râu quai nón đầy, ngắn, liền tóc mai, có ria (râu vẽ ngay trong trang phục nên tool không vẽ thêm). Giáp ngực đồng kiểu cơ bắp, có nét ngực và bụng. Dải pteruges da chìa ra ở hai vai và rủ một hàng ở hông. Tunic trắng lộ dưới hông. Dải thắt lưng tướng (cinctorium) màu phe, thắt nút giữa bụng. Áo choàng tía paludamentum dài tới gối sau lưng, cài trâm vàng ở vai phải, vạt trước vắt chéo ngực sang vai trái. Giày da buộc dây chéo. Tay không cầm gì.",
+ "silhouette_vi": "Nhận ra ngay nhờ đầu trần tròn có tóc xoăn và râu, áo choàng tía dài loe rộng sau lưng tới gối, vạt tía vắt chéo ngực, tua da chìa ở vai. Lính lê dương và bách phu trưởng đều đội mũ có gờ che gáy (bách phu trưởng thêm mào quạt ngang); lính lê dương có khiên chữ nhật và giáo, bách phu trưởng có gậy. Briton không có giáp đồng và áo choàng tía.",
+ "sources": [
+  {
+   "claim": "Hadrian là hoàng đế đầu tiên để râu đầy",
+   "source": "Historia Augusta, Vita Hadriani 26.1; tượng chân dung Hadrian, ví dụ Capitoline Museums"
+  },
+  {
+   "claim": "Hadrian sang Britannia năm 122 và cho xây tường",
+   "source": "Historia Augusta, Vita Hadriani 11.2"
+  },
+  {
+   "claim": "Tượng Hadrian mặc giáp cơ bắp có pteruges ở vai và hông, áo choàng cài vai phải",
+   "source": "Tượng đồng Tel Shalem (Israel Museum); tượng Hadrian ở Hierapytna (Istanbul Archaeological Museums)"
+  },
+  {
+   "claim": "Tóc Hadrian xoăn ngắn, lọn mái chải về trước",
+   "source": "Fittschen & Zanker, Katalog der römischen Porträts in den Capitolinischen Museen I (1985)"
+  },
+  {
+   "claim": "Paludamentum là áo choàng của tướng/hoàng đế, màu tía hoặc đỏ tía; cinctorium là dải thắt lưng tướng",
+   "source": "Sumner, Roman Military Dress (2009)"
+  }
+ ],
+ "torso": "$white",
+ "hair": "curly",
+ "beard": null,
+ "palette": {
+  "purple": [
+   0.36,
+   0.02,
+   0.4
+  ],
+  "purple_dark": [
+   0.16,
+   0.01,
+   0.2
+  ],
+  "bronze": [
+   0.78,
+   0.46,
+   0.1
+  ],
+  "bronze_dark": [
+   0.38,
+   0.2,
+   0.04
+  ],
+  "lace": [
+   0.86,
+   0.74,
+   0.5
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak_back",
+   "pts": [
+    [
+     -0.42,
+     0.8
+    ],
+    [
+     0.42,
+     0.8
+    ],
+    [
+     0.62,
+     -0.45
+    ],
+    [
+     0.3,
+     -0.5
+    ],
+    [
+     0,
+     -0.46
+    ],
+    [
+     -0.3,
+     -0.5
+    ],
+    [
+     -0.62,
+     -0.45
+    ]
+   ],
+   "mat": "$purple",
+   "z": -0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tunic_skirt",
+   "pts": {
+    "rrect": [
+     0,
+     -0.12,
+     0.8,
+     0.24,
+     0.05
+    ]
+   },
+   "mat": "$white",
+   "z": 0.1,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_hip1",
+   "pts": {
+    "rrect": [
+     -0.35,
+     -0.04,
+     0.12,
+     0.24,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.13,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_hip2",
+   "pts": {
+    "rrect": [
+     -0.21,
+     -0.04,
+     0.12,
+     0.24,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.13,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_hip3",
+   "pts": {
+    "rrect": [
+     -0.07,
+     -0.04,
+     0.12,
+     0.24,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.13,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_hip4",
+   "pts": {
+    "rrect": [
+     0.07,
+     -0.04,
+     0.12,
+     0.24,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.13,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_hip5",
+   "pts": {
+    "rrect": [
+     0.21,
+     -0.04,
+     0.12,
+     0.24,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.13,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_hip6",
+   "pts": {
+    "rrect": [
+     0.35,
+     -0.04,
+     0.12,
+     0.24,
+     0.03
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.13,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_shL1",
+   "pts": [
+    [
+     -0.3,
+     0.76
+    ],
+    [
+     -0.38,
+     0.76
+    ],
+    [
+     -0.42,
+     0.52
+    ],
+    [
+     -0.34,
+     0.52
+    ]
+   ],
+   "mat": "$leather",
+   "z": 0.14,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_shL2",
+   "pts": [
+    [
+     -0.38,
+     0.76
+    ],
+    [
+     -0.46,
+     0.73
+    ],
+    [
+     -0.52,
+     0.52
+    ],
+    [
+     -0.44,
+     0.52
+    ]
+   ],
+   "mat": "$leather",
+   "z": 0.14,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_shR1",
+   "pts": [
+    [
+     0.3,
+     0.76
+    ],
+    [
+     0.38,
+     0.76
+    ],
+    [
+     0.42,
+     0.52
+    ],
+    [
+     0.34,
+     0.52
+    ]
+   ],
+   "mat": "$leather",
+   "z": 0.14,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pteruges_shR2",
+   "pts": [
+    [
+     0.38,
+     0.76
+    ],
+    [
+     0.46,
+     0.73
+    ],
+    [
+     0.52,
+     0.52
+    ],
+    [
+     0.44,
+     0.52
+    ]
+   ],
+   "mat": "$leather",
+   "z": 0.14,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cuirass",
+   "pts": [
+    [
+     -0.36,
+     0.8
+    ],
+    [
+     0.36,
+     0.8
+    ],
+    [
+     0.41,
+     0.6
+    ],
+    [
+     0.38,
+     0.2
+    ],
+    [
+     0.3,
+     0.05
+    ],
+    [
+     -0.3,
+     0.05
+    ],
+    [
+     -0.38,
+     0.2
+    ],
+    [
+     -0.41,
+     0.6
+    ]
+   ],
+   "mat": "$bronze",
+   "z": 0.15,
+   "outline": 0.028
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "pec_L",
+   "pts": [
+    [
+     -0.3,
+     0.56
+    ],
+    [
+     -0.18,
+     0.5
+    ],
+    [
+     -0.04,
+     0.54
+    ]
+   ],
+   "w": 0.024,
+   "mat": "$bronze_dark",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "pec_R",
+   "pts": [
+    [
+     0.3,
+     0.56
+    ],
+    [
+     0.18,
+     0.5
+    ],
+    [
+     0.04,
+     0.54
+    ]
+   ],
+   "w": 0.024,
+   "mat": "$bronze_dark",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "abs_mid",
+   "pts": [
+    [
+     0,
+     0.5
+    ],
+    [
+     0,
+     0.28
+    ]
+   ],
+   "w": 0.022,
+   "mat": "$bronze_dark",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "abs_arc",
+   "pts": [
+    [
+     -0.2,
+     0.38
+    ],
+    [
+     0,
+     0.35
+    ],
+    [
+     0.2,
+     0.38
+    ]
+   ],
+   "w": 0.022,
+   "mat": "$bronze_dark",
+   "z": 0.16
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cinctorium",
+   "pts": {
+    "rrect": [
+     0,
+     0.22,
+     0.74,
+     0.07,
+     0.03
+    ]
+   },
+   "mat": "$team",
+   "z": 0.17,
+   "outline": 0.018
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cinctorium_tailL",
+   "pts": [
+    [
+     -0.03,
+     0.2
+    ],
+    [
+     -0.08,
+     0.05
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$team",
+   "z": 0.175
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cinctorium_tailR",
+   "pts": [
+    [
+     0.03,
+     0.2
+    ],
+    [
+     0.09,
+     0.06
+    ]
+   ],
+   "w": 0.045,
+   "mat": "$team",
+   "z": 0.175
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "cinctorium_knot",
+   "c": [
+    0,
+    0.22
+   ],
+   "r": 0.055,
+   "mat": "$team_dark",
+   "z": 0.18
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak_drape",
+   "pts": [
+    [
+     -0.3,
+     0.72
+    ],
+    [
+     -0.1,
+     0.8
+    ],
+    [
+     0.2,
+     0.82
+    ],
+    [
+     0.44,
+     0.8
+    ],
+    [
+     0.47,
+     0.32
+    ],
+    [
+     0.32,
+     0.4
+    ],
+    [
+     0.12,
+     0.58
+    ],
+    [
+     -0.12,
+     0.64
+    ]
+   ],
+   "mat": "$purple",
+   "z": 0.2,
+   "outline": 0.026
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_fold",
+   "pts": [
+    [
+     -0.16,
+     0.71
+    ],
+    [
+     0.14,
+     0.68
+    ],
+    [
+     0.38,
+     0.52
+    ]
+   ],
+   "w": 0.024,
+   "mat": "$purple_dark",
+   "z": 0.21
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "fibula",
+   "c": [
+    -0.3,
+    0.71
+   ],
+   "r": 0.065,
+   "mat": "$trim",
+   "z": 0.22
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "beard",
+   "pts": [
+    [
+     -0.483,
+     -0.11
+    ],
+    [
+     -0.424,
+     -0.27
+    ],
+    [
+     -0.315,
+     -0.4
+    ],
+    [
+     -0.168,
+     -0.485
+    ],
+    [
+     0,
+     -0.515
+    ],
+    [
+     0.168,
+     -0.485
+    ],
+    [
+     0.315,
+     -0.4
+    ],
+    [
+     0.424,
+     -0.27
+    ],
+    [
+     0.483,
+     -0.11
+    ],
+    [
+     0.294,
+     -0.21
+    ],
+    [
+     0.17,
+     -0.334
+    ],
+    [
+     0,
+     -0.38
+    ],
+    [
+     -0.17,
+     -0.334
+    ],
+    [
+     -0.294,
+     -0.21
+    ]
+   ],
+   "mat": "$hair",
+   "z": 0.05,
+   "outline": 0.025
+  },
+  {
+   "op": "shape",
+   "on": "head",
+   "name": "mustache",
+   "pts": [
+    [
+     0.13,
+     -0.16
+    ],
+    [
+     0.1126,
+     -0.146
+    ],
+    [
+     0.065,
+     -0.1358
+    ],
+    [
+     0,
+     -0.132
+    ],
+    [
+     -0.065,
+     -0.1358
+    ],
+    [
+     -0.1126,
+     -0.146
+    ],
+    [
+     -0.13,
+     -0.16
+    ],
+    [
+     -0.1126,
+     -0.174
+    ],
+    [
+     -0.065,
+     -0.1842
+    ],
+    [
+     0,
+     -0.188
+    ],
+    [
+     0.065,
+     -0.1842
+    ],
+    [
+     0.1126,
+     -0.174
+    ]
+   ],
+   "mat": "$hair",
+   "z": 0.06
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "fringe1",
+   "c": [
+    -0.27,
+    0.3
+   ],
+   "r": 0.085,
+   "mat": "$hair",
+   "z": 0.02
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "fringe2",
+   "c": [
+    -0.1,
+    0.29
+   ],
+   "r": 0.085,
+   "mat": "$hair",
+   "z": 0.02
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "fringe3",
+   "c": [
+    0.07,
+    0.29
+   ],
+   "r": 0.085,
+   "mat": "$hair",
+   "z": 0.02
+  },
+  {
+   "op": "disc",
+   "on": "head",
+   "name": "fringe4",
+   "c": [
+    0.24,
+    0.3
+   ],
+   "r": 0.085,
+   "mat": "$hair",
+   "z": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "boot",
+   "pts": {
+    "ellipse": [
+     0.02,
+     0,
+     0.14,
+     0.08,
+     20
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.008,
+   "outline": 0.015
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "lace1",
+   "pts": [
+    [
+     -0.07,
+     -0.02
+    ],
+    [
+     0.07,
+     0.06
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$lace",
+   "z": 0.012
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "lace2",
+   "pts": [
+    [
+     -0.07,
+     0.06
+    ],
+    [
+     0.07,
+     -0.02
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$lace",
+   "z": 0.012
+  },
+  {
+   "op": "shape",
+   "on": "footR",
+   "name": "boot",
+   "pts": {
+    "ellipse": [
+     0.02,
+     0,
+     0.14,
+     0.08,
+     20
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.008,
+   "outline": 0.015
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "lace1",
+   "pts": [
+    [
+     -0.07,
+     -0.02
+    ],
+    [
+     0.07,
+     0.06
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$lace",
+   "z": 0.012
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "lace2",
+   "pts": [
+    [
+     -0.07,
+     0.06
+    ],
+    [
+     0.07,
+     -0.02
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$lace",
+   "z": 0.012
+  }
+ ],
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Hoàng đế Hadrian năm 122 (vai emperor): tóc xoăn ngắn chải về trước, râu quai nón đầy (trang phục tự có râu thì look không vẽ thêm), giáp ngực đồng kiểu cơ bắp (muscled cuirass) với dải pteruges da ở vai và hông, tunic trắng, áo choàng tía (paludamentum) cài vai phải, giày da buộc dây. Màu nhấn tía; không vũ khí cầm tay. Bóng đen phải khác bách phu trưởng (không mào ngang, có áo choàng tía dài).",
+ "created": "2026-11-12T06:17:22",
+ "review": {
+  "score": 8,
+  "summary_vi": "Đạt. Hadrian có tóc xoăn với lọn mái phía trước và râu quai nón nâu liền tóc mai. Mắt và miệng không bị che: miệng nằm trên mép trong của râu, ria nằm giữa mắt và miệng. Giáp đồng có nét ngực và bụng rõ. Dải thắt lưng màu phe thắt nút ở giữa. Áo choàng tía dài tới gối, loe rộng sau lưng, vạt trước vắt chéo ngực. Hàng tua da ở hông và giày buộc dây chéo đều hiện rõ. Tay không cầm gì, đúng yêu cầu. Ba điểm cần xem ở vòng trước đều ổn: áo choàng không che chân, giày hiện lên, trâm cài nằm ở vai bên trái màn hình.",
+  "accuracy_vi": "Khớp với tượng Hadrian (Tel Shalem, Hierapytna): giáp cơ bắp, pteruges ở vai và hông, áo choàng cài vai phải. Râu đầy và tóc xoăn khớp tượng chân dung, còn Historia Augusta 26.1 ghi Hadrian để râu. Không lẫn đồ của thời kỳ hay nước khác: không mũ, không giáp lá segmentata của lính. Có hai điểm là quy ước: giáp cơ bắp trên tượng có thể đã được lý tưởng hóa, và màu tía của áo choàng cùng màu đỏ của thắt lưng không chắc chắn. Năm 122 vẫn nằm trong khoảng năm của văn hóa (−27 đến 200).",
+  "problems": [
+   "Tunic trắng chỉ lộ một viền mỏng dưới hàng pteruges hông, nên ở cỡ nhỏ khó thấy là tunic trắng. Chấp nhận được.",
+   "Trâm cài (fibula) vàng nhỏ, ở cỡ nhỏ gần như mất. Đây chỉ là chi tiết phụ.",
+   "Dải pteruges ở vai chỉ ló ra một chút sau mép áo choàng và giáp, không chìa rõ như trên tượng."
+  ]
+ }
+}

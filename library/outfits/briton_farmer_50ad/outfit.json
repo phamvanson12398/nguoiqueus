@@ -1,0 +1,498 @@
+{
+ "name": "briton_farmer_50ad",
+ "culture": "iron_age_britons_50ad",
+ "role": "commoner",
+ "title_vi": "Dân thường / người chăn dê Briton (~năm 50)",
+ "description_vi": "Dân thường Briton, không giáp, không vũ khí, không đội mũ. Tunic len thô màu nâu chưa nhuộm dài tới gối, gấu có một sọc màu phe ($team), thắt dây lưng da. Áo choàng len ngắn tới hông, kẻ ô đơn giản hai màu ($team nền, ô $team_dark): phía sau lưng xòe ra hai bên thân, vạt trước vắt chéo từ vai trái, cài trâm sắt tròn đơn giản ($metal_dark) trên vai phải. Túi da đeo chéo từ vai phải xuống hông trái. Quần len xám nâu, giày da mềm buộc dây. Tay phải cầm gậy chăn gia súc dài bằng gỗ, đầu cong thành móc hướng ra ngoài, cao quá đầu. Không torc vàng (đồ của người giàu). Tóc buộc và ria/râu tỉa lấy theo văn hóa hoặc look của story.",
+ "silhouette_vi": "Nhận ra ngay nhờ: đầu trần, gậy cao quá đầu có móc cong ra ngoài ở đỉnh (không mũi sắt như pilum, không núm tròn như gậy người dẫn đường), áo choàng xòe hai bên thân, túi da ở hông trái, tay trái để trống (không khiên). Khác hẳn lính La Mã: không mũ sắt, không khiên, không giáp.",
+ "sources": [
+  {
+   "claim": "Đàn ông Briton để tóc dài, cạo râu cằm, giữ ria mép",
+   "source": "Julius Caesar, De Bello Gallico 5.14"
+  },
+  {
+   "claim": "Vải thời đồ sắt dệt trên khung dọc, sọc hoặc kẻ ô ít nhất hai màu; len chưa nhuộm có màu nâu/xám tự nhiên",
+   "source": "British Museum / Teaching History 100, 'Clothes tools'; vải ô ở Vindolanda"
+  },
+  {
+   "claim": "Áo choàng vuông cài trâm ở vai; quần dài (bracae). Diodorus tả người Gaul, áp sang Briton là suy diễn",
+   "source": "Diodorus Siculus, Bibliotheca historica 5.30"
+  },
+  {
+   "claim": "Trâm cài áo bằng sắt và đồng phổ biến ở Britannia thời đồ sắt muộn và thế kỷ 1",
+   "source": "Mackreth, Brooches in Late Iron Age and Roman Britain (2011)"
+  },
+  {
+   "claim": "Torc vàng/electrum là dấu hiệu địa vị, nên dân thường không đeo",
+   "source": "British Museum, Great Torc from Snettisham"
+  },
+  {
+   "claim": "Kinh tế làng đồ sắt: chăn cừu, dê, bò và trồng spelt; nhà tròn, chuồng gia súc",
+   "source": "Butser Ancient Farm, phục dựng thực nghiệm (butserancientfarm.co.uk)"
+  }
+ ],
+ "torso": "$cloth2",
+ "hair": "auto",
+ "beard": null,
+ "palette": {},
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak_back",
+   "pts": [
+    [
+     -0.44,
+     0.8
+    ],
+    [
+     0.44,
+     0.8
+    ],
+    [
+     0.58,
+     0.05
+    ],
+    [
+     -0.58,
+     0.05
+    ]
+   ],
+   "mat": "$team",
+   "z": -0.05,
+   "outline": 0.03
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_back_check",
+   "pts": [
+    [
+     -0.54,
+     0.28
+    ],
+    [
+     0.54,
+     0.28
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$team_dark",
+   "z": -0.045
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tunic",
+   "pts": {
+    "rrect": [
+     0,
+     0.31,
+     0.84,
+     1.02,
+     0.08
+    ]
+   },
+   "mat": [
+    0.42,
+    0.3,
+    0.16
+   ],
+   "z": 0.125,
+   "outline": 0.025
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "tunic_hem_stripe",
+   "pts": [
+    [
+     -0.4,
+     -0.13
+    ],
+    [
+     0.4,
+     -0.13
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$team",
+   "z": 0.128
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.2,
+     0.86,
+     0.065,
+     0.02
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.13,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cloak_front",
+   "pts": [
+    [
+     -0.42,
+     0.82
+    ],
+    [
+     0.36,
+     0.82
+    ],
+    [
+     0.08,
+     0.52
+    ],
+    [
+     -0.42,
+     0.4
+    ]
+   ],
+   "mat": "$team",
+   "z": 0.14,
+   "outline": 0.028
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_check_h",
+   "pts": [
+    [
+     -0.4,
+     0.64
+    ],
+    [
+     0.2,
+     0.64
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$team_dark",
+   "z": 0.145
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "cloak_check_v",
+   "pts": [
+    [
+     -0.18,
+     0.8
+    ],
+    [
+     -0.18,
+     0.48
+    ]
+   ],
+   "w": 0.035,
+   "mat": "$team_dark",
+   "z": 0.145
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "satchel_strap",
+   "pts": [
+    [
+     0.22,
+     0.81
+    ],
+    [
+     -0.24,
+     0.18
+    ]
+   ],
+   "w": 0.04,
+   "mat": "$leather",
+   "z": 0.17
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "satchel",
+   "pts": {
+    "rrect": [
+     -0.26,
+     0.06,
+     0.3,
+     0.26,
+     0.06
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.18,
+   "outline": 0.024
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "satchel_flap",
+   "pts": [
+    [
+     -0.39,
+     0.13
+    ],
+    [
+     -0.13,
+     0.13
+    ]
+   ],
+   "w": 0.025,
+   "mat": [
+    0.18,
+    0.09,
+    0.03
+   ],
+   "z": 0.185
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "brooch_iron",
+   "c": [
+    0.31,
+    0.73
+   ],
+   "r": 0.06,
+   "mat": "$metal_dark",
+   "z": 0.21
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "brooch_pin",
+   "pts": [
+    [
+     0.22,
+     0.69
+    ],
+    [
+     0.4,
+     0.77
+    ]
+   ],
+   "w": 0.016,
+   "mat": [
+    0.45,
+    0.45,
+    0.48
+   ],
+   "z": 0.215
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "crook_shaft",
+   "pts": [
+    [
+     0,
+     -0.75
+    ],
+    [
+     0.01,
+     0.6
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "w": 0.06,
+   "mat": [
+    0.42,
+    0.24,
+    0.08
+   ],
+   "z": -0.02
+  },
+  {
+   "op": "stroke",
+   "on": "handR",
+   "name": "crook_hook",
+   "pts": [
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     2.08
+    ],
+    [
+     0.03,
+     2.17
+    ],
+    [
+     0.09,
+     2.23
+    ],
+    [
+     0.16,
+     2.23
+    ],
+    [
+     0.22,
+     2.17
+    ],
+    [
+     0.25,
+     2.08
+    ],
+    [
+     0.25,
+     1.99
+    ]
+   ],
+   "w": 0.06,
+   "mat": [
+    0.42,
+    0.24,
+    0.08
+   ],
+   "z": -0.02
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "trouser_leg",
+   "pts": {
+    "rrect": [
+     0,
+     0.19,
+     0.14,
+     0.3,
+     0.04
+    ]
+   },
+   "mat": [
+    0.26,
+    0.2,
+    0.14
+   ],
+   "z": 0.02,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "footL",
+   "name": "shoe",
+   "pts": {
+    "ellipse": [
+     0,
+     0,
+     0.14,
+     0.07,
+     18
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.025,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "footL",
+   "name": "shoe_tie",
+   "pts": [
+    [
+     -0.07,
+     0.05
+    ],
+    [
+     0.07,
+     0.05
+    ]
+   ],
+   "w": 0.018,
+   "mat": [
+    0.18,
+    0.09,
+    0.03
+   ],
+   "z": 0.03
+  },
+  {
+   "op": "shape",
+   "on": "footR",
+   "name": "trouser_leg",
+   "pts": {
+    "rrect": [
+     0,
+     0.19,
+     0.14,
+     0.3,
+     0.04
+    ]
+   },
+   "mat": [
+    0.26,
+    0.2,
+    0.14
+   ],
+   "z": 0.02,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "footR",
+   "name": "shoe",
+   "pts": {
+    "ellipse": [
+     0,
+     0,
+     0.14,
+     0.07,
+     18
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.025,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "footR",
+   "name": "shoe_tie",
+   "pts": [
+    [
+     -0.07,
+     0.05
+    ],
+    [
+     0.07,
+     0.05
+    ]
+   ],
+   "w": 0.018,
+   "mat": [
+    0.18,
+    0.09,
+    0.03
+   ],
+   "z": 0.03
+  }
+ ],
+ "kind": "outfit",
+ "status": "draft",
+ "designed_by": "claude_bridge",
+ "brief_vi": "Vai commoner của văn hóa iron_age_britons_50ad (dùng cho Vepo, người chăn dê phương bắc, và dân làng Briton phía nam): áo choàng len kẻ ô cài trâm (màu theo ô $team của phe: xanh rêu-nâu cho phương bắc, xanh dương nhạt-vàng đất cho phương nam), tunic len dài, quần, giày da mềm, túi da đeo chéo, gậy chăn gia súc dài ở tay phải. Không giáp, không vũ khí. Hợp với tóc buộc và râu tỉa.",
+ "created": "2026-11-12T06:22:25",
+ "review": {
+  "score": 8,
+  "summary_vi": "Đạt. Cả ba lỗi của r1 đã hết: tunic len nâu hiện đúng màu, gậy có móc cong ra ngoài cao vượt đầu và rõ trên bóng đen, áo choàng màu phe lộ ra hai bên thân. Túi da ở hông trái giờ cũng nhìn rõ. Mắt và miệng không bị che, gậy theo tay phải, khối to và ít chi tiết vụn.",
+  "accuracy_vi": "Trang phục hợp với dân thường thời đồ sắt muộn: tunic len chưa nhuộm, áo choàng kẻ ô hai màu cài trâm sắt, quần len, giày da mềm, túi da. Không torc, không giáp, không vũ khí, không lẫn đồ La Mã. Có hai điểm suy diễn đã ghi: quần và áo choàng kẻ ô lấy từ mô tả người Gaul, gậy đầu móc là lựa chọn tạo hình.",
+  "problems": [
+   "Còn một vạch đen ngắn ở mép phải mặt, chạy ra phía gậy. Có lẽ đây là dây buộc tóc kiểu 'tied' do look tự vẽ, không thuộc outfit này, vì vạch đã có từ r1 và không trùng mảnh nào trong items. Nên kiểm tra kiểu tóc tied ở core/outfits.py."
+  ]
+ }
+}
