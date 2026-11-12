@@ -109,6 +109,77 @@ def pdir(slug):
     return os.path.join(PROJECTS, slug)
 
 
+TEMP_DIRS = ("frames", "parts", "_bench")          # render scratch inside a project or one of its parts
+
+
+def _dir_size(p):
+    n = 0
+    for root, _dirs, files in os.walk(p):
+        for f in files:
+            try: n += os.path.getsize(os.path.join(root, f))
+            except OSError: pass
+    return n
+
+
+def _inside_projects(p):
+    p = os.path.realpath(p); base = os.path.realpath(PROJECTS)
+    return p != base and os.path.commonpath([p, base]) == base
+
+
+def temp_dirs(slug):
+    """render scratch of a project: frames/, parts/, _bench/ (also in every part), thumbnail/reference build folders"""
+    d = pdir(slug); out = []
+    roots = [d] + ([os.path.join(d, "chapters", c) for c in sorted(os.listdir(os.path.join(d, "chapters")))
+                    if os.path.isdir(os.path.join(d, "chapters", c))] if os.path.isdir(os.path.join(d, "chapters")) else [])
+    for r in roots:
+        out += [os.path.join(r, t) for t in TEMP_DIRS if os.path.isdir(os.path.join(r, t))]
+    yd = os.path.join(d, "youtube")
+    if os.path.isdir(yd):
+        out += [os.path.join(yd, f) for f in os.listdir(yd) if re.fullmatch(r"thumb_\d+", f) and os.path.isdir(os.path.join(yd, f))]
+        rd = os.path.join(yd, "refs")
+        if os.path.isdir(rd): out += [os.path.join(rd, f) for f in os.listdir(rd) if f.startswith("_") and os.path.isdir(os.path.join(rd, f))]
+    return [p for p in out if _inside_projects(p)]
+
+
+def clean_project(slug):
+    """delete render scratch (frames, parts, bench, thumbnail builds); keep story, voice, content, previews, mp4, YouTube package"""
+    if "/chapters/" in slug: raise ValueError("chọn dự án chính, không chọn một phần")
+    cur = BUSY.get(slug)
+    if cur and JOBS[cur].status == "running": raise ValueError("dự án đang chạy một việc: đợi xong hoặc bấm Hủy")
+    freed = 0; removed = []
+    for p in temp_dirs(slug):
+        freed += _dir_size(p); shutil.rmtree(p, ignore_errors=True); removed.append(os.path.relpath(p, pdir(slug)).replace("\\", "/"))
+    return {"freed_mb": round(freed / 1e6, 1), "removed": removed}
+
+
+def export_dir():
+    return os.environ.get("WHYSHORTS_EXPORT") or os.path.join(os.path.expanduser("~"), "Videos", "WhyShorts")
+
+
+def delete_project(slug, confirm):
+    """copy the finished video(s) and the YouTube package out of the project, then delete the project folder"""
+    if "/chapters/" in slug: raise ValueError("chọn dự án chính, không chọn một phần")
+    if confirm != slug: raise ValueError("gõ đúng tên dự án để xác nhận xóa")
+    cur = BUSY.get(slug)
+    if cur and JOBS[cur].status == "running": raise ValueError("dự án đang chạy một việc: đợi xong hoặc bấm Hủy")
+    d = pdir(slug)
+    if not os.path.isdir(d) or not _inside_projects(d): raise ValueError(f"không có dự án {slug}")
+    dst = os.path.join(export_dir(), slug.replace("/", "_")); kept = []
+    for f in os.listdir(d):                                   # finished videos at the project root
+        if f.endswith(".mp4") and not f.endswith("_before.mp4"):
+            os.makedirs(dst, exist_ok=True); shutil.copy2(os.path.join(d, f), os.path.join(dst, f)); kept.append(f)
+    yd = os.path.join(d, "youtube")
+    if os.path.isdir(yd):
+        def skip(_dir, names): return [n for n in names if re.fullmatch(r"thumb_\d+", n) or n.startswith("_") or n.endswith(".wav")]
+        shutil.copytree(yd, os.path.join(dst, "youtube"), ignore=skip, dirs_exist_ok=True); kept.append("youtube/")
+    for f in ("content.json", "voice.wav"):
+        if os.path.exists(os.path.join(d, f)):
+            os.makedirs(dst, exist_ok=True); shutil.copy2(os.path.join(d, f), os.path.join(dst, f)); kept.append(f)
+    shutil.rmtree(d)
+    BUSY.pop(slug, None)
+    return {"deleted": slug, "kept": kept, "kept_in": dst if kept else None}
+
+
 def jload(path, default=None):
     try: return json.load(open(path, encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError): return default
@@ -800,6 +871,13 @@ class Handler(BaseHTTPRequestHandler):
             if act == ["splice"]:                      # put a re-rendered part (parts/*_AAAA-BBBB.mp4) into the full video
                 part = self.safe_join(d, self.jbody()["part"])
                 return self.send_json(start_job("splice", slug, job_splice, slug, part).to_json())
+            if act == ["clean"] and method == "POST":
+                return self.send_json(clean_project(slug))
+            if act == ["delete"] and method == "POST":
+                return self.send_json(delete_project(slug, self.jbody().get("confirm")))
+            if act == ["temp"]:
+                ps = temp_dirs(slug)
+                return self.send_json({"mb": round(sum(_dir_size(p) for p in ps) / 1e6, 1), "dirs": len(ps), "export": export_dir()})
             if act == ["open"]:
                 f = self.safe_join(d, self.jbody()["file"])
                 if hasattr(os, "startfile"): os.startfile(f); return self.send_json({"ok": True})

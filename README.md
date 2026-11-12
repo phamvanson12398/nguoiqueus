@@ -42,3 +42,11 @@ Nếu báo xung đột file `thumb.png`: `git restore "library/**/thumb.png"` r�
 - `STORY.md`: định dạng `story.json`.
 - `library/AUTHORING.md`: cách viết đồ thư viện.
 - `skill/blender-why-shorts/`: skill cho Claude (v4: dùng tool). Tải `skill/blender-why-shorts.zip` lên claude.ai để thay skill cũ.
+
+## Dọn dẹp
+Tab **5 Render** → khung "Dọn dẹp":
+- **Dọn ảnh tạm**: xóa ảnh render tạm (`frames/`, `parts/`, ảnh dựng thumbnail) — video 10 phút có thể chiếm vài chục GB.
+  Giữ story, giọng đọc, ảnh xem trước, video mp4 và gói YouTube.
+- **Xóa dự án**: gõ đúng tên dự án để xác nhận; video mp4, gói YouTube, content và giọng đọc được chép ra
+  `%USERPROFILE%\Videos\WhyShorts\<tên>` trước khi xóa (đổi chỗ bằng biến `WHYSHORTS_EXPORT`). Thư viện không bị xóa.
+- Dự án mẫu có trên GitHub mà đã xóa: nếu `git pull` báo xung đột thì `git restore projects/<tên>` rồi pull lại.

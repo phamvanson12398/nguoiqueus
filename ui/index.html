@@ -208,6 +208,12 @@ small.err{color:var(--bad)}
       <div class="row"><button id="btnBench">Đo tốc độ máy</button><span class="muted">render thử 4 khung để ước tính đúng thời gian trên máy này</span></div>
     </div>
     <div class="panel"><h2>File đã render</h2><div id="outputs"></div><video id="player" controls class="hidden" style="max-height:70vh;margin-top:10px;border-radius:8px"></video></div>
+    <div class="panel"><h2>Dọn dẹp</h2>
+      <div class="row"><button id="btnClean">Dọn ảnh tạm</button><span class="muted" id="tempInfo">Xóa ảnh render tạm (frames/, parts/, ảnh dựng thumbnail).
+        Giữ story, giọng đọc, ảnh xem trước, video mp4 và gói YouTube.</span></div>
+      <div class="row" style="margin-top:8px"><button id="btnDelProj" style="background:#b3261e;color:#fff">Xóa dự án</button>
+        <span class="muted" id="delInfo">Chép video mp4, gói YouTube, content và giọng đọc ra thư mục Videos\WhyShorts rồi xóa cả dự án. Thư viện (nhân vật, trang phục, bối cảnh) không bị xóa.</span></div>
+    </div>
   </section>
 
   <!-- 6. YOUTUBE -->
@@ -582,6 +588,7 @@ $('#btnFix').onclick = () => { const t = $('#fixText').value.trim(); if (!t) ret
 
 // ---------------- 5. render ----------------
 function renderRender() {
+  refreshTemp();
   const st = S.state; const L = st.format === 'long';
   const fr = L && (st.chapters || []).length ? st.chapters.reduce((a, c) => a + c.frames, 0) : st.story ? st.story.frames : st.estimate.frames;
   $('#rPct').options[0].text = L ? '100 % (1920x1080)' : '100 % (1080x1920)';
@@ -651,6 +658,27 @@ function renderAIPrompts(y) {
 }
 $('#btnAIP').onclick = () => { if (!S.state.content) return toast('Cần có content trước'); run(P('/youtube/prompts'), {}, 'Viết prompt thumbnail AI'); };
 $('#aiRefs').onclick = e => { if (e.target.tagName === 'IMG') zoom([e.target.src]); };
+
+// ---------------- clean up ----------------
+async function refreshTemp() {
+  if (!S.slug) return;
+  try { const t = await api(P('/temp')); $('#tempInfo').textContent = `Ảnh tạm hiện có: ${t.mb >= 1000 ? (t.mb / 1000).toFixed(1) + ' GB' : t.mb + ' MB'} (${t.dirs} thư mục). Xóa frames/, parts/, ảnh dựng thumbnail; giữ story, giọng, ảnh xem trước, mp4, gói YouTube.`;
+    $('#delInfo').textContent = `Chép video mp4, gói YouTube, content và giọng đọc ra ${t.export} rồi xóa cả dự án. Thư viện (nhân vật, trang phục, bối cảnh) không bị xóa.`; } catch (e) {}
+}
+$('#btnClean').onclick = async () => {
+  if (!confirm('Xóa ảnh render tạm của dự án này? (Muốn render lại thì render từ đầu.)')) return;
+  try { const r = await api(P('/clean'), {body: {}}); toast(`Đã dọn ${r.freed_mb >= 1000 ? (r.freed_mb / 1000).toFixed(1) + ' GB' : r.freed_mb + ' MB'} (${r.removed.length} thư mục)`); refreshTemp(); }
+  catch (e) { toast(e.message); }
+};
+$('#btnDelProj').onclick = async () => {
+  const name = prompt(`XÓA HẲN dự án "${S.slug}"?\nVideo mp4, gói YouTube, content và giọng đọc được chép ra trước.\nGõ đúng tên dự án để xác nhận:`);
+  if (name === null) return;
+  if (name.trim() !== S.slug) return toast('Tên không khớp, không xóa');
+  try { const r = await api(P('/delete'), {body: {confirm: S.slug}}); toast(r.kept_in ? `Đã xóa. Đã giữ ${r.kept.join(', ')} ở ${r.kept_in}` : 'Đã xóa dự án');
+    try { localStorage.removeItem('ws_proj'); } catch (e) {}
+    S.slug = null; await loadProjects(); if (S.slug) await loadProject(); }
+  catch (e) { toast(e.message); }
+};
 
 // ---------------- library ----------------
 async function loadLibrary() {
