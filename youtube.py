@@ -184,7 +184,8 @@ def thumb_story(slug, concept):
                       "color": [1, 1, 1], "rot": 0})
     for c in cards: c.update({"from": 1, "to": 3})
     shot.update({"a": 1, "b": 3})
-    if concept.get("grade"): shot["grade"] = concept["grade"]
+    # a thumbnail must read at phone size: dark grades (night, storm, dusk, cold) kill the contrast (seen: a night-blue hero)
+    if concept.get("grade") and concept["grade"] not in ("night", "storm", "dusk", "cold"): shot["grade"] = concept["grade"]
     st = {"meta": {"title": f"thumbnail {concept.get('id', 1)}", "fps": 30, "frames": 3, "aspect": "16:9", "samples": 48, "output": "thumb.mp4"},
           "factions": list(cs["factions"].values()), "sets": sets, "chars": chars,
           "camera": {"rig": "long", "dof": {"fstop": concept.get("fstop", 1.8 if layout != "map" else 5.6)}, "shots": [shot]},

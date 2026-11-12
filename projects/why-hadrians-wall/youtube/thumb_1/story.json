@@ -1,0 +1,185 @@
+{
+ "meta": {
+  "title": "thumbnail 1",
+  "fps": 30,
+  "frames": 3,
+  "aspect": "16:9",
+  "samples": 48,
+  "output": "thumb.mp4"
+ },
+ "factions": [
+  {
+   "id": "rome",
+   "culture": "roman_empire_50ad",
+   "color": [
+    0.62,
+    0.06,
+    0.04
+   ],
+   "label": "ROME"
+  },
+  {
+   "id": "britons_north",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.18,
+    0.36,
+    0.12
+   ],
+   "label": "CALEDONII"
+  },
+  {
+   "id": "britons_south",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.35,
+    0.55,
+    0.8
+   ],
+   "label": "BRIGANTES"
+  }
+ ],
+ "sets": [
+  {
+   "id": "wall",
+   "type": "hadrians_wall",
+   "params": {
+    "name": "wall",
+    "origin": [
+     0,
+     0
+    ],
+    "kind": "stone",
+    "width": 3,
+    "build": 1,
+    "ruin": 0,
+    "ditch": true,
+    "crag": false,
+    "vallum": false
+   },
+   "note": "T\u01b0\u1eddng ho\u00e0n ch\u1ec9nh: \u0111\u00eam s\u01b0\u01a1ng S1, c\u1ed5ng m\u1edf ban ng\u00e0y S3, Hadrian b\u01b0\u1edbc ra S3"
+  }
+ ],
+ "chars": [
+  {
+   "id": "atto",
+   "type": "person",
+   "faction": "rome",
+   "outfit": "roman_auxiliary_122ad",
+   "look": {
+    "hair": "short",
+    "beard": "none",
+    "accent": [
+     0.98,
+     0.3,
+     0.02
+    ],
+    "seed": 7
+   },
+   "loc": [
+    -3.0,
+    -0.2,
+    -60.0
+   ],
+   "expressions": [
+    [
+     1,
+     "shock"
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.42,
+       1.28
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.42,
+       1.28
+      ],
+      1
+     ],
+     "tilt": 0.0
+    }
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "dof": {
+   "fstop": 1.8
+  },
+  "shots": [
+   {
+    "type": "closeup",
+    "frame": {
+     "subject": [
+      -3.0,
+      -0.2,
+      -60.0
+     ],
+     "move": "static_drift",
+     "x": 0.33,
+     "angle": -12,
+     "size": 2.0
+    },
+    "a": 1,
+    "b": 3
+   }
+  ]
+ },
+ "captions": {
+  "style": "off"
+ },
+ "cards": [
+  {
+   "style": "thumb_text",
+   "text": "A GATE\nEVERY MILE?",
+   "pos": [
+    -0.47,
+    0.12
+   ],
+   "size": 0.17,
+   "max_w": 0.46,
+   "max_h": 0.8,
+   "color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "rot": 4,
+   "from": 1,
+   "to": 3
+  },
+  {
+   "style": "thumb_text",
+   "text": "122 AD, NORTHERN BRITAIN",
+   "pos": [
+    0,
+    -0.78
+   ],
+   "size": 0.08,
+   "max_w": 0.8,
+   "max_h": 0.18,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "rot": 0,
+   "from": 1,
+   "to": 3
+  }
+ ],
+ "sound": {
+  "master": {
+   "lufs": -14
+  }
+ }
+}

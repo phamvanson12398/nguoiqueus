@@ -297,15 +297,12 @@
       "enum": [
        "day",
        "dawn",
-       "dusk",
-       "night",
-       "cold",
        "warm",
        "desert",
        "sepia",
-       "storm",
        "fire"
-      ]
+      ],
+      "description": "thumbnail phải sáng, tương phản cao: không dùng night/storm/dusk/cold"
      },
      "fstop": {
       "type": "number"

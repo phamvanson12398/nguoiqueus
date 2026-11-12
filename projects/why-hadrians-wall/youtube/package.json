@@ -1,0 +1,327 @@
+{
+ "titles": [
+  {
+   "title": "Why Did Rome Build a Wall Across Britain?",
+   "angle_vi": "Câu hỏi Why… gốc, đúng tiêu đề video, từ khóa rõ"
+  },
+  {
+   "title": "The Real Reason Rome Built Hadrian's Wall",
+   "angle_vi": "'The real reason' + từ khóa chính Hadrian's Wall"
+  },
+  {
+   "title": "Why Hadrian's Wall Had a Gate Every Mile",
+   "angle_vi": "Chi tiết lạ gây tò mò (cổng mỗi dặm) — điều phần lớn người xem không biết"
+  },
+  {
+   "title": "Hadrian's Wall Wasn't Really a Fortress",
+   "angle_vi": "Phản trực giác: phá giả thuyết phổ biến, không lộ hết câu trả lời"
+  },
+  {
+   "title": "73 Miles of Stone: Why Rome Stopped in Britain",
+   "angle_vi": "Con số + quy mô + câu hỏi vì sao siêu cường dừng lại"
+  },
+  {
+   "title": "Why the World's Strongest Empire Built a Wall",
+   "angle_vi": "Nghịch lý: đế chế mạnh nhất lại đi xây tường"
+  },
+  {
+   "title": "Hadrian's Wall Was Basically Roman Airport Security",
+   "angle_vi": "So sánh hài hiện đại (sân bay) — gần câu trả lời, hợp khán giả Mỹ"
+  },
+  {
+   "title": "What Was Hadrian's Wall Actually For?",
+   "angle_vi": "Bí ẩn mục đích thật, dạng câu hỏi tìm kiếm phổ biến"
+  },
+  {
+   "title": "Socks, Beer and a Wall: Life at Rome's Edge",
+   "angle_vi": "Góc đời thường hài hước từ thư Vindolanda"
+  },
+  {
+   "title": "The Roman Wall at the Edge of the World",
+   "angle_vi": "Không khí sử thi/bí ẩn, tên chương 1"
+  }
+ ],
+ "best_title": 2,
+ "description_hook": "In 122 AD the most powerful empire on Earth stopped conquering and built a 73-mile wall across Britain. So why did Hadrian's Wall have a gate every single mile?",
+ "description_body": "We start on a freezing, foggy night on the wall with a nineteen-year-old soldier, a mysterious stranger, and a goat. Then we go back to meet Hadrian, the bearded emperor who decided Rome had grown big enough, and to see why Britain was the messiest border in the empire.\n\nYou'll watch three legions build eighty Roman miles of stone and turf, see the plan change halfway through, and read the real letters soldiers left behind at Vindolanda: birthday invitations, socks, underpants, and a desperate request for more beer. Finally we test the obvious theory that the wall was a fortress built to stop invasions, and find out what it was really for.",
+ "beat_titles": {
+  "1": "A Shape in the Fog",
+  "2": "Let's Go Back: 122 AD",
+  "3": "Why Would Rome Hide?",
+  "4": "Hadrian and His Beard",
+  "5": "Britain, the Messy Border",
+  "6": "Hadrian Sees It Himself",
+  "7": "Soldiers Were the Builders",
+  "8": "The Plan on Paper",
+  "9": "Then the Plan Changed",
+  "10": "Six Years of Stone",
+  "11": "Letters from Vindolanda",
+  "12": "Theory One: A Fortress?",
+  "13": "Cows Are Bad at Ladders",
+  "14": "The Real Answer: Checkpoint",
+  "15": "A Message in Stone",
+  "16": "Did It Work?",
+  "17": "The Wall Today"
+ },
+ "sources": [
+  {
+   "source": "Hadrian's Wall — length, construction, legions, milecastles, Vallum, customs role",
+   "url": "https://en.wikipedia.org/wiki/Hadrian%27s_Wall"
+  },
+  {
+   "source": "Historia Augusta, Life of Hadrian 5.2, 5.3, 11.2",
+   "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Historia_Augusta/Hadrian/1*.html"
+  },
+  {
+   "source": "Hadrian — reign 117-138, beard, visit to Britain in 122",
+   "url": "https://en.wikipedia.org/wiki/Hadrian"
+  },
+  {
+   "source": "Battle of Mons Graupius (83/84 AD)",
+   "url": "https://en.wikipedia.org/wiki/Battle_of_Mons_Graupius"
+  },
+  {
+   "source": "Stanegate frontier",
+   "url": "https://en.wikipedia.org/wiki/Stanegate"
+  },
+  {
+   "source": "Historic England — Hadrian's Wall, the Turf Wall",
+   "url": "https://historicengland.org.uk/images-books/publications/hadrians-wall/hadrians-wall-chap4"
+  },
+  {
+   "source": "Visit Hadrian's Wall — A wall made of turf",
+   "url": "https://www.visithadrianswall.co.uk/hadrians-wall/life-on-hadrians-wall/a-wall-made-of-turf"
+  },
+  {
+   "source": "Vindolanda Tablet 346 (socks, sandals, underpants)",
+   "url": "https://romaninscriptionsofbritain.org/inscriptions/TabVindol346"
+  },
+  {
+   "source": "Antigone — Vindolanda tablets, 'Brittunculi' (Tab. Vindol. 164)",
+   "url": "https://antigonejournal.com/2022/12/vindolanda-tablets/"
+  },
+  {
+   "source": "Mental Floss — Vindolanda tablets (birthday invitation 291, beer request 628)",
+   "url": "https://www.mentalfloss.com/science/archaeology/vindolanda-tablets-facts"
+  },
+  {
+   "source": "Vindolanda — Tungrian and Batavian garrisons",
+   "url": "https://en.wikipedia.org/wiki/Vindolanda"
+  },
+  {
+   "source": "Magnis (Carvoran) — Hamian archers from Syria",
+   "url": "https://en.wikipedia.org/wiki/Magnis_(Carvoran)"
+  },
+  {
+   "source": "The Past — the wall as a controlled barrier",
+   "url": "https://the-past.com/?p=32088"
+  },
+  {
+   "source": "Antonine Wall",
+   "url": "https://en.wikipedia.org/wiki/Antonine_Wall"
+  },
+  {
+   "source": "Co-Curate — Military Road (B6318), 1750s",
+   "url": "https://co-curate.ncl.ac.uk/resources/view/138497"
+  },
+  {
+   "source": "UNESCO — Frontiers of the Roman Empire",
+   "url": "https://whc.unesco.org/en/list/430"
+  },
+  {
+   "source": "National Trails — Hadrian's Wall Path (84 miles)",
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/"
+  },
+  {
+   "source": "SmarterTravel — George R.R. Martin on Hadrian's Wall as inspiration",
+   "url": "https://www.smartertravel.com/game-of-thrones-exclusive-george-r-r-martin-talks-season-two-the-winds-of-winter-and-real-world-influences-for-a-song-of-ice-and-fire/"
+  },
+  {
+   "source": "Demography of the Roman Empire",
+   "url": "https://en.wikipedia.org/wiki/Demography_of_the_Roman_Empire"
+  }
+ ],
+ "tags": [
+  "Hadrian's Wall",
+  "why did Rome build Hadrian's Wall",
+  "Roman Britain",
+  "Roman Empire",
+  "Emperor Hadrian",
+  "Roman history",
+  "ancient history",
+  "Vindolanda tablets",
+  "Roman legion",
+  "Roman frontier",
+  "Antonine Wall",
+  "history explained",
+  "animated history",
+  "Britannia",
+  "ancient Rome documentary"
+ ],
+ "hashtags": [
+  "#HadriansWall",
+  "#RomanEmpire",
+  "#History"
+ ],
+ "pinned_comment": "If you were a Roman soldier on Hadrian's Wall, which job would you rather have: guarding the gate in the fog, or writing home asking for more socks and beer? 🧦🍺",
+ "thumbnails": [
+  {
+   "id": 1,
+   "idea_vi": "Hero: lính phụ trợ Atto đứng trên tường trong đêm sương, mặt sốc, hai tay ôm má — gợi cảnh mở đầu (có gì đó trong sương). Chữ hỏi về cổng mỗi dặm.",
+   "layout": "hero",
+   "set": "wall",
+   "grade": "night",
+   "chars": [
+    {
+     "id": "atto",
+     "expression": "shock",
+     "pose": "hands_cheeks",
+     "x": 0.5
+    }
+   ],
+   "text": "A GATE\nEVERY MILE?",
+   "text_color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "text2": "122 AD, northern Britain",
+   "text2_color": [
+    1,
+    1,
+    1
+   ]
+  },
+  {
+   "id": 2,
+   "idea_vi": "VS: Atto (La Mã) khoanh tay, mặt tự mãn, đứng gác cổng; Vepo (Briton phía bắc) nhún vai, mặt lo — gợi câu trả lời 'trạm kiểm soát/thu phí' mà không lộ hẳn.",
+   "layout": "vs",
+   "set": "wall",
+   "grade": "dusk",
+   "chars": [
+    {
+     "id": "atto",
+     "expression": "smug_closed",
+     "pose": "cross_arms"
+    },
+    {
+     "id": "vepo",
+     "expression": "worried",
+     "pose": "shrug"
+    }
+   ],
+   "text": "PAY TO PASS?",
+   "text_color": [
+    1,
+    0.85,
+    0.1
+   ]
+  },
+  {
+   "id": 3,
+   "idea_vi": "Map: bản đồ giấy da Britannia với tuyến tường vẽ ngang eo đảo (Tyne–Solway), tông sepia; chữ hỏi vì sao La Mã dừng lại ở đây.",
+   "layout": "map",
+   "set": "map_wall",
+   "subject": "center",
+   "grade": "sepia",
+   "chars": [],
+   "text": "ROME STOPPED HERE",
+   "text_color": [
+    1,
+    1,
+    1
+   ],
+   "text2": "73 miles of stone. Why?",
+   "text2_color": [
+    1,
+    0.85,
+    0.1
+   ]
+  }
+ ],
+ "timestamps": [
+  [
+   0.0,
+   "The Edge of the World: A Shape in the Fog"
+  ],
+  [
+   28.0,
+   "Let's Go Back: 122 AD"
+  ],
+  [
+   56.0,
+   "Why Would Rome Hide?"
+  ],
+  [
+   82.2,
+   "Hadrian and His Beard"
+  ],
+  [
+   114.88,
+   "Britain, the Messy Border"
+  ],
+  [
+   147.66,
+   "Hadrian Sees It Himself"
+  ],
+  [
+   182.26,
+   "Eighty Miles of Stone: Soldiers Were the Builders"
+  ],
+  [
+   212.18,
+   "The Plan on Paper"
+  ],
+  [
+   251.04,
+   "Then the Plan Changed"
+  ],
+  [
+   286.08,
+   "Six Years of Stone"
+  ],
+  [
+   318.28,
+   "Letters from Vindolanda"
+  ],
+  [
+   354.06,
+   "A Door, Not a Fortress: Theory One: A Fortress?"
+  ],
+  [
+   390.72,
+   "Cows Are Bad at Ladders"
+  ],
+  [
+   428.35,
+   "The Real Answer: Checkpoint"
+  ],
+  [
+   467.72,
+   "A Message in Stone"
+  ],
+  [
+   502.44,
+   "Did It Work?"
+  ],
+  [
+   544.98,
+   "The Wall Today"
+  ]
+ ],
+ "thumb_review": {
+  "best": 2,
+  "scores": [
+   5,
+   7,
+   4
+  ],
+  "problems_vi": [
+   "Thumb 1: grade đêm nhuộm xanh toàn bộ, mặt nhân vật lẫn vào nền xanh nên tương phản kém. Không thấy tường hay sương, nền chỉ là trời trống. Không thấy dáng hai tay ôm má: hai miếng che má của mũ trông như tai. Chữ vàng hơi nhỏ, dòng phụ 'NORTHERN BRITAIN' đè lên thân nhân vật.",
+   "Thumb 2: mặt nhắm mắt tự mãn của Atto hơi hiền, chưa cường điệu bằng mặt lo của Vepo. Không thấy bức tường, nên thiếu ngữ cảnh Hadrian. Chữ vàng trên nền hồng nhạt chỉ đọc được nhờ viền đen. Cây giáo của Vepo cắt chéo qua người hơi rối. Dù vậy đây là thumb rõ nhất: hai mặt to, không bị chữ che, có VS và câu hỏi gây tò mò.",
+   "Thumb 3: bản đồ phóng quá sát nên không nhận ra hình đảo Anh. Bức tường hiện thành hai hình chữ nhật xanh/xám như bảng màu chứ không phải một đường tường. Chữ trắng trên giấy da nhạt có tương phản thấp, dòng phụ nhỏ. Không có nhân vật hay mặt người, chữ CALEDONIA bị cắt ở mép trên. Khó gây tò mò ở cỡ điện thoại."
+  ],
+  "summary_vi": "Chọn thumb 2 (VS, 7/10): hai khuôn mặt to và rõ, chữ 'PAY TO PASS?' đọc được ở cỡ nhỏ và không che mặt, có VS làm điểm nhấn, gợi ra xung đột. Thumb 1 (5/10) bị grade đêm làm mất tương phản và nền trống. Thumb 3 (4/10) có bản đồ khó hiểu, chữ trắng chìm trên giấy da. Thumb 2 không có lỗi bố cục dễ sửa như chữ đè mặt, nhân vật bị cắt hay mũi tên chỉ sai, nên không cần sửa.",
+  "revised": null
+ }
+}

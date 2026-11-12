@@ -1,0 +1,262 @@
+{
+ "meta": {
+  "title": "thumbnail 3",
+  "fps": 30,
+  "frames": 3,
+  "aspect": "16:9",
+  "samples": 48,
+  "output": "thumb.mp4"
+ },
+ "factions": [
+  {
+   "id": "rome",
+   "culture": "roman_empire_50ad",
+   "color": [
+    0.62,
+    0.06,
+    0.04
+   ],
+   "label": "ROME"
+  },
+  {
+   "id": "britons_north",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.18,
+    0.36,
+    0.12
+   ],
+   "label": "CALEDONII"
+  },
+  {
+   "id": "britons_south",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.35,
+    0.55,
+    0.8
+   ],
+   "label": "BRIGANTES"
+  }
+ ],
+ "sets": [
+  {
+   "id": "map_wall",
+   "type": "parchment_map",
+   "params": {
+    "origin": [
+     700,
+     0,
+     0
+    ],
+    "bounds": [
+     -4.3,
+     54.4,
+     -0.5,
+     55.6
+    ],
+    "title": "THE WALL \u00b7 AD 122",
+    "rivers": true,
+    "cities": [
+     {
+      "name": "Luguvalium",
+      "at": [
+       -2.93,
+       54.89
+      ],
+      "size": 2,
+      "label_offset": [
+       0,
+       -0.35
+      ]
+     },
+     {
+      "name": "Pons Aelius",
+      "at": [
+       -1.61,
+       54.97
+      ],
+      "size": 2,
+      "label_offset": [
+       0,
+       -0.35
+      ]
+     },
+     {
+      "name": "Vindolanda",
+      "at": [
+       -2.36,
+       54.99
+      ],
+      "size": 1,
+      "label_offset": [
+       0,
+       0.35
+      ]
+     }
+    ],
+    "regions": [
+     {
+      "name": "STONE",
+      "poly": [
+       [
+        -2.6,
+        54.955
+       ],
+       [
+        -1.5,
+        54.955
+       ],
+       [
+        -1.5,
+        55.025
+       ],
+       [
+        -2.6,
+        55.025
+       ]
+      ],
+      "color": [
+       0.32,
+       0.32,
+       0.32
+      ],
+      "opacity": 0.85,
+      "from": 1
+     },
+     {
+      "name": "TURF",
+      "poly": [
+       [
+        -3.22,
+        54.925
+       ],
+       [
+        -2.6,
+        54.955
+       ],
+       [
+        -2.6,
+        55.025
+       ],
+       [
+        -3.22,
+        54.995
+       ]
+      ],
+      "color": [
+       0.1,
+       0.45,
+       0.06
+      ],
+      "opacity": 0.85,
+      "from": 1
+     }
+    ],
+    "labels": [
+     {
+      "text": "CALEDONIA",
+      "at": [
+       -3,
+       55.42
+      ],
+      "kind": "region"
+     },
+     {
+      "text": "BRITANNIA",
+      "at": [
+       -2,
+       54.58
+      ],
+      "kind": "region"
+     },
+     {
+      "text": "NORTH SEA",
+      "at": [
+       -0.95,
+       55.25
+      ],
+      "kind": "sea"
+     },
+     {
+      "text": "SOLWAY FIRTH",
+      "at": [
+       -3.6,
+       54.8
+      ],
+      "kind": "sea"
+     }
+    ]
+   }
+  }
+ ],
+ "chars": [],
+ "camera": {
+  "rig": "long",
+  "dof": {
+   "fstop": 5.6
+  },
+  "shots": [
+   {
+    "type": "map",
+    "frame": {
+     "subject": "map_wall.center",
+     "size": 6.0,
+     "move": "static_drift",
+     "height": "top"
+    },
+    "a": 1,
+    "b": 3,
+    "grade": "sepia"
+   }
+  ]
+ },
+ "captions": {
+  "style": "off"
+ },
+ "cards": [
+  {
+   "style": "thumb_text",
+   "text": "ROME STOPPED HERE",
+   "pos": [
+    0,
+    0.62
+   ],
+   "size": 0.16,
+   "max_w": 0.9,
+   "max_h": 0.34,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "rot": 0,
+   "from": 1,
+   "to": 3
+  },
+  {
+   "style": "thumb_text",
+   "text": "73 MILES OF STONE. WHY?",
+   "pos": [
+    0,
+    -0.78
+   ],
+   "size": 0.08,
+   "max_w": 0.8,
+   "max_h": 0.18,
+   "color": [
+    1,
+    1,
+    1
+   ],
+   "rot": 0,
+   "from": 1,
+   "to": 3
+  }
+ ],
+ "sound": {
+  "master": {
+   "lufs": -14
+  }
+ }
+}

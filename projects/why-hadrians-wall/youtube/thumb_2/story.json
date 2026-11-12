@@ -1,0 +1,231 @@
+{
+ "meta": {
+  "title": "thumbnail 2",
+  "fps": 30,
+  "frames": 3,
+  "aspect": "16:9",
+  "samples": 48,
+  "output": "thumb.mp4"
+ },
+ "factions": [
+  {
+   "id": "rome",
+   "culture": "roman_empire_50ad",
+   "color": [
+    0.62,
+    0.06,
+    0.04
+   ],
+   "label": "ROME"
+  },
+  {
+   "id": "britons_north",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.18,
+    0.36,
+    0.12
+   ],
+   "label": "CALEDONII"
+  },
+  {
+   "id": "britons_south",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.35,
+    0.55,
+    0.8
+   ],
+   "label": "BRIGANTES"
+  }
+ ],
+ "sets": [
+  {
+   "id": "wall",
+   "type": "hadrians_wall",
+   "params": {
+    "name": "wall",
+    "origin": [
+     0,
+     0
+    ],
+    "kind": "stone",
+    "width": 3,
+    "build": 1,
+    "ruin": 0,
+    "ditch": true,
+    "crag": false,
+    "vallum": false
+   },
+   "note": "T\u01b0\u1eddng ho\u00e0n ch\u1ec9nh: \u0111\u00eam s\u01b0\u01a1ng S1, c\u1ed5ng m\u1edf ban ng\u00e0y S3, Hadrian b\u01b0\u1edbc ra S3"
+  }
+ ],
+ "chars": [
+  {
+   "id": "atto",
+   "type": "person",
+   "faction": "rome",
+   "outfit": "roman_auxiliary_122ad",
+   "look": {
+    "hair": "short",
+    "beard": "none",
+    "accent": [
+     0.98,
+     0.3,
+     0.02
+    ],
+    "seed": 7
+   },
+   "loc": [
+    -4.155555555555556,
+    -0.2,
+    -60.0
+   ],
+   "expressions": [
+    [
+     1,
+     "smug_closed"
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       0.22,
+       0.45
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       -0.22,
+       0.5
+      ],
+      1
+     ],
+     "tilt": 0.0
+    }
+   }
+  },
+  {
+   "id": "vepo",
+   "type": "person",
+   "faction": "britons_north",
+   "role": "commoner",
+   "look": {
+    "hair": "tied",
+    "beard": "goatee",
+    "accent": [
+     0.05,
+     0.55,
+     0.12
+    ],
+    "seed": 11
+   },
+   "loc": [
+    -1.8444444444444443,
+    -0.2,
+    -60.0
+   ],
+   "expressions": [
+    [
+     1,
+     "worried"
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.6,
+       0.62
+      ],
+      1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.6,
+       0.62
+      ],
+      -1
+     ],
+     "tilt": 0.0
+    }
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "dof": {
+   "fstop": 1.8
+  },
+  "shots": [
+   {
+    "type": "medium",
+    "frame": {
+     "subject": [
+      -3.0,
+      -0.2,
+      -60.0
+     ],
+     "size": 2.6,
+     "move": "static_drift",
+     "y": -0.18
+    },
+    "a": 1,
+    "b": 3,
+    "grade": "dusk"
+   }
+  ]
+ },
+ "captions": {
+  "style": "off"
+ },
+ "cards": [
+  {
+   "style": "thumb_text",
+   "text": "VS",
+   "pos": [
+    0,
+    0.1
+   ],
+   "size": 0.2,
+   "color": [
+    0.95,
+    0.12,
+    0.05
+   ],
+   "rot": -4,
+   "from": 1,
+   "to": 3
+  },
+  {
+   "style": "thumb_text",
+   "text": "PAY TO PASS?",
+   "pos": [
+    0,
+    -0.74
+   ],
+   "size": 0.13,
+   "max_w": 0.94,
+   "max_h": 0.24,
+   "color": [
+    1,
+    0.85,
+    0.1
+   ],
+   "rot": 0,
+   "from": 1,
+   "to": 3
+  }
+ ],
+ "sound": {
+  "master": {
+   "lufs": -14
+  }
+ }
+}
