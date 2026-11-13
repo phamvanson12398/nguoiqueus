@@ -56,15 +56,26 @@ def say(msg):
 
 def _popen_run(cmd, timeout, **kw):
     """subprocess.run that registers the process so a job can be cancelled from server.py"""
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE if kw.get("input") is not None else None,
-                         text=True, encoding="utf-8", errors="replace", cwd=kw.get("cwd"), env=kw.get("env"))
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         stdin=subprocess.PIPE if kw.get("input") is not None else subprocess.DEVNULL,
+                         text=True, encoding="utf-8", errors="replace", cwd=kw.get("cwd"), env=kw.get("env"), **_no_window())
     procs = getattr(_tls, "procs", None)
     if procs is not None: procs.append(p)
+    # a plan or a design can take 10-15 minutes with no output: say every minute that Claude is still working,
+    # so the page never looks frozen (the hook is thread-local: take it here, call it from the timer thread)
+    hook = getattr(_tls, "hook", None); t0 = time.time(); stop = threading.Event()
+
+    def beat():
+        while not stop.wait(60):
+            m = int((time.time() - t0) // 60)
+            if hook: hook(f"   … Claude vẫn đang làm ({m} phút{', việc lập story thường mất 10-15 phút' if m == 1 else ''})")
+    if hook: threading.Thread(target=beat, daemon=True).start()
     try:
         out, err = p.communicate(kw.get("input"), timeout=timeout)
     except subprocess.TimeoutExpired:
         p.kill(); p.communicate(); raise
     finally:
+        stop.set()
         if procs is not None and p in procs: procs.remove(p)
     if getattr(_tls, "cancelled", False): raise BridgeError("đã hủy")
     return subprocess.CompletedProcess(cmd, p.returncode, out, err)
@@ -106,15 +117,35 @@ def api_key_warning():
 _help_cache = None
 
 
-def cli_help():
-    global _help_cache
-    if _help_cache is None:
+_help_lock = threading.Lock()
+_help_fail = 0.0
+
+
+def cli_help(block=True):
+    """`claude --help` (which flags this CLI version has), cached. Never blocks a page for long: no console stdin,
+    20 s limit, and a failure is remembered for 5 minutes instead of retried by every request.
+    block=False: None while another thread is still asking."""
+    global _help_cache, _help_fail
+    if _help_cache is not None: return _help_cache
+    if not _help_lock.acquire(blocking=block): return None
+    try:
+        if _help_cache is not None: return _help_cache
+        if time.time() - _help_fail < 300: return ""
         try:
-            _help_cache = subprocess.run(claude_cmd() + ["--help"], capture_output=True, text=True, timeout=60,
-                                         encoding="utf-8", errors="replace").stdout
+            _help_cache = subprocess.run(claude_cmd() + ["--help"], capture_output=True, text=True, timeout=20, stdin=subprocess.DEVNULL,
+                                         encoding="utf-8", errors="replace", **_no_window()).stdout
         except FileNotFoundError:
             raise BridgeError(f"Không tìm thấy Claude CLI ('{' '.join(claude_cmd())}'). Cài Claude Code rồi đăng nhập bằng gói Pro/Max.")
-    return _help_cache
+        except subprocess.TimeoutExpired:
+            _help_fail = time.time(); return ""
+        return _help_cache
+    finally:
+        _help_lock.release()
+
+
+def _no_window():
+    """Windows: child processes get no console of their own and cannot be frozen by a click in the studio's window"""
+    return {"creationflags": subprocess.CREATE_NO_WINDOW} if os.name == "nt" else {}
 
 
 def load_schema(name):

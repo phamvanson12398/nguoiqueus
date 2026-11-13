@@ -366,3 +366,11 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   chắn nhất, vẫn chắn thì WARN. Cú garrison bị cây che → tự xoay 65°. Ảnh: `docs/img/walls_fix.jpg`.
 - Server: sau MAX_FIX vòng sửa mà chỉ còn WARN (cảnh dựng được) thì vẫn giao ảnh xem trước + liệt kê cảnh báo, không báo dựng hỏng.
 - Bụi (`dust`) bám đất, cao ~ngang hông; nhãn đè đầu không dời được chỉ là NOTE.
+
+## Trang không "đứng im" khi Claude làm lâu (Windows)
+- Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
+- Đồng hồ việc chạy trên trang giữa các lần hỏi; hỏi tiến độ có giới hạn 8 s, hỏng ≥ 4 lần liền thì báo "Studio không trả lời"
+  kèm cách gỡ; việc không còn (studio khởi động lại) thì báo bấm chạy lại.
+- Server tắt QuickEdit của cửa sổ dòng lệnh (bấm chuột vào cửa sổ đen làm đóng băng chương trình); lỗi ghi `logs/server_errors.log`,
+  không in ra cửa sổ; tiến trình con (Claude) không dùng bàn phím của cửa sổ (stdin DEVNULL) và không có cửa sổ riêng.
+- `claude --help` hỏi một lần chạy nền lúc mở studio, tối đa 20 s, lỗi thì nhớ 5 phút; trang trạng thái không bao giờ chờ nó.

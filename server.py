@@ -817,12 +817,12 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         try: self.route("GET")
         except ValueError as e: self.send_json({"error": str(e)}, 400)
-        except Exception as e: traceback.print_exc(); self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
+        except Exception as e: log_error(); self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
 
     def do_POST(self):
         try: self.route("POST")
         except ValueError as e: self.send_json({"error": str(e)}, 400)
-        except Exception as e: traceback.print_exc(); self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
+        except Exception as e: log_error(); self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
 
     do_PUT = do_POST
 
@@ -1002,11 +1002,15 @@ class Handler(BaseHTTPRequestHandler):
 
     def status(self):
         h = None
-        try: h = bridge.cli_help(); claude_ok = True
+        try:
+            h = bridge.cli_help(block=False); claude_ok = bool(h)
+            if h is None: h = "Đang kiểm tra Claude CLI…"; claude_ok = None
+            elif not h: h = ("Claude CLI không trả lời 'claude --help' trong 20 giây (đang tự cập nhật hoặc chờ đăng nhập?). "
+                           "Mở cmd, gõ claude để kiểm tra; tool thử lại sau 5 phút.")
         except bridge.BridgeError as e: claude_ok = False; h = str(e)
         b = bridge.blender_cmd()
         return {"api_key_warning": bridge.api_key_warning(), "claude": claude_ok, "claude_note": None if claude_ok else h,
-                "json_schema": bool(claude_ok and "--json-schema" in h), "blender": b,
+                "json_schema": bool(claude_ok and "--json-schema" in (h or "")), "blender": b,
                 "blender_found": bool(shutil.which(b) or os.path.exists(b)), "usage": bridge.usage(),
                 "wpm": WPM, "sec_per_frame": spf_for("short"), "sec_per_frame_long": spf_for("long"), "ffmpeg": bool(shutil.which("ffmpeg")),
                 "jobs": [j.to_json(10 ** 9) for j in JOBS.values() if j.status == "running"]}
@@ -1032,13 +1036,45 @@ class Handler(BaseHTTPRequestHandler):
         return out
 
 
+def _quiet(fn):
+    try: fn()
+    except Exception: pass
+
+
+def log_error():
+    """errors go to logs/server_errors.log, not the console (a frozen Windows console would freeze the request too)"""
+    try:
+        os.makedirs(os.path.join(ROOT, "logs"), exist_ok=True)
+        with open(os.path.join(ROOT, "logs", "server_errors.log"), "a", encoding="utf-8") as f:
+            f.write(time.strftime("%Y-%m-%d %H:%M:%S ") + traceback.format_exc() + "\n")
+    except Exception:
+        pass
+
+
+def no_quick_edit():
+    """Windows console: a click in the black window starts a text selection (QuickEdit) and FREEZES every program
+    writing to it until Esc - the studio then looks dead (timer stuck at 0). Turn QuickEdit off for this window."""
+    if os.name != "nt": return
+    try:
+        import ctypes
+        k = ctypes.windll.kernel32; h = k.GetStdHandle(-10)          # STD_INPUT_HANDLE
+        mode = ctypes.c_uint32()
+        if k.GetConsoleMode(h, ctypes.byref(mode)):
+            k.SetConsoleMode(h, (mode.value & ~0x0040) | 0x0080)      # clear ENABLE_QUICK_EDIT_MODE, keep EXTENDED_FLAGS
+    except Exception:
+        pass
+
+
 def main(argv):
+    no_quick_edit()
     port = int(argv[argv.index("--port") + 1]) if "--port" in argv else 8765
     host = argv[argv.index("--host") + 1] if "--host" in argv else "127.0.0.1"
     os.makedirs(PROJECTS, exist_ok=True)
     w = bridge.api_key_warning()
     if w: print(w)
+    threading.Thread(target=lambda: _quiet(bridge.cli_help), daemon=True).start()     # ask the CLI once, in the background
     srv = ThreadingHTTPServer((host, port), Handler)
+    srv.handle_error = lambda request, client_address: log_error()                  # (broken pipes etc.: not on the console)
     url = f"http://{host}:{port}"
     print(f"WhyShorts Studio: {url}   (Ctrl+C để tắt)", flush=True)
     if "--no-browser" not in argv:

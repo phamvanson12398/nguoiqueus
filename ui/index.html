@@ -294,6 +294,7 @@ async function api(path, opt={}) {
   const o = {method: opt.method || (opt.body !== undefined || opt.raw !== undefined ? 'POST' : 'GET'), headers: {}};
   if (opt.raw) { o.body = opt.raw; o.headers['Content-Type'] = 'application/octet-stream'; }
   else if (opt.body !== undefined) { o.body = JSON.stringify(opt.body); o.headers['Content-Type'] = 'application/json'; }
+  if (opt.timeout) { const ac = new AbortController(); o.signal = ac.signal; setTimeout(() => ac.abort(), opt.timeout); }
   const r = await fetch(path, o); const j = await r.json().catch(() => ({error: 'bad response'}));
   if (!r.ok || j.error) throw new Error(j.error || r.statusText);
   return j;
@@ -349,15 +350,24 @@ async function loadProject() {
 
 // ---------------- jobs ----------------
 let pollT = null;
+// the timer ticks in the page between polls; if the studio stops answering, say so (and why that usually happens)
+setInterval(() => { if (S.job && S.jobT0) $('#jobTime').textContent = fmtTime((Date.now() - S.jobT0) / 1000) +
+  (S.pollFail >= 4 ? ' · ⚠ Studio không trả lời: xem cửa sổ đen của start_studio.bat (bấm Esc nếu đang bôi chọn chữ)' : ''); }, 1000);
 function watchJob(id, kind, after) {
-  S.job = id; S.logLen = 0; S.after = after;
+  S.job = id; S.logLen = 0; S.after = after; S.jobT0 = null; S.pollFail = 0;
   $('#jobPanel').classList.remove('hidden'); $('#jobLog').textContent = ''; $('#jobTitle').textContent = `Đang chạy: ${kind}`;
   $('#jobBarWrap').classList.add('hidden'); $('#jobProg').textContent = '';
   clearTimeout(pollT); poll();
 }
 async function poll() {
   if (!S.job) return;
-  let j; try { j = await api(`/api/jobs/${S.job}?since=${S.logLen}`); } catch (e) { pollT = setTimeout(poll, 2000); return; }
+  let j; try { j = await api(`/api/jobs/${S.job}?since=${S.logLen}`, {timeout: 8000}); S.pollFail = 0; }
+  catch (e) {
+    S.pollFail = (S.pollFail || 0) + 1;
+    if (/no job|404/.test(e.message)) { $('#jobTitle').textContent = 'Việc này không còn (studio đã khởi động lại): bấm chạy lại'; S.job = null; return; }
+    pollT = setTimeout(poll, 2000); return;
+  }
+  S.jobT0 = Date.now() - j.elapsed * 1000;
   if (j.log.length) { const L = $('#jobLog'); L.textContent += j.log.join('\n') + '\n'; L.scrollTop = L.scrollHeight; }
   S.logLen = j.log_len; $('#jobTime').textContent = fmtTime(j.elapsed);
   if (j.progress) {
