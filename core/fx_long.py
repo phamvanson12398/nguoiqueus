@@ -115,10 +115,10 @@ def smoke(k, spec, rnd, dust=False):
             if f < t0 or u > 1:
                 o.scale = (0, 0, 0); o.keyframe_insert("scale", frame=f); fac.default_value = 0.0; fac.keyframe_insert("default_value", frame=f); continue
             s = (0.35 + 0.9 * ease(min(1, u * 1.6))) * (1.4 if dust else 1.0)
-            o.scale = (s * sq, s / sq, s * (0.6 if dust else 1.0))
+            o.scale = (s * sq, s / sq, s * (0.38 if dust else 1.0))     # dust hugs the ground: below the waist, never over faces
             sway = 0.15 * size * math.sin(wob + u * 5)
             o.location = (x0 + ox + wind[0] * u * life / 30 + sway, y0 + oy + wind[1] * u * life / 30,
-                          z0 + size * 0.5 + rise * rs * u * life / 30)
+                          z0 + size * (0.15 if dust else 0.5) + rise * rs * u * life / 30)
             o.rotation_euler[2] = wob + u * 0.8
             fac.default_value = spec.get("opacity", 0.75) * 1.7 * (1 - u) ** 1.3 * min(1, u * 6)
             for p in ("scale", "location", "rotation_euler"): o.keyframe_insert(p, frame=f)
