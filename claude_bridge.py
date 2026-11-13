@@ -121,6 +121,16 @@ _help_lock = threading.Lock()
 _help_fail = 0.0
 
 
+CMD_LIMIT = 32000 if os.name == "nt" else 120000     # characters on one command line (Windows: 32,767)
+
+
+def _strip_docs(x):
+    """a JSON schema without its human text (description/title/examples): same validation, a third shorter"""
+    if isinstance(x, dict): return {k: _strip_docs(v) for k, v in x.items() if k not in ("description", "title", "examples", "$comment")}
+    if isinstance(x, list): return [_strip_docs(v) for v in x]
+    return x
+
+
 def _kill_tree(p):
     """kill a process and its children (Windows: a CLI started through node/cmd keeps the pipes open after a plain kill)"""
     try:
@@ -243,7 +253,20 @@ def _run(prompt, schema, tools, model, resume, cwd, timeout):
     if "--tools" in h: cmd += ["--tools", ",".join(tools)]
     if tools: cmd += ["--allowedTools", ",".join(tools)]
     use_schema = "--json-schema" in h
-    if use_schema: cmd += ["--json-schema", json.dumps(cli_schema(schema), ensure_ascii=False)]
+    if use_schema:
+        # Windows caps a whole command line at 32,767 characters and the story schema alone is ~27,000: past the cap
+        # CreateProcess fails with WinError 206. Then pass a compact schema (no descriptions) for validation and put the
+        # full one, descriptions included, in the prompt (stdin has no limit); if even that is too long, prompt only.
+        full = json.dumps(cli_schema(schema), ensure_ascii=False, separators=(",", ":"))
+        fits = lambda arg: len(subprocess.list2cmdline(cmd + ["--json-schema", arg])) + 400 <= CMD_LIMIT   # exact Windows quoting (\" per quote)
+        if fits(full):
+            cmd += ["--json-schema", full]
+        else:
+            lean = json.dumps(_strip_docs(cli_schema(schema)), ensure_ascii=False, separators=(",", ":"))
+            if fits(lean): cmd += ["--json-schema", lean]
+            else: use_schema = False
+            prompt += "\n\nJSON Schema đầy đủ (kèm mô tả từng trường) của câu trả lời:\n" + json.dumps(schema, ensure_ascii=False)
+            if not use_schema: prompt += "\n\nTrả lời DUY NHẤT một khối ```json đúng schema trên."
     else: prompt += "\n\nTrả lời DUY NHẤT một khối ```json theo đúng JSON Schema sau:\n" + json.dumps(schema, ensure_ascii=False)
     model = model or os.environ.get("WHYSHORTS_MODEL")
     if model: cmd += ["--model", model]

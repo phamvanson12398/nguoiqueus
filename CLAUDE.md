@@ -383,3 +383,7 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
 - Nguyên nhân THẬT (threads.log ở cổng mới cũng không có việc nào, ping `jobs: 0`): việc kết thúc với LỖI ngay ở bước 1, nhưng hàm `api()` của trang
   coi phản hồi có trường `error` là yêu cầu hỏng → hỏi lại mãi, không hiện lỗi (đồng hồ "0 giây", rồi "Studio không trả lời"). Giờ hỏi tiến độ
   dùng `keepError` → hiện "❌ Lỗi" + nội dung. (Đổi cổng 1111 và giữ cổng độc quyền vẫn giữ lại, vô hại.)
+- Lỗi thật hiện ra sau khi sửa trang: `WinError 206 The filename or extension is too long` — schema story (~27k ký tự) truyền qua
+  `--json-schema` + Windows thêm `\"` cho mỗi dấu ngoặc kép → vượt 32.767 ký tự của một dòng lệnh. Giờ: schema viết gọn (không khoảng trắng),
+  đo đúng bằng `subprocess.list2cmdline`; vượt `CMD_LIMIT` thì gửi bản bỏ mô tả (`_strip_docs`) cho kiểm tra + bản đầy đủ trong prompt (stdin);
+  vẫn vượt thì chỉ dùng prompt. plan_shots giả lập với đường dẫn Windows: 29.989 ký tự.
