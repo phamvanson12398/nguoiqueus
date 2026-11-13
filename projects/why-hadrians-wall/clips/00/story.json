@@ -1,0 +1,7132 @@
+{
+ "meta": {
+  "title": "2,000-Year-Old Letter: 'Send More Beer' #shorts",
+  "slug": "why-hadrians-wall",
+  "fps": 30,
+  "frames": 5153,
+  "seed": 12,
+  "aspect": "9:16",
+  "samples": 24,
+  "chapter": {
+   "n": 2,
+   "title": "Eighty Miles of Stone",
+   "start_sec": 182.12
+  },
+  "part_offset": 182.12,
+  "part_first": false,
+  "part_last": false,
+  "output": "short.mp4",
+  "clip": {
+   "from": 4086,
+   "to": 5152,
+   "source": "why-hadrians-wall phần 2",
+   "title": "2,000-Year-Old Letter: 'Send More Beer' #shorts"
+  }
+ },
+ "factions": [
+  {
+   "id": "rome",
+   "culture": "roman_empire_50ad",
+   "color": [
+    0.62,
+    0.06,
+    0.04
+   ],
+   "label": "ROME"
+  },
+  {
+   "id": "britons_north",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.18,
+    0.36,
+    0.12
+   ],
+   "label": "CALEDONII"
+  },
+  {
+   "id": "britons_south",
+   "culture": "iron_age_britons_50ad",
+   "color": [
+    0.35,
+    0.55,
+    0.8
+   ],
+   "label": "BRIGANTES"
+  }
+ ],
+ "defs": {},
+ "sets": [
+  {
+   "id": "site",
+   "type": "hadrians_wall",
+   "params": {
+    "name": "site",
+    "origin": [
+     0,
+     0
+    ],
+    "kind": "stone",
+    "width": 3,
+    "build": 0.4,
+    "ditch": true
+   },
+   "note": "Công trường S7 + montage YEAR 1/3 S10",
+   "props": [
+    {
+     "id": "stone_neat",
+     "type": "centurial_stone",
+     "params": {
+      "text": "> COH III | LEG II AVG",
+      "wonky": false
+     },
+     "loc": [
+      0.4,
+      -3.4,
+      0
+     ]
+    },
+    {
+     "id": "stone_wonky",
+     "type": "centurial_stone",
+     "params": {
+      "text": "> COH III | LEG II AVG",
+      "wonky": true
+     },
+     "loc": [
+      2.4,
+      -3.6,
+      0
+     ]
+    },
+    {
+     "id": "site_pile",
+     "type": "wall_stone",
+     "params": {
+      "dim": "3d",
+      "pile": 12
+     },
+     "loc": [
+      -4.6,
+      -3.8,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "wall",
+   "type": "hadrians_wall",
+   "params": {
+    "name": "wall",
+    "origin": [
+     300,
+     0
+    ],
+    "kind": "stone",
+    "width": 3,
+    "build": 1,
+    "ditch": true,
+    "vallum": false
+   },
+   "note": "Tường hoàn chỉnh: mương, cổng, đo gậy, lê dương rời đi, lính phụ trợ tới, Atto trên tường, Vepo đêm",
+   "props": [
+    {
+     "id": "rod",
+     "type": "ranging_pole",
+     "loc": [
+      307,
+      -1.85,
+      1.3
+     ],
+     "rot": [
+      0,
+      1.5708,
+      0
+     ],
+     "note": "gậy đo 10 bộ nằm ngang dọc mặt nam tường"
+    }
+   ]
+  },
+  {
+   "id": "crag",
+   "type": "hadrians_wall",
+   "params": {
+    "name": "crag",
+    "origin": [
+     -300,
+     0
+    ],
+    "kind": "stone",
+    "width": 2.4,
+    "crag": true,
+    "fort": {
+     "at": [
+      -24,
+      -14
+     ],
+     "size": [
+      22,
+      12
+     ]
+    }
+   },
+   "note": "Tường trên vách Whin Sill + pháo đài lên tuyến"
+  },
+  {
+   "id": "turf",
+   "type": "hadrians_wall",
+   "params": {
+    "name": "turf",
+    "origin": [
+     -600,
+     0
+    ],
+    "kind": "turf",
+    "width": 3,
+    "ditch": true,
+    "vallum": true
+   },
+   "note": "Tường đất cỏ phía tây + Vallum",
+   "props": [
+    {
+     "id": "turf_pile",
+     "type": "wall_stone",
+     "params": {
+      "dim": "3d",
+      "kind": "turf",
+      "pile": 8
+     },
+     "loc": [
+      -598.2,
+      -3.3,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "barrack",
+   "type": "barrack_room",
+   "params": {
+    "origin": [
+     1300,
+     0
+    ]
+   },
+   "props": [
+    {
+     "id": "tablet3d",
+     "type": "writing_tablet",
+     "params": {
+      "dim": "3d",
+      "text_lines": 5
+     },
+     "loc": [
+      1300.1,
+      3.65,
+      0.9
+     ]
+    }
+   ]
+  },
+  {
+   "id": "map_wall",
+   "type": "parchment_map",
+   "params": {
+    "origin": [
+     700,
+     0,
+     0
+    ],
+    "bounds": [
+     -4.3,
+     54.4,
+     -0.5,
+     55.6
+    ],
+    "title": "THE WALL · AD 122",
+    "rivers": true,
+    "cities": [
+     {
+      "name": "Luguvalium",
+      "at": [
+       -2.93,
+       54.89
+      ],
+      "size": 2,
+      "label_offset": [
+       0,
+       -0.35
+      ]
+     },
+     {
+      "name": "Pons Aelius",
+      "at": [
+       -1.61,
+       54.97
+      ],
+      "size": 2,
+      "label_offset": [
+       0,
+       -0.35
+      ]
+     },
+     {
+      "name": "Vindolanda",
+      "at": [
+       -2.36,
+       54.99
+      ],
+      "size": 1,
+      "label_offset": [
+       0,
+       0.35
+      ]
+     }
+    ],
+    "regions": [
+     {
+      "name": "STONE",
+      "poly": [
+       [
+        -2.6,
+        54.955
+       ],
+       [
+        -1.5,
+        54.955
+       ],
+       [
+        -1.5,
+        55.025
+       ],
+       [
+        -2.6,
+        55.025
+       ]
+      ],
+      "color": [
+       0.32,
+       0.32,
+       0.32
+      ],
+      "opacity": 0.85,
+      "from": 2360
+     },
+     {
+      "name": "TURF",
+      "poly": [
+       [
+        -3.22,
+        54.925
+       ],
+       [
+        -2.6,
+        54.955
+       ],
+       [
+        -2.6,
+        55.025
+       ],
+       [
+        -3.22,
+        54.995
+       ]
+      ],
+      "color": [
+       0.1,
+       0.45,
+       0.06
+      ],
+      "opacity": 0.85,
+      "from": 2440
+     }
+    ],
+    "labels": [
+     {
+      "text": "CALEDONIA",
+      "at": [
+       -3,
+       55.42
+      ],
+      "kind": "region"
+     },
+     {
+      "text": "BRITANNIA",
+      "at": [
+       -2,
+       54.58
+      ],
+      "kind": "region"
+     },
+     {
+      "text": "NORTH SEA",
+      "at": [
+       -0.95,
+       55.25
+      ],
+      "kind": "sea"
+     },
+     {
+      "text": "SOLWAY FIRTH",
+      "at": [
+       -3.6,
+       54.8
+      ],
+      "kind": "sea"
+     }
+    ]
+   }
+  },
+  {
+   "id": "map_emp",
+   "type": "parchment_map",
+   "params": {
+    "origin": [
+     760,
+     0,
+     0
+    ],
+    "bounds": [
+     -12,
+     29,
+     52,
+     57.5
+    ],
+    "title": "WHO GUARDED THE WALL?",
+    "rivers": [
+     "Rhine",
+     "Danube",
+     "Euphrates"
+    ],
+    "cities": [
+     {
+      "name": "Vindolanda",
+      "at": [
+       -2.36,
+       54.99
+      ],
+      "size": 2
+     },
+     {
+      "name": "Roma",
+      "at": [
+       12.49,
+       41.89
+      ],
+      "size": 3
+     },
+     {
+      "name": "Atuatuca",
+      "at": [
+       5.46,
+       50.78
+      ],
+      "size": 1,
+      "from": 3722
+     },
+     {
+      "name": "Noviomagus",
+      "at": [
+       5.86,
+       51.84
+      ],
+      "size": 1,
+      "from": 3740
+     },
+     {
+      "name": "Hama",
+      "at": [
+       36.75,
+       35.13
+      ],
+      "size": 1,
+      "from": 3828
+     }
+    ],
+    "arrows": [
+     {
+      "path": [
+       [
+        5.46,
+        50.78
+       ],
+       [
+        2,
+        52.2
+       ],
+       [
+        -2.36,
+        54.99
+       ]
+      ],
+      "faction": "rome",
+      "from": 3722,
+      "to": 3768
+     },
+     {
+      "path": [
+       [
+        5.86,
+        51.84
+       ],
+       [
+        2.4,
+        54
+       ],
+       [
+        -2.36,
+        54.99
+       ]
+      ],
+      "faction": "rome",
+      "from": 3740,
+      "to": 3790
+     },
+     {
+      "path": [
+       [
+        36.75,
+        35.13
+       ],
+       [
+        26,
+        35.6
+       ],
+       [
+        14,
+        39
+       ],
+       [
+        4,
+        45.5
+       ],
+       [
+        -2.36,
+        54.99
+       ]
+      ],
+      "faction": "rome",
+      "from": 3828,
+      "to": 3884
+     }
+    ],
+    "labels": [
+     {
+      "text": "TUNGRI",
+      "at": [
+       7.6,
+       50
+      ],
+      "kind": "region",
+      "from": 3725
+     },
+     {
+      "text": "BATAVI",
+      "at": [
+       8.2,
+       52.9
+      ],
+      "kind": "region",
+      "from": 3742
+     },
+     {
+      "text": "SYRIA",
+      "at": [
+       38.5,
+       33.6
+      ],
+      "kind": "region",
+      "from": 3872
+     },
+     {
+      "text": "BRITANNIA",
+      "at": [
+       -3.5,
+       53
+      ],
+      "kind": "region"
+     }
+    ]
+   }
+  },
+  {
+   "id": "p_sec",
+   "type": "paper_diagram",
+   "params": {
+    "origin": [
+     1100,
+     0,
+     0
+    ],
+    "paper": "blueprint",
+    "strokes": [
+     {
+      "path": [
+       [
+        -6,
+        -2.5
+       ],
+       [
+        2.4,
+        -2.5
+       ]
+      ],
+      "from": 915,
+      "to": 945,
+      "color": "white",
+      "width": 0.08,
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -1,
+        -2.5
+       ],
+       [
+        -1,
+        0.5
+       ],
+       [
+        1,
+        0.5
+       ],
+       [
+        1,
+        -2.5
+       ]
+      ],
+      "from": 958,
+      "to": 990,
+      "color": "white",
+      "width": 0.1,
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -1,
+        -3.1
+       ],
+       [
+        1,
+        -3.1
+       ]
+      ],
+      "from": 990,
+      "to": 1000,
+      "color": "orange",
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -1.6,
+        -2.5
+       ],
+       [
+        -1.6,
+        0.5
+       ]
+      ],
+      "from": 1040,
+      "to": 1055,
+      "color": "orange",
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        2.4,
+        -2.5
+       ],
+       [
+        3.4,
+        -3.7
+       ],
+       [
+        4.4,
+        -2.5
+       ],
+       [
+        6,
+        -2.5
+       ]
+      ],
+      "from": 1106,
+      "to": 1124,
+      "color": "white",
+      "width": 0.08,
+      "smooth": false
+     }
+    ],
+    "arrows": [
+     {
+      "path": [
+       [
+        2.6,
+        1.6
+       ],
+       [
+        5.4,
+        1.6
+       ]
+      ],
+      "from": 1090,
+      "to": 1103,
+      "color": "orange"
+     }
+    ],
+    "labels": [
+     {
+      "text": "10 FT THICK",
+      "at": [
+       0,
+       -3.7
+      ],
+      "size": 0.45,
+      "color": "white",
+      "from": 998
+     },
+     {
+      "text": "~15 FT TALL",
+      "at": [
+       -3.3,
+       -1
+      ],
+      "size": 0.45,
+      "color": "white",
+      "from": 1052
+     },
+     {
+      "text": "NORTH",
+      "at": [
+       4,
+       2.2
+      ],
+      "color": "orange",
+      "from": 1101
+     },
+     {
+      "text": "DITCH",
+      "at": [
+       3.4,
+       -4.3
+      ],
+      "color": "white",
+      "from": 1118
+     }
+    ]
+   }
+  },
+  {
+   "id": "p_beads",
+   "type": "paper_diagram",
+   "params": {
+    "origin": [
+     1130,
+     0,
+     0
+    ],
+    "paper": "grid",
+    "strokes": [
+     {
+      "path": [
+       [
+        -6.5,
+        0
+       ],
+       [
+        6.5,
+        0
+       ]
+      ],
+      "from": 1326,
+      "to": 1360,
+      "color": "ink",
+      "width": 0.12,
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -6.3,
+        -0.3
+       ],
+       [
+        -6.3,
+        0.3
+       ],
+       [
+        -5.7,
+        0.3
+       ],
+       [
+        -5.7,
+        -0.3
+       ],
+       [
+        -6.3,
+        -0.3
+       ]
+      ],
+      "from": 1422,
+      "to": 1430,
+      "color": "red",
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -3.3,
+        -0.3
+       ],
+       [
+        -3.3,
+        0.3
+       ],
+       [
+        -2.7,
+        0.3
+       ],
+       [
+        -2.7,
+        -0.3
+       ],
+       [
+        -3.3,
+        -0.3
+       ]
+      ],
+      "from": 1434,
+      "to": 1442,
+      "color": "red",
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -0.3,
+        -0.3
+       ],
+       [
+        -0.3,
+        0.3
+       ],
+       [
+        0.3,
+        0.3
+       ],
+       [
+        0.3,
+        -0.3
+       ],
+       [
+        -0.3,
+        -0.3
+       ]
+      ],
+      "from": 1446,
+      "to": 1454,
+      "color": "red",
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        2.7,
+        -0.3
+       ],
+       [
+        2.7,
+        0.3
+       ],
+       [
+        3.3,
+        0.3
+       ],
+       [
+        3.3,
+        -0.3
+       ],
+       [
+        2.7,
+        -0.3
+       ]
+      ],
+      "from": 1458,
+      "to": 1466,
+      "color": "red",
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        5.7,
+        -0.3
+       ],
+       [
+        5.7,
+        0.3
+       ],
+       [
+        6.3,
+        0.3
+       ],
+       [
+        6.3,
+        -0.3
+       ],
+       [
+        5.7,
+        -0.3
+       ]
+      ],
+      "from": 1470,
+      "to": 1478,
+      "color": "red",
+      "smooth": false
+     }
+    ],
+    "circles": [
+     {
+      "at": [
+       -5,
+       0
+      ],
+      "r": 0.15,
+      "from": 1560,
+      "to": 1565,
+      "color": "blue"
+     },
+     {
+      "at": [
+       -4,
+       0
+      ],
+      "r": 0.15,
+      "from": 1567,
+      "to": 1572,
+      "color": "blue"
+     },
+     {
+      "at": [
+       -2,
+       0
+      ],
+      "r": 0.15,
+      "from": 1574,
+      "to": 1579,
+      "color": "blue"
+     },
+     {
+      "at": [
+       -1,
+       0
+      ],
+      "r": 0.15,
+      "from": 1581,
+      "to": 1586,
+      "color": "blue"
+     },
+     {
+      "at": [
+       1,
+       0
+      ],
+      "r": 0.15,
+      "from": 1588,
+      "to": 1593,
+      "color": "blue"
+     },
+     {
+      "at": [
+       2,
+       0
+      ],
+      "r": 0.15,
+      "from": 1595,
+      "to": 1600,
+      "color": "blue"
+     },
+     {
+      "at": [
+       4,
+       0
+      ],
+      "r": 0.15,
+      "from": 1602,
+      "to": 1607,
+      "color": "blue"
+     },
+     {
+      "at": [
+       5,
+       0
+      ],
+      "r": 0.15,
+      "from": 1609,
+      "to": 1614,
+      "color": "blue"
+     }
+    ],
+    "arrows": [
+     {
+      "path": [
+       [
+        -6,
+        -1.1
+       ],
+       [
+        -3,
+        -1.1
+       ]
+      ],
+      "from": 1362,
+      "to": 1378,
+      "color": "blue"
+     }
+    ],
+    "labels": [
+     {
+      "text": "HADRIAN'S WALL",
+      "at": [
+       0,
+       2.4
+      ],
+      "size": 0.5,
+      "from": 1340
+     },
+     {
+      "text": "1 ROMAN MILE",
+      "at": [
+       -4.5,
+       -1.7
+      ],
+      "color": "blue",
+      "from": 1372
+     },
+     {
+      "text": "MILECASTLE",
+      "at": [
+       -3,
+       1
+      ],
+      "color": "red",
+      "from": 1428
+     },
+     {
+      "text": "TURRET",
+      "at": [
+       -5.0,
+       -0.75
+      ],
+      "color": "blue",
+      "from": 1637
+     },
+     {
+      "text": "x 80",
+      "at": [
+       4.6,
+       1.4
+      ],
+      "color": "red",
+      "size": 0.55,
+      "from": 1655
+     }
+    ]
+   }
+  },
+  {
+   "id": "p_width",
+   "type": "paper_diagram",
+   "params": {
+    "origin": [
+     1160,
+     0,
+     0
+    ],
+    "paper": "grid",
+    "strokes": [
+     {
+      "path": [
+       [
+        -6,
+        -2
+       ],
+       [
+        6,
+        -2
+       ]
+      ],
+      "from": 2243,
+      "to": 2255,
+      "color": "ink",
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -4.5,
+        -2
+       ],
+       [
+        -4.5,
+        1.5
+       ],
+       [
+        -2.5,
+        1.5
+       ],
+       [
+        -2.5,
+        -2
+       ]
+      ],
+      "from": 2246,
+      "to": 2264,
+      "color": "ink",
+      "width": 0.09,
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        2.2,
+        -2
+       ],
+       [
+        2.2,
+        1.5
+       ],
+       [
+        3.8,
+        1.5
+       ],
+       [
+        3.8,
+        -2
+       ]
+      ],
+      "from": 2262,
+      "to": 2280,
+      "color": "red",
+      "width": 0.09,
+      "smooth": false
+     }
+    ],
+    "fills": [
+     {
+      "poly": [
+       [
+        -4.5,
+        -2
+       ],
+       [
+        -4.5,
+        1.5
+       ],
+       [
+        -2.5,
+        1.5
+       ],
+       [
+        -2.5,
+        -2
+       ]
+      ],
+      "color": [
+       0.6,
+       0.5,
+       0.35
+      ],
+      "opacity": 0.5,
+      "from": 2262
+     },
+     {
+      "poly": [
+       [
+        2.2,
+        -2
+       ],
+       [
+        2.2,
+        1.5
+       ],
+       [
+        3.8,
+        1.5
+       ],
+       [
+        3.8,
+        -2
+       ]
+      ],
+      "color": "red",
+      "opacity": 0.35,
+      "from": 2280
+     }
+    ],
+    "arrows": [
+     {
+      "path": [
+       [
+        -1.6,
+        0
+       ],
+       [
+        1.4,
+        0
+       ]
+      ],
+      "from": 2270,
+      "to": 2286,
+      "color": "ink"
+     }
+    ],
+    "labels": [
+     {
+      "text": "BROAD 10 FT",
+      "at": [
+       -3.5,
+       -2.7
+      ],
+      "from": 2252
+     },
+     {
+      "text": "NARROW ~8 FT",
+      "at": [
+       3,
+       -2.7
+      ],
+      "color": "red",
+      "from": 2272
+     },
+     {
+      "text": "SAVE STONE!",
+      "at": [
+       0,
+       2.6
+      ],
+      "size": 0.45,
+      "from": 2318
+     }
+    ]
+   }
+  },
+  {
+   "id": "p_vallum",
+   "type": "paper_diagram",
+   "params": {
+    "origin": [
+     1190,
+     0,
+     0
+    ],
+    "paper": "blueprint",
+    "strokes": [
+     {
+      "path": [
+       [
+        -6.5,
+        -1
+       ],
+       [
+        6.5,
+        -1
+       ]
+      ],
+      "from": 2865,
+      "to": 2880,
+      "color": "white",
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -5.2,
+        -1
+       ],
+       [
+        -4.4,
+        -2
+       ],
+       [
+        -3.6,
+        -1
+       ]
+      ],
+      "from": 2880,
+      "to": 2894,
+      "color": "white",
+      "width": 0.09,
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        -2.5,
+        -1
+       ],
+       [
+        -2.5,
+        1.2
+       ],
+       [
+        -1.7,
+        1.2
+       ],
+       [
+        -1.7,
+        -1
+       ]
+      ],
+      "from": 2896,
+      "to": 2914,
+      "color": "white",
+      "width": 0.1,
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        1.9,
+        -1
+       ],
+       [
+        2.5,
+        -0.3
+       ],
+       [
+        3.1,
+        -1
+       ]
+      ],
+      "from": 2924,
+      "to": 2938,
+      "color": "white",
+      "width": 0.09
+     },
+     {
+      "path": [
+       [
+        3.2,
+        -1
+       ],
+       [
+        3.6,
+        -2
+       ],
+       [
+        4.4,
+        -2
+       ],
+       [
+        4.8,
+        -1
+       ]
+      ],
+      "from": 2946,
+      "to": 2962,
+      "color": "orange",
+      "width": 0.1,
+      "smooth": false
+     },
+     {
+      "path": [
+       [
+        4.9,
+        -1
+       ],
+       [
+        5.5,
+        -0.3
+       ],
+       [
+        6.1,
+        -1
+       ]
+      ],
+      "from": 2970,
+      "to": 2984,
+      "color": "white",
+      "width": 0.09
+     }
+    ],
+    "arrows": [
+     {
+      "path": [
+       [
+        2.4,
+        1.2
+       ],
+       [
+        5.8,
+        1.2
+       ]
+      ],
+      "from": 3044,
+      "to": 3058,
+      "color": "orange",
+      "width": 0.1
+     }
+    ],
+    "labels": [
+     {
+      "text": "NORTH",
+      "at": [
+       -5.6,
+       2.6
+      ],
+      "color": "white",
+      "from": 2868
+     },
+     {
+      "text": "SOUTH",
+      "at": [
+       5.6,
+       2.6
+      ],
+      "color": "white",
+      "from": 2868
+     },
+     {
+      "text": "DITCH",
+      "at": [
+       -4.4,
+       -2.6
+      ],
+      "color": "white",
+      "from": 2894
+     },
+     {
+      "text": "WALL",
+      "at": [
+       -2.1,
+       1.8
+      ],
+      "color": "white",
+      "from": 2912
+     },
+     {
+      "text": "ROMAN SIDE",
+      "at": [
+       1.6,
+       -3.4
+      ],
+      "color": "white",
+      "size": 0.38,
+      "from": 2905
+     },
+     {
+      "text": "VALLUM",
+      "at": [
+       4,
+       -2.6
+      ],
+      "color": "orange",
+      "from": 3013
+     },
+     {
+      "text": "FACES SOUTH",
+      "at": [
+       4.1,
+       1.8
+      ],
+      "color": "orange",
+      "from": 3058
+     }
+    ]
+   }
+  },
+  {
+   "id": "p_mud",
+   "type": "paper_diagram",
+   "params": {
+    "origin": [
+     1220,
+     0,
+     0
+    ],
+    "paper": "blank",
+    "hand": false,
+    "fills": [
+     {
+      "poly": [
+       [
+        -7,
+        1.5
+       ],
+       [
+        7,
+        1.5
+       ],
+       [
+        7,
+        4
+       ],
+       [
+        -7,
+        4
+       ]
+      ],
+      "color": [
+       0.36,
+       0.24,
+       0.12
+      ],
+      "opacity": 1,
+      "from": 4268
+     },
+     {
+      "poly": [
+       [
+        -7,
+        -2
+       ],
+       [
+        7,
+        -2
+       ],
+       [
+        7,
+        1.5
+       ],
+       [
+        -7,
+        1.5
+       ]
+      ],
+      "color": [
+       0.13,
+       0.09,
+       0.06
+      ],
+      "opacity": 1,
+      "from": 4268
+     },
+     {
+      "poly": [
+       [
+        -7,
+        -4
+       ],
+       [
+        7,
+        -4
+       ],
+       [
+        7,
+        -2
+       ],
+       [
+        -7,
+        -2
+       ]
+      ],
+      "color": [
+       0.5,
+       0.38,
+       0.24
+      ],
+      "opacity": 1,
+      "from": 4268
+     },
+     {
+      "poly": [
+       [
+        -4.6,
+        -0.2
+       ],
+       [
+        -3.4,
+        -0.2
+       ],
+       [
+        -3.4,
+        0.25
+       ],
+       [
+        -4.6,
+        0.25
+       ]
+      ],
+      "color": [
+       0.93,
+       0.7,
+       0.4
+      ],
+      "opacity": 1,
+      "from": 4300
+     },
+     {
+      "poly": [
+       [
+        -2.1,
+        -1
+       ],
+       [
+        -0.9,
+        -1
+       ],
+       [
+        -0.9,
+        -0.55
+       ],
+       [
+        -2.1,
+        -0.55
+       ]
+      ],
+      "color": [
+       0.93,
+       0.7,
+       0.4
+      ],
+      "opacity": 1,
+      "from": 4315
+     },
+     {
+      "poly": [
+       [
+        0.4,
+        0.2
+       ],
+       [
+        1.6,
+        0.2
+       ],
+       [
+        1.6,
+        0.65
+       ],
+       [
+        0.4,
+        0.65
+       ]
+      ],
+      "color": [
+       0.93,
+       0.7,
+       0.4
+      ],
+      "opacity": 1,
+      "from": 4328
+     },
+     {
+      "poly": [
+       [
+        2.7,
+        -0.7
+       ],
+       [
+        3.9,
+        -0.7
+       ],
+       [
+        3.9,
+        -0.25
+       ],
+       [
+        2.7,
+        -0.25
+       ]
+      ],
+      "color": [
+       0.93,
+       0.7,
+       0.4
+      ],
+      "opacity": 1,
+      "from": 4338
+     },
+     {
+      "poly": [
+       [
+        4.6,
+        0.4
+       ],
+       [
+        5.8,
+        0.4
+       ],
+       [
+        5.8,
+        0.85
+       ],
+       [
+        4.6,
+        0.85
+       ]
+      ],
+      "color": [
+       0.93,
+       0.7,
+       0.4
+      ],
+      "opacity": 1,
+      "from": 4346
+     }
+    ],
+    "labels": [
+     {
+      "text": "HUNDREDS OF LETTERS",
+      "at": [
+       0,
+       2.7
+      ],
+      "color": "white",
+      "size": 0.45,
+      "from": 4338
+     },
+     {
+      "text": "WET, AIRLESS MUD",
+      "at": [
+       0,
+       -1.5
+      ],
+      "color": "white",
+      "size": 0.5,
+      "from": 4385
+     }
+    ]
+   }
+  }
+ ],
+ "chars": [
+  {
+   "id": "atto",
+   "type": "person",
+   "faction": "rome",
+   "outfit": "roman_auxiliary_122ad",
+   "look": {
+    "hair": "short",
+    "beard": "none",
+    "accent": [
+     0.98,
+     0.3,
+     0.02
+    ],
+    "seed": 7
+   },
+   "blocking": {
+    "default": {
+     "location": [
+      1299.1,
+      2.9,
+      -60
+     ]
+    },
+    "segments": [
+     {
+      "from": 3583,
+      "to": 3718,
+      "location": [
+       302.6,
+       "lerp(-27, -16, (f - 3583) / 135)",
+       0
+      ]
+     },
+     {
+      "from": 3892,
+      "to": 4085,
+      "location": [
+       297,
+       -0.2,
+       4.5
+      ]
+     },
+     {
+      "from": 4086,
+      "to": 5153,
+      "location": [
+       1299.1,
+       2.9,
+       0
+      ]
+     }
+    ]
+   },
+   "props": [
+    {
+     "id": "atto_tab",
+     "type": "writing_tablet",
+     "params": {
+      "dim": "2d"
+     },
+     "loc": [
+      0,
+      0.6,
+      0.42
+     ]
+    },
+    {
+     "id": "pkg",
+     "type": "care_package",
+     "params": {
+      "item": "box"
+     },
+     "loc": [
+      0,
+      0.5,
+      0.42
+     ]
+    },
+    {
+     "id": "pants",
+     "type": "care_package",
+     "params": {
+      "item": "underpants"
+     },
+     "loc": [
+      0,
+      0.55,
+      0.44
+     ]
+    }
+   ],
+   "expressions": [
+    [
+     1,
+     "worried"
+    ],
+    [
+     3892,
+     "worried"
+    ],
+    [
+     4060,
+     "smirk"
+    ],
+    [
+     4086,
+     "focus"
+    ],
+    [
+     4423,
+     "happy"
+    ],
+    [
+     4524,
+     "focus"
+    ],
+    [
+     4607,
+     "shock"
+    ],
+    [
+     4626,
+     "smirk"
+    ],
+    [
+     4931,
+     "neutral"
+    ],
+    [
+     5032,
+     "shock"
+    ],
+    [
+     5052,
+     "worried"
+    ]
+   ],
+   "blinks": [
+    3650,
+    3950,
+    4040,
+    4130,
+    4300,
+    4480,
+    4580,
+    4700,
+    4980,
+    5100
+   ],
+   "reacts": [
+    [
+     3900,
+     "shiver"
+    ],
+    [
+     3995,
+     "shiver"
+    ],
+    [
+     4607,
+     "hop"
+    ],
+    [
+     5032,
+     "flinch"
+    ]
+   ],
+   "reaction_fx": [
+    4607,
+    5032
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.42,
+       0.25
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.42,
+       0.25
+      ],
+      1
+     ]
+    },
+    "segments": [
+     {
+      "from": 3583,
+      "to": 3718,
+      "legs": "walk_legs(f * 0.3)"
+     },
+     {
+      "from": 4086,
+      "to": 4173,
+      "armL": [
+       "ik",
+       [
+        -0.24,
+        0.6
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        "0.1 + 0.08 * sin(f * 0.9)",
+        "0.55 + 0.03 * sin(f * 1.7)"
+       ],
+       1
+      ]
+     },
+     {
+      "from": 4423,
+      "to": 4523,
+      "armL": [
+       "ik",
+       [
+        -0.24,
+        0.62
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.24,
+        0.62
+       ],
+       1
+      ]
+     },
+     {
+      "from": 4524,
+      "to": 4606,
+      "armL": [
+       "ik",
+       [
+        -0.26,
+        0.5
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.26,
+        0.5
+       ],
+       1
+      ]
+     },
+     {
+      "from": 4607,
+      "to": 4630,
+      "armL": [
+       "ik",
+       [
+        -0.4,
+        0.6
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        "lerp(0.26, 0.3, pease(f, 4607, 8))",
+        "lerp(0.5, 0.85, pease(f, 4607, 8))"
+       ],
+       1
+      ]
+     },
+     {
+      "from": 4931,
+      "to": 5029,
+      "armL": [
+       "ik",
+       [
+        -0.26,
+        0.45
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.26,
+        0.45
+       ],
+       1
+      ]
+     },
+     {
+      "from": 5032,
+      "to": 5082,
+      "armL": [
+       "ik",
+       [
+        -0.5,
+        0.5
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.5,
+        0.5
+       ],
+       1
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "vepo",
+   "type": "person",
+   "faction": "britons_north",
+   "role": "commoner",
+   "look": {
+    "hair": "tied",
+    "beard": "goatee",
+    "accent": [
+     0.05,
+     0.55,
+     0.12
+    ],
+    "seed": 11
+   },
+   "blocking": {
+    "default": {
+     "location": [
+      300.7,
+      4.8,
+      -60
+     ]
+    },
+    "segments": [
+     {
+      "from": 4854,
+      "to": 4930,
+      "location": [
+       300.7,
+       4.8,
+       0
+      ]
+     }
+    ]
+   },
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     4900,
+     "smug_closed"
+    ]
+   ],
+   "blinks": [
+    4875
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.42,
+       0.2
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.42,
+       0.2
+      ],
+      1
+     ]
+    }
+   }
+  },
+  {
+   "id": "goat",
+   "type": "goat",
+   "blocking": {
+    "default": {
+     "location": [
+      299,
+      5.4,
+      -60
+     ]
+    },
+    "segments": [
+     {
+      "from": 2490,
+      "to": 2600,
+      "location": [
+       -601.2,
+       -2.1,
+       "0.03 * abs(sin(f * 0.6))"
+      ]
+     },
+     {
+      "from": 4854,
+      "to": 4930,
+      "location": [
+       299,
+       5.4,
+       0
+      ]
+     }
+    ]
+   },
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     2565,
+     "smirk"
+    ],
+    [
+     4854,
+     "neutral"
+    ]
+   ],
+   "blinks": [
+    2530,
+    4880
+   ]
+  },
+  {
+   "id": "centurion",
+   "type": "person",
+   "faction": "rome",
+   "role": "officer",
+   "look": {
+    "beard": "none",
+    "seed": 21
+   },
+   "blocking": {
+    "default": {
+     "location": [
+      4.2,
+      -4.6,
+      -60
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 902,
+      "location": [
+       4.2,
+       -4.6,
+       0
+      ]
+     },
+     {
+      "from": 2069,
+      "to": 2240,
+      "location": [
+       308.3,
+       -4.4,
+       0
+      ]
+     },
+     {
+      "from": 4086,
+      "to": 5153,
+      "location": [
+       1301.5,
+       3.3,
+       0
+      ]
+     }
+    ]
+   },
+   "expressions": [
+    [
+     1,
+     "smug_closed"
+    ],
+    [
+     811,
+     "grumpy"
+    ],
+    [
+     2069,
+     "smug_closed"
+    ],
+    [
+     2192,
+     "smirk"
+    ],
+    [
+     4086,
+     "neutral"
+    ],
+    [
+     4631,
+     "grumpy"
+    ],
+    [
+     4700,
+     "worried"
+    ]
+   ],
+   "blinks": [
+    300,
+    620,
+    740,
+    2120,
+    4200,
+    4680
+   ],
+   "reacts": [
+    [
+     690,
+     "proud"
+    ],
+    [
+     2192,
+     "proud"
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.42,
+       0.25
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.42,
+       0.25
+      ],
+      1
+     ]
+    },
+    "segments": [
+     {
+      "from": 2185,
+      "to": 2215,
+      "armR": [
+       "ik",
+       [
+        "lerp(0.42, 0.5, pease(f, 2185, 6))",
+        "lerp(0.25, 0.9, pease(f, 2185, 6))"
+       ],
+       1
+      ]
+     },
+     {
+      "from": 4631,
+      "to": 4758,
+      "armL": [
+       "ik",
+       [
+        -0.25,
+        0.5
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        "0.12 + 0.07 * sin(f * 0.9)",
+        0.55
+       ],
+       1
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "leg1",
+   "type": "person",
+   "faction": "rome",
+   "role": "soldier",
+   "look": {
+    "seed": 31
+   },
+   "blocking": {
+    "default": {
+     "location": [
+      -2,
+      -3,
+      -60
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 902,
+      "location": [
+       -2,
+       -3,
+       0
+      ]
+     },
+     {
+      "from": 2069,
+      "to": 2240,
+      "location": [
+       306.6,
+       -2.5,
+       0
+      ]
+     },
+     {
+      "from": 2490,
+      "to": 2600,
+      "location": [
+       -603,
+       -2.6,
+       0
+      ]
+     },
+     {
+      "from": 3195,
+      "to": 3371,
+      "location": [
+       "lerp(-6, -1, (f - 3195) / 176)",
+       -3,
+       0
+      ]
+     },
+     {
+      "from": 3460,
+      "to": 3582,
+      "location": [
+       296.5,
+       -14.5,
+       0
+      ]
+     }
+    ]
+   },
+   "props": [
+    {
+     "id": "stone2d",
+     "type": "wall_stone",
+     "params": {
+      "dim": "2d"
+     },
+     "loc": [
+      0,
+      0.66,
+      0.42
+     ]
+    },
+    {
+     "id": "turf2d",
+     "type": "wall_stone",
+     "params": {
+      "dim": "2d",
+      "kind": "turf"
+     },
+     "loc": [
+      0,
+      0.66,
+      0.42
+     ]
+    }
+   ],
+   "expressions": [
+    [
+     1,
+     "focus"
+    ],
+    [
+     476,
+     "happy"
+    ],
+    [
+     811,
+     "smirk"
+    ],
+    [
+     2069,
+     "focus"
+    ],
+    [
+     2192,
+     "smirk"
+    ],
+    [
+     2490,
+     "focus"
+    ],
+    [
+     3195,
+     "focus"
+    ],
+    [
+     3460,
+     "happy"
+    ]
+   ],
+   "blinks": [
+    150,
+    520,
+    760,
+    2150,
+    2550,
+    3300,
+    3520
+   ],
+   "reacts": [
+    [
+     476,
+     "proud"
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.42,
+       0.25
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.42,
+       0.25
+      ],
+      1
+     ]
+    },
+    "segments": [
+     {
+      "from": 384,
+      "to": 433,
+      "legs": "walk_legs(f * 0.4)",
+      "armL": [
+       "ik",
+       [
+        -0.42,
+        "0.25 + 0.08 * sin(f * 0.4)"
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.42,
+        "0.25 - 0.08 * sin(f * 0.4)"
+       ],
+       1
+      ]
+     },
+     {
+      "from": 434,
+      "to": 444,
+      "armR": [
+       "ik",
+       [
+        "lerp(0.42, 0.55, pease(f, 434, 5))",
+        "lerp(0.25, 1.0, pease(f, 434, 5))"
+       ],
+       1
+      ]
+     },
+     {
+      "from": 445,
+      "to": 450,
+      "armL": [
+       "ik",
+       [
+        -0.2,
+        -0.05
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.2,
+        -0.05
+       ],
+       1
+      ]
+     },
+     {
+      "from": 451,
+      "to": 467,
+      "armL": [
+       "ik",
+       [
+        -0.25,
+        "0.55 + 0.3 * sin((f - 451) * 0.75)"
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.25,
+        "0.55 + 0.3 * sin((f - 451) * 0.75)"
+       ],
+       1
+      ]
+     },
+     {
+      "from": 468,
+      "to": 560,
+      "armL": [
+       "ik",
+       [
+        -0.24,
+        0.62
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.24,
+        0.62
+       ],
+       1
+      ]
+     },
+     {
+      "from": 2069,
+      "to": 2240,
+      "armR": [
+       "ik",
+       [
+        0.45,
+        0.45
+       ],
+       1
+      ]
+     },
+     {
+      "from": 2490,
+      "to": 2600,
+      "armL": [
+       "ik",
+       [
+        -0.24,
+        0.62
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.24,
+        0.62
+       ],
+       1
+      ]
+     },
+     {
+      "from": 3195,
+      "to": 3371,
+      "legs": "walk_legs(f * 0.3)",
+      "armL": [
+       "ik",
+       [
+        -0.24,
+        0.62
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.24,
+        0.62
+       ],
+       1
+      ]
+     },
+     {
+      "from": 3460,
+      "to": 3582,
+      "armR": [
+       "ik",
+       [
+        "0.45 + 0.1 * sin(f * 0.45)",
+        1
+       ],
+       1
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "leg2",
+   "type": "person",
+   "faction": "rome",
+   "role": "soldier",
+   "look": {
+    "seed": 32
+   },
+   "blocking": {
+    "default": {
+     "location": [
+      302.5,
+      4.5,
+      -60
+     ]
+    },
+    "segments": [
+     {
+      "from": 1128,
+      "to": 1149,
+      "location": [
+       302.5,
+       4.5,
+       0
+      ]
+     },
+     {
+      "from": 1150,
+      "to": 1168,
+      "let": {
+       "u": "(f - 1150) / 18"
+      },
+      "location": [
+       "lerp(302.5, 302.6, u)",
+       "lerp(4.5, 8, u)",
+       "1.3 * sin(3.1416 * u) - 2.2 * u * u"
+      ]
+     },
+     {
+      "from": 1169,
+      "to": 1225,
+      "location": [
+       302.6,
+       8,
+       -2.2
+      ]
+     },
+     {
+      "from": 2069,
+      "to": 2240,
+      "location": [
+       310.2,
+       -2.5,
+       0
+      ]
+     },
+     {
+      "from": 3460,
+      "to": 3582,
+      "location": [
+       298.3,
+       -14.8,
+       0
+      ]
+     }
+    ]
+   },
+   "expressions": [
+    [
+     1,
+     "happy"
+    ],
+    [
+     1166,
+     "shock"
+    ],
+    [
+     2069,
+     "focus"
+    ],
+    [
+     2192,
+     "smirk"
+    ],
+    [
+     3460,
+     "happy"
+    ]
+   ],
+   "blinks": [
+    1140,
+    2110,
+    3500
+   ],
+   "reacts": [
+    [
+     1168,
+     "flinch"
+    ]
+   ],
+   "reaction_fx": [
+    1168
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.42,
+       0.25
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.42,
+       0.25
+      ],
+      1
+     ]
+    },
+    "segments": [
+     {
+      "from": 1128,
+      "to": 1168,
+      "armL": [
+       "ik",
+       [
+        -0.5,
+        0.8
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.5,
+        0.8
+       ],
+       1
+      ]
+     },
+     {
+      "from": 1169,
+      "to": 1225,
+      "armL": [
+       "ik",
+       [
+        -0.35,
+        1
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.35,
+        1
+       ],
+       1
+      ]
+     },
+     {
+      "from": 2069,
+      "to": 2191,
+      "armL": [
+       "ik",
+       [
+        -0.45,
+        0.45
+       ],
+       -1
+      ]
+     },
+     {
+      "from": 2192,
+      "to": 2240,
+      "armL": [
+       "ik",
+       [
+        -0.45,
+        0.45
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        "0.15 + 0.12 * sin(f * 1.3)",
+        0.45
+       ],
+       1
+      ]
+     },
+     {
+      "from": 3460,
+      "to": 3582,
+      "armR": [
+       "ik",
+       [
+        "0.45 + 0.1 * sin(f * 0.5 + 1)",
+        1
+       ],
+       1
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "villager",
+   "type": "person",
+   "faction": "britons_south",
+   "role": "commoner",
+   "look": {
+    "hair": "long",
+    "beard": "mustache",
+    "seed": 41
+   },
+   "blocking": {
+    "default": {
+     "location": [
+      -599.2,
+      -38.5,
+      -60
+     ]
+    },
+    "segments": [
+     {
+      "from": 3075,
+      "to": 3119,
+      "location": [
+       -599.2,
+       -38.5,
+       0
+      ]
+     }
+    ]
+   },
+   "expressions": [
+    [
+     1,
+     "grumpy"
+    ],
+    [
+     3100,
+     "shock"
+    ]
+   ],
+   "reacts": [
+    [
+     3100,
+     "flinch"
+    ]
+   ],
+   "blinks": [
+    3085
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.42,
+       0.2
+      ],
+      -1
+     ],
+     "armR": [
+      "ik",
+      [
+       0.42,
+       0.2
+      ],
+      1
+     ]
+    }
+   }
+  }
+ ],
+ "crowds": [
+  {
+   "id": "builders",
+   "faction": "rome",
+   "role": "soldier",
+   "count": 9,
+   "formation": "scatter",
+   "area": [
+    10,
+    2.5
+   ],
+   "at": [
+    8.5,
+    -3.4,
+    0
+   ],
+   "variants": 3,
+   "faces": [
+    "focus",
+    "grumpy"
+   ],
+   "from": 1,
+   "to": 902,
+   "seed": 3,
+   "pose": {
+    "armL": [
+     "ang",
+     -0.35,
+     0.6
+    ],
+    "armR": [
+     "ang",
+     0.25,
+     -0.25
+    ]
+   }
+  },
+  {
+   "id": "builders2",
+   "faction": "rome",
+   "role": "soldier",
+   "count": 8,
+   "formation": "scatter",
+   "area": [
+    10,
+    2.5
+   ],
+   "at": [
+    7.5,
+    -3.6,
+    0
+   ],
+   "variants": 3,
+   "faces": [
+    "focus",
+    "worried"
+   ],
+   "from": 3195,
+   "to": 3371,
+   "seed": 8,
+   "pose": {
+    "armL": [
+     "ang",
+     -0.35,
+     0.6
+    ],
+    "armR": [
+     "ang",
+     0.25,
+     -0.25
+    ]
+   }
+  },
+  {
+   "id": "turfers",
+   "faction": "rome",
+   "role": "soldier",
+   "count": 4,
+   "formation": "line",
+   "cols": 4,
+   "spacing": [
+    1.5,
+    1
+   ],
+   "at": [
+    -594.5,
+    -2.9,
+    0
+   ],
+   "variants": 2,
+   "faces": [
+    "focus",
+    "grumpy"
+   ],
+   "from": 2490,
+   "to": 2600,
+   "pose": {
+    "armL": [
+     "ang",
+     -0.35,
+     0.6
+    ],
+    "armR": [
+     "ang",
+     0.25,
+     -0.25
+    ]
+   }
+  },
+  {
+   "id": "garrison",
+   "faction": "rome",
+   "role": "soldier",
+   "count": 24,
+   "formation": "block",
+   "cols": 8,
+   "spacing": [
+    0.95,
+    1
+   ],
+   "at": [
+    -312,
+    -12,
+    0
+   ],
+   "variants": 4,
+   "faces": [
+    "neutral",
+    "focus"
+   ],
+   "from": 2601,
+   "to": 2862
+  },
+  {
+   "id": "legion",
+   "faction": "rome",
+   "role": "soldier",
+   "count": 30,
+   "formation": "column",
+   "cols": 3,
+   "spacing": [
+    1,
+    1.1
+   ],
+   "rot": 90,
+   "at": [
+    288,
+    -11,
+    0
+   ],
+   "variants": 4,
+   "faces": [
+    "happy",
+    "neutral"
+   ],
+   "from": 3460,
+   "to": 3582,
+   "march": [
+    [
+     3460,
+     3582
+    ]
+   ],
+   "moves": [
+    [
+     3460,
+     [
+      286,
+      -11
+     ]
+    ],
+    [
+     3582,
+     [
+      314,
+      -11
+     ]
+    ]
+   ],
+   "pose": {
+    "armL": [
+     "ang",
+     -0.35,
+     0.6
+    ],
+    "armR": [
+     "ang",
+     0.25,
+     -0.25
+    ]
+   }
+  },
+  {
+   "id": "aux",
+   "faction": "rome",
+   "outfit": "roman_auxiliary_122ad",
+   "count": 24,
+   "formation": "block",
+   "cols": 6,
+   "spacing": [
+    1,
+    1.1
+   ],
+   "at": [
+    299,
+    -31,
+    0
+   ],
+   "variants": 4,
+   "faces": [
+    "neutral",
+    "worried"
+   ],
+   "from": 3583,
+   "to": 3718,
+   "march": [
+    [
+     3583,
+     3718
+    ]
+   ],
+   "moves": [
+    [
+     3583,
+     [
+      299,
+      -31
+     ]
+    ],
+    [
+     3718,
+     [
+      299,
+      -20
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "villagers_s",
+   "faction": "britons_south",
+   "role": "commoner",
+   "count": 6,
+   "formation": "scatter",
+   "area": [
+    4,
+    1
+   ],
+   "at": [
+    -603.2,
+    -37.2,
+    0
+   ],
+   "variants": 3,
+   "faces": [
+    "grumpy",
+    "worried"
+   ],
+   "from": 3075,
+   "to": 3119
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "lens": 35,
+  "dof": {
+   "fstop": 2.8
+  },
+  "trans": {
+   "903": [
+    "cut"
+   ],
+   "1997": [
+    "match"
+   ],
+   "2031": [
+    "cut"
+   ],
+   "3120": [
+    "whip",
+    1
+   ],
+   "4086": [
+    "whip",
+    1
+   ]
+  },
+  "shots": [
+   {
+    "a": 1,
+    "b": 70,
+    "type": "card",
+    "fstop": 1.4,
+    "note": "thẻ chương trên công trường mờ",
+    "frame": {
+     "subject": "site.center",
+     "size": 9,
+     "move": "drift",
+     "height": "high",
+     "angle": -20
+    }
+   },
+   {
+    "a": 71,
+    "b": 220,
+    "type": "wide",
+    "fstop": 4.5,
+    "note": "công trường: đào móng, khiêng đá, giàn giáo",
+    "frame": {
+     "subject": [
+      2,
+      -3,
+      1
+     ],
+     "size": 11.7,
+     "angle": -25,
+     "height": "high",
+     "move": "crane_down"
+    }
+   },
+   {
+    "a": 221,
+    "b": 383,
+    "type": "card",
+    "fstop": 1.4,
+    "note": "tên ba quân đoàn trên đám thợ lính mờ",
+    "frame": {
+     "subject": [
+      8.5,
+      -3.4,
+      1.2
+     ],
+     "size": 4,
+     "move": "drift",
+     "angle": 15
+    }
+   },
+   {
+    "a": 384,
+    "b": 478,
+    "type": "medium",
+    "fstop": 2.6,
+    "note": "montage: hành quân, đánh, đào, đập đá, đặt đá",
+    "frame": {
+     "subject": "leg1",
+     "move": "truck_left",
+     "angle": -25,
+     "x": -0.15
+    }
+   },
+   {
+    "a": 479,
+    "b": 558,
+    "type": "wide",
+    "fstop": 4.5,
+    "note": "mỗi đội một đoạn",
+    "frame": {
+     "subject": [
+      3,
+      -2.5,
+      1
+     ],
+     "size": 14.3,
+     "angle": 30,
+     "height": "high",
+     "move": "pan_left"
+    }
+   },
+   {
+    "a": 559,
+    "b": 665,
+    "type": "insert",
+    "fstop": 2,
+    "note": "khắc COH III",
+    "frame": {
+     "subject": [
+      0.4,
+      -3.4,
+      0.18
+     ],
+     "size": 0.9,
+     "angle": 0,
+     "move": "push_in"
+    }
+   },
+   {
+    "a": 666,
+    "b": 760,
+    "type": "closeup",
+    "fstop": 2,
+    "frame": {
+     "subject": "centurion",
+     "move": "orbit_left",
+     "angle": 30,
+     "height": "eye",
+     "x": 0.25
+    }
+   },
+   {
+    "a": 761,
+    "b": 810,
+    "type": "insert",
+    "fstop": 2,
+    "note": "hòn đá đẹp",
+    "frame": {
+     "subject": [
+      0.4,
+      -3.4,
+      0.18
+     ],
+     "size": 0.8,
+     "angle": 15,
+     "move": "drift"
+    }
+   },
+   {
+    "a": 811,
+    "b": 902,
+    "type": "insert",
+    "fstop": 2,
+    "note": "hòn đá khắc chiều thứ Sáu, snap zoom",
+    "frame": {
+     "subject": [
+      2.4,
+      -3.6,
+      0.18
+     ],
+     "size": 0.9,
+     "angle": -10,
+     "move": "push_in"
+    }
+   },
+   {
+    "a": 903,
+    "b": 1127,
+    "type": "diagram",
+    "fstop": 4,
+    "note": "mặt cắt tường + mương bắc",
+    "frame": {
+     "subject": [
+      1100,
+      -1,
+      0
+     ],
+     "size": 9.6,
+     "move": "pan_right",
+     "height": "top"
+    }
+   },
+   {
+    "a": 1128,
+    "b": 1225,
+    "type": "full",
+    "fstop": 3.5,
+    "note": "lính nhảy xuống mương, chỉ còn mũ",
+    "keys": [
+     [
+      1128,
+      [
+       304.6,
+       0.4,
+       6.4
+      ],
+      [
+       302.6,
+       6.2,
+       0.6
+      ],
+      32
+     ],
+     [
+      1225,
+      [
+       304.1,
+       0.7,
+       6.1
+      ],
+      [
+       302.6,
+       7.6,
+       0
+      ],
+      32
+     ]
+    ]
+   },
+   {
+    "a": 1226,
+    "b": 1322,
+    "type": "wide",
+    "fstop": 5,
+    "note": "từ chân vách Whin Sill nhìn lên",
+    "keys": [
+     [
+      1226,
+      [
+       -288,
+       18,
+       -10.8
+      ],
+      [
+       -300,
+       0,
+       3
+      ],
+      24
+     ],
+     [
+      1322,
+      [
+       -292,
+       19,
+       -10.3
+      ],
+      [
+       -302,
+       0,
+       3.5
+      ],
+      24
+     ]
+    ]
+   },
+   {
+    "a": 1323,
+    "b": 1648,
+    "type": "board",
+    "fstop": 4,
+    "note": "dãy milecastle và turret như hạt chuỗi (cảnh dài)",
+    "frame": {
+     "subject": [
+      1130,
+      0,
+      0
+     ],
+     "size": 10.45,
+     "move": "truck_right",
+     "amount": 1.3,
+     "height": "top"
+    }
+   },
+   {
+    "a": 1649,
+    "b": 1740,
+    "type": "card",
+    "fstop": 1.4,
+    "frame": {
+     "subject": [
+      1130,
+      0,
+      0
+     ],
+     "size": 17.1,
+     "move": "drift",
+     "height": "top"
+    }
+   },
+   {
+    "a": 1741,
+    "b": 1940,
+    "type": "wide",
+    "fstop": 5,
+    "note": "milecastle và turret thẳng hàng trên tường thật",
+    "frame": {
+     "subject": [
+      300,
+      -3,
+      2
+     ],
+     "size": 18.2,
+     "angle": 35,
+     "height": "high",
+     "move": "push_in"
+    }
+   },
+   {
+    "a": 1941,
+    "b": 1996,
+    "type": "insert",
+    "fstop": 2.2,
+    "note": "cổng nam mở",
+    "frame": {
+     "subject": "wall.gate_south",
+     "size": 3.2,
+     "angle": 0,
+     "move": "push_in"
+    }
+   },
+   {
+    "a": 1997,
+    "b": 2030,
+    "type": "insert",
+    "fstop": 2.2,
+    "note": "cổng bắc mở, cùng bố cục (match)",
+    "frame": {
+     "subject": "wall.gate_north",
+     "size": 3.2,
+     "angle": 180,
+     "move": "push_in"
+    }
+   },
+   {
+    "a": 2031,
+    "b": 2068,
+    "type": "full",
+    "fstop": 4,
+    "note": "máy xuyên qua cổng từ sân ra bắc",
+    "keys": [
+     [
+      2031,
+      [
+       300,
+       -7.6,
+       1.6
+      ],
+      [
+       300,
+       4,
+       1.5
+      ],
+      28
+     ],
+     [
+      2068,
+      [
+       300,
+       0.6,
+       1.6
+      ],
+      [
+       300,
+       12,
+       1.3
+      ],
+      28
+     ]
+    ]
+   },
+   {
+    "a": 2069,
+    "b": 2240,
+    "type": "medium",
+    "fstop": 2.8,
+    "note": "đo tường rồi cưa ngắn gậy",
+    "frame": {
+     "subject": [
+      308.3,
+      -2.8,
+      1.2
+     ],
+     "size": 3.8,
+     "angle": 10,
+     "move": "truck_left"
+    }
+   },
+   {
+    "a": 2241,
+    "b": 2344,
+    "type": "diagram",
+    "fstop": 4,
+    "frame": {
+     "subject": [
+      1160,
+      0,
+      0
+     ],
+     "size": 9.6,
+     "move": "push_in",
+     "height": "top"
+    }
+   },
+   {
+    "a": 2345,
+    "b": 2489,
+    "type": "map",
+    "grade": "sepia",
+    "frame": {
+     "subject": "map_wall.center",
+     "size": 12.35,
+     "move": "push_in"
+    }
+   },
+   {
+    "a": 2490,
+    "b": 2600,
+    "type": "full",
+    "fstop": 3,
+    "note": "tường cỏ, dê gặm",
+    "frame": {
+     "subject": [
+      -601.8,
+      -2.3,
+      0.9
+     ],
+     "size": 5.85,
+     "angle": -10,
+     "move": "push_in",
+     "amount": 1.3
+    }
+   },
+   {
+    "a": 2601,
+    "b": 2862,
+    "type": "wide",
+    "fstop": 5,
+    "note": "pháo đài lớn trên tuyến tường (cảnh dài)",
+    "frame": {
+     "subject": [
+      -316,
+      -10,
+      1.5
+     ],
+     "size": 20.8,
+     "angle": 30,
+     "height": "high",
+     "move": "crane_up"
+    }
+   },
+   {
+    "a": 2863,
+    "b": 2988,
+    "type": "diagram",
+    "fstop": 4,
+    "note": "mặt cắt bắc→nam",
+    "frame": {
+     "subject": [
+      1190,
+      0,
+      0
+     ],
+     "size": 9.6,
+     "move": "pan_right",
+     "height": "top"
+    }
+   },
+   {
+    "a": 2989,
+    "b": 3039,
+    "type": "card",
+    "fstop": 2,
+    "frame": {
+     "subject": "turf.vallum",
+     "size": 12,
+     "angle": -20,
+     "height": "high",
+     "move": "drift"
+    }
+   },
+   {
+    "a": 3040,
+    "b": 3074,
+    "type": "diagram",
+    "fstop": 4,
+    "frame": {
+     "subject": [
+      1194,
+      1,
+      0
+     ],
+     "size": 6.08,
+     "move": "push_in",
+     "height": "top"
+    }
+   },
+   {
+    "a": 3075,
+    "b": 3119,
+    "type": "closeup",
+    "fstop": 2,
+    "frame": {
+     "subject": "villager",
+     "move": "push_in",
+     "angle": 10,
+     "height": "low",
+     "x": 0.2
+    }
+   },
+   {
+    "a": 3120,
+    "b": 3194,
+    "type": "card",
+    "fstop": 1.4,
+    "frame": {
+     "subject": "site.center",
+     "size": 10,
+     "move": "drift",
+     "height": "high",
+     "angle": 20
+    }
+   },
+   {
+    "a": 3195,
+    "b": 3371,
+    "type": "medium",
+    "fstop": 2.8,
+    "note": "montage khai đá, chở đá, đổ lõi, đặt đá",
+    "frame": {
+     "subject": "leg1",
+     "move": "truck_right",
+     "angle": -10,
+     "x": -0.1
+    }
+   },
+   {
+    "a": 3372,
+    "b": 3459,
+    "type": "wide",
+    "fstop": 5,
+    "note": "tường xong, chạy tới chân trời",
+    "frame": {
+     "subject": [
+      300,
+      0,
+      2
+     ],
+     "size": 23.4,
+     "angle": 25,
+     "height": "high",
+     "move": "pull_out"
+    }
+   },
+   {
+    "a": 3460,
+    "b": 3582,
+    "type": "full",
+    "fstop": 3.5,
+    "note": "lê dương rời đi, vẫy tay (hướng +X)",
+    "frame": {
+     "subject": "leg1",
+     "move": "truck_right",
+     "angle": -10,
+     "x": -0.3,
+     "size": 4.0
+    }
+   },
+   {
+    "a": 3583,
+    "b": 3718,
+    "type": "wide",
+    "fstop": 4,
+    "note": "lính phụ trợ tới",
+    "frame": {
+     "subject": [
+      301,
+      -19,
+      1
+     ],
+     "size": 10.4,
+     "angle": 15,
+     "move": "drift"
+    }
+   },
+   {
+    "a": 3719,
+    "b": 3891,
+    "type": "map",
+    "grade": "sepia",
+    "frame": {
+     "subject": "map_emp.arrow2_mid",
+     "size": 13.3,
+     "move": "pull_out",
+     "amount": 1.4
+    }
+   },
+   {
+    "a": 3892,
+    "b": 3987,
+    "type": "full",
+    "grade": "cold",
+    "fstop": 3,
+    "note": "Atto nhìn về sương phía bắc",
+    "frame": {
+     "subject": "atto",
+     "move": "crane_up",
+     "angle": -20,
+     "height": "low",
+     "size": 2.8
+    }
+   },
+   {
+    "a": 3988,
+    "b": 4085,
+    "type": "closeup",
+    "grade": "cold",
+    "fstop": 2,
+    "note": "callback cảnh mở",
+    "frame": {
+     "subject": "atto",
+     "move": "push_in",
+     "angle": 15,
+     "height": "low",
+     "x": -0.2
+    }
+   },
+   {
+    "a": 4086,
+    "b": 4173,
+    "type": "interior",
+    "grade": "night",
+    "fstop": 2.8,
+    "frame": {
+     "subject": "barrack.table",
+     "size": 4.5,
+     "angle": -10,
+     "move": "push_in"
+    }
+   },
+   {
+    "a": 4174,
+    "b": 4267,
+    "type": "insert",
+    "grade": "night",
+    "fstop": 2,
+    "frame": {
+     "subject": [
+      1300.1,
+      3.65,
+      0.92
+     ],
+     "size": 0.7,
+     "angle": 0,
+     "height": "high",
+     "move": "push_in"
+    }
+   },
+   {
+    "a": 4268,
+    "b": 4422,
+    "type": "insert",
+    "fstop": 3,
+    "note": "mặt cắt lớp bùn giữ thư",
+    "frame": {
+     "subject": [
+      1220,
+      0,
+      0
+     ],
+     "size": 11.4,
+     "move": "push_in",
+     "height": "top"
+    }
+   },
+   {
+    "a": 4423,
+    "b": 4523,
+    "type": "card",
+    "grade": "night",
+    "fstop": 1.4,
+    "frame": {
+     "subject": "atto",
+     "move": "drift",
+     "angle": -15
+    }
+   },
+   {
+    "a": 4524,
+    "b": 4630,
+    "type": "medium",
+    "grade": "night",
+    "fstop": 2.4,
+    "note": "mở gói đồ, quần lót bay ra",
+    "frame": {
+     "subject": "atto",
+     "move": "push_in",
+     "angle": 10,
+     "x": -0.15
+    }
+   },
+   {
+    "a": 4631,
+    "b": 4758,
+    "type": "medium",
+    "grade": "night",
+    "fstop": 2.4,
+    "note": "bách phu trưởng xin bia",
+    "frame": {
+     "subject": "centurion",
+     "move": "orbit_right",
+     "angle": -10,
+     "x": 0.2
+    }
+   },
+   {
+    "a": 4759,
+    "b": 4853,
+    "type": "card",
+    "grade": "night",
+    "fstop": 1.4,
+    "frame": {
+     "subject": "centurion",
+     "move": "drift",
+     "angle": 15
+    }
+   },
+   {
+    "a": 4854,
+    "b": 4930,
+    "type": "closeup",
+    "grade": "night",
+    "fstop": 2,
+    "frame": {
+     "subject": "vepo",
+     "move": "push_in",
+     "angle": 10,
+     "height": "low",
+     "x": 0.2,
+     "lens": 50
+    }
+   },
+   {
+    "a": 4931,
+    "b": 5082,
+    "type": "full",
+    "grade": "night",
+    "fstop": 2.8,
+    "note": "chán, giấy tờ, tiếng gõ cổng",
+    "frame": {
+     "subject": "atto",
+     "move": "pull_out",
+     "angle": -20,
+     "size": 2.8
+    }
+   },
+   {
+    "a": 5083,
+    "b": 5153,
+    "type": "card",
+    "grade": "night",
+    "fstop": 2,
+    "frame": {
+     "subject": "wall.gate_north",
+     "size": 5,
+     "angle": 180,
+     "move": "push_in"
+    }
+   }
+  ],
+  "punch": [
+   [
+    866,
+    1.22,
+    3,
+    30
+   ],
+   [
+    1168,
+    1.12,
+    8,
+    30
+   ],
+   [
+    2231,
+    1.12,
+    8,
+    30
+   ],
+   [
+    4607,
+    1.15,
+    6,
+    30
+   ],
+   [
+    5030,
+    1.12,
+    8,
+    40
+   ]
+  ],
+  "shakes": [
+   [
+    1168,
+    0.8,
+    10
+   ],
+   [
+    5030,
+    0.5,
+    8
+   ]
+  ]
+ },
+ "visibility": {
+  "stone2d": [
+   [
+    468,
+    560
+   ],
+   [
+    3195,
+    3371
+   ]
+  ],
+  "turf2d": [
+   [
+    2490,
+    2600
+   ]
+  ],
+  "atto_tab": [
+   [
+    4086,
+    4173
+   ],
+   [
+    4423,
+    4523
+   ]
+  ],
+  "pkg": [
+   [
+    4524,
+    4630
+   ]
+  ],
+  "pants": [
+   [
+    4600,
+    4630
+   ]
+  ],
+  "rod": [
+   [
+    2069,
+    2240
+   ]
+  ]
+ },
+ "tracks": [
+  {
+   "target": "wall_gate_south",
+   "note": "cổng nam mở",
+   "segments": [
+    {
+     "from": 1975,
+     "to": 2068,
+     "rotation_euler": [
+      0,
+      0,
+      "-1.35 * ease(clamp01((f - 1975) / 24))"
+     ]
+    }
+   ],
+   "default": {
+    "rotation_euler": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "target": "wall_gate_north",
+   "note": "cổng bắc mở",
+   "segments": [
+    {
+     "from": 2000,
+     "to": 2068,
+     "rotation_euler": [
+      0,
+      0,
+      "-1.35 * ease(clamp01((f - 2000) / 24))"
+     ]
+    }
+   ],
+   "default": {
+    "rotation_euler": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "target": "rod",
+   "note": "cưa gậy 10 bộ còn 8",
+   "segments": [
+    {
+     "from": 2231,
+     "to": 2344,
+     "scale": [
+      1,
+      1,
+      "lerp(1, 0.8, ease(clamp01((f - 2231) / 39)))"
+     ]
+    }
+   ],
+   "default": {
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "target": "pants",
+   "note": "quần lót bay khỏi gói đồ rồi rơi vào tay Atto",
+   "segments": [
+    {
+     "from": 4607,
+     "to": 4627,
+     "let": {
+      "u": "(f - 4607) / 20"
+     },
+     "location": [
+      "lerp(0, 0.3, u)",
+      "0.6 + 2.0 * u - 1.75 * u * u",
+      0.44
+     ],
+     "rotation_euler": [
+      0,
+      0,
+      "6.0 * u"
+     ]
+    },
+    {
+     "from": 4628,
+     "to": 4630,
+     "location": [
+      0.3,
+      0.85,
+      0.44
+     ],
+     "rotation_euler": [
+      0,
+      0,
+      6
+     ]
+    }
+   ],
+   "default": {
+    "location": [
+     0,
+     0.55,
+     0.44
+    ],
+    "rotation_euler": [
+     0,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "captions": {
+  "style": "pop"
+ },
+ "cards": [
+  {
+   "style": "label",
+   "text": "VINDOLANDA TABLETS",
+   "from": 4182,
+   "to": 4264,
+   "pos": [
+    0,
+    0.65
+   ]
+  },
+  {
+   "style": "screen",
+   "variant": "fact",
+   "text": "BIRTHDAY INVITATION",
+   "caption": "from an officer's wife · Vindolanda tablet 291",
+   "from": 4425,
+   "to": 4520
+  },
+  {
+   "style": "screen",
+   "variant": "quote",
+   "text": "\"Brittunculi\"",
+   "caption": "little Brits — Vindolanda tablet 164",
+   "from": 4761,
+   "to": 4851
+  },
+  {
+   "style": "screen",
+   "variant": "question",
+   "text": "A DOOR EVERY MILE. WHY?",
+   "from": 5085,
+   "to": 5091
+  },
+  {
+   "style": "title",
+   "text": "ROMAN SOLDIERS RAN OUT OF BEER",
+   "from": 4086,
+   "to": 4161,
+   "pos": [
+    0,
+    0.62
+   ],
+   "size": 0.075
+  },
+  {
+   "style": "label",
+   "text": "FULL VIDEO ON THE CHANNEL",
+   "from": 5092,
+   "to": 5152,
+   "pos": [
+    0,
+    0.6
+   ],
+   "size": 0.05
+  }
+ ],
+ "vfx": [
+  {
+   "type": "banner",
+   "at": [
+    6.5,
+    -1.9,
+    0
+   ],
+   "faction": "rome",
+   "h": 3.2
+  },
+  {
+   "type": "banner",
+   "at": [
+    -6.5,
+    -1.9,
+    0
+   ],
+   "faction": "rome",
+   "h": 3.2
+  },
+  {
+   "type": "dust",
+   "note": "công trường",
+   "at": [
+    3,
+    -3,
+    0
+   ],
+   "from": 71,
+   "to": 220,
+   "n": 6,
+   "spread": 6
+  },
+  {
+   "type": "sparks",
+   "note": "kiếm",
+   "at": [
+    -1.5,
+    -3,
+    1.9
+   ],
+   "frame": 436
+  },
+  {
+   "type": "dust",
+   "note": "đập đá",
+   "at": [
+    -2,
+    -3.2,
+    0
+   ],
+   "from": 451,
+   "to": 470,
+   "n": 4,
+   "spread": 0.6,
+   "size": 0.4
+  },
+  {
+   "type": "sparks",
+   "note": "mũi đục",
+   "at": [
+    0.4,
+    -3.55,
+    0.25
+   ],
+   "frame": 600
+  },
+  {
+   "type": "sparks",
+   "at": [
+    0.4,
+    -3.55,
+    0.25
+   ],
+   "frame": 615
+  },
+  {
+   "type": "sparks",
+   "at": [
+    0.4,
+    -3.55,
+    0.25
+   ],
+   "frame": 630
+  },
+  {
+   "type": "dust",
+   "note": "lính rơi xuống mương",
+   "at": [
+    302.6,
+    8,
+    -1.8
+   ],
+   "from": 1167,
+   "to": 1190,
+   "n": 6,
+   "spread": 0.8,
+   "size": 0.5
+  },
+  {
+   "type": "dust",
+   "note": "đổ đất",
+   "at": [
+    -598,
+    -3.2,
+    0
+   ],
+   "from": 2500,
+   "to": 2600,
+   "n": 4,
+   "spread": 2
+  },
+  {
+   "type": "dust",
+   "note": "montage",
+   "at": [
+    2,
+    -3,
+    0
+   ],
+   "from": 3195,
+   "to": 3371,
+   "n": 6,
+   "spread": 6
+  },
+  {
+   "type": "dust",
+   "note": "lê dương hành quân",
+   "at": [
+    300,
+    -11,
+    0
+   ],
+   "from": 3460,
+   "to": 3582,
+   "n": 8,
+   "spread": 10
+  },
+  {
+   "type": "dust",
+   "note": "lính phụ trợ tới",
+   "at": [
+    300,
+    -22,
+    0
+   ],
+   "from": 3583,
+   "to": 3718,
+   "n": 8,
+   "spread": 6
+  },
+  {
+   "type": "smoke",
+   "note": "sương phía bắc",
+   "at": [
+    300,
+    16,
+    0
+   ],
+   "from": 3892,
+   "to": 4085,
+   "n": 18,
+   "size": 4,
+   "spread": 26,
+   "rise": 0.3,
+   "wind": [
+    0.4,
+    -0.3
+   ],
+   "opacity": 0.55
+  },
+  {
+   "type": "smoke",
+   "note": "hơi thở Atto",
+   "at": [
+    297,
+    -0.5,
+    6.4
+   ],
+   "from": 3892,
+   "to": 4085,
+   "n": 3,
+   "size": 0.2,
+   "spread": 0.15,
+   "rise": 0.5
+  },
+  {
+   "type": "fire",
+   "note": "lò sưởi doanh trại",
+   "at": [
+    1302.6,
+    5.2,
+    0.35
+   ],
+   "from": 4086,
+   "to": 5082,
+   "size": 0.35
+  },
+  {
+   "type": "light_shafts",
+   "note": "ánh trăng qua cửa",
+   "at": [
+    1296.6,
+    4.2,
+    2.6
+   ],
+   "dir": [
+    0.8,
+    -0.3,
+    -0.5
+   ],
+   "from": 4086,
+   "to": 5082,
+   "n": 3
+  },
+  {
+   "type": "smoke",
+   "note": "sương đêm ngoài cổng",
+   "at": [
+    300,
+    10,
+    0
+   ],
+   "from": 4854,
+   "to": 4930,
+   "n": 10,
+   "size": 3,
+   "spread": 14,
+   "rise": 0.2,
+   "opacity": 0.45
+  },
+  {
+   "type": "smoke",
+   "note": "sương đêm cổng bắc",
+   "at": [
+    300,
+    10,
+    0
+   ],
+   "from": 5083,
+   "to": 5153,
+   "n": 10,
+   "size": 3,
+   "spread": 14,
+   "rise": 0.2,
+   "opacity": 0.45
+  }
+ ],
+ "sound": {
+  "music": [
+   {
+    "mood": "tense",
+    "from": 1,
+    "to": 930,
+    "gain_db": -5,
+    "duck_db": -10
+   },
+   {
+    "mood": "mystery",
+    "from": 870,
+    "to": 2090,
+    "gain_db": -5,
+    "duck_db": -10
+   },
+   {
+    "mood": "playful",
+    "from": 2030,
+    "to": 2800,
+    "gain_db": -5,
+    "duck_db": -10
+   },
+   {
+    "mood": "mystery",
+    "from": 2740,
+    "to": 3140,
+    "gain_db": -5,
+    "duck_db": -10
+   },
+   {
+    "mood": "march",
+    "from": 3080,
+    "to": 3620,
+    "gain_db": -4,
+    "duck_db": -10
+   },
+   {
+    "mood": "sad",
+    "from": 3560,
+    "to": 4100,
+    "gain_db": -5,
+    "duck_db": -10
+   },
+   {
+    "mood": "calm",
+    "from": 4040,
+    "to": 4990,
+    "gain_db": -6,
+    "duck_db": -10
+   },
+   {
+    "mood": "tense",
+    "from": 4930,
+    "to": 5153,
+    "gain_db": -4,
+    "duck_db": -10
+   }
+  ],
+  "ambience": [
+   {
+    "kind": "camp",
+    "from": 1,
+    "to": 902
+   },
+   {
+    "kind": "wind",
+    "from": 903,
+    "to": 3119,
+    "gain_db": -26
+   },
+   {
+    "kind": "camp",
+    "from": 3120,
+    "to": 3459
+   },
+   {
+    "kind": "wind",
+    "from": 3460,
+    "to": 4085,
+    "gain_db": -22
+   },
+   {
+    "kind": "night",
+    "from": 3892,
+    "to": 4085
+   },
+   {
+    "kind": "room",
+    "from": 4086,
+    "to": 5153
+   },
+   {
+    "kind": "fire",
+    "from": 4086,
+    "to": 5082,
+    "gain_db": -26
+   },
+   {
+    "kind": "night",
+    "from": 4854,
+    "to": 4930,
+    "gain_db": -20
+   }
+  ],
+  "events": [
+   [
+    75,
+    "hammer",
+    0.35
+   ],
+   [
+    110,
+    "dig",
+    0.35
+   ],
+   [
+    150,
+    "hammer",
+    0.3
+   ],
+   [
+    200,
+    "hammer",
+    0.3
+   ],
+   [
+    400,
+    "march",
+    0.4
+   ],
+   [
+    436,
+    "sword_clash",
+    0.5
+   ],
+   [
+    445,
+    "dig",
+    0.45
+   ],
+   [
+    452,
+    "hammer",
+    0.45
+   ],
+   [
+    460,
+    "hammer",
+    0.4
+   ],
+   [
+    476,
+    "thud",
+    0.45
+   ],
+   [
+    600,
+    "hammer",
+    0.45
+   ],
+   [
+    615,
+    "hammer",
+    0.45
+   ],
+   [
+    630,
+    "hammer",
+    0.45
+   ],
+   [
+    796,
+    "stamp_hit",
+    0.45
+   ],
+   [
+    812,
+    "scratch",
+    0.5
+   ],
+   [
+    868,
+    "stamp_hit",
+    0.5
+   ],
+   [
+    880,
+    "sad_trombone",
+    0.3
+   ],
+   [
+    905,
+    "paper",
+    0.4
+   ],
+   [
+    960,
+    "quill",
+    0.4
+   ],
+   [
+    1040,
+    "quill",
+    0.35
+   ],
+   [
+    1092,
+    "quill",
+    0.35
+   ],
+   [
+    1110,
+    "quill",
+    0.35
+   ],
+   [
+    1150,
+    "boing",
+    0.5
+   ],
+   [
+    1168,
+    "thud",
+    0.55
+   ],
+   [
+    1170,
+    "squeak",
+    0.4
+   ],
+   [
+    1240,
+    "wind_gust",
+    0.4
+   ],
+   [
+    1326,
+    "quill",
+    0.35
+   ],
+   [
+    1422,
+    "quill",
+    0.35
+   ],
+   [
+    1560,
+    "quill",
+    0.3
+   ],
+   [
+    1655,
+    "ding",
+    0.4
+   ],
+   [
+    1975,
+    "squeak",
+    0.4
+   ],
+   [
+    2002,
+    "squeak",
+    0.4
+   ],
+   [
+    2035,
+    "whoosh",
+    0.35
+   ],
+   [
+    2195,
+    "scratch",
+    0.45
+   ],
+   [
+    2207,
+    "scratch",
+    0.4
+   ],
+   [
+    2219,
+    "scratch",
+    0.4
+   ],
+   [
+    2245,
+    "quill",
+    0.35
+   ],
+   [
+    2270,
+    "slide_down",
+    0.35
+   ],
+   [
+    2350,
+    "paper",
+    0.35
+   ],
+   [
+    2500,
+    "dig",
+    0.35
+   ],
+   [
+    2540,
+    "thud",
+    0.35
+   ],
+   [
+    2575,
+    "gulp",
+    0.4
+   ],
+   [
+    2610,
+    "march",
+    0.4
+   ],
+   [
+    2751,
+    "crowd_murmur",
+    0.4
+   ],
+   [
+    2865,
+    "quill",
+    0.35
+   ],
+   [
+    2923,
+    "dig",
+    0.4
+   ],
+   [
+    3046,
+    "quill",
+    0.35
+   ],
+   [
+    3100,
+    "scratch",
+    0.45
+   ],
+   [
+    3220,
+    "hammer",
+    0.4
+   ],
+   [
+    3244,
+    "thud",
+    0.4
+   ],
+   [
+    3257,
+    "dig",
+    0.4
+   ],
+   [
+    3287,
+    "dig",
+    0.35
+   ],
+   [
+    3320,
+    "hammer",
+    0.4
+   ],
+   [
+    3350,
+    "hammer",
+    0.4
+   ],
+   [
+    3374,
+    "wind_gust",
+    0.35
+   ],
+   [
+    3462,
+    "war_horn",
+    0.55
+   ],
+   [
+    3720,
+    "paper",
+    0.35
+   ],
+   [
+    3900,
+    "wind_gust",
+    0.5
+   ],
+   [
+    3990,
+    "wind_gust",
+    0.35
+   ],
+   [
+    4090,
+    "quill",
+    0.4
+   ],
+   [
+    4130,
+    "quill",
+    0.35
+   ],
+   [
+    4180,
+    "paper",
+    0.35
+   ],
+   [
+    4357,
+    "splash",
+    0.3
+   ],
+   [
+    4441,
+    "ding",
+    0.35
+   ],
+   [
+    4548,
+    "paper",
+    0.45
+   ],
+   [
+    4565,
+    "pop",
+    0.3
+   ],
+   [
+    4571,
+    "pop",
+    0.3
+   ],
+   [
+    4607,
+    "boing",
+    0.5
+   ],
+   [
+    4609,
+    "squeak",
+    0.4
+   ],
+   [
+    4640,
+    "quill",
+    0.4
+   ],
+   [
+    4700,
+    "gulp",
+    0.45
+   ],
+   [
+    4712,
+    "splash",
+    0.25
+   ],
+   [
+    4923,
+    "wind_gust",
+    0.35
+   ],
+   [
+    4970,
+    "paper",
+    0.4
+   ],
+   [
+    5030,
+    "thud",
+    0.55
+   ],
+   [
+    5034,
+    "squeak",
+    0.4
+   ],
+   [
+    5038,
+    "thud",
+    0.55
+   ],
+   [
+    5046,
+    "thud",
+    0.55
+   ],
+   [
+    5060,
+    "heartbeat",
+    0.5
+   ],
+   [
+    5113,
+    "heartbeat",
+    0.45
+   ]
+  ],
+  "repeat": [
+   {
+    "name": "march",
+    "from": 3472,
+    "to": 3582,
+    "every": 60,
+    "gain": 0.3,
+    "note": "lê dương rời đi"
+   },
+   {
+    "name": "march",
+    "from": 3590,
+    "to": 3718,
+    "every": 60,
+    "gain": 0.3,
+    "note": "lính phụ trợ tới"
+   }
+  ]
+ },
+ "words": [
+  [
+   0.14,
+   "Here's"
+  ],
+  [
+   0.56,
+   "the"
+  ],
+  [
+   0.77,
+   "thing"
+  ],
+  [
+   0.98,
+   "most"
+  ],
+  [
+   1.18,
+   "people"
+  ],
+  [
+   1.6,
+   "get"
+  ],
+  [
+   1.81,
+   "wrong."
+  ],
+  [
+   2.34,
+   "Rome"
+  ],
+  [
+   2.57,
+   "didn't"
+  ],
+  [
+   2.8,
+   "hire"
+  ],
+  [
+   3.03,
+   "builders."
+  ],
+  [
+   3.5,
+   "Its"
+  ],
+  [
+   3.73,
+   "soldiers"
+  ],
+  [
+   4.19,
+   "were"
+  ],
+  [
+   4.42,
+   "the"
+  ],
+  [
+   4.66,
+   "builders."
+  ],
+  [
+   5.34,
+   "Men"
+  ],
+  [
+   5.54,
+   "from"
+  ],
+  [
+   5.75,
+   "three"
+  ],
+  [
+   5.95,
+   "legions"
+  ],
+  [
+   6.35,
+   "did"
+  ],
+  [
+   6.56,
+   "most"
+  ],
+  [
+   6.76,
+   "of"
+  ],
+  [
+   6.96,
+   "the"
+  ],
+  [
+   7.16,
+   "work:"
+  ],
+  [
+   7.36,
+   "the"
+  ],
+  [
+   7.57,
+   "Second"
+  ],
+  [
+   7.97,
+   "Augusta,"
+  ],
+  [
+   8.86,
+   "the"
+  ],
+  [
+   9.12,
+   "Sixth"
+  ],
+  [
+   9.38,
+   "Victrix,"
+  ],
+  [
+   10.1,
+   "and"
+  ],
+  [
+   10.37,
+   "the"
+  ],
+  [
+   10.63,
+   "Twentieth"
+  ],
+  [
+   11.17,
+   "Valeria"
+  ],
+  [
+   11.97,
+   "Victrix."
+  ],
+  [
+   12.78,
+   "A"
+  ],
+  [
+   12.95,
+   "legionary"
+  ],
+  [
+   13.64,
+   "had"
+  ],
+  [
+   13.82,
+   "to"
+  ],
+  [
+   13.99,
+   "march,"
+  ],
+  [
+   14.44,
+   "fight,"
+  ],
+  [
+   14.8,
+   "dig,"
+  ],
+  [
+   14.99,
+   "quarry,"
+  ],
+  [
+   15.37,
+   "and"
+  ],
+  [
+   15.56,
+   "lay"
+  ],
+  [
+   15.75,
+   "stone."
+  ],
+  [
+   15.94,
+   "Each"
+  ],
+  [
+   16.13,
+   "team"
+  ],
+  [
+   16.32,
+   "built"
+  ],
+  [
+   16.51,
+   "its"
+  ],
+  [
+   16.7,
+   "own"
+  ],
+  [
+   16.89,
+   "stretch."
+  ],
+  [
+   17.08,
+   "And"
+  ],
+  [
+   17.27,
+   "when"
+  ],
+  [
+   17.46,
+   "they"
+  ],
+  [
+   17.65,
+   "finished,"
+  ],
+  [
+   18.4,
+   "they"
+  ],
+  [
+   18.6,
+   "carved"
+  ],
+  [
+   19,
+   "a"
+  ],
+  [
+   19.2,
+   "stone"
+  ],
+  [
+   19.4,
+   "with"
+  ],
+  [
+   19.59,
+   "their"
+  ],
+  [
+   19.79,
+   "unit's"
+  ],
+  [
+   20.19,
+   "name"
+  ],
+  [
+   20.39,
+   "on"
+  ],
+  [
+   20.59,
+   "it,"
+  ],
+  [
+   20.79,
+   "like"
+  ],
+  [
+   20.99,
+   "signing"
+  ],
+  [
+   21.39,
+   "a"
+  ],
+  [
+   21.59,
+   "homework"
+  ],
+  [
+   22.18,
+   "assignment."
+  ],
+  [
+   23.58,
+   "Archaeologists"
+  ],
+  [
+   24.32,
+   "have"
+  ],
+  [
+   24.51,
+   "found"
+  ],
+  [
+   24.69,
+   "many"
+  ],
+  [
+   25.07,
+   "of"
+  ],
+  [
+   25.25,
+   "these"
+  ],
+  [
+   25.44,
+   "building"
+  ],
+  [
+   25.81,
+   "stones."
+  ],
+  [
+   26.4,
+   "Some"
+  ],
+  [
+   26.6,
+   "are"
+  ],
+  [
+   26.81,
+   "neat."
+  ],
+  [
+   27.01,
+   "Some"
+  ],
+  [
+   27.21,
+   "look"
+  ],
+  [
+   27.42,
+   "like"
+  ],
+  [
+   27.62,
+   "they"
+  ],
+  [
+   27.82,
+   "were"
+  ],
+  [
+   28.03,
+   "carved"
+  ],
+  [
+   28.44,
+   "on"
+  ],
+  [
+   28.64,
+   "a"
+  ],
+  [
+   28.84,
+   "Friday"
+  ],
+  [
+   29.25,
+   "afternoon."
+  ],
+  [
+   30.06,
+   "The"
+  ],
+  [
+   30.26,
+   "plan"
+  ],
+  [
+   30.46,
+   "looked"
+  ],
+  [
+   30.86,
+   "simple"
+  ],
+  [
+   31.25,
+   "on"
+  ],
+  [
+   31.45,
+   "paper."
+  ],
+  [
+   31.85,
+   "A"
+  ],
+  [
+   32.05,
+   "stone"
+  ],
+  [
+   32.25,
+   "wall,"
+  ],
+  [
+   32.45,
+   "ten"
+  ],
+  [
+   32.64,
+   "Roman"
+  ],
+  [
+   33.04,
+   "feet"
+  ],
+  [
+   33.24,
+   "thick,"
+  ],
+  [
+   33.62,
+   "and"
+  ],
+  [
+   33.79,
+   "probably"
+  ],
+  [
+   34.29,
+   "around"
+  ],
+  [
+   34.63,
+   "fifteen"
+  ],
+  [
+   34.97,
+   "feet"
+  ],
+  [
+   35.14,
+   "tall."
+  ],
+  [
+   35.31,
+   "In"
+  ],
+  [
+   35.47,
+   "front"
+  ],
+  [
+   35.64,
+   "of"
+  ],
+  [
+   35.81,
+   "it,"
+  ],
+  [
+   36.28,
+   "facing"
+  ],
+  [
+   36.68,
+   "north,"
+  ],
+  [
+   37.16,
+   "a"
+  ],
+  [
+   37.34,
+   "deep"
+  ],
+  [
+   37.52,
+   "ditch."
+  ],
+  [
+   37.88,
+   "In"
+  ],
+  [
+   38.06,
+   "the"
+  ],
+  [
+   38.23,
+   "middle"
+  ],
+  [
+   38.59,
+   "section,"
+  ],
+  [
+   39.16,
+   "the"
+  ],
+  [
+   39.34,
+   "builders"
+  ],
+  [
+   39.7,
+   "set"
+  ],
+  [
+   39.88,
+   "the"
+  ],
+  [
+   40.06,
+   "wall"
+  ],
+  [
+   40.24,
+   "right"
+  ],
+  [
+   40.42,
+   "on"
+  ],
+  [
+   40.6,
+   "top"
+  ],
+  [
+   40.78,
+   "of"
+  ],
+  [
+   40.96,
+   "a"
+  ],
+  [
+   41.14,
+   "line"
+  ],
+  [
+   41.32,
+   "of"
+  ],
+  [
+   41.5,
+   "cliffs"
+  ],
+  [
+   41.68,
+   "called"
+  ],
+  [
+   42.04,
+   "the"
+  ],
+  [
+   42.22,
+   "Whin"
+  ],
+  [
+   42.4,
+   "Sill,"
+  ],
+  [
+   42.8,
+   "so"
+  ],
+  [
+   42.96,
+   "the"
+  ],
+  [
+   43.11,
+   "ground"
+  ],
+  [
+   43.27,
+   "did"
+  ],
+  [
+   43.43,
+   "half"
+  ],
+  [
+   43.59,
+   "the"
+  ],
+  [
+   43.74,
+   "work."
+  ],
+  [
+   44.08,
+   "Every"
+  ],
+  [
+   44.62,
+   "Roman"
+  ],
+  [
+   44.98,
+   "mile,"
+  ],
+  [
+   45.72,
+   "a"
+  ],
+  [
+   45.99,
+   "small"
+  ],
+  [
+   46.26,
+   "fort"
+  ],
+  [
+   46.54,
+   "called"
+  ],
+  [
+   47.08,
+   "a"
+  ],
+  [
+   47.35,
+   "milecastle,"
+  ],
+  [
+   48.72,
+   "with"
+  ],
+  [
+   48.94,
+   "room"
+  ],
+  [
+   49.16,
+   "for"
+  ],
+  [
+   49.39,
+   "a"
+  ],
+  [
+   49.61,
+   "small"
+  ],
+  [
+   49.83,
+   "squad"
+  ],
+  [
+   50.05,
+   "of"
+  ],
+  [
+   50.28,
+   "soldiers."
+  ],
+  [
+   51.34,
+   "Between"
+  ],
+  [
+   51.74,
+   "each"
+  ],
+  [
+   51.94,
+   "pair"
+  ],
+  [
+   52.14,
+   "of"
+  ],
+  [
+   52.34,
+   "milecastles,"
+  ],
+  [
+   53.14,
+   "two"
+  ],
+  [
+   53.34,
+   "stone"
+  ],
+  [
+   53.54,
+   "watchtowers"
+  ],
+  [
+   54.14,
+   "called"
+  ],
+  [
+   54.54,
+   "turrets."
+  ],
+  [
+   54.94,
+   "That's"
+  ],
+  [
+   55.14,
+   "eighty"
+  ],
+  [
+   55.54,
+   "milecastles"
+  ],
+  [
+   56.34,
+   "and"
+  ],
+  [
+   56.54,
+   "about"
+  ],
+  [
+   56.94,
+   "a"
+  ],
+  [
+   57.14,
+   "hundred"
+  ],
+  [
+   57.54,
+   "and"
+  ],
+  [
+   57.74,
+   "sixty"
+  ],
+  [
+   58.14,
+   "turrets,"
+  ],
+  [
+   58.54,
+   "lined"
+  ],
+  [
+   58.94,
+   "up"
+  ],
+  [
+   59.14,
+   "like"
+  ],
+  [
+   59.34,
+   "beads"
+  ],
+  [
+   59.54,
+   "on"
+  ],
+  [
+   59.74,
+   "a"
+  ],
+  [
+   59.94,
+   "string."
+  ],
+  [
+   60.36,
+   "And"
+  ],
+  [
+   60.6,
+   "here's"
+  ],
+  [
+   61.08,
+   "the"
+  ],
+  [
+   61.32,
+   "detail"
+  ],
+  [
+   61.79,
+   "that"
+  ],
+  [
+   62.03,
+   "matters"
+  ],
+  [
+   62.51,
+   "most."
+  ],
+  [
+   62.75,
+   "Every"
+  ],
+  [
+   63.47,
+   "milecastle"
+  ],
+  [
+   64.42,
+   "had"
+  ],
+  [
+   64.66,
+   "two"
+  ],
+  [
+   64.9,
+   "gates."
+  ],
+  [
+   65.64,
+   "One"
+  ],
+  [
+   65.86,
+   "facing"
+  ],
+  [
+   66.3,
+   "south."
+  ],
+  [
+   66.52,
+   "One"
+  ],
+  [
+   66.74,
+   "facing"
+  ],
+  [
+   67.18,
+   "north."
+  ],
+  [
+   67.68,
+   "Straight"
+  ],
+  [
+   67.91,
+   "through"
+  ],
+  [
+   68.14,
+   "the"
+  ],
+  [
+   68.37,
+   "wall."
+  ],
+  [
+   68.92,
+   "Then"
+  ],
+  [
+   69.11,
+   "the"
+  ],
+  [
+   69.3,
+   "plan"
+  ],
+  [
+   69.49,
+   "started"
+  ],
+  [
+   69.88,
+   "changing."
+  ],
+  [
+   70.66,
+   "Partway"
+  ],
+  [
+   71.25,
+   "through,"
+  ],
+  [
+   71.74,
+   "the"
+  ],
+  [
+   71.92,
+   "wall"
+  ],
+  [
+   72.11,
+   "got"
+  ],
+  [
+   72.29,
+   "thinner."
+  ],
+  [
+   73.04,
+   "The"
+  ],
+  [
+   73.26,
+   "builders"
+  ],
+  [
+   73.69,
+   "cut"
+  ],
+  [
+   73.91,
+   "it"
+  ],
+  [
+   74.12,
+   "from"
+  ],
+  [
+   74.34,
+   "ten"
+  ],
+  [
+   74.56,
+   "feet"
+  ],
+  [
+   74.78,
+   "down"
+  ],
+  [
+   74.99,
+   "to"
+  ],
+  [
+   75.21,
+   "about"
+  ],
+  [
+   75.64,
+   "eight,"
+  ],
+  [
+   76.2,
+   "probably"
+  ],
+  [
+   76.8,
+   "to"
+  ],
+  [
+   77,
+   "save"
+  ],
+  [
+   77.2,
+   "time"
+  ],
+  [
+   77.4,
+   "and"
+  ],
+  [
+   77.6,
+   "stone."
+  ],
+  [
+   78.12,
+   "In"
+  ],
+  [
+   78.28,
+   "the"
+  ],
+  [
+   78.45,
+   "west"
+  ],
+  [
+   78.61,
+   "there"
+  ],
+  [
+   78.77,
+   "was"
+  ],
+  [
+   78.94,
+   "no"
+  ],
+  [
+   79.1,
+   "good"
+  ],
+  [
+   79.26,
+   "limestone"
+  ],
+  [
+   79.75,
+   "for"
+  ],
+  [
+   79.91,
+   "mortar,"
+  ],
+  [
+   80.76,
+   "so"
+  ],
+  [
+   80.96,
+   "the"
+  ],
+  [
+   81.15,
+   "western"
+  ],
+  [
+   81.55,
+   "third"
+  ],
+  [
+   81.74,
+   "of"
+  ],
+  [
+   81.94,
+   "the"
+  ],
+  [
+   82.14,
+   "wall"
+  ],
+  [
+   82.33,
+   "was"
+  ],
+  [
+   82.53,
+   "built"
+  ],
+  [
+   82.73,
+   "from"
+  ],
+  [
+   82.92,
+   "turf."
+  ],
+  [
+   83.78,
+   "Basically,"
+  ],
+  [
+   84.55,
+   "a"
+  ],
+  [
+   84.75,
+   "wall"
+  ],
+  [
+   84.94,
+   "of"
+  ],
+  [
+   85.13,
+   "stacked"
+  ],
+  [
+   85.52,
+   "grass"
+  ],
+  [
+   85.71,
+   "bricks."
+  ],
+  [
+   85.91,
+   "Then"
+  ],
+  [
+   86.1,
+   "Rome"
+  ],
+  [
+   86.29,
+   "decided"
+  ],
+  [
+   86.87,
+   "milecastles"
+  ],
+  [
+   87.65,
+   "weren't"
+  ],
+  [
+   88.03,
+   "enough,"
+  ],
+  [
+   88.7,
+   "and"
+  ],
+  [
+   88.89,
+   "moved"
+  ],
+  [
+   89.28,
+   "big"
+  ],
+  [
+   89.48,
+   "forts"
+  ],
+  [
+   89.67,
+   "right"
+  ],
+  [
+   89.86,
+   "onto"
+  ],
+  [
+   90.25,
+   "the"
+  ],
+  [
+   90.45,
+   "wall,"
+  ],
+  [
+   91.06,
+   "each"
+  ],
+  [
+   91.26,
+   "holding"
+  ],
+  [
+   91.66,
+   "hundreds"
+  ],
+  [
+   92.05,
+   "of"
+  ],
+  [
+   92.25,
+   "soldiers."
+  ],
+  [
+   92.65,
+   "And"
+  ],
+  [
+   92.85,
+   "then"
+  ],
+  [
+   93.05,
+   "came"
+  ],
+  [
+   93.25,
+   "the"
+  ],
+  [
+   93.45,
+   "strangest"
+  ],
+  [
+   93.85,
+   "addition"
+  ],
+  [
+   94.44,
+   "of"
+  ],
+  [
+   94.64,
+   "all."
+  ],
+  [
+   95.4,
+   "Behind"
+  ],
+  [
+   95.72,
+   "the"
+  ],
+  [
+   95.88,
+   "wall,"
+  ],
+  [
+   96.28,
+   "on"
+  ],
+  [
+   96.42,
+   "the"
+  ],
+  [
+   96.57,
+   "Roman"
+  ],
+  [
+   96.86,
+   "side,"
+  ],
+  [
+   97.2,
+   "they"
+  ],
+  [
+   97.4,
+   "dug"
+  ],
+  [
+   97.6,
+   "a"
+  ],
+  [
+   97.8,
+   "second"
+  ],
+  [
+   98.2,
+   "giant"
+  ],
+  [
+   98.4,
+   "ditch"
+  ],
+  [
+   98.6,
+   "between"
+  ],
+  [
+   99,
+   "two"
+  ],
+  [
+   99.2,
+   "earth"
+  ],
+  [
+   99.4,
+   "banks."
+  ],
+  [
+   99.6,
+   "It's"
+  ],
+  [
+   99.8,
+   "called"
+  ],
+  [
+   100.2,
+   "the"
+  ],
+  [
+   100.4,
+   "Vallum."
+  ],
+  [
+   101.3,
+   "It"
+  ],
+  [
+   101.5,
+   "faced"
+  ],
+  [
+   101.91,
+   "south."
+  ],
+  [
+   102.48,
+   "Toward"
+  ],
+  [
+   102.89,
+   "their"
+  ],
+  [
+   103.1,
+   "own"
+  ],
+  [
+   103.31,
+   "province."
+  ],
+  [
+   103.96,
+   "Most"
+  ],
+  [
+   104.14,
+   "of"
+  ],
+  [
+   104.32,
+   "the"
+  ],
+  [
+   104.5,
+   "wall"
+  ],
+  [
+   104.68,
+   "went"
+  ],
+  [
+   104.86,
+   "up"
+  ],
+  [
+   105.04,
+   "in"
+  ],
+  [
+   105.22,
+   "about"
+  ],
+  [
+   105.58,
+   "six"
+  ],
+  [
+   105.76,
+   "years."
+  ],
+  [
+   106.48,
+   "Day"
+  ],
+  [
+   106.68,
+   "after"
+  ],
+  [
+   107.09,
+   "day:"
+  ],
+  [
+   107.3,
+   "quarry"
+  ],
+  [
+   107.71,
+   "the"
+  ],
+  [
+   107.91,
+   "stone,"
+  ],
+  [
+   108.11,
+   "haul"
+  ],
+  [
+   108.32,
+   "it,"
+  ],
+  [
+   108.52,
+   "fill"
+  ],
+  [
+   108.73,
+   "the"
+  ],
+  [
+   108.93,
+   "middle"
+  ],
+  [
+   109.34,
+   "with"
+  ],
+  [
+   109.54,
+   "rubble"
+  ],
+  [
+   109.95,
+   "and"
+  ],
+  [
+   110.16,
+   "clay,"
+  ],
+  [
+   110.64,
+   "set"
+  ],
+  [
+   110.84,
+   "the"
+  ],
+  [
+   111.03,
+   "facing"
+  ],
+  [
+   111.43,
+   "blocks,"
+  ],
+  [
+   111.63,
+   "repeat."
+  ],
+  [
+   112.38,
+   "Seventy-three"
+  ],
+  [
+   113.13,
+   "miles."
+  ],
+  [
+   113.78,
+   "And"
+  ],
+  [
+   113.97,
+   "once"
+  ],
+  [
+   114.16,
+   "it"
+  ],
+  [
+   114.36,
+   "was"
+  ],
+  [
+   114.55,
+   "finished,"
+  ],
+  [
+   115.12,
+   "the"
+  ],
+  [
+   115.31,
+   "legions"
+  ],
+  [
+   115.7,
+   "marched"
+  ],
+  [
+   116.08,
+   "back"
+  ],
+  [
+   116.27,
+   "to"
+  ],
+  [
+   116.46,
+   "their"
+  ],
+  [
+   116.66,
+   "bases."
+  ],
+  [
+   117.24,
+   "The"
+  ],
+  [
+   117.42,
+   "men"
+  ],
+  [
+   117.6,
+   "who"
+  ],
+  [
+   117.78,
+   "actually"
+  ],
+  [
+   118.32,
+   "lived"
+  ],
+  [
+   118.68,
+   "on"
+  ],
+  [
+   118.86,
+   "the"
+  ],
+  [
+   119.04,
+   "wall"
+  ],
+  [
+   119.22,
+   "were"
+  ],
+  [
+   119.4,
+   "auxiliaries,"
+  ],
+  [
+   120.34,
+   "soldiers"
+  ],
+  [
+   120.73,
+   "recruited"
+  ],
+  [
+   121.33,
+   "from"
+  ],
+  [
+   121.52,
+   "conquered"
+  ],
+  [
+   122.12,
+   "peoples"
+  ],
+  [
+   122.51,
+   "across"
+  ],
+  [
+   122.91,
+   "the"
+  ],
+  [
+   123.1,
+   "empire."
+  ],
+  [
+   123.94,
+   "Tungrians"
+  ],
+  [
+   124.36,
+   "and"
+  ],
+  [
+   124.57,
+   "Batavians"
+  ],
+  [
+   125.21,
+   "from"
+  ],
+  [
+   125.42,
+   "what's"
+  ],
+  [
+   125.63,
+   "now"
+  ],
+  [
+   125.84,
+   "Belgium"
+  ],
+  [
+   126.26,
+   "and"
+  ],
+  [
+   126.48,
+   "the"
+  ],
+  [
+   126.69,
+   "Netherlands."
+  ],
+  [
+   127.5,
+   "Later,"
+  ],
+  [
+   128.06,
+   "even"
+  ],
+  [
+   128.44,
+   "archers"
+  ],
+  [
+   128.81,
+   "from"
+  ],
+  [
+   129,
+   "Syria."
+  ],
+  [
+   129.7,
+   "So"
+  ],
+  [
+   129.93,
+   "the"
+  ],
+  [
+   130.16,
+   "guard"
+  ],
+  [
+   130.39,
+   "staring"
+  ],
+  [
+   130.85,
+   "north"
+  ],
+  [
+   131.08,
+   "into"
+  ],
+  [
+   131.54,
+   "the"
+  ],
+  [
+   131.77,
+   "British"
+  ],
+  [
+   132.23,
+   "fog"
+  ],
+  [
+   132.45,
+   "often"
+  ],
+  [
+   132.91,
+   "wasn't"
+  ],
+  [
+   133.14,
+   "British,"
+  ],
+  [
+   133.6,
+   "and"
+  ],
+  [
+   133.83,
+   "wasn't"
+  ],
+  [
+   134.06,
+   "from"
+  ],
+  [
+   134.29,
+   "Rome"
+  ],
+  [
+   134.52,
+   "either."
+  ],
+  [
+   135.22,
+   "Just"
+  ],
+  [
+   135.43,
+   "like"
+  ],
+  [
+   135.65,
+   "you."
+  ],
+  [
+   136.16,
+   "And"
+  ],
+  [
+   136.32,
+   "we"
+  ],
+  [
+   136.48,
+   "know"
+  ],
+  [
+   136.64,
+   "what"
+  ],
+  [
+   136.8,
+   "their"
+  ],
+  [
+   136.96,
+   "lives"
+  ],
+  [
+   137.28,
+   "were"
+  ],
+  [
+   137.44,
+   "like,"
+  ],
+  [
+   137.78,
+   "because"
+  ],
+  [
+   138.09,
+   "they"
+  ],
+  [
+   138.25,
+   "wrote"
+  ],
+  [
+   138.41,
+   "things"
+  ],
+  [
+   138.56,
+   "down."
+  ],
+  [
+   139.1,
+   "At"
+  ],
+  [
+   139.31,
+   "Vindolanda,"
+  ],
+  [
+   140.15,
+   "a"
+  ],
+  [
+   140.36,
+   "fort"
+  ],
+  [
+   140.58,
+   "just"
+  ],
+  [
+   140.79,
+   "behind"
+  ],
+  [
+   141.21,
+   "the"
+  ],
+  [
+   141.42,
+   "wall"
+  ],
+  [
+   141.63,
+   "line,"
+  ],
+  [
+   142.24,
+   "archaeologists"
+  ],
+  [
+   143.08,
+   "found"
+  ],
+  [
+   143.29,
+   "hundreds"
+  ],
+  [
+   143.72,
+   "of"
+  ],
+  [
+   143.93,
+   "thin"
+  ],
+  [
+   144.14,
+   "wooden"
+  ],
+  [
+   144.56,
+   "letters,"
+  ],
+  [
+   145.18,
+   "preserved"
+  ],
+  [
+   145.78,
+   "in"
+  ],
+  [
+   145.98,
+   "wet,"
+  ],
+  [
+   146.38,
+   "airless"
+  ],
+  [
+   146.75,
+   "mud."
+  ],
+  [
+   147.4,
+   "One"
+  ],
+  [
+   147.6,
+   "is"
+  ],
+  [
+   147.8,
+   "a"
+  ],
+  [
+   147.99,
+   "birthday"
+  ],
+  [
+   148.39,
+   "party"
+  ],
+  [
+   148.78,
+   "invitation"
+  ],
+  [
+   149.57,
+   "from"
+  ],
+  [
+   149.77,
+   "an"
+  ],
+  [
+   149.97,
+   "officer's"
+  ],
+  [
+   150.56,
+   "wife."
+  ],
+  [
+   150.76,
+   "One"
+  ],
+  [
+   150.96,
+   "mentions"
+  ],
+  [
+   151.35,
+   "a"
+  ],
+  [
+   151.55,
+   "package"
+  ],
+  [
+   151.95,
+   "of"
+  ],
+  [
+   152.14,
+   "socks,"
+  ],
+  [
+   152.34,
+   "sandals,"
+  ],
+  [
+   152.74,
+   "and"
+  ],
+  [
+   152.93,
+   "two"
+  ],
+  [
+   153.13,
+   "pairs"
+  ],
+  [
+   153.33,
+   "of"
+  ],
+  [
+   153.53,
+   "underpants."
+  ],
+  [
+   154.32,
+   "One"
+  ],
+  [
+   154.5,
+   "officer"
+  ],
+  [
+   155.03,
+   "writes"
+  ],
+  [
+   155.39,
+   "that"
+  ],
+  [
+   155.57,
+   "his"
+  ],
+  [
+   155.75,
+   "men"
+  ],
+  [
+   155.93,
+   "have"
+  ],
+  [
+   156.11,
+   "run"
+  ],
+  [
+   156.28,
+   "out"
+  ],
+  [
+   156.46,
+   "of"
+  ],
+  [
+   156.64,
+   "beer,"
+  ],
+  [
+   157.04,
+   "and"
+  ],
+  [
+   157.22,
+   "could"
+  ],
+  [
+   157.39,
+   "someone"
+  ],
+  [
+   157.75,
+   "please"
+  ],
+  [
+   157.93,
+   "send"
+  ],
+  [
+   158.1,
+   "more."
+  ],
+  [
+   158.6,
+   "One"
+  ],
+  [
+   158.81,
+   "report"
+  ],
+  [
+   159.23,
+   "sneers"
+  ],
+  [
+   159.44,
+   "at"
+  ],
+  [
+   159.65,
+   "the"
+  ],
+  [
+   159.86,
+   "locals"
+  ],
+  [
+   160.29,
+   "as"
+  ],
+  [
+   160.5,
+   "'Brittunculi.'"
+  ],
+  [
+   161.76,
+   "Little"
+  ],
+  [
+   162.33,
+   "Brits."
+  ],
+  [
+   162.9,
+   "Life"
+  ],
+  [
+   163.09,
+   "on"
+  ],
+  [
+   163.29,
+   "the"
+  ],
+  [
+   163.48,
+   "frontier"
+  ],
+  [
+   163.87,
+   "was"
+  ],
+  [
+   164.07,
+   "cold,"
+  ],
+  [
+   164.52,
+   "boring,"
+  ],
+  [
+   165,
+   "and"
+  ],
+  [
+   165.21,
+   "full"
+  ],
+  [
+   165.42,
+   "of"
+  ],
+  [
+   165.63,
+   "paperwork."
+  ],
+  [
+   166.66,
+   "Which"
+  ],
+  [
+   166.82,
+   "brings"
+  ],
+  [
+   166.98,
+   "us"
+  ],
+  [
+   167.15,
+   "back"
+  ],
+  [
+   167.31,
+   "to"
+  ],
+  [
+   167.47,
+   "that"
+  ],
+  [
+   167.63,
+   "knock"
+  ],
+  [
+   167.79,
+   "on"
+  ],
+  [
+   167.96,
+   "the"
+  ],
+  [
+   168.12,
+   "gate."
+  ],
+  [
+   168.56,
+   "If"
+  ],
+  [
+   168.73,
+   "this"
+  ],
+  [
+   168.89,
+   "wall"
+  ],
+  [
+   169.06,
+   "had"
+  ],
+  [
+   169.23,
+   "a"
+  ],
+  [
+   169.39,
+   "door"
+  ],
+  [
+   169.56,
+   "every"
+  ],
+  [
+   170.06,
+   "mile..."
+  ],
+  [
+   170.39,
+   "what"
+  ],
+  [
+   170.56,
+   "was"
+  ],
+  [
+   170.73,
+   "it"
+  ],
+  [
+   170.89,
+   "actually"
+  ],
+  [
+   171.39,
+   "for?"
+  ]
+ ]
+}

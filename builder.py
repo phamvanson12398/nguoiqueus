@@ -494,6 +494,8 @@ class Builder:
             body = c["text"]; lines = body.count("\n") + 1
             w = cards._text_width(body, size) + size * (1.2 if st_ == "title" else 0.2)
             h = size * (1.6 + 1.1 * (lines - 1)) if st_ == "title" else size * 1.1 * lines
+            if w > 1.9 * HW and lines == 1 and " " in body:     # build_card wraps it to two lines
+                lines = 2; w = w * 0.55; h = size * (2.7 if st_ == "title" else 2.2)
             w, h = min(w, 1.9 * HW) / 2 / HW, h / 2 / HH
             a, b = max(1, int(c.get("from", 1))), min(ctx.N, int(c.get("to", ctx.N)))
             if b < a: out.append(c); continue
@@ -511,7 +513,8 @@ class Builder:
             c0, hit = cost(x0, y0)
             if c0 <= 0: out.append(c); continue
             # every free spot of a coarse grid (never the subtitle band), nearest to where the card was meant to be
-            sub_band = (-0.45, 0.05) if self.aspect == "9:16" else (-1.0, -0.6)
+            # 9:16: pop captions around y -0.2 (and YouTube's Shorts buttons cover the bottom); 16:9: subtitles at the bottom
+            sub_band = (-1.0, 0.08) if self.aspect == "9:16" else (-1.0, -0.6)
             best = None
             for gy in (0.85, 0.7, 0.55, 0.4, 0.25, 0.1, -0.05, -0.2, -0.35, -0.5, -0.6, -0.75):
                 for gx in (-0.75, -0.6, -0.45, -0.3, -0.15, 0.0, 0.15, 0.3, 0.45, 0.6, 0.75):

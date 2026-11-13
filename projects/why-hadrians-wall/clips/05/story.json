@@ -3817,7 +3817,7 @@
       2.6,
       2.4
      ],
-     "size": 5.2,
+     "size": 8.45,
      "angle": 165,
      "height": "low",
      "move": "crane_up"
@@ -3836,7 +3836,7 @@
       0,
       3
      ],
-     "size": 12.1,
+     "size": 28.6,
      "angle": -30,
      "height": "high",
      "move": "pull_out"
@@ -3998,7 +3998,7 @@
       -1,
       5
      ],
-     "size": 14.3,
+     "size": 33.8,
      "angle": -20,
      "height": "eye",
      "move": "pan_right"
@@ -4118,7 +4118,7 @@
       6,
       1.2
      ],
-     "size": 5.5,
+     "size": 13.0,
      "angle": 160,
      "height": "eye",
      "move": "orbit_left"
@@ -4217,7 +4217,7 @@
       7,
       1.2
      ],
-     "size": 4.95,
+     "size": 11.7,
      "angle": 150,
      "height": "eye",
      "move": "truck_right"
@@ -4264,7 +4264,7 @@
       -1,
       4
      ],
-     "size": 9.9,
+     "size": 23.4,
      "angle": -35,
      "height": "low",
      "move": "crane_up"
@@ -4294,7 +4294,7 @@
       0,
       2
      ],
-     "size": 16.5,
+     "size": 39.0,
      "angle": 90,
      "height": "high",
      "move": "orbit_left"
@@ -4308,7 +4308,7 @@
     "note": "bên này là La Mã",
     "frame": {
      "subject": "south.center",
-     "size": 5.5,
+     "size": 13.0,
      "angle": 0,
      "height": "eye",
      "move": "truck_left"
@@ -4323,7 +4323,7 @@
     "note": "bên kia thì không",
     "frame": {
      "subject": "north.center",
-     "size": 5.5,
+     "size": 13.0,
      "angle": 0,
      "height": "eye",
      "move": "truck_right"
@@ -4385,7 +4385,7 @@
       -5.8,
       1.2
      ],
-     "size": 4.0,
+     "size": 6.5,
      "angle": -10,
      "move": "drift"
     }
@@ -4402,7 +4402,7 @@
       -1,
       3
      ],
-     "size": 11.0,
+     "size": 26.0,
      "angle": 30,
      "height": "high",
      "move": "crane_down"
@@ -4459,7 +4459,7 @@
       -1,
       3
      ],
-     "size": 9.9,
+     "size": 23.4,
      "angle": -30,
      "height": "eye",
      "move": "drift"
@@ -4478,7 +4478,7 @@
       -1,
       3
      ],
-     "size": 9.9,
+     "size": 23.4,
      "angle": -30,
      "height": "eye",
      "move": "push_in"
@@ -4496,7 +4496,7 @@
       -1,
       3
      ],
-     "size": 9.9,
+     "size": 23.4,
      "angle": -30,
      "height": "eye",
      "move": "truck_right"
@@ -4553,7 +4553,7 @@
     "note": "đường 1750s trên nền tường",
     "frame": {
      "subject": "oldroad.center",
-     "size": 8.8,
+     "size": 20.8,
      "angle": -40,
      "height": "high",
      "move": "crane_up"
@@ -4583,7 +4583,7 @@
       -2,
       2
      ],
-     "size": 7.7,
+     "size": 18.2,
      "angle": -25,
      "height": "eye",
      "move": "drift"
@@ -4691,7 +4691,7 @@
       3,
       1.3
      ],
-     "size": 4.8,
+     "size": 7.8,
      "angle": 180,
      "move": "pull_out"
     }

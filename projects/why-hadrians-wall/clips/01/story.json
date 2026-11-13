@@ -3179,7 +3179,7 @@
       16,
       0.8
      ],
-     "size": 3.85,
+     "size": 9.1,
      "angle": -20,
      "move": "pan_right"
     }
@@ -3218,7 +3218,7 @@
       -2,
       1.5
      ],
-     "size": 5.5,
+     "size": 13.0,
      "angle": -35,
      "height": "high",
      "move": "crane_up"
@@ -3477,7 +3477,7 @@
       6,
       1.2
      ],
-     "size": 2.48,
+     "size": 5.85,
      "move": "pull_out",
      "amount": 1
     }
@@ -3579,7 +3579,7 @@
       28,
       1
      ],
-     "size": 5.5,
+     "size": 13.0,
      "move": "pan_left"
     }
    },
@@ -3655,7 +3655,7 @@
       6,
       0
      ],
-     "size": 7.7,
+     "size": 18.2,
      "angle": -25,
      "height": "high",
      "move": "crane_down"
@@ -3734,7 +3734,7 @@
       3,
       1.2
      ],
-     "size": 3.3,
+     "size": 7.8,
      "angle": 20,
      "height": "low",
      "move": "push_in"

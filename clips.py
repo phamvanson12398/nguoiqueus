@@ -70,7 +70,12 @@ def make_clip(slug, k, pick):
     for s in st["camera"].get("shots", []):
         fr = s.get("frame")
         if fr and s.get("type") in ("establishing", "wide", "full") and fr.get("height") != "top" and s.get("type") not in ("map", "board"):
-            fr["size"] = round(float(fr.get("size", PRESET_H[s["type"]])) * (0.55 if s["type"] != "full" else 0.8), 2)
+            who = fr.get("subject")
+            if isinstance(who, str) and "." not in who:      # a character/crowd: tighter, or it shrinks to a dot
+                zk = 0.55 if s["type"] != "full" else 0.8
+            else:                                           # a point between things (two busts, a gate): show more width
+                zk = 1.3
+            fr["size"] = round(float(fr.get("size", PRESET_H[s["type"]])) * zk, 2)
         elif fr and (s.get("type") in ("map", "board", "diagram") or fr.get("height") == "top"):
             # flat things seen from above (maps, boards, paper): a vertical frame of the same height would cut them to a
             # third of their width; show ~60 % of the width instead - labels keep about the same size in pixels

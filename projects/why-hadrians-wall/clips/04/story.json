@@ -3201,7 +3201,7 @@
       -3,
       1
      ],
-     "size": 4.95,
+     "size": 11.7,
      "angle": -25,
      "height": "high",
      "move": "crane_down"
@@ -3249,7 +3249,7 @@
       -2.5,
       1
      ],
-     "size": 6.05,
+     "size": 14.3,
      "angle": 30,
      "height": "high",
      "move": "pan_left"
@@ -3456,7 +3456,7 @@
       -3,
       2
      ],
-     "size": 7.7,
+     "size": 18.2,
      "angle": 35,
      "height": "high",
      "move": "push_in"
@@ -3581,7 +3581,7 @@
       -2.3,
       0.9
      ],
-     "size": 3.6,
+     "size": 5.85,
      "angle": -10,
      "move": "push_in",
      "amount": 1.3
@@ -3599,7 +3599,7 @@
       -10,
       1.5
      ],
-     "size": 8.8,
+     "size": 20.8,
      "angle": 30,
      "height": "high",
      "move": "crane_up"
@@ -3702,7 +3702,7 @@
       0,
       2
      ],
-     "size": 9.9,
+     "size": 23.4,
      "angle": 25,
      "height": "high",
      "move": "pull_out"
@@ -3734,7 +3734,7 @@
       -19,
       1
      ],
-     "size": 4.4,
+     "size": 10.4,
      "angle": 15,
      "move": "drift"
     }
