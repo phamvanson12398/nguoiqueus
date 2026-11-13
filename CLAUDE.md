@@ -377,3 +377,6 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   Đọc ống dẫn bằng luồng riêng + `taskkill /T` cả cây tiến trình khi quá giờ (`subprocess.run(timeout=)` trên Windows có thể chờ mãi khi
   tiến trình cháu giữ ống dẫn: người dùng gặp "Studio không trả lời" 4 phút, không có dòng báo mỗi phút). Hủy việc cũng diệt cả cây.
 - Hộp đen: `logs/threads.log` (faulthandler, mỗi 60 s ghi stack mọi luồng, chạy cả khi Python bị kẹt); `/api/ping` để thử studio còn sống.
+- Nguyên nhân thật (threads.log của người dùng chỉ có luồng chờ, không có việc nào): một studio CŨ bị kẹt vẫn giữ cổng 8765; trên Windows
+  SO_REUSEADDR cho studio mới mở cùng cổng không lỗi, trình duyệt vẫn nói chuyện với studio cũ. Giờ `StudioServer` bind độc quyền
+  (SO_EXCLUSIVEADDRUSE), lúc mở hỏi `/api/ping` trước: có studio khác thì in pid + `taskkill /F /PID …` rồi thoát; tab trình duyệt ghi pid/giờ mở.

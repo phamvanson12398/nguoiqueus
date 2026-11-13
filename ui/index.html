@@ -317,6 +317,7 @@ async function loadStatus() {
     let w = '';
     if (s.api_key_warning) w += `<div class="warnbar">⚠️ ${esc(s.api_key_warning)}</div>`;
     if (!s.claude) w += `<div class="warnbar">⚠️ ${esc(s.claude_note)}</div>`;
+    document.title = `WhyShorts Studio · tiến trình ${s.pid} (mở lúc ${s.started})`;
     if (!s.blender_found) w += `<div class="warnbar">⚠️ Không thấy Blender ở <code>${esc(s.blender)}</code>. Đặt biến WHYSHORTS_BLENDER trỏ tới blender.exe.</div>`;
     $('#warn').innerHTML = w;
     $('#usage').textContent = `Claude: ${s.usage.calls || 0} lượt · ${fmtTime(s.usage.seconds || 0)}`;

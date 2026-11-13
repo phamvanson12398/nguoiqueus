@@ -852,7 +852,8 @@ class Handler(BaseHTTPRequestHandler):
                 elif os.path.exists(p): os.remove(p)
             return self.send_json({"channel": jload(p), "chars": storycheck.LibIndex().list("chars")})
         if api == ["ping"]:
-            return self.send_json({"ok": True, "jobs": len([j for j in JOBS.values() if j.status == "running"])})
+            return self.send_json({"ok": True, "pid": os.getpid(), "started": STARTED,
+                                   "jobs": len([j for j in JOBS.values() if j.status == "running"])})
         if api == ["usage"]:
             return self.send_json(bridge.usage())
         if api[:1] == ["jobs"] and len(api) >= 2:
@@ -1014,7 +1015,7 @@ class Handler(BaseHTTPRequestHandler):
                 "json_schema": bool(claude_ok and "--json-schema" in (h or "")), "blender": b,
                 "blender_found": bool(shutil.which(b) or os.path.exists(b)), "usage": bridge.usage(),
                 "wpm": WPM, "sec_per_frame": spf_for("short"), "sec_per_frame_long": spf_for("long"), "ffmpeg": bool(shutil.which("ffmpeg")),
-                "jobs": [j.to_json(10 ** 9) for j in JOBS.values() if j.status == "running"]}
+                "jobs": [j.to_json(10 ** 9) for j in JOBS.values() if j.status == "running"], "pid": os.getpid(), "started": STARTED}
 
     def library(self):
         lib = storycheck.LibIndex(); out = {}
@@ -1079,6 +1080,36 @@ def black_box():
         pass
 
 
+STARTED = time.strftime("%H:%M:%S")
+
+
+class StudioServer(ThreadingHTTPServer):
+    """one studio per port. Python's default (SO_REUSEADDR) lets a SECOND studio bind the same port on Windows without
+    an error; the browser then keeps talking to the old one (seen: an old, stuck studio answered nothing while the new
+    window sat idle). Windows: exclusive bind; everywhere: refuse to start when a studio already answers."""
+    daemon_threads = True
+    allow_reuse_address = os.name != "nt"
+
+    def server_bind(self):
+        if os.name == "nt":
+            import socket
+            try: self.socket.setsockopt(socket.SOL_SOCKET, getattr(socket, "SO_EXCLUSIVEADDRUSE", -5), 1)
+            except OSError: pass
+        super().server_bind()
+
+
+def other_studio(host, port):
+    """pid of a studio already answering on host:port, 0 if something else holds it, None if free"""
+    import socket, urllib.request
+    with socket.socket() as so:
+        so.settimeout(1.0)
+        if so.connect_ex((host, port)) != 0: return None
+    try:
+        with urllib.request.urlopen(f"http://{host}:{port}/api/ping", timeout=3) as r: return json.load(r).get("pid", 0)
+    except Exception:
+        return 0
+
+
 def main(argv):
     no_quick_edit(); black_box()
     port = int(argv[argv.index("--port") + 1]) if "--port" in argv else 8765
@@ -1087,7 +1118,18 @@ def main(argv):
     w = bridge.api_key_warning()
     if w: print(w)
     threading.Thread(target=lambda: _quiet(bridge.cli_help), daemon=True).start()     # ask the CLI once, in the background
-    srv = ThreadingHTTPServer((host, port), Handler)
+    old = other_studio(host, port)
+    if old is not None:
+        print(f"\n!!! Cổng {port} đang bị một studio khác chiếm" + (f" (tiến trình {old})" if old else " (không trả lời: có thể đang bị kẹt)") + ".")
+        print("    Trình duyệt sẽ nói chuyện với studio cũ đó, không phải cửa sổ này. Hãy tắt nó rồi mở lại start_studio.bat:")
+        print(f"      taskkill /F /PID {old}" if old else "      Task Manager -> Details -> python.exe (Blender) -> End task  (hoặc: taskkill /F /IM python.exe)")
+        print(f"    (Hoặc mở studio ở cổng khác: start_studio.bat --port {port + 1})\n", flush=True)
+        return 1
+    try:
+        srv = StudioServer((host, port), Handler)
+    except OSError as e:
+        print(f"\n!!! Không mở được cổng {port}: {e}. Tắt studio cũ (Task Manager -> python.exe) rồi mở lại.\n", flush=True)
+        return 1
     srv.handle_error = lambda request, client_address: log_error()                  # (broken pipes etc.: not on the console)
     url = f"http://{host}:{port}"
     print(f"WhyShorts Studio: {url}   (Ctrl+C để tắt)", flush=True)
