@@ -356,3 +356,13 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
   khổ 9:16 (cùng cảnh 3D, camera đóng khung lại, wide/establishing ×0,55), phụ đề pop, chữ móc 2,5 s đầu, "FULL VIDEO ON THE CHANNEL"
   2 s cuối (không thẻ nào đè), âm thanh lấy đúng đoạn mix của video dài + fade. Thử: 5 Short Hadrian, xem trước `docs/img/hadrian_shorts.jpg`,
   render thử Short 3 (3 s, −14 LUFS, có tiếng).
+
+## Nhân vật không đứng trong tường / sau tường
+- `Builder.unstick` (camera video dài): mỗi đoạn blocking có tọa độ cố định → thử thân người (3 độ cao × 5 điểm) với khối bối cảnh
+  (BVH lúc đó); lọt vào tường/sàn/giàn giáo thì dời tới chỗ trống gần nhất cùng mặt sàn (NOTE trong log).
+- `unstick_crowd` (đám đông đứng yên): người lọt vào khối → dời (ưu tiên vào phía trong đám đông); người bị tường ngăn với tâm đám đông
+  (thấy mỗi cái đầu ló qua tường) → bỏ. Phần 2 Hadrian: 4 nhân vật dời, builders/garrison bỏ 2-9 người sau tường.
+- `clear_angle` cho cả chủ thể là điểm: bắn tia tới điểm nhìn + nhân vật/đám đông trong 8 m, ở đầu/giữa/cuối chuyển động máy; chọn góc ít bị
+  chắn nhất, vẫn chắn thì WARN. Cú garrison bị cây che → tự xoay 65°. Ảnh: `docs/img/walls_fix.jpg`.
+- Server: sau MAX_FIX vòng sửa mà chỉ còn WARN (cảnh dựng được) thì vẫn giao ảnh xem trước + liệt kê cảnh báo, không báo dựng hỏng.
+- Bụi (`dust`) bám đất, cao ~ngang hông; nhãn đè đầu không dời được chỉ là NOTE.

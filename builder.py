@@ -102,6 +102,7 @@ class Builder:
         self.outfit_vis = []          # (group empty, [(a, b)]) for outfit changes
         self.crowds = {}              # id -> crowd root
         self.crowd_tpl = []           # (collection, template char root, location)
+        self.crowd_centre = {}        # crowd id -> centre of its members relative to the crowd root
 
     # ---------- helpers ----------
     def obj(self, name, where=""):
@@ -235,7 +236,12 @@ class Builder:
             coll = bpy.data.collections.new(f"tpl_{cid}_{v}")
             self.crowd_tpl.append((coll, c.root, at)); tpls.append((coll, at))
         offs = outfits.formation_offsets(cr, rnd)
+        if self.st["camera"].get("rig") == "long" and not cr.get("moves") and offs:
+            offs = self.unstick_crowd(cid, cr, at, offs)
         root, members = outfits.instance_crowd(cid, tpls, offs, at, cr.get("rot", 0), rnd)
+        _r = math.radians(cr.get("rot", 0))
+        mx = sum(x for x, _y in offs) / len(offs); my = sum(y for _x, y in offs) / len(offs)
+        self.crowd_centre[cid] = (mx * math.cos(_r) - my * math.sin(_r), mx * math.sin(_r) + my * math.cos(_r))  # from the root
         if cr.get("moves"):
             for (f0, p0), (f1, p1) in zip(cr["moves"], cr["moves"][1:]):
                 for f in range(int(f0), int(f1) + 1, 2):
@@ -246,6 +252,41 @@ class Builder:
             self.outfit_vis.append((root, [(int(cr.get("from", 1)), int(cr.get("to", 10 ** 6)))]))
         self.crowds[cid] = root
         return root
+
+    def unstick_crowd(self, cid, cr, at, offs):
+        """members of a static crowd placed inside a wall/scaffold/house: move them to a free spot nearby, else leave them out"""
+        f = (int(cr.get("from", 1)) + min(ctx.N, int(cr.get("to", ctx.N)))) // 2
+        ctx.sc.frame_set(max(1, min(ctx.N, f)))
+        hz, R = 1.85, 0.26; rot = math.radians(cr.get("rot", 0)); cs_, sn = math.cos(rot), math.sin(rot)
+        reach = max(math.hypot(x, y) for x, y in offs) + 4.0
+        trees = self.set_trees(Vector(at), hz, set(), reach)
+        if not trees: return offs
+        out = []; moved = dropped = 0
+        ok = [Vector((at[0] + x * cs_ - y * sn, at[1] + x * sn + y * cs_, at[2])) for x, y in offs]
+        ok = [q for q in ok if not self.body_blocked(trees, q, hz, R)]
+        centre = (sum(ok, Vector()) / len(ok)) if ok else Vector(at)     # where the members that fit are
+        A = Vector(at); chest = Vector((0, 0, hz * 0.6))
+        if self.body_blocked(trees, A, hz, R): A = self.free_spot(trees, A, hz, R) or A     # anchor itself in the scaffold
+        front_ok = not self.body_blocked(trees, A, hz, R)
+        cut = 0
+
+        def walled_off(q):
+            """a solid between the crowd's anchor and this member (seen: builders scattered to the far side of the wall,
+            only a head showing over it)"""
+            if not front_ok or (q - A).xy.length < 0.5: return False
+            d = q - A; L = d.length
+            return any(t.ray_cast(A + chest, d.normalized(), L)[0] is not None for t in trees)
+        for x, y in offs:
+            q = Vector((at[0] + x * cs_ - y * sn, at[1] + x * sn + y * cs_, at[2]))
+            if walled_off(q): cut += 1; continue
+            if not self.body_blocked(trees, q, hz, R): out.append((x, y)); continue
+            p = self.free_spot(trees, q, hz, R, rmax=1.8, toward=centre)
+            if p is None: dropped += 1; continue
+            if walled_off(p): cut += 1; continue
+            dx, dy = p.x - at[0], p.y - at[1]; out.append((dx * cs_ + dy * sn, -dx * sn + dy * cs_)); moved += 1
+        if moved or dropped or cut:
+            print(f"NOTE crowds.{cid}: {moved} members moved out of the set, {dropped} left out (no room), {cut} left out (behind a wall)")
+        return out or offs
 
     def arm(self, spec, ns, where):
         if spec is None: return None
@@ -353,7 +394,9 @@ class Builder:
         cam, look = Vector(cam), Vector(look); d = (look - cam).length
         if d < 0.3: return None
         dg = bpy.context.evaluated_depsgraph_get()
-        mine = {own.name} | {c.name for c in own.children_recursive}
+        mine = ({own.name} | {c.name for c in own.children_recursive}) if own is not None else set()
+        if own is None:                                  # a point subject (a group, a spot): people there are what we look at
+            for c in self.chars.values(): mine |= {c.root.name} | {o.name for o in c.root.children_recursive}
         hit, _loc, _n, _i, ob, _m = ctx.sc.ray_cast(dg, cam, (look - cam).normalized(), distance=d * 0.92)
         if hit and ob is not None and ob.name not in mine and not ob.name.startswith(("vfx_", "Overlay", "cap_", "card_")):
             return ob.name
@@ -383,30 +426,61 @@ class Builder:
         building) is in the way at the start, middle or end of the shot, try other angles, then a high angle, and keep the
         first clear one. Leaves the frame unchanged when nothing helps (check_line_of_sight then warns)."""
         fr = s["frame"]; subj = fr.get("subject")
-        if not isinstance(subj, str) or "." in subj or s.get("type") in ("board", "map") or fr.get("height") == "top": return fr
-        own = self.chars[subj].root if subj in self.chars else self.crowds.get(subj) or bpy.data.objects.get(subj)
-        if own is None: return fr
+        if s.get("type") in ("board", "map") or fr.get("height") == "top": return fr
+        if isinstance(subj, (list, tuple)):
+            # a point (a group of soldiers, a gate): only shots that look AT people/things from outside; a tree or a
+            # building in front of the point is the same mistake as a wall in front of a character
+            if s.get("type") not in ("wide", "establishing", "full", "medium", "closeup"): return fr
+            own = None; subj = "point " + ",".join(f"{v:g}" for v in subj[:2])
+        elif not isinstance(subj, str) or "." in subj: return fr
+        else:
+            own = self.chars[subj].root if subj in self.chars else self.crowds.get(subj) or bpy.data.objects.get(subj)
+            if own is None: return fr
         a, b = s["a"], s["b"]; m = (a + b) // 2
 
+        ctx.sc.frame_set(m); extra = []
+        if own is None:                                  # people standing around the point are what the shot shows
+            P0 = Vector(sp)
+            for cid, root in self.crowds.items():
+                if root.hide_render or root.matrix_world.to_scale().length < 1e-3: continue
+                dx, dy = self.crowd_centre.get(cid, (0, 0)); q = root.matrix_world.translation + Vector((dx, dy, 1.1))
+                if (q - P0).xy.length < 8: extra.append(q)
+            for c in self.chars.values():
+                q = c.root.matrix_world.translation + Vector((0, 0, 1.1))
+                if (q - P0).xy.length < 8 and q.z > -5 and not c.root.hide_render and c.root.name.split("_t")[0] not in self.crowds: extra.append(q)
+
         def blocked(f2):
+            """(number of blocked sight lines, first blocker) over start/middle/end of the move and every target"""
             ks = framing.frame_keys(f2, s.get("type", "medium"), a, b, sp, self.frame_aspect())
             ctx.sc.frame_set(m)
-            for kk in (ks[0], ks[-1]):
-                who = self._blocker(own, kk[1], kk[2])
-                if who: return who
-            return None
-        who = blocked(fr)
-        if not who: return fr
+            k0, k1 = ks[0], ks[-1]
+            mid = (None, [(u + v) / 2 for u, v in zip(k0[1], k1[1])], [(u + v) / 2 for u, v in zip(k0[2], k1[2])])
+            n, first = 0, None
+            for kk in (k0, mid, k1):                    # (a crane can pass behind a tree half way)
+                for tgt in [kk[2]] + extra:
+                    who = self._blocker(own, kk[1], tgt)
+                    if who: n += 1; first = first or who
+            return n, first
+        n0, who = blocked(fr)
+        if not n0: return fr
         base = float(fr.get("angle", 0.0))
         tries = [dict(fr, angle=base + da) for da in (35, -35, 70, -70)] + \
                 [dict(fr, angle=base + da, height="high") for da in (0, 35, -35, 70, -70)]
+        best = (n0, fr)
         for f2 in tries:
-            if not blocked(f2):
-                print(f"NOTE shot {a}-{b}: view of '{subj}' blocked by '{who}' -> angle {f2['angle']:.0f}"
-                      + (f", height {f2['height']}" if f2.get("height") != fr.get("height") else ""))
-                self.report.setdefault("reframed", []).append([a, b, who, f2["angle"], f2.get("height")])
-                return f2
-        return fr
+            n2, _w = blocked(f2)
+            if n2 < best[0]: best = (n2, f2)
+            if n2 == 0: break
+        n2, f2 = best
+        if f2 is not fr:
+            print(f"NOTE shot {a}-{b}: view of '{subj}' blocked by '{who}' -> angle {f2['angle']:.0f}"
+                  + (f", height {f2['height']}" if f2.get("height") != fr.get("height") else "")
+                  + ("" if n2 == 0 else f" (still {n2} of {n0} sight lines blocked)"))
+            self.report.setdefault("reframed", []).append([a, b, who, f2["angle"], f2.get("height")])
+        if n2:
+            print(f"WARN shot {a}-{b}: view of '{subj}' still blocked by '{who}' from every angle tried: move the subject, "
+                  f"change frame.subject/size/height, or pick another shot")
+        return f2
 
     def channel_cards(self):
         """library/channel.json: watermark on every video, YouTube end screen on the last 20 s of a long video"""
@@ -528,9 +602,100 @@ class Builder:
                       + ("" if cc <= 0 else f" (still {cc / c0:.0%} of the overlap: the heads fill the frame)"))
                 c = dict(c, pos=[round(x, 3), round(y, 3)])
             else:
-                print(f"WARN card {i} '{body}' covers {sorted(hit)}'s head and no better spot was found: move it by hand")
+                print(f"NOTE card {i} '{body}' covers {sorted(hit)}'s head and no better spot was found (the heads fill the frame)")
             out.append(c)
         return out
+
+    def set_trees(self, P, hz, mine=(), reach=4.0):
+        """BVH trees of the evaluated set meshes around P (current frame), for body/ground tests"""
+        from mathutils.bvhtree import BVHTree
+        dg = bpy.context.evaluated_depsgraph_get(); trees = []
+        people = set()                                   # characters (and crowd templates) are not part of the set
+        for c in self.chars.values(): people |= {o.name for o in [c.root] + list(c.root.children_recursive)}
+        for o in ctx.sc.objects:
+            if o.type != 'MESH' or o.name in mine or o.name in people or o.name.startswith(("vfx_", "cap_", "card_", "Overlay")) or o.hide_render: continue
+            if any(abs(s_) < 1e-6 for s_ in o.matrix_world.to_scale()): continue
+            bb = [o.matrix_world @ Vector(v) for v in o.bound_box]
+            lo = Vector([min(v[i] for v in bb) for i in range(3)]); hi = Vector([max(v[i] for v in bb) for i in range(3)])
+            if any(P[i] < lo[i] - reach or P[i] > hi[i] + reach for i in (0, 1)) or P.z + hz < lo.z or P.z > hi.z + 0.5: continue
+            try:
+                oe = o.evaluated_get(dg); me = oe.to_mesh()
+                if len(me.polygons):
+                    trees.append(BVHTree.FromPolygons([oe.matrix_world @ v.co for v in me.vertices], [q.vertices[:] for q in me.polygons]))
+                oe.to_mesh_clear()
+            except Exception: continue
+        return trees
+
+    @staticmethod
+    def body_blocked(trees, q, hz, R):
+        """is a standing body (3 heights x 5 points) at ground point q inside or against a solid of the set?"""
+        for h in (0.35, 0.62, 0.92):
+            z = q.z + hz * h
+            for dx, dy in ((0, 0), (R, 0), (-R, 0), (0, R), (0, -R)):
+                p = Vector((q.x + dx, q.y + dy, z))
+                for t in trees:
+                    hit = t.ray_cast(p, Vector((0, 0, 1)), hz * 1.5)
+                    if hit[0] is not None and hit[1].z > 0.2: return True          # inside a solid: its top seen from below
+                    n = t.find_nearest(p, R * 0.8)
+                    if n[0] is not None and abs(n[1].z) < 0.7: return True       # against a wall-like face
+        return False
+
+    @staticmethod
+    def ground_at(trees, q):
+        best = None
+        for t in trees:
+            hit = t.ray_cast(Vector((q.x, q.y, q.z + 0.6)), Vector((0, 0, -1)), 1.2)
+            if hit[0] is not None and (best is None or hit[0].z > best): best = hit[0].z
+        return best
+
+    def free_spot(self, trees, P, hz, R, rmax=4.0, toward=None):
+        """nearest point around P where a body fits, on the same floor as P; at equal distance, directions toward
+        `toward` first (crowd members move into their crowd instead of hopping to the far side of a wall)"""
+        g0 = self.ground_at(trees, P)
+        angs = list(range(16))
+        if toward is not None and (Vector(toward) - P).xy.length > 1e-3:
+            v = (Vector(toward) - P).xy.normalized()
+            angs.sort(key=lambda a: -(math.cos(a * math.pi / 8) * v.x + math.sin(a * math.pi / 8) * v.y))
+        best = None
+        for r in [0.3 * i for i in range(1, int(rmax / 0.3) + 1)]:
+            for a in angs:
+                q = P + Vector((math.cos(a * math.pi / 8) * r, math.sin(a * math.pi / 8) * r, 0))
+                if self.body_blocked(trees, q, hz, R): continue
+                g = self.ground_at(trees, q)
+                if g0 is not None and (g is None or abs(g - g0) > 0.25): continue
+                if toward is None: return q
+                sc = r + 0.8 * ((q - Vector(toward)).xy.length - (P - Vector(toward)).xy.length)
+                if best is None or sc < best[0]: best = (sc, q)
+        return best[1] if best else None
+
+    def unstick(self, cs, c):
+        """blocking gives a spot by coordinates only: Claude cannot see that a wall, a scaffold deck or a parapet stands
+        there (seen: a legionary sunk into the planks, another cut in half by the wall). For every segment with a fixed
+        location, test the body (3 heights x 5 points) against the set geometry at that moment; if it is inside something,
+        move the character to the nearest free spot with ground at the same height. Returns the (possibly) patched spec."""
+        b = cs.get("blocking")
+        if not b or "use" in b or not b.get("segments"): return b
+        hz = max(0.4, c.head.matrix_world.translation.z - c.root.matrix_world.translation.z) if getattr(c, "head", None) else 1.85
+        mine = {o.name for o in [c.root] + list(c.root.children_recursive)}
+        R = 0.26 * max(0.6, hz / self.HEAD_REF)
+        out = dict(b, segments=[dict(s) for s in b["segments"]]); changed = False
+        for k, sg in enumerate(out["segments"]):
+            loc = sg.get("location")
+            if not (isinstance(loc, list) and len(loc) == 3 and all(isinstance(v, (int, float)) for v in loc)) or loc[2] < -5: continue
+            f = (int(sg.get("from", 1)) + int(sg.get("to", sg.get("from", 1)))) // 2
+            ctx.sc.frame_set(max(1, min(ctx.N, f)))
+            P = Vector(loc); trees = self.set_trees(P, hz, mine, 4.0)
+            if not trees: continue
+            if not self.body_blocked(trees, P, hz, R): continue
+            found = self.free_spot(trees, P, hz, R)
+            if found:
+                sg["location"] = [round(found.x, 3), round(found.y, 3), loc[2]]; changed = True
+                print(f"NOTE chars.{cs['id']}: frames {sg.get('from')}-{sg.get('to')} stood inside the set at {loc[:2]} -> moved "
+                      f"{(found - P).length:.1f} m to {sg['location'][:2]}")
+            else:
+                print(f"WARN chars.{cs['id']}: frames {sg.get('from')}-{sg.get('to')} stands inside the set at {loc} and no free spot "
+                      f"within 4 m: move it in blocking")
+        return out if changed else b
 
     def value_at(self, segs, default, f, prop, where):
         """value of one property of a track/blocking spec at frame f (None if nothing sets it)"""
@@ -636,7 +801,9 @@ class Builder:
             moved.add(o.name)
         for cs in self.char_specs:
             c = self.chars[cs["id"]]
-            if "blocking" in cs: self.run_track(cs["blocking"], c.root, f"chars.{cs['id']}.blocking")
+            if "blocking" in cs:
+                bk = self.unstick(cs, c) if long_rig else cs["blocking"]      # (Shorts keep their old blocking bit for bit)
+                self.run_track(bk, c.root, f"chars.{cs['id']}.blocking")
             if "skin_keys" in cs:
                 sk = c.skin.node_tree.nodes["Emission"].inputs[0]
                 for f_, col_ in cs["skin_keys"]:

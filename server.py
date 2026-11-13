@@ -496,18 +496,23 @@ def job_build(job, slug, design=True, preview=True, chapters=None, replan=False)
     for attempt in range(bridge.MAX_FIX + 1):
         frames = default_preview_frames(slug)
         job.say(f"{3 if attempt == 0 else '3b'}/4 Dựng cảnh trong Blender và xem trước khung {frames} (35 %)…")
-        problem = None
+        problem = None; only_warns = False
         try:
             out = job_preview(job, slug, frames)["log"]
             warns = [l for l in out.splitlines() if l.startswith("WARN") or "CAMERA NEEDS FIX" in l]
-            if warns: problem = "Camera chưa đạt cam_report:\n" + "\n".join(warns)
+            if warns: problem = "Camera chưa đạt cam_report:\n" + "\n".join(warns); only_warns = True
         except ValueError as e:
             if job.cancelled: raise
             problem = f"Dựng trong Blender bị lỗi:\n{e}"
         if not problem:
             job.say("4/4 Xong: CAMERA OK, đã có ảnh xem trước. Xem ảnh rồi bấm Render, hoặc mô tả lỗi để Claude sửa.")
             return {"missing": missing, "fix_rounds": attempt}
-        if attempt == bridge.MAX_FIX: raise ValueError(problem)
+        if attempt == bridge.MAX_FIX:
+            if only_warns:          # the scene builds and has previews: hand it over with the remaining warnings
+                job.say("4/4 Xong, còn cảnh báo (xem ảnh các cú này, sửa tay hoặc bấm 'Nhờ Claude sửa'):")
+                for l in warns[:12]: job.say("   " + l)
+                return {"missing": missing, "fix_rounds": attempt, "warnings": warns}
+            raise ValueError(problem)
         job.say(f"   {problem.splitlines()[0]} -> nhờ Claude sửa story.json ({attempt + 1}/{bridge.MAX_FIX})")
         data = bridge.fix_from_preview(slug, problem + "\n(Chưa có ảnh: sửa theo thông báo lỗi.)", [])
         job.say("   Đã sửa: " + data["explain_vi"])
