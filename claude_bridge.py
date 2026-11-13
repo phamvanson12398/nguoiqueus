@@ -73,7 +73,7 @@ def _popen_run(cmd, timeout, **kw):
     try:
         out, err = p.communicate(kw.get("input"), timeout=timeout)
     except subprocess.TimeoutExpired:
-        p.kill(); p.communicate(); raise
+        _kill_tree(p); raise
     finally:
         stop.set()
         if procs is not None and p in procs: procs.remove(p)
@@ -121,23 +121,50 @@ _help_lock = threading.Lock()
 _help_fail = 0.0
 
 
+def _kill_tree(p):
+    """kill a process and its children (Windows: a CLI started through node/cmd keeps the pipes open after a plain kill)"""
+    try:
+        if os.name == "nt":
+            subprocess.run(["taskkill", "/T", "/F", "/PID", str(p.pid)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                           timeout=10, **_no_window())
+        else:
+            p.kill()
+    except Exception:
+        try: p.kill()
+        except Exception: pass
+
+
+def _quick_output(cmd, timeout):
+    """stdout of a short command, or None after `timeout` s. Never hangs: the pipe is read by a daemon thread and a late
+    child is killed with its whole tree (subprocess.run(timeout=) can wait forever on Windows when a grandchild holds the pipe)."""
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL,
+                         text=True, encoding="utf-8", errors="replace", **_no_window())
+    box = []
+    t = threading.Thread(target=lambda: box.append(p.stdout.read()), daemon=True); t.start()
+    t.join(timeout)
+    if t.is_alive(): _kill_tree(p); return None
+    return box[0] if box else ""
+
+
 def cli_help(block=True):
-    """`claude --help` (which flags this CLI version has), cached. Never blocks a page for long: no console stdin,
-    20 s limit, and a failure is remembered for 5 minutes instead of retried by every request.
+    """`claude --help` (which flags this CLI version has), cached. Never blocks for long: no console stdin, 20 s limit,
+    the lock waited for at most 25 s, and a failure is remembered for 5 minutes instead of retried by every request.
     block=False: None while another thread is still asking."""
     global _help_cache, _help_fail
     if _help_cache is not None: return _help_cache
-    if not _help_lock.acquire(blocking=block): return None
+    got = _help_lock.acquire(timeout=25) if block else _help_lock.acquire(blocking=False)
+    if not got: return "" if block else None
     try:
         if _help_cache is not None: return _help_cache
         if time.time() - _help_fail < 300: return ""
         try:
-            _help_cache = subprocess.run(claude_cmd() + ["--help"], capture_output=True, text=True, timeout=20, stdin=subprocess.DEVNULL,
-                                         encoding="utf-8", errors="replace", **_no_window()).stdout
+            out = _quick_output(claude_cmd() + ["--help"], 20)
         except FileNotFoundError:
             raise BridgeError(f"Không tìm thấy Claude CLI ('{' '.join(claude_cmd())}'). Cài Claude Code rồi đăng nhập bằng gói Pro/Max.")
-        except subprocess.TimeoutExpired:
-            _help_fail = time.time(); return ""
+        if out is None:
+            _help_fail = time.time(); say("   (Claude CLI không trả lời 'claude --help' trong 20 giây: chạy tiếp không dùng --json-schema)")
+            return ""
+        _help_cache = out
         return _help_cache
     finally:
         _help_lock.release()

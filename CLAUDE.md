@@ -374,3 +374,6 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
 - Server tắt QuickEdit của cửa sổ dòng lệnh (bấm chuột vào cửa sổ đen làm đóng băng chương trình); lỗi ghi `logs/server_errors.log`,
   không in ra cửa sổ; tiến trình con (Claude) không dùng bàn phím của cửa sổ (stdin DEVNULL) và không có cửa sổ riêng.
 - `claude --help` hỏi một lần chạy nền lúc mở studio, tối đa 20 s, lỗi thì nhớ 5 phút; trang trạng thái không bao giờ chờ nó.
+  Đọc ống dẫn bằng luồng riêng + `taskkill /T` cả cây tiến trình khi quá giờ (`subprocess.run(timeout=)` trên Windows có thể chờ mãi khi
+  tiến trình cháu giữ ống dẫn: người dùng gặp "Studio không trả lời" 4 phút, không có dòng báo mỗi phút). Hủy việc cũng diệt cả cây.
+- Hộp đen: `logs/threads.log` (faulthandler, mỗi 60 s ghi stack mọi luồng, chạy cả khi Python bị kẹt); `/api/ping` để thử studio còn sống.

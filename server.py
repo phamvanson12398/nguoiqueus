@@ -72,8 +72,7 @@ class Job:
         try: self._tls_ref.cancelled = True
         except AttributeError: pass
         for p in list(self.procs):
-            try: p.kill()
-            except Exception: pass
+            bridge._kill_tree(p)
 
     def to_json(self, since=0):
         return {"id": self.id, "kind": self.kind, "project": self.project, "status": self.status,
@@ -852,6 +851,8 @@ class Handler(BaseHTTPRequestHandler):
                 if ch.get("name"): json.dump(ch, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
                 elif os.path.exists(p): os.remove(p)
             return self.send_json({"channel": jload(p), "chars": storycheck.LibIndex().list("chars")})
+        if api == ["ping"]:
+            return self.send_json({"ok": True, "jobs": len([j for j in JOBS.values() if j.status == "running"])})
         if api == ["usage"]:
             return self.send_json(bridge.usage())
         if api[:1] == ["jobs"] and len(api) >= 2:
@@ -1065,8 +1066,21 @@ def no_quick_edit():
         pass
 
 
+def black_box():
+    """every 60 s, the stack of every thread -> logs/threads.log (written from C, so it works even if Python is stuck).
+    If the studio ever freezes, this file says exactly where."""
+    try:
+        import faulthandler
+        os.makedirs(os.path.join(ROOT, "logs"), exist_ok=True)
+        global _BB
+        _BB = open(os.path.join(ROOT, "logs", "threads.log"), "w", encoding="utf-8")
+        faulthandler.dump_traceback_later(60, repeat=True, file=_BB)
+    except Exception:
+        pass
+
+
 def main(argv):
-    no_quick_edit()
+    no_quick_edit(); black_box()
     port = int(argv[argv.index("--port") + 1]) if "--port" in argv else 8765
     host = argv[argv.index("--host") + 1] if "--host" in argv else "127.0.0.1"
     os.makedirs(PROJECTS, exist_ok=True)
