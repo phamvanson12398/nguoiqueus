@@ -296,7 +296,7 @@ async function api(path, opt={}) {
   else if (opt.body !== undefined) { o.body = JSON.stringify(opt.body); o.headers['Content-Type'] = 'application/json'; }
   if (opt.timeout) { const ac = new AbortController(); o.signal = ac.signal; setTimeout(() => ac.abort(), opt.timeout); }
   const r = await fetch(path, o); const j = await r.json().catch(() => ({error: 'bad response'}));
-  if (!r.ok || j.error) throw new Error(j.error || r.statusText);
+  if (!r.ok || (j.error && !opt.keepError)) throw new Error(j.error || r.statusText);   // keepError: a failed JOB is a normal answer
   return j;
 }
 const P = p => `/api/projects/${S.slug}${p}`;
@@ -362,7 +362,7 @@ function watchJob(id, kind, after) {
 }
 async function poll() {
   if (!S.job) return;
-  let j; try { j = await api(`/api/jobs/${S.job}?since=${S.logLen}`, {timeout: 8000}); S.pollFail = 0; }
+  let j; try { j = await api(`/api/jobs/${S.job}?since=${S.logLen}`, {timeout: 8000, keepError: true}); S.pollFail = 0; }
   catch (e) {
     S.pollFail = (S.pollFail || 0) + 1;
     if (/no job|404/.test(e.message)) { $('#jobTitle').textContent = 'Việc này không còn (studio đã khởi động lại): bấm chạy lại'; S.job = null; return; }

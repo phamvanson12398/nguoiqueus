@@ -380,3 +380,6 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
 - Nguyên nhân thật (threads.log của người dùng chỉ có luồng chờ, không có việc nào): một studio CŨ bị kẹt vẫn giữ cổng 8765; trên Windows
   SO_REUSEADDR cho studio mới mở cùng cổng không lỗi, trình duyệt vẫn nói chuyện với studio cũ. Giờ `StudioServer` bind độc quyền
   (SO_EXCLUSIVEADDRUSE), lúc mở hỏi `/api/ping` trước: có studio khác thì in pid + `taskkill /F /PID …` rồi thoát; tab trình duyệt ghi pid/giờ mở.
+- Nguyên nhân THẬT (threads.log ở cổng mới cũng không có việc nào, ping `jobs: 0`): việc kết thúc với LỖI ngay ở bước 1, nhưng hàm `api()` của trang
+  coi phản hồi có trường `error` là yêu cầu hỏng → hỏi lại mãi, không hiện lỗi (đồng hồ "0 giây", rồi "Studio không trả lời"). Giờ hỏi tiến độ
+  dùng `keepError` → hiện "❌ Lỗi" + nội dung. (Đổi cổng 1111 và giữ cổng độc quyền vẫn giữ lại, vô hại.)
