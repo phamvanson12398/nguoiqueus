@@ -1,7 +1,7 @@
 """WhyShorts Studio — local web server + control page.
 
-    python server.py                 then open http://127.0.0.1:8765
-    options: --port 8765  --host 127.0.0.1  --no-browser
+    python server.py                 then open http://127.0.0.1:1111
+    options: --port 1111  --host 127.0.0.1  --no-browser
 
 Standard library only (runs with Blender's bundled python.exe).  Long tasks (Claude calls,
 Blender builds/renders) run as background jobs; the page polls /api/jobs/<id>.
@@ -1112,7 +1112,7 @@ def other_studio(host, port):
 
 def main(argv):
     no_quick_edit(); black_box()
-    port = int(argv[argv.index("--port") + 1]) if "--port" in argv else 8765
+    port = int(argv[argv.index("--port") + 1]) if "--port" in argv else 1111
     host = argv[argv.index("--host") + 1] if "--host" in argv else "127.0.0.1"
     os.makedirs(PROJECTS, exist_ok=True)
     w = bridge.api_key_warning()

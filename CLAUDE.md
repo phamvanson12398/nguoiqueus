@@ -116,7 +116,7 @@ Mỗi bước xong thì chạy thử thật trên máy và báo người dùng k
 
 ### Bước 4 — xong (đã thử trong container bằng Playwright)
 - `server.py`:
-  - Chỉ dùng thư viện chuẩn; Windows mở bằng `start_studio.bat` (Python đi kèm Blender), địa chỉ http://127.0.0.1:8765.
+  - Chỉ dùng thư viện chuẩn; Windows mở bằng `start_studio.bat` (Python đi kèm Blender), địa chỉ http://127.0.0.1:1111 (trước đây 8765).
   - Việc nền chạy theo job: log, tiến độ, nút hủy (giết luôn tiến trình con), mỗi dự án chạy một việc nặng một lúc.
 - API `/api/...`:
   - `status` (cảnh báo API key, có Claude/Blender chưa, số lượt), `estimate`, `projects`.

@@ -20,7 +20,7 @@ Việc của Claude trong cuộc trò chuyện là: hướng dẫn hoặc tự �
 ## Tool nằm ở đâu
 - Máy người dùng: Windows, Blender 5.2.3, card NVIDIA, Claude CLI đăng nhập gói Pro/Max.
 - Thư mục tool: bản clone của repo `phamvanson12398/nguoiqueus` (nhánh `claude/pensive-newton-618vli`), ví dụ `C:\Users\<user>\Downloads\tool_nguoique\nguoiqueus`. Hỏi người dùng nếu không chắc.
-- Mở tool: bấm đúp `start_studio.bat` (chạy `server.py` bằng Python đi kèm Blender), trang ở http://127.0.0.1:8765. Giữ cửa sổ đen mở.
+- Mở tool: bấm đúp `start_studio.bat` (chạy `server.py` bằng Python đi kèm Blender), trang ở http://127.0.0.1:1111. Giữ cửa sổ đen mở.
 - Tài liệu trong thư mục tool: `CLAUDE.md` (thiết kế + tiến độ), `STYLE.md` (luật phong cách), `STORY.md` (định dạng `story.json`), `library/AUTHORING.md` (viết đồ thư viện).
 
 ## Cập nhật tool

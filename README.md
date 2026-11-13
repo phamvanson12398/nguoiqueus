@@ -8,7 +8,7 @@ Tool làm video hoạt hình dọc "Why…" bằng Blender trên Windows. Claude
 - Tùy chọn: ffmpeg (`winget install ffmpeg`) để ghép đoạn render lại vào video đầy đủ.
 
 ## Mở tool
-Bấm đúp `start_studio.bat` rồi mở http://127.0.0.1:8765 nếu trình duyệt không tự mở. Giữ cửa sổ đen mở trong lúc dùng.
+Bấm đúp `start_studio.bat` rồi mở http://127.0.0.1:1111 nếu trình duyệt không tự mở. Giữ cửa sổ đen mở trong lúc dùng.
 
 ## Làm một video
 1. **Ý tưởng**: nhập chủ đề → "Gợi ý ý tưởng" → chọn 1 ý.
