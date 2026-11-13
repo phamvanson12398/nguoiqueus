@@ -3331,7 +3331,7 @@
       -1,
       0
      ],
-     "size": 6,
+     "size": 9.6,
      "move": "pan_right",
      "height": "top"
     }
@@ -3422,7 +3422,7 @@
       0,
       0
      ],
-     "size": 5.5,
+     "size": 10.45,
      "move": "truck_right",
      "amount": 1.3,
      "height": "top"
@@ -3439,7 +3439,7 @@
       0,
       0
      ],
-     "size": 9,
+     "size": 17.1,
      "move": "drift",
      "height": "top"
     }
@@ -3553,7 +3553,7 @@
       0,
       0
      ],
-     "size": 6,
+     "size": 9.6,
      "move": "push_in",
      "height": "top"
     }
@@ -3565,7 +3565,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_wall.center",
-     "size": 6.5,
+     "size": 12.35,
      "move": "push_in"
     }
    },
@@ -3617,7 +3617,7 @@
       0,
       0
      ],
-     "size": 6,
+     "size": 9.6,
      "move": "pan_right",
      "height": "top"
     }
@@ -3646,7 +3646,7 @@
       1,
       0
      ],
-     "size": 3.8,
+     "size": 6.08,
      "move": "push_in",
      "height": "top"
     }
@@ -3746,7 +3746,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_emp.arrow2_mid",
-     "size": 7,
+     "size": 13.3,
      "move": "pull_out",
      "amount": 1.4
     }
@@ -3824,7 +3824,7 @@
       0,
       0
      ],
-     "size": 6,
+     "size": 11.4,
      "move": "push_in",
      "height": "top"
     }

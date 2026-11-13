@@ -464,6 +464,71 @@ class Builder:
                       f"({(loc - cam).length:.1f} of {d:.1f} from the camera): change frame.angle/height/x/move or move the subject")
         return ok
 
+    def dodge_heads(self, cardlist):
+        """labels/titles sit at fixed screen positions chosen without seeing the shot: when one covers a character's head
+        (seen: 'CENTURION' printed across the centurion's face) move it to the first free spot: higher, the other side, top centre"""
+        from bpy_extras.object_utils import world_to_camera_view as w2c
+        HW, HH = ctx.frame_half() if self.aspect != "9:16" else (cards.HALF_W, cards.HALF_H)
+        heads = [(cid, c) for cid, c in self.chars.items() if getattr(c, "head", None) is not None]
+        if not heads: return cardlist
+        out = []; cache = {}
+
+        def head_boxes(f):
+            if f in cache: return cache[f]
+            ctx.sc.frame_set(f); bs = []
+            for cid, c in heads:
+                p = c.head.matrix_world.translation.copy()
+                k = max(0.3, (p.z - c.root.matrix_world.translation.z) / self.HEAD_REF)
+                a = w2c(ctx.sc, self.cam, p + Vector((0, 0, 0.12 * k))); t = w2c(ctx.sc, self.cam, p + Vector((0, 0, 0.72 * k)))
+                if a.z <= 0.05: continue
+                x, y = 2 * a.x - 1, 2 * a.y - 1; ry = abs(2 * t.y - 1 - y) * 1.1; rx = ry * HH / HW
+                if abs(x) - rx > 1 or abs(y) - ry > 1: continue
+                bs.append((cid, x - rx, x + rx, y - ry, y + ry))
+            cache[f] = bs; return bs
+
+        for i, c in enumerate(cardlist):
+            st_ = c.get("style", "title")
+            if st_ not in ("label", "title") or not c.get("text"): out.append(c); continue
+            size = c.get("size") or (0.075 if st_ == "title" else 0.06)
+            if size > 0.3: size *= 0.06
+            body = c["text"]; lines = body.count("\n") + 1
+            w = cards._text_width(body, size) + size * (1.2 if st_ == "title" else 0.2)
+            h = size * (1.6 + 1.1 * (lines - 1)) if st_ == "title" else size * 1.1 * lines
+            w, h = min(w, 1.9 * HW) / 2 / HW, h / 2 / HH
+            a, b = max(1, int(c.get("from", 1))), min(ctx.N, int(c.get("to", ctx.N)))
+            if b < a: out.append(c); continue
+            frames = sorted({a, (a + b) // 2, b, a + (b - a) // 4, a + 3 * (b - a) // 4})
+            x0, y0 = c.get("pos") or ((0, 0.55) if st_ == "title" else (0, 0))
+
+            def cost(x, y):
+                """summed overlap area (screen units) of the card box with every head box at the sampled frames"""
+                tot = 0.0; who = set()
+                for f in frames:
+                    for cid, l, r, bo, to in head_boxes(f):
+                        ox, oy = min(x + w, r) - max(x - w, l), min(y + h, to) - max(y - h, bo)
+                        if ox > 0 and oy > 0: tot += ox * oy; who.add(cid)
+                return tot, who
+            c0, hit = cost(x0, y0)
+            if c0 <= 0: out.append(c); continue
+            # every free spot of a coarse grid (never the subtitle band), nearest to where the card was meant to be
+            sub_band = (-0.45, 0.05) if self.aspect == "9:16" else (-1.0, -0.6)
+            best = None
+            for gy in (0.85, 0.7, 0.55, 0.4, 0.25, 0.1, -0.05, -0.2, -0.35, -0.5, -0.6, -0.75):
+                for gx in (-0.75, -0.6, -0.45, -0.3, -0.15, 0.0, 0.15, 0.3, 0.45, 0.6, 0.75):
+                    x, y = max(-1 + w + 0.02, min(1 - w - 0.02, gx)), max(-1 + h + 0.02, min(1 - h - 0.02, gy))
+                    if sub_band[0] - h < y < sub_band[1] + h: continue
+                    cc, _ = cost(x, y); score = cc + 0.004 * ((x - x0) ** 2 + (y - y0) ** 2) ** 0.5
+                    if best is None or score < best[0]: best = (score, cc, x, y)
+            if best and best[1] < 0.5 * c0:
+                _s, cc, x, y = best
+                print(f"NOTE card {i} '{body}' covered {sorted(hit)}'s head at {x0},{y0} -> moved to {x:.2f},{y:.2f}"
+                      + ("" if cc <= 0 else f" (still {cc / c0:.0%} of the overlap: the heads fill the frame)"))
+                c = dict(c, pos=[round(x, 3), round(y, 3)])
+            else:
+                print(f"WARN card {i} '{body}' covers {sorted(hit)}'s head and no better spot was found: move it by hand")
+            out.append(c)
+        return out
+
     def value_at(self, segs, default, f, prop, where):
         """value of one property of a track/blocking spec at frame f (None if nothing sets it)"""
         rs = self.resolve_segments(segs, {}, where)
@@ -598,7 +663,9 @@ class Builder:
             cap_root = None
 
         extra = self.channel_cards() if N > 90 else []          # not on thumbnails / reference pictures
-        cards_root = cards.build_cards((st.get("cards") or []) + extra, self.lens)
+        cardlist = st.get("cards") or []
+        if st["camera"].get("rig") == "long" and cardlist: cardlist = self.dodge_heads(cardlist)
+        cards_root = cards.build_cards(cardlist + extra, self.lens)
         vfx_noline = fx_long.build(st.get("vfx"), {f["id"]: f for f in st.get("factions", [])}, self.cam, meta.get("seed", 7)) if st.get("vfx") else []
 
         fxs = st.get("fx", {})

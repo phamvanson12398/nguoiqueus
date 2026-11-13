@@ -1091,6 +1091,8 @@ Luật khi viết story.json:
   (camera cách bảng 7,7, lens 45, đặt captions.lift khi đang chiếu bảng).
 - Thẻ chữ trên màn hình (thẻ tên, "10 MINUTES EARLIER", "TEST 1", thẻ chương, "REPLAY", nhãn số đo, dấu ✗/✓,
   bong bóng tưởng tượng, iris-out kết video) đặt trong `cards` (xem STORY.md); tránh vùng phụ đề y ≈ -0,2.
+  Shorts: thẻ KHÔNG lặp lại chữ phụ đề đang nói lúc đó (phụ đề đã hiện to giữa màn hình) — thẻ phải thêm thông tin
+  (con số, tên, năm, câu đùa). Không đặt thẻ/nhãn chữ đè lên đầu nhân vật (tool tự dời nếu đè, nhưng nên tránh từ đầu).
 - Hiệu ứng builder chưa có thì làm xấp xỉ:
   - slow-mo/REPLAY/tua ngược: track chạy chậm hoặc ngược trên cùng vật, kèm thẻ "REPLAY";
   - freeze-frame: giữ nguyên tư thế và vị trí, camera vẫn trôi nhẹ;
@@ -1181,6 +1183,25 @@ def variety_problems(st):
     return out
 
 
+def caption_dupes(st, words=None):
+    """a label/title that just repeats the words the subtitles show at that moment is clutter: the same text twice on screen"""
+    if st.get("meta", {}).get("aspect", "9:16") != "9:16" or (st.get("captions") or {}).get("style", "pop") != "pop": return []
+    # (long videos: a label spelling a name the narrator says - WHIN SILL - helps; only the big centred Shorts captions clash)
+    fps = st.get("meta", {}).get("fps", 30)
+    W = [(float(w[0]), _norm_txt(str(w[1]))) for w in (st.get("words") or words or []) if len(w) >= 2]
+    out = []
+    for i, c in enumerate(st.get("cards", [])):
+        if c.get("style") not in ("label", "title"): continue
+        want = [x for x in _norm_txt(c.get("text", "")).split() if len(x) > 2]
+        if len(want) < 2: continue
+        t0, t1 = (c.get("from", 0) - 15) / fps, (c.get("to", 0) + 15) / fps
+        said = set(" ".join(w for t, w in W if t0 <= t <= t1).split())
+        if sum(x in said for x in want) >= 0.8 * len(want):
+            out.append(f"cards[{i}] '{c.get('text')}' lặp đúng chữ phụ đề đang hiện (khung {c.get('from')}-{c.get('to')}): "
+                       f"đổi thành chữ bổ sung thông tin (con số, tên, năm, câu đùa) hoặc bỏ thẻ")
+    return out
+
+
 def label_overlaps(st):
     """handwritten labels of a paper_diagram are centred on 'at'; estimate their boxes and report pairs that overlap"""
     out = []
@@ -1232,6 +1253,7 @@ def plan_shots(slug, model=None):
         if long_ and x["story"]["meta"].get("aspect") != "16:9": e.append("video dài: meta.aspect phải là '16:9'")
         if frames and x["story"]["meta"]["frames"] != frames: e.append(f"meta.frames phải là {frames}")
         if long_: e += check_long_story(x["story"], content)
+        e += caption_dupes(x["story"], words.get("words") if isinstance(words, dict) else words)
         return e
     data, info = call("plan_shots", prompt, schema, project=slug, model=model, check=check)
     _save_versioned(slug, "story.json", data["story"])

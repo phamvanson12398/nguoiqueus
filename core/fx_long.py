@@ -43,6 +43,48 @@ def _ico(name, loc, r, m, sub=2):
     return o
 
 
+def _soft_mat(name, rgb):
+    """puff material: opacity falls off toward the silhouette (no hard disc edge), lit side a touch brighter.
+    Returns (material, value socket to key for the overall opacity)."""
+    m = bpy.data.materials.new(name); m.use_nodes = True
+    try: m.surface_render_method = 'BLENDED'
+    except Exception: pass
+    nt = m.node_tree; nt.nodes.clear(); N, L = nt.nodes.new, nt.links.new
+    sh = N("ShaderNodeBsdfDiffuse"); sh.inputs[0].default_value = (*rgb, 1)
+    em = N("ShaderNodeEmission"); em.inputs[0].default_value = (*rgb, 1); em.inputs[1].default_value = 0.35
+    add = N("ShaderNodeAddShader"); L(sh.outputs[0], add.inputs[0]); L(em.outputs[0], add.inputs[1])
+    lw = N("ShaderNodeLayerWeight"); lw.inputs[0].default_value = 0.3
+    inv = N("ShaderNodeMath"); inv.operation = 'SUBTRACT'; inv.inputs[0].default_value = 1.0; L(lw.outputs["Facing"], inv.inputs[1])
+    pw = N("ShaderNodeMath"); pw.operation = 'POWER'; pw.inputs[1].default_value = 1.1; L(inv.outputs[0], pw.inputs[0])
+    val = N("ShaderNodeValue"); val.outputs[0].default_value = 1.0
+    mul = N("ShaderNodeMath"); mul.operation = 'MULTIPLY'; mul.use_clamp = True; L(pw.outputs[0], mul.inputs[0]); L(val.outputs[0], mul.inputs[1])
+    tr = N("ShaderNodeBsdfTransparent"); mx = N("ShaderNodeMixShader")
+    L(mul.outputs[0], mx.inputs[0]); L(tr.outputs[0], mx.inputs[1]); L(add.outputs[0], mx.inputs[2])
+    o = N("ShaderNodeOutputMaterial"); L(mx.outputs[0], o.inputs[0])
+    return m, val.outputs[0]
+
+
+def _lumpy(name, loc, r, m, rnd, sub=3):
+    """icosphere pushed out by a few random low-frequency bumps: every puff a different cauliflower shape"""
+    import bmesh, math
+    me = bpy.data.meshes.new(name); bm = bmesh.new(); bmesh.ops.create_icosphere(bm, subdivisions=sub, radius=r)
+    bumps = [((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-0.3, 1)), rnd.uniform(0.18, 0.4)) for _ in range(5)]
+    for v in bm.verts:
+        n = v.co.normalized(); k = 1.0
+        for (dx, dy, dz), h in bumps:
+            l = math.sqrt(dx * dx + dy * dy + dz * dz) or 1
+            c = (n.x * dx + n.y * dy + n.z * dz) / l
+            k += h * max(0.0, c) ** 3
+        v.co = n * r * k
+    bm.to_mesh(me); bm.free()
+    for p in me.polygons: p.use_smooth = True
+    o = bpy.data.objects.new(name, me); ctx.col.objects.link(o); o.location = loc; o.data.materials.append(m)
+    o.rotation_euler = (0, 0, rnd.uniform(0, 6.283))
+    try: o.visible_shadow = False
+    except Exception: pass
+    return o
+
+
 def _hide_outside(o, a, b):
     N = ctx.N
     o.scale = (0, 0, 0); o.keyframe_insert("scale", frame=1)
@@ -58,20 +100,28 @@ def smoke(k, spec, rnd, dust=False):
     life = int(spec.get("life", 90 if dust else 75)); rise = spec.get("rise", 0.15 if dust else 0.9)
     wind = spec.get("wind", [0.4, 0.1])
     objs = []
+    step = max(1, (b - a - life * 0.3)) / max(1, n)
     for i in range(n):
-        m, fac = _fade_mat(f"vfx_smoke{k}_{i}", tuple(c * rnd.uniform(0.9, 1.1) for c in rgb), emission=False)
-        o = _ico(f"vfx_smoke{k}_{i}", (x0, y0, z0), size, m)
-        t0 = a + int(i * max(1, (b - a - life * 0.3)) / max(1, n)) if b - a > life else a + int(rnd.uniform(0, 10))
+        # every puff its own shade, size, shape, speed and release time: a column, not a stack of identical plates
+        m, fac = _soft_mat(f"vfx_smoke{k}_{i}", tuple(c * rnd.uniform(0.85, 1.12) for c in rgb))
+        sk = rnd.uniform(0.7, 1.3)
+        o = _lumpy(f"vfx_smoke{k}_{i}", (x0, y0, z0), size * sk, m, rnd)
+        t0 = (a + int((i + rnd.uniform(-0.35, 0.35)) * step)) if b - a > life else a + int(rnd.uniform(0, 10))
+        t0 = max(a, t0)
         ox, oy = rnd.uniform(-spread, spread), rnd.uniform(-spread * 0.5, spread * 0.5)
+        rs = rnd.uniform(0.8, 1.25); sq = rnd.uniform(0.8, 1.2); wob = rnd.uniform(0, 6.283)
         for f in sorted(set([1, max(1, t0 - 1)] + list(range(t0, min(N, t0 + life) + 1, 3)) + [min(N, t0 + life + 1)])):
             u = (f - t0) / life
             if f < t0 or u > 1:
                 o.scale = (0, 0, 0); o.keyframe_insert("scale", frame=f); fac.default_value = 0.0; fac.keyframe_insert("default_value", frame=f); continue
             s = (0.35 + 0.9 * ease(min(1, u * 1.6))) * (1.4 if dust else 1.0)
-            o.scale = (s, s, s * (0.6 if dust else 1.0))
-            o.location = (x0 + ox + wind[0] * u * life / 30, y0 + oy + wind[1] * u * life / 30, z0 + size * 0.5 + rise * u * life / 30)
-            fac.default_value = spec.get("opacity", 0.75) * (1 - u) ** 1.3 * min(1, u * 6)
-            for p in ("scale", "location"): o.keyframe_insert(p, frame=f)
+            o.scale = (s * sq, s / sq, s * (0.6 if dust else 1.0))
+            sway = 0.15 * size * math.sin(wob + u * 5)
+            o.location = (x0 + ox + wind[0] * u * life / 30 + sway, y0 + oy + wind[1] * u * life / 30,
+                          z0 + size * 0.5 + rise * rs * u * life / 30)
+            o.rotation_euler[2] = wob + u * 0.8
+            fac.default_value = spec.get("opacity", 0.75) * 1.7 * (1 - u) ** 1.3 * min(1, u * 6)
+            for p in ("scale", "location", "rotation_euler"): o.keyframe_insert(p, frame=f)
             fac.keyframe_insert("default_value", frame=f)
         objs.append(o)
     return objs

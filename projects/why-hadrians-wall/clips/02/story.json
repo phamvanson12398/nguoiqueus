@@ -3125,7 +3125,7 @@
     "fstop": 1.4,
     "frame": {
      "subject": "map_emp.center",
-     "size": 9,
+     "size": 17.1,
      "move": "drift",
      "height": "top"
     }
@@ -3137,7 +3137,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_emp.center",
-     "size": 8.5,
+     "size": 16.15,
      "move": "pull_out",
      "amount": 0.6
     }
@@ -3149,7 +3149,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_emp.city_antiochia",
-     "size": 3.5,
+     "size": 6.65,
      "move": "push_in",
      "amount": 0.7
     }
@@ -3162,7 +3162,7 @@
     "note": "mưa phùn rơi lên bản đồ",
     "frame": {
      "subject": "map_emp.city_londinium",
-     "size": 3.2,
+     "size": 6.08,
      "move": "pan_left",
      "amount": 0.6
     }
@@ -3202,7 +3202,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_emp.city_eboracum",
-     "size": 6,
+     "size": 11.4,
      "move": "push_in",
      "amount": 1.2
     }
@@ -3231,7 +3231,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_brit.arrow0_mid",
-     "size": 2.8,
+     "size": 5.32,
      "move": "push_in",
      "amount": 0.8
     }
@@ -3243,7 +3243,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_emp.city_roma",
-     "size": 7,
+     "size": 13.3,
      "move": "drift"
     }
    },
@@ -3502,7 +3502,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_emp.region_mesopotamia",
-     "size": 3.4,
+     "size": 6.46,
      "move": "push_in"
     }
    },
@@ -3513,7 +3513,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_emp.region_mesopotamia",
-     "size": 5,
+     "size": 9.5,
      "move": "drift",
      "height": "high"
     }
@@ -3538,7 +3538,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_cal.arrow0_mid",
-     "size": 5,
+     "size": 9.5,
      "move": "push_in",
      "amount": 0.8
     }
@@ -3562,7 +3562,7 @@
     "fstop": 4,
     "frame": {
      "subject": "board.center",
-     "size": 6.5,
+     "size": 12.35,
      "move": "orbit_right",
      "height": "high"
     }
@@ -3590,7 +3590,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_cal.arrow1_mid",
-     "size": 3.5,
+     "size": 6.65,
      "move": "pull_out"
     }
    },
@@ -3614,7 +3614,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_cal.city_vindolanda",
-     "size": 2.4,
+     "size": 4.56,
      "move": "drift"
     }
    },
@@ -3706,7 +3706,7 @@
     "grade": "sepia",
     "frame": {
      "subject": "map_cal.arrow3_mid",
-     "size": 2,
+     "size": 3.8,
      "move": "push_in"
     }
    },
@@ -3747,7 +3747,7 @@
     "fstop": 4,
     "frame": {
      "subject": "paper.center",
-     "size": 6,
+     "size": 9.6,
      "move": "push_in",
      "height": "top"
     }

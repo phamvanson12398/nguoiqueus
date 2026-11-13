@@ -71,6 +71,12 @@ def make_clip(slug, k, pick):
         fr = s.get("frame")
         if fr and s.get("type") in ("establishing", "wide", "full") and fr.get("height") != "top" and s.get("type") not in ("map", "board"):
             fr["size"] = round(float(fr.get("size", PRESET_H[s["type"]])) * (0.55 if s["type"] != "full" else 0.8), 2)
+        elif fr and (s.get("type") in ("map", "board", "diagram") or fr.get("height") == "top"):
+            # flat things seen from above (maps, boards, paper): a vertical frame of the same height would cut them to a
+            # third of their width; show ~60 % of the width instead - labels keep about the same size in pixels
+            import core.framing as F
+            base = float(fr.get("size", F.preset(fr.get("type", s.get("type")))[1][0]))
+            fr["size"] = round(base * (1.6 if s.get("type") == "diagram" else 1.9), 2)
     keep = [cd for cd in st.get("cards", []) if cd.get("style") not in ("fade", "chapter", "endscreen", "watermark")
             and cd.get("to", 0) >= A and cd.get("from", 0) <= B]
     hook = (pick.get("hook_text") or "").upper()
