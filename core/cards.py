@@ -16,7 +16,7 @@ from .timing import ease, ease_out_back
 HALF_H = 36 / 28 / 2            # 0.643: half the visible height at depth lens/28 (9:16; 16:9 -> ctx.frame_half())
 HALF_W = HALF_H * 9 / 16
 STYLES = ("title", "label", "stamp_x", "stamp_check", "bubble", "iris", "fade", "chapter", "screen", "thumb_text", "arrow", "circle",
-          "endscreen", "watermark")
+          "endscreen", "watermark", "banner")
 # key-moment text screens (long-form): big text height + colour of the big text per variant
 SCREEN = {"year": (0.17, None), "number": (0.15, None), "question": (0.085, (1, 1, 1)), "quote": (0.07, (1, 1, 1)),
           "name": (0.095, (1, 1, 1)), "place": (0.11, (1, 1, 1)), "fact": (0.08, (1, 1, 1))}
@@ -60,7 +60,7 @@ def _text_width(body, size):
 
 def build_card(root, i, c):
     style = c.get("style", "title")
-    default = {"title": 0.075, "label": 0.06, "bubble": 0.065, "chapter": 0.07}.get(style, 0.16)
+    default = {"title": 0.075, "label": 0.06, "bubble": 0.065, "chapter": 0.07, "banner": 0.056}.get(style, 0.16)
     if style == "screen":
         default = SCREEN.get(c.get("variant", "fact"), SCREEN["fact"])[0]
         if c.get("variant") == "quote" and c.get("text") and not c["text"].startswith(("“", '"')): c["text"] = "“" + c["text"] + "”"
@@ -69,8 +69,8 @@ def build_card(root, i, c):
         print(f"WARN card {i}: size {size} looks like a multiplier, using {round(default * size, 3)}")
         size = default * size
     body_ = c.get("text", "")
-    if style in ("title", "label", "bubble", "chapter", "screen") and body_:     # fit the frame width: wrap to 2 lines, then shrink
-        extra = {"title": 1.2, "label": 0.2, "bubble": 2.2, "chapter": 1.0, "screen": 1.6}[style]
+    if style in ("title", "label", "bubble", "chapter", "screen", "banner") and body_:     # fit the frame width: wrap to 2 lines, then shrink
+        extra = {"title": 1.2, "label": 0.2, "bubble": 2.2, "chapter": 1.0, "screen": 1.6, "banner": 1.2}[style]
         maxw = 1.9 * HALF_W
         if _text_width(body_, size) + size * extra > maxw and "\n" not in body_ and " " in body_:
             words = body_.split(" "); best = None
@@ -81,7 +81,7 @@ def build_card(root, i, c):
         need = _text_width(body_, size) + size * extra
         if need > maxw: size *= maxw / need
     rgb = tuple(c.get("color") or DEFAULT_COLOR.get(style, (1.0, 0.82, 0.1))); body = c.get("text", "")   # (may have been wrapped above)
-    x, y = c.get("pos") or ((0, 0.55) if style == "title" else (0, -0.6) if style == "iris" else (0, 0))
+    x, y = c.get("pos") or ((0, 0.55) if style == "title" else (0, -0.6) if style == "iris" else (0, 0.84) if style == "banner" else (0, 0))
     if style == "fade": x, y = 0, 0
     h = empty(f"card{i}", root, (x * HALF_W, y * HALF_H, -0.02 - 0.0005 * i))
     h.rotation_euler = (0, 0, math.radians(c.get("rot", 0)))
@@ -91,6 +91,12 @@ def build_card(root, i, c):
         _text(h, f"card{i}", body, size, (1, 1, 1), 0.0)
     elif style == "label":
         _text(h, f"card{i}", body, size, rgb, 0.0)
+    elif style == "banner":
+        # the hook line that stays on top of a dialogue Short ("This is true love"): dark text on a white plate
+        w = _text_width(body, size) + size * 1.2; hh = size * (1.7 + 1.15 * body.count("\n"))
+        bg = tuple(c.get("color") or (1.22, 1.22, 1.2))      # > 1: the film look's vignette greys the top of the frame by ~20 %
+        shape(h, f"card{i}_bg", rrect(0, 0, w, hh, size * 0.4), flat(f"card_bg{bg}", bg), -0.006, outline=0.006)
+        _text(h, f"card{i}", body, size, tuple(c.get("text_color") or (0.06, 0.06, 0.06)), 0.0, outline=False)
     elif style in ("stamp_x", "stamp_check"):
         m = flat(f"card_stamp{rgb}", rgb); s = size
         pts = [[(-s, -s), (s, s)], [(-s, s), (s, -s)]] if style == "stamp_x" else [[(-s, 0), (-s * 0.3, -s * 0.7), (s, s * 0.8)]]
@@ -228,6 +234,12 @@ def bake_card(h, c):
             for kp in fc.keyframe_points: kp.interpolation = 'CONSTANT'
         return
     h.scale = (0, 0, 0); h.keyframe_insert("scale", frame=1)
+    if style == "banner":                                                      # pops in, then just stays (no wobble)
+        fr = sorted({f for f in list(range(max(2, a - 1), a + 7)) + [b, b + 1] if 1 < f <= N})
+        for f in fr:
+            s = 0.0 if (f < a or f > b) else ease_out_back(min(1.0, (f - a) / 6), 1.6)
+            h.scale = (s, s, s); h.keyframe_insert("scale", frame=f)
+        return
     if style == "iris":
         o = c["_iris"]
         x, y = c.get("pos") or (0, -0.6)

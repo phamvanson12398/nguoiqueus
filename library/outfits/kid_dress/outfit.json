@@ -1,0 +1,107 @@
+{
+ "kind": "outfit",
+ "name": "kid_dress",
+ "culture": "modern_home",
+ "role": "daughter",
+ "status": "approved",
+ "title_vi": "Váy trẻ con",
+ "description_vi": "Váy $cloth xòe, cổ bèo $trim (thân trẻ con 0,62 x 0,55).",
+ "silhouette_vi": "váy xòe, cổ bèo",
+ "sources": [],
+ "torso": "$cloth",
+ "hair": "braids",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "skirt",
+   "pts": [
+    [
+     -0.28,
+     0.24
+    ],
+    [
+     0.28,
+     0.24
+    ],
+    [
+     0.42,
+     -0.26
+    ],
+    [
+     -0.42,
+     -0.26
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "collar",
+   "pts": {
+    "ellipse": [
+     0,
+     0.53,
+     0.18,
+     0.07,
+     18
+    ]
+   },
+   "mat": "$trim",
+   "z": 0.16,
+   "outline": 0.012
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "dot1",
+   "c": [
+    -0.18,
+    -0.05
+   ],
+   "r": 0.035,
+   "mat": "$trim",
+   "z": 0.16
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "dot2",
+   "c": [
+    0.12,
+    0.02
+   ],
+   "r": 0.035,
+   "mat": "$trim",
+   "z": 0.16
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "dot3",
+   "c": [
+    0.0,
+    -0.17
+   ],
+   "r": 0.035,
+   "mat": "$trim",
+   "z": 0.16
+  }
+ ]
+}

@@ -1,0 +1,189 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "lines",
+  "explain_vi"
+ ],
+ "properties": {
+  "lines": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "speaker",
+     "text",
+     "text_vi",
+     "face",
+     "listener_face",
+     "gesture",
+     "listener_gesture",
+     "shot",
+     "pause_before",
+     "speed",
+     "sfx",
+     "react",
+     "beat"
+    ],
+    "properties": {
+     "speaker": {
+      "type": "string",
+      "description": "id trong cast"
+     },
+     "text": {
+      "type": "string",
+      "description": "câu thoại tiếng Anh, ngắn (thường 3-14 từ), văn nói tự nhiên; được dùng thẻ OmniVoice [laughter] [sigh] [surprise-oh] [dissatisfaction-hnn] ở đầu/giữa câu"
+     },
+     "text_vi": {
+      "type": "string"
+     },
+     "face": {
+      "enum": [
+       "neutral",
+       "happy",
+       "smirk",
+       "wink",
+       "angry",
+       "shock",
+       "worried",
+       "grumpy",
+       "focus",
+       "smug_closed",
+       "sad",
+       "love",
+       "laugh",
+       "side_eye",
+       "annoyed",
+       "blush"
+      ],
+      "description": "mặt người nói trong câu này"
+     },
+     "listener_face": {
+      "enum": [
+       "neutral",
+       "happy",
+       "smirk",
+       "wink",
+       "angry",
+       "shock",
+       "worried",
+       "grumpy",
+       "focus",
+       "smug_closed",
+       "sad",
+       "love",
+       "laugh",
+       "side_eye",
+       "annoyed",
+       "blush"
+      ],
+      "description": "mặt người nghe (phản ứng) trong câu này; side_eye = liếc sang người kia"
+     },
+     "gesture": {
+      "enum": [
+       "none",
+       "point",
+       "hands_hips",
+       "cross_arms",
+       "shrug",
+       "wave",
+       "hold_hands",
+       "think",
+       "fist",
+       "hands_up",
+       "open_arms",
+       "facepalm"
+      ]
+     },
+     "listener_gesture": {
+      "enum": [
+       "none",
+       "point",
+       "hands_hips",
+       "cross_arms",
+       "shrug",
+       "wave",
+       "hold_hands",
+       "think",
+       "fist",
+       "hands_up",
+       "open_arms",
+       "facepalm"
+      ]
+     },
+     "shot": {
+      "enum": [
+       "auto",
+       "two",
+       "speaker",
+       "listener",
+       "both_close",
+       "wide"
+      ],
+      "description": "auto = tool tự chọn; two = hai người cả thân; speaker = cận người nói; listener = cận người nghe phản ứng; both_close = cận hai mặt sát nhau (cú chốt); wide = toàn cảnh"
+     },
+     "pause_before": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 2.5,
+      "description": "giây im lặng trước câu (0.15-0.3 bình thường; 0.6-1.2 trước cú chốt = khoảng lặng hài)"
+     },
+     "speed": {
+      "type": "number",
+      "minimum": 0.8,
+      "maximum": 1.3,
+      "description": "1.0 bình thường; 1.1-1.2 khi cuống/cãi; 0.9 khi buồn/ngập ngừng"
+     },
+     "sfx": {
+      "enum": [
+       "none",
+       "pop",
+       "boing",
+       "thud",
+       "bonk",
+       "slide_up",
+       "slide_down",
+       "steam",
+       "rumble",
+       "ding",
+       "squeak",
+       "zip_out",
+       "crash",
+       "scratch",
+       "sad_trombone",
+       "gulp",
+       "cash",
+       "swish"
+      ],
+      "description": "tiếng động hài ở đầu câu (ít thôi, chỉ chỗ đắt)"
+     },
+     "react": {
+      "enum": [
+       "none",
+       "hop",
+       "flinch",
+       "shiver",
+       "proud"
+      ],
+      "description": "người nghe giật mình/nảy lên ở câu này"
+     },
+     "beat": {
+      "enum": [
+       "setup",
+       "build",
+       "twist",
+       "punchline",
+       "tag"
+      ]
+     }
+    }
+   },
+   "minItems": 1,
+   "description": "các câu mới thay cho đoạn được yêu cầu"
+  },
+  "explain_vi": {
+   "type": "string"
+  }
+ }
+}

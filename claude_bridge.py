@@ -39,7 +39,7 @@ WEB_TOOLS = ["WebSearch", "WebFetch"]
 JOB_TOOLS = {"ideas": WEB_TOOLS, "write_content": WEB_TOOLS + ["Read"], "rewrite_seq": [], "plan_shots": READ_TOOLS,
              "design_prop": READ_TOOLS, "design_set": READ_TOOLS, "design_char": READ_TOOLS, "review": READ_TOOLS,
              "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "thumb_prompts": READ_TOOLS, "retention_review": [], "translate_subs": [], "pick_clips": [], "learn_retention": [], "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
-             "fix_from_preview": READ_TOOLS}
+             "fix_from_preview": READ_TOOLS, "dialog_ideas": [], "write_dialog": [], "rewrite_dialog": []}
 
 
 class BridgeError(Exception):
@@ -794,6 +794,10 @@ def youtube_package(slug, model=None):
                               "faces": (lib.json("chars", v["type"]).get("faces") if lib.exists("chars", v["type"]) else None)} for k, v in cs["chars"].items()},
                 "sets": {k: {"type": v["type"], "anchors_hint": "center" + (", city_*/arrow*_mid (map)" if v["type"] == "parchment_map" else "")} for k, v in cs["sets"].items()}}
     seqs = [{"id": q.get("id"), "chapter": q.get("chapter"), "vo_en": q.get("vo_en", "")[:300]} for q in content["sequences"]]
+    if content.get("format") == "dialog":            # a dialogue: the script itself, who says what
+        names = {c["id"]: c["name"] for c in content["cast"]}
+        seqs = [{"id": 1, "hook_on_screen": content.get("hook"), "premise_vi": content.get("premise_vi"),
+                 "dialogue": [f"{names.get(l['speaker'], l['speaker'])}: {l['text']}" for l in content["lines"]]}]
     prompt = (f"Viết gói YouTube cho video '{content.get('title')}'.\n{YT_RULES}\nContent (rút gọn): "
               + json.dumps({"title": content.get("title"), "question": content.get("question"), "chapters": content.get("chapters"),
                             "sequences": seqs, "sources": content.get("sources")}, ensure_ascii=False)
@@ -951,6 +955,118 @@ def write_content(slug, idea, minutes=1.0, model=None, wpm=190, fmt="short"):
                       else [f"lời đọc có {len(x['vo_en'].split())} từ, cần khoảng {words}"])
     _save_versioned(slug, "content.json", data)
     return data
+
+
+# =====================================================================
+#  dialogue comedy Shorts (DIALOG_RULES.md): two or three characters talking, voices by OmniVoice
+# =====================================================================
+DIALOG_WPS = 2.3          # words per second including the pauses between lines
+DIALOG_DERIVED = ("vo_en", "vo_vi", "word_count", "sequences")     # filled by dialog_fill, not part of the schema
+
+
+def dialog_rules():
+    return "\n\n" + open(os.path.join(ROOT, "DIALOG_RULES.md"), encoding="utf-8").read() + "\n"
+
+
+def _voices_text():
+    try:
+        import tts
+        vs = [{k: v.get(k) for k in ("id", "name", "role", "gender", "age", "instruct") if v.get(k)} for v in tts.list_voices() if v.get("has_ref")]
+    except Exception:
+        vs = []
+    return json.dumps(vs, ensure_ascii=False) if vs else "(chưa có giọng nào)"
+
+
+def _dialog_sets_text():
+    cat = storycheck.LibIndex().catalog()
+    return json.dumps([{k: s.get(k) for k in ("name", "title_vi", "description_vi", "params") if s.get(k)} for s in cat["sets"]
+                       if s["name"] not in ("parchment_map", "tactical_board", "paper_diagram", "diagram_board")], ensure_ascii=False)
+
+
+def dialog_ideas(slug, topic=None, count=10, model=None):
+    prompt = (f"Đề xuất {count} ý tưởng video ĐỐI THOẠI HÀI theo DIALOG_RULES.md bên dưới"
+              + (f", xoay quanh: {topic}." if topic else " (cặp đôi, vợ chồng, gia đình, bạn bè).")
+              + " Nghĩ 25-30 ý rồi lọc, chỉ giữ ý 8/10 trở lên: tình huống ai cũng gặp, cú đảo bất ngờ mà hợp lý, câu chốt ngắn."
+              + " Mỗi ý: tiêu đề tiếng Anh, tiêu đề Việt, dòng chữ hook trên đầu video, tình huống, quan hệ, cú đảo, câu chốt (tiếng Anh), bối cảnh."
+              + f"\nBối cảnh có sẵn: {_dialog_sets_text()}" + dialog_rules())
+    data, info = call("dialog_ideas", prompt, load_schema("dialog_ideas"), project=slug, model=model)
+    _save_versioned(slug, "ideas.json", data)
+    return data
+
+
+def check_dialog(x, minutes=None):
+    e = []
+    ids = [c["id"] for c in x["cast"]]
+    if len(set(ids)) != len(ids): e.append("id trong cast bị trùng")
+    vids = [c["voice_id"] for c in x["cast"]]
+    if len(set(vids)) != len(vids): e.append("hai nhân vật dùng chung voice_id")
+    for c in x["cast"]:
+        if c["body"] == "child" and c["outfit"] not in ("kid_tee", "kid_dress"): e.append(f"{c['id']}: trẻ con (body child) mặc kid_tee hoặc kid_dress")
+        if c["body"] == "adult" and c["outfit"] in ("kid_tee", "kid_dress"): e.append(f"{c['id']}: người lớn không mặc đồ trẻ con")
+    if len({(c["gender"], c["age"], re.sub(r"[^a-z ]", "", c["voice_instruct"].lower())) for c in x["cast"]}) < len(x["cast"]):
+        e.append("các giọng phải khác nhau rõ (giới tính, tuổi hoặc độ cao giọng)")
+    for k, l in enumerate(x["lines"]):
+        if l["speaker"] not in ids: e.append(f"lines[{k}].speaker '{l['speaker']}' không có trong cast {ids}")
+        n = len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split())
+        if n > 18: e.append(f"lines[{k}] dài {n} từ (tối đa ~16, tách thành 2 câu hoặc rút gọn)")
+        if n == 0: e.append(f"lines[{k}] không có chữ")
+    for i in ids:
+        if sum(1 for l in x["lines"] if l["speaker"] == i) < 2: e.append(f"nhân vật {i} nói ít hơn 2 câu")
+    if not any(l["beat"] == "punchline" for l in x["lines"]): e.append("chưa có câu nào beat = punchline")
+    if len(x["hook"]) > 34 or any(ord(ch) > 0x2FFF for ch in x["hook"]): e.append("hook tối đa ~32 ký tự, không emoji")
+    words = sum(len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split()) for l in x["lines"])
+    if minutes:
+        want = minutes * 60 * DIALOG_WPS
+        if abs(words - want) > max(25, want * 0.25): e.append(f"lời thoại có {words} từ, cần khoảng {int(want)} cho {minutes} phút")
+    low = " ".join(l["text"].lower() for l in x["lines"])
+    miss = [h for h in x.get("highlight", []) if h.lower() not in low]
+    if miss: e.append(f"highlight {miss} không có trong lời thoại")
+    lib = storycheck.LibIndex()
+    st = x["setting"]["set"]
+    if not lib.exists("sets", st) and not any(n["name"] == st for n in x["library_needs"]):
+        e.append(f"bối cảnh '{st}' chưa có trong thư viện: đưa vào library_needs (kind sets) hoặc chọn bối cảnh có sẵn")
+    if len(x["library_needs"]) > 1: e.append("tối đa 1 món mới (một bối cảnh)")
+    return e
+
+
+def dialog_fill(x):
+    """fields the rest of the tool reads from every content.json (word counts, YouTube, retention)"""
+    x["vo_en"] = " ".join(l["text"] for l in x["lines"])
+    x["vo_vi"] = " ".join(l["text_vi"] for l in x["lines"])
+    x["word_count"] = len(re.sub(r"\[[^\]]*\]", " ", x["vo_en"]).split())
+    x["sequences"] = []
+    return x
+
+
+def write_dialog(slug, idea, minutes=0.75, model=None):
+    words = int(round(minutes * 60 * DIALOG_WPS))
+    n_lines = max(8, min(30, int(round(words / 7))))
+    prompt = (f"Viết kịch bản video đối thoại hài cho ý tưởng sau (JSON):\n{json.dumps(idea, ensure_ascii=False)}\n\n"
+              + lessons_note() +
+              f"Độ dài: {minutes} phút ≈ {words} từ thoại tiếng Anh (±20 %), khoảng {n_lines} câu. Theo DIALOG_RULES.md bên dưới.\n"
+              f"Giọng đã có trong thư viện (dùng lại nếu hợp vai): {_voices_text()}\n"
+              f"Bối cảnh có sẵn: {_dialog_sets_text()}" + dialog_rules())
+    data, info = call("write_dialog", prompt, load_schema("content_dialog"), project=slug, model=model,
+                      check=lambda x: check_dialog(x, minutes))
+    data["minutes"] = minutes
+    _save_versioned(slug, "content.json", dialog_fill(data))
+    return data
+
+
+def rewrite_dialog(slug, a, b, request, model=None):
+    """rewrite lines a..b (0-based, inclusive) of a dialogue; -> new content"""
+    d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+    a, b = max(0, int(a)), min(len(content["lines"]) - 1, int(b))
+    prompt = (f"Kịch bản hiện tại:\n{json.dumps({k: content[k] for k in ('title', 'hook', 'premise_vi', 'cast', 'lines')}, ensure_ascii=False)}\n\n"
+              f"Viết lại CHỈ các câu lines[{a}]..lines[{b}] (đếm từ 0) theo yêu cầu: {request}\n"
+              "Trả các câu mới (có thể nhiều/ít câu hơn một chút) để thay đúng đoạn đó; giữ mạch và cú đảo của cả video, speaker là id trong cast."
+              + dialog_rules())
+    ids = [c["id"] for c in content["cast"]]
+    data, info = call("rewrite_dialog", prompt, load_schema("dialog_rewrite"), project=slug, model=model,
+                      check=lambda x: [f"speaker '{l['speaker']}' không có trong cast {ids}" for l in x["lines"] if l["speaker"] not in ids])
+    content["lines"][a:b + 1] = data["lines"]
+    _save_versioned(slug, "content.json", dialog_fill(content))
+    return {"content": content, "explain_vi": data["explain_vi"]}
 
 
 def check_long_content(x, minutes):

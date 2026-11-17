@@ -1,0 +1,116 @@
+{
+ "kind": "outfit",
+ "name": "casual_dress",
+ "culture": "modern_home",
+ "role": "wife",
+ "status": "approved",
+ "title_vi": "Váy liền đời thường",
+ "description_vi": "Váy liền không tay màu $cloth, thân ôm, chân váy xòe tới đầu gối có viền gấu $trim, dây thắt eo.",
+ "silhouette_vi": "váy xòe, eo thắt",
+ "sources": [],
+ "torso": "$cloth",
+ "hair": "tied",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "skirt",
+   "pts": [
+    [
+     -0.36,
+     0.34
+    ],
+    [
+     0.36,
+     0.34
+    ],
+    [
+     0.52,
+     -0.42
+    ],
+    [
+     -0.52,
+     -0.42
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "hem",
+   "pts": [
+    [
+     -0.52,
+     -0.42
+    ],
+    [
+     0.52,
+     -0.42
+    ],
+    [
+     0.505,
+     -0.34
+    ],
+    [
+     -0.505,
+     -0.34
+    ]
+   ],
+   "mat": "$trim",
+   "z": 0.16,
+   "outline": 0.012
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "sash",
+   "pts": {
+    "rrect": [
+     0,
+     0.36,
+     0.74,
+     0.06,
+     0.02
+    ]
+   },
+   "mat": "$cloth2",
+   "z": 0.17,
+   "outline": 0.014
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "neck",
+   "pts": {
+    "ellipse": [
+     0,
+     0.8,
+     0.14,
+     0.09,
+     18,
+     3.14159,
+     6.28318
+    ]
+   },
+   "mat": "$ink",
+   "z": 0.14,
+   "outline": 0
+  }
+ ]
+}

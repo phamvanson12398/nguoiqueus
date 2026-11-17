@@ -1,0 +1,257 @@
+{
+ "words": [
+  [
+   0.35,
+   "Dad,"
+  ],
+  [
+   0.83,
+   "can"
+  ],
+  [
+   1.06,
+   "I"
+  ],
+  [
+   1.29,
+   "get"
+  ],
+  [
+   1.53,
+   "a"
+  ],
+  [
+   1.76,
+   "new"
+  ],
+  [
+   1.99,
+   "phone?"
+  ],
+  [
+   2.52,
+   "Son,"
+  ],
+  [
+   3.0,
+   "money"
+  ],
+  [
+   3.44,
+   "doesn't"
+  ],
+  [
+   3.66,
+   "grow"
+  ],
+  [
+   3.88,
+   "on"
+  ],
+  [
+   4.1,
+   "trees."
+  ],
+  [
+   4.62,
+   "You"
+  ],
+  [
+   4.85,
+   "have"
+  ],
+  [
+   5.09,
+   "to"
+  ],
+  [
+   5.32,
+   "learn"
+  ],
+  [
+   5.56,
+   "the"
+  ],
+  [
+   5.79,
+   "value"
+  ],
+  [
+   6.02,
+   "of"
+  ],
+  [
+   6.26,
+   "a"
+  ],
+  [
+   6.49,
+   "dollar."
+  ],
+  [
+   7.56,
+   "Says"
+  ],
+  [
+   7.79,
+   "the"
+  ],
+  [
+   8.01,
+   "man"
+  ],
+  [
+   8.24,
+   "who"
+  ],
+  [
+   8.46,
+   "bought"
+  ],
+  [
+   8.69,
+   "a"
+  ],
+  [
+   8.91,
+   "game"
+  ],
+  [
+   9.14,
+   "console"
+  ],
+  [
+   9.81,
+   "yesterday."
+  ],
+  [
+   10.99,
+   "That"
+  ],
+  [
+   11.23,
+   "was..."
+  ],
+  [
+   11.89,
+   "for"
+  ],
+  [
+   12.11,
+   "the"
+  ],
+  [
+   12.33,
+   "family."
+  ],
+  [
+   13.68,
+   "Great."
+  ],
+  [
+   14.32,
+   "Then"
+  ],
+  [
+   14.56,
+   "I'll"
+  ],
+  [
+   14.8,
+   "play"
+  ],
+  [
+   15.05,
+   "it"
+  ],
+  [
+   15.29,
+   "on"
+  ],
+  [
+   15.53,
+   "my"
+  ],
+  [
+   15.77,
+   "new"
+  ],
+  [
+   16.02,
+   "phone."
+  ]
+ ],
+ "segments": [
+  [
+   0.35,
+   2.22
+  ],
+  [
+   2.52,
+   4.32
+  ],
+  [
+   4.62,
+   6.96
+  ],
+  [
+   7.56,
+   10.49
+  ],
+  [
+   10.99,
+   12.98
+  ],
+  [
+   13.68,
+   16.26
+  ]
+ ],
+ "duration": 17.76,
+ "frames": 533,
+ "word_count": 45,
+ "lines": [
+  {
+   "n": 1,
+   "speaker": "leo",
+   "start": 0.35,
+   "end": 2.22,
+   "text": "Dad, can I get a new phone?"
+  },
+  {
+   "n": 2,
+   "speaker": "dad",
+   "start": 2.52,
+   "end": 4.32,
+   "text": "Son, money doesn't grow on trees."
+  },
+  {
+   "n": 3,
+   "speaker": "dad",
+   "start": 4.62,
+   "end": 6.96,
+   "text": "You have to learn the value of a dollar."
+  },
+  {
+   "n": 4,
+   "speaker": "mom",
+   "start": 7.56,
+   "end": 10.49,
+   "text": "Says the man who bought a game console yesterday."
+  },
+  {
+   "n": 5,
+   "speaker": "dad",
+   "start": 10.99,
+   "end": 12.98,
+   "text": "That was... for the family."
+  },
+  {
+   "n": 6,
+   "speaker": "leo",
+   "start": 13.68,
+   "end": 16.26,
+   "text": "Great. Then I'll play it on my new phone."
+  }
+ ]
+}

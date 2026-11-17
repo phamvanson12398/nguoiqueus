@@ -1,0 +1,98 @@
+{
+ "kind": "outfit",
+ "name": "casual_tee",
+ "culture": "modern_home",
+ "role": "husband",
+ "status": "approved",
+ "title_vi": "Áo phông + quần jean",
+ "description_vi": "Áo phông cổ tròn màu $cloth, túi ngực, cạp quần jean $cloth2 ở đáy thân.",
+ "silhouette_vi": "áo phông trơn, cạp jean",
+ "sources": [],
+ "torso": "$cloth",
+ "hair": "auto",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "collar",
+   "pts": {
+    "ellipse": [
+     0,
+     0.8,
+     0.15,
+     0.06,
+     18,
+     3.14159,
+     6.28318
+    ]
+   },
+   "mat": "$ink",
+   "z": 0.14,
+   "outline": 0
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pocket",
+   "pts": {
+    "rrect": [
+     0.18,
+     0.56,
+     0.16,
+     0.14,
+     0.03
+    ]
+   },
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "jeans",
+   "pts": {
+    "rrect": [
+     0,
+     0.06,
+     0.8,
+     0.14,
+     0.05
+    ]
+   },
+   "mat": "$cloth2",
+   "z": 0.16,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "belt",
+   "pts": {
+    "rrect": [
+     0,
+     0.13,
+     0.8,
+     0.035,
+     0.01
+    ]
+   },
+   "mat": "$leather",
+   "z": 0.17,
+   "outline": 0.012
+  }
+ ]
+}

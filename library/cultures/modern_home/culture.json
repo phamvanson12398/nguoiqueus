@@ -1,0 +1,103 @@
+{
+ "kind": "culture",
+ "name": "modern_home",
+ "title_vi": "Gia đình hiện đại (đời thường)",
+ "years": [
+  2000,
+  2030
+ ],
+ "region": "Toàn cầu",
+ "status": "approved",
+ "description_vi": "Quần áo đời thường hôm nay cho video đối thoại hài: vợ chồng, người yêu, bố mẹ, con cái, ông bà, bạn bè, sếp. Màu tươi, rõ, mỗi người một màu áo riêng (đặt bằng look.palette).",
+ "sources": [],
+ "uncertain_vi": "",
+ "palette": {
+  "cloth": [
+   0.85,
+   0.22,
+   0.2
+  ],
+  "cloth2": [
+   0.16,
+   0.3,
+   0.62
+  ],
+  "metal": [
+   0.75,
+   0.75,
+   0.78
+  ],
+  "metal_dark": [
+   0.35,
+   0.35,
+   0.38
+  ],
+  "leather": [
+   0.35,
+   0.2,
+   0.1
+  ],
+  "trim": [
+   0.98,
+   0.95,
+   0.9
+  ]
+ },
+ "hair_styles": [
+  "short",
+  "long",
+  "tied",
+  "curly"
+ ],
+ "hair_colors": [
+  [
+   0.08,
+   0.06,
+   0.05
+  ],
+  [
+   0.2,
+   0.12,
+   0.06
+  ],
+  [
+   0.35,
+   0.2,
+   0.08
+  ]
+ ],
+ "beard_prob": 0.0,
+ "beard_styles": [
+  "mustache"
+ ],
+ "skin_tones": [
+  [
+   0.98,
+   0.98,
+   0.97
+  ]
+ ],
+ "roles": {
+  "husband": "casual_tee",
+  "wife": "casual_dress",
+  "boyfriend": "hoodie",
+  "girlfriend": "casual_dress",
+  "dad": "shirt_tie",
+  "mom": "home_apron",
+  "grandma": "cardigan",
+  "grandpa": "cardigan",
+  "son": "kid_tee",
+  "daughter": "kid_dress",
+  "friend": "casual_tee",
+  "boss": "shirt_tie",
+  "neighbor": "cardigan"
+ },
+ "emblem_vi": "",
+ "architecture_vi": "nhà phố, căn hộ",
+ "map_color": [
+  0.85,
+  0.22,
+  0.2
+ ],
+ "music_vi": "nhạc vui, pizzicato"
+}

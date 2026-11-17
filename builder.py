@@ -78,7 +78,7 @@ class Library(LibIndex):
 def check_story(st, lib):
     errs = storycheck.check_story(st, lib)
     assert set(storycheck.SFX_NAMES) == set(sfx.SFX), "storycheck.SFX_NAMES out of date"
-    assert set(storycheck.FACES) == set(faces.KINDS), "storycheck.FACES out of date"
+    assert set(storycheck.FACES) == set(faces.KINDS + faces.COMEDY_KINDS), "storycheck.FACES out of date"
     return errs
 
 
@@ -749,7 +749,7 @@ class Builder:
         t0 = time.time()
         self.aspect = meta.get("aspect", "9:16")
         sc = core.start(N, FPS, self.out, meta.get("samples", 32), aspect=self.aspect)
-        fast = self.aspect != "9:16" and meta.get("fast_build", True)      # Shorts keep the exact original path
+        fast = meta.get("fast_build", self.aspect != "9:16")      # Shorts keep the exact original path (dialogue Shorts opt in)
         geo.FAST = fast; timing.KEYBUF = timing.KeyBuffer() if fast else None
         random.seed(meta.get("seed", 7))
         geo.init(); fx.init(); faces.init()
@@ -991,7 +991,8 @@ class Builder:
             cuts = self.cuts
             if self.st["camera"].get("rig") == "long":     # straight cuts are silent in long-form; whoosh only on whips
                 cuts = sorted(int(k) for k, v in self.st["camera"].get("trans", {}).items() if v[0] == "whip")
-            mixer.auto_sfx(mix, cuts, list(self.chars.values()), self.caps, avoid_cuts=tuple(au.get("avoid", ())), gain=g, gesture_chars=gest)
+            mixer.auto_sfx(mix, cuts, list(self.chars.values()), self.caps, avoid_cuts=tuple(au.get("avoid", ())), gain=g, gesture_chars=gest,
+                            pops=au.get("pops", True), ticks=au.get("ticks", True))
         for fr, nm, gain in S.get("events", []):
             mix.sfx(nm, fr, gain * g)
         for r in S.get("repeat", []):

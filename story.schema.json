@@ -121,6 +121,10 @@
       }
      },
      "description": "Short cut from a long video: render frames from..to of this (re-framed 9:16) story; tool-made"
+    },
+    "dialog": {
+     "type": "boolean",
+     "description": "video đối thoại hài (dialog.py lập story; nhân vật luôn quay về camera)"
     }
    }
   },
@@ -585,6 +589,14 @@
        "items": {
         "type": "string"
        }
+      },
+      "pops": {
+       "type": "boolean",
+       "description": "pop khi đổi mặt (mặc định true)"
+      },
+      "ticks": {
+       "type": "boolean",
+       "description": "tick khi hiện phụ đề (mặc định true)"
       }
      }
     },
@@ -690,7 +702,8 @@
        "arrow",
        "circle",
        "endscreen",
-       "watermark"
+       "watermark",
+       "banner"
       ]
      },
      "text": {
@@ -793,6 +806,9 @@
      },
      "max_w": {
       "type": "number"
+     },
+     "text_color": {
+      "$ref": "#/$defs/rgb"
      },
      "max_h": {
       "type": "number"
@@ -956,6 +972,13 @@
        },
        "skin": {
         "$ref": "#/$defs/rgb"
+       },
+       "palette": {
+        "type": "object",
+        "description": "màu riêng của nhân vật: ô màu trang phục -> rgb (cloth, cloth2, trim...)",
+        "additionalProperties": {
+         "$ref": "#/$defs/rgb"
+        }
        }
       }
      },
@@ -1245,7 +1268,14 @@
     "worried",
     "grumpy",
     "focus",
-    "smug_closed"
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
    ]
   },
   "placed": {
@@ -1700,6 +1730,13 @@
       },
       "skin": {
        "$ref": "#/$defs/rgb"
+      },
+      "palette": {
+       "type": "object",
+       "description": "màu riêng của nhân vật: ô màu trang phục -> rgb (cloth, cloth2, trim...)",
+       "additionalProperties": {
+        "$ref": "#/$defs/rgb"
+       }
       }
      }
     },

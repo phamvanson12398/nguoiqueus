@@ -1,0 +1,839 @@
+{
+ "meta": {
+  "title": "Dad Logic",
+  "slug": "demo-family",
+  "fps": 30,
+  "frames": 533,
+  "seed": 7,
+  "voice": "voice.wav",
+  "output": "out.mp4",
+  "samples": 32,
+  "aspect": "9:16",
+  "char_style": "2d",
+  "dialog": true,
+  "fast_build": true
+ },
+ "sets": [
+  {
+   "id": "stage",
+   "type": "kitchen",
+   "params": {
+    "stuck_toast": false
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "shots": [
+   {
+    "a": 1,
+    "b": 73,
+    "type": "full",
+    "frame": {
+     "size": 4.5,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 74,
+    "b": 148,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "dad"
+    }
+   },
+   {
+    "a": 149,
+    "b": 224,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "leo"
+    }
+   },
+   {
+    "a": 225,
+    "b": 327,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "dad"
+    }
+   },
+   {
+    "a": 328,
+    "b": 407,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "dad"
+    }
+   },
+   {
+    "a": 408,
+    "b": 533,
+    "type": "medium",
+    "frame": {
+     "size": 2.5,
+     "look_dz": 0.0,
+     "move": "push_in",
+     "amount": 1.1,
+     "subject": [
+      0.525,
+      4.3,
+      0
+     ]
+    }
+   }
+  ],
+  "hand": 0.35
+ },
+ "chars": [
+  {
+   "id": "mom",
+   "type": "person",
+   "outfit": "home_apron",
+   "loc": [
+    -1.05,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      -1.05,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 533,
+      "location": [
+       -1.05,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "curly",
+    "hair_color": [
+     0.25,
+     0.12,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 1,
+    "palette": {
+     "cloth": [
+      0.95,
+      0.75,
+      0.2
+     ],
+     "cloth2": [
+      0.35,
+      0.65,
+      0.4
+     ]
+    }
+   },
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     81,
+     "sad"
+    ],
+    [
+     144,
+     "annoyed"
+    ],
+    [
+     228,
+     "side_eye_r"
+    ],
+    [
+     335,
+     "annoyed"
+    ],
+    [
+     415,
+     "shock"
+    ]
+   ],
+   "blinks": [
+    43,
+    157,
+    265,
+    392,
+    494
+   ],
+   "talk": [
+    [
+     228,
+     316
+    ]
+   ],
+   "pose": {
+    "default": {},
+    "segments": [
+     {
+      "from": 140,
+      "to": 218,
+      "armL": [
+       "ik",
+       [
+        0.16,
+        0.44
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        -0.16,
+        0.48
+       ],
+       1
+      ]
+     },
+     {
+      "from": 224,
+      "to": 322,
+      "armL": [
+       "ik",
+       [
+        0.16,
+        0.44
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        -0.16,
+        0.48
+       ],
+       1
+      ],
+      "tilt": 0.05
+     }
+    ]
+   }
+  },
+  {
+   "id": "leo",
+   "type": "child",
+   "outfit": "kid_tee",
+   "loc": [
+    0.0,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      0.0,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 533,
+      "location": [
+       0.0,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "short",
+    "hair_color": [
+     0.12,
+     0.08,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 2,
+    "palette": {
+     "cloth": [
+      0.9,
+      0.3,
+      0.15
+     ],
+     "cloth2": [
+      0.2,
+      0.3,
+      0.7
+     ]
+    }
+   },
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "happy"
+    ],
+    [
+     81,
+     "sad"
+    ],
+    [
+     144,
+     "annoyed"
+    ],
+    [
+     232,
+     "shock"
+    ],
+    [
+     335,
+     "annoyed"
+    ],
+    [
+     411,
+     "smirk"
+    ]
+   ],
+   "blinks": [
+    60,
+    157,
+    248,
+    361,
+    439
+   ],
+   "talk": [
+    [
+     11,
+     68
+    ],
+    [
+     411,
+     489
+    ]
+   ],
+   "pose": {
+    "default": {},
+    "segments": [
+     {
+      "from": 7,
+      "to": 74,
+      "tilt": -0.05
+     },
+     {
+      "from": 140,
+      "to": 218,
+      "armL": [
+       "ik",
+       [
+        0.109,
+        0.299
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        -0.109,
+        0.326
+       ],
+       1
+      ]
+     },
+     {
+      "from": 407,
+      "to": 495,
+      "armL": [
+       "ik",
+       [
+        -0.626,
+        0.558
+       ],
+       1
+      ],
+      "tilt": -0.05
+     }
+    ]
+   },
+   "reacts": [
+    [
+     231,
+     "flinch"
+    ]
+   ],
+   "reaction_fx": [
+    231
+   ]
+  },
+  {
+   "id": "dad",
+   "type": "person",
+   "outfit": "shirt_tie",
+   "loc": [
+    1.05,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      1.05,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 533,
+      "location": [
+       1.05,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "bald_sides",
+    "hair_color": [
+     0.15,
+     0.1,
+     0.07
+    ],
+    "beard": "none",
+    "seed": 3,
+    "palette": {
+     "cloth": [
+      0.75,
+      0.1,
+      0.12
+     ],
+     "cloth2": [
+      0.2,
+      0.22,
+      0.3
+     ]
+    }
+   },
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     77,
+     "smug_closed"
+    ],
+    [
+     140,
+     "focus"
+    ],
+    [
+     232,
+     "shock"
+    ],
+    [
+     331,
+     "worried"
+    ],
+    [
+     415,
+     "shock"
+    ]
+   ],
+   "blinks": [
+    39,
+    163,
+    243,
+    328,
+    456
+   ],
+   "talk": [
+    [
+     77,
+     131
+    ],
+    [
+     140,
+     210
+    ],
+    [
+     331,
+     390
+    ]
+   ],
+   "pose": {
+    "default": {},
+    "segments": [
+     {
+      "from": 73,
+      "to": 137,
+      "armL": [
+       "ik",
+       [
+        -0.92,
+        0.82
+       ],
+       1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 136,
+      "to": 216,
+      "armL": [
+       "ik",
+       [
+        -0.43,
+        0.22
+       ],
+       1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.43,
+        0.22
+       ],
+       -1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 327,
+      "to": 396,
+      "armL": [
+       "ik",
+       [
+        -0.66,
+        0.66
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.66,
+        0.66
+       ],
+       1
+      ],
+      "tilt": -0.1
+     }
+    ]
+   },
+   "reacts": [
+    [
+     231,
+     "flinch"
+    ]
+   ],
+   "reaction_fx": [
+    231
+   ]
+  }
+ ],
+ "words": [
+  [
+   0.35,
+   "Dad,"
+  ],
+  [
+   0.83,
+   "can"
+  ],
+  [
+   1.06,
+   "I"
+  ],
+  [
+   1.29,
+   "get"
+  ],
+  [
+   1.53,
+   "a"
+  ],
+  [
+   1.76,
+   "new"
+  ],
+  [
+   1.99,
+   "phone?"
+  ],
+  [
+   2.52,
+   "Son,"
+  ],
+  [
+   3.0,
+   "money"
+  ],
+  [
+   3.44,
+   "doesn't"
+  ],
+  [
+   3.66,
+   "grow"
+  ],
+  [
+   3.88,
+   "on"
+  ],
+  [
+   4.1,
+   "trees."
+  ],
+  [
+   4.62,
+   "You"
+  ],
+  [
+   4.85,
+   "have"
+  ],
+  [
+   5.09,
+   "to"
+  ],
+  [
+   5.32,
+   "learn"
+  ],
+  [
+   5.56,
+   "the"
+  ],
+  [
+   5.79,
+   "value"
+  ],
+  [
+   6.02,
+   "of"
+  ],
+  [
+   6.26,
+   "a"
+  ],
+  [
+   6.49,
+   "dollar."
+  ],
+  [
+   7.56,
+   "Says"
+  ],
+  [
+   7.79,
+   "the"
+  ],
+  [
+   8.01,
+   "man"
+  ],
+  [
+   8.24,
+   "who"
+  ],
+  [
+   8.46,
+   "bought"
+  ],
+  [
+   8.69,
+   "a"
+  ],
+  [
+   8.91,
+   "game"
+  ],
+  [
+   9.14,
+   "console"
+  ],
+  [
+   9.81,
+   "yesterday."
+  ],
+  [
+   10.99,
+   "That"
+  ],
+  [
+   11.23,
+   "was..."
+  ],
+  [
+   11.89,
+   "for"
+  ],
+  [
+   12.11,
+   "the"
+  ],
+  [
+   12.33,
+   "family."
+  ],
+  [
+   13.68,
+   "Great."
+  ],
+  [
+   14.32,
+   "Then"
+  ],
+  [
+   14.56,
+   "I'll"
+  ],
+  [
+   14.8,
+   "play"
+  ],
+  [
+   15.05,
+   "it"
+  ],
+  [
+   15.29,
+   "on"
+  ],
+  [
+   15.53,
+   "my"
+  ],
+  [
+   15.77,
+   "new"
+  ],
+  [
+   16.02,
+   "phone."
+  ]
+ ],
+ "captions": {
+  "style": "pop",
+  "highlight": [
+   "dollar",
+   "console"
+  ]
+ },
+ "cards": [
+  {
+   "style": "banner",
+   "text": "Dad logic",
+   "from": 1,
+   "to": 533
+  }
+ ],
+ "sound": {
+  "music": {
+   "mood": "playful",
+   "gain": 0.12,
+   "gain_with_voice": 0.07
+  },
+  "auto": {
+   "ticks": false
+  },
+  "events": [
+   [
+    226,
+    "scratch",
+    0.55
+   ],
+   [
+    329,
+    "gulp",
+    0.55
+   ],
+   [
+    495,
+    "boing",
+    0.6
+   ]
+  ]
+ }
+}

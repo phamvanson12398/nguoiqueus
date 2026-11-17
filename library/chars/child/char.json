@@ -1,0 +1,49 @@
+{
+ "kind": "char",
+ "name": "child",
+ "title_vi": "Trẻ con (thân nhỏ, đầu to)",
+ "status": "approved",
+ "description_vi": "Thân trẻ con khoảng 6-10 tuổi để mặc trang phục kid_tee/kid_dress; cao khoảng 1,95 so với 2,5 của người lớn.",
+ "materials": {
+  "person_shirt": [
+   0.9,
+   0.6,
+   0.15
+  ]
+ },
+ "cfg": {
+  "leg": [
+   0.46,
+   0.24,
+   0.22
+  ],
+  "torso": [
+   0.62,
+   0.55,
+   "person_shirt"
+  ],
+  "arm": [
+   0.26,
+   0.44,
+   0.24,
+   0.22
+  ],
+  "head": [
+   1.04,
+   0.46
+  ]
+ },
+ "faces": [
+  "neutral",
+  "happy",
+  "smirk",
+  "wink",
+  "angry",
+  "shock",
+  "worried",
+  "grumpy",
+  "focus",
+  "smug_closed"
+ ],
+ "extras": []
+}

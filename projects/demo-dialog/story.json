@@ -1,0 +1,723 @@
+{
+ "meta": {
+  "title": "She Doesn't Care About Money",
+  "slug": "demo-dialog",
+  "fps": 30,
+  "frames": 617,
+  "seed": 7,
+  "voice": "voice.wav",
+  "output": "out.mp4",
+  "samples": 32,
+  "aspect": "9:16",
+  "char_style": "3d",
+  "dialog": true,
+  "fast_build": true
+ },
+ "sets": [
+  {
+   "id": "stage",
+   "type": "kitchen",
+   "params": {
+    "stuck_toast": false
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "shots": [
+   {
+    "a": 1,
+    "b": 103,
+    "type": "full",
+    "frame": {
+     "size": 3.6,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 104,
+    "b": 138,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 139,
+    "b": 249,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 250,
+    "b": 321,
+    "type": "full",
+    "frame": {
+     "size": 3.6,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 322,
+    "b": 392,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 393,
+    "b": 449,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 450,
+    "b": 535,
+    "type": "medium",
+    "frame": {
+     "size": 2.5,
+     "look_dz": 0.42,
+     "move": "push_in",
+     "amount": 1.1,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 536,
+    "b": 617,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "mia"
+    }
+   }
+  ],
+  "hand": 0.35
+ },
+ "chars": [
+  {
+   "id": "mia",
+   "type": "person",
+   "outfit": "casual_dress",
+   "loc": [
+    -0.62,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      -0.62,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 617,
+      "location": [
+       -0.62,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "tied",
+    "hair_color": [
+     0.08,
+     0.06,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 1,
+    "palette": {
+     "cloth": [
+      0.85,
+      0.2,
+      0.35
+     ],
+     "cloth2": [
+      0.98,
+      0.8,
+      0.2
+     ]
+    }
+   },
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "love"
+    ],
+    [
+     111,
+     "blush"
+    ],
+    [
+     257,
+     "happy"
+    ],
+    [
+     329,
+     "shock"
+    ],
+    [
+     453,
+     "annoyed"
+    ],
+    [
+     543,
+     "side_eye_r"
+    ]
+   ],
+   "blinks": [
+    49,
+    147,
+    264,
+    398,
+    518,
+    596
+   ],
+   "talk": [
+    [
+     11,
+     100
+    ],
+    [
+     142,
+     244
+    ],
+    [
+     396,
+     425
+    ],
+    [
+     453,
+     524
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armR": [
+      "ik",
+      [
+       0.59,
+       0.2
+      ],
+      1
+     ]
+    },
+    "segments": [
+     {
+      "from": 7,
+      "to": 106,
+      "tilt": 0.05
+     },
+     {
+      "from": 138,
+      "to": 250,
+      "tilt": 0.05
+     },
+     {
+      "from": 392,
+      "to": 431,
+      "tilt": 0.05
+     },
+     {
+      "from": 449,
+      "to": 530,
+      "armL": [
+       "ik",
+       [
+        0.16,
+        0.44
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        -0.16,
+        0.48
+       ],
+       1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 539,
+      "to": 581,
+      "armL": [
+       "ik",
+       [
+        0.16,
+        0.44
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        -0.16,
+        0.48
+       ],
+       1
+      ]
+     }
+    ]
+   },
+   "reacts": [
+    [
+     328,
+     "flinch"
+    ]
+   ],
+   "reaction_fx": [
+    328
+   ]
+  },
+  {
+   "id": "ben",
+   "type": "person",
+   "outfit": "casual_tee",
+   "loc": [
+    0.62,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      0.62,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 617,
+      "location": [
+       0.62,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "short",
+    "hair_color": [
+     0.1,
+     0.07,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 2,
+    "palette": {
+     "cloth": [
+      0.15,
+      0.45,
+      0.85
+     ],
+     "cloth2": [
+      0.12,
+      0.2,
+      0.45
+     ]
+    }
+   },
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "happy"
+    ],
+    [
+     146,
+     "love"
+    ],
+    [
+     253,
+     "happy"
+    ],
+    [
+     325,
+     "worried"
+    ],
+    [
+     457,
+     "sad"
+    ]
+   ],
+   "blinks": [
+    46,
+    163,
+    255,
+    383,
+    462,
+    564
+   ],
+   "talk": [
+    [
+     107,
+     135
+    ],
+    [
+     253,
+     310
+    ],
+    [
+     325,
+     384
+    ],
+    [
+     539,
+     573
+    ]
+   ],
+   "pose": {
+    "default": {
+     "armL": [
+      "ik",
+      [
+       -0.59,
+       0.2
+      ],
+      -1
+     ]
+    },
+    "segments": [
+     {
+      "from": 103,
+      "to": 141,
+      "tilt": -0.05
+     },
+     {
+      "from": 249,
+      "to": 316,
+      "tilt": -0.05
+     },
+     {
+      "from": 321,
+      "to": 390,
+      "armL": [
+       "ik",
+       [
+        -0.66,
+        0.66
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.66,
+        0.66
+       ],
+       1
+      ],
+      "tilt": -0.1
+     },
+     {
+      "from": 535,
+      "to": 579,
+      "tilt": -0.05
+     }
+    ]
+   }
+  }
+ ],
+ "words": [
+  [
+   0.35,
+   "Baby,"
+  ],
+  [
+   0.97,
+   "you"
+  ],
+  [
+   1.2,
+   "know"
+  ],
+  [
+   1.44,
+   "I"
+  ],
+  [
+   1.67,
+   "don't"
+  ],
+  [
+   1.9,
+   "need"
+  ],
+  [
+   2.14,
+   "anything"
+  ],
+  [
+   2.83,
+   "fancy."
+  ],
+  [
+   3.55,
+   "Wait,"
+  ],
+  [
+   4.05,
+   "really?"
+  ],
+  [
+   4.71,
+   "Money"
+  ],
+  [
+   5.14,
+   "doesn't"
+  ],
+  [
+   5.36,
+   "matter."
+  ],
+  [
+   6.19,
+   "As"
+  ],
+  [
+   6.43,
+   "long"
+  ],
+  [
+   6.67,
+   "as"
+  ],
+  [
+   6.9,
+   "we"
+  ],
+  [
+   7.14,
+   "have"
+  ],
+  [
+   7.38,
+   "each"
+  ],
+  [
+   7.61,
+   "other."
+  ],
+  [
+   8.39,
+   "Oh,"
+  ],
+  [
+   8.85,
+   "I'm"
+  ],
+  [
+   9.09,
+   "so"
+  ],
+  [
+   9.33,
+   "glad"
+  ],
+  [
+   9.57,
+   "you"
+  ],
+  [
+   9.81,
+   "said"
+  ],
+  [
+   10.05,
+   "that."
+  ],
+  [
+   10.79,
+   "Because"
+  ],
+  [
+   11.28,
+   "I"
+  ],
+  [
+   11.53,
+   "lost"
+  ],
+  [
+   11.77,
+   "my"
+  ],
+  [
+   12.02,
+   "job"
+  ],
+  [
+   12.27,
+   "today."
+  ],
+  [
+   13.16,
+   "You"
+  ],
+  [
+   13.65,
+   "what?"
+  ],
+  [
+   15.05,
+   "Ben,"
+  ],
+  [
+   15.51,
+   "I"
+  ],
+  [
+   15.75,
+   "think"
+  ],
+  [
+   15.99,
+   "we"
+  ],
+  [
+   16.23,
+   "need"
+  ],
+  [
+   16.48,
+   "some"
+  ],
+  [
+   16.72,
+   "time"
+  ],
+  [
+   16.96,
+   "apart."
+  ],
+  [
+   17.94,
+   "True"
+  ],
+  [
+   18.5,
+   "love."
+  ]
+ ],
+ "captions": {
+  "style": "pop",
+  "highlight": [
+   "matter",
+   "job",
+   "apart"
+  ]
+ },
+ "cards": [
+  {
+   "style": "banner",
+   "text": "This is true love",
+   "from": 1,
+   "to": 617
+  }
+ ],
+ "sound": {
+  "music": {
+   "mood": "playful",
+   "gain": 0.12,
+   "gain_with_voice": 0.07
+  },
+  "auto": {
+   "ticks": false
+  },
+  "events": [
+   [
+    323,
+    "scratch",
+    0.55
+   ],
+   [
+    579,
+    "sad_trombone",
+    0.6
+   ]
+  ]
+ }
+}

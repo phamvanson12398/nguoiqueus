@@ -1,0 +1,116 @@
+{
+ "kind": "outfit",
+ "name": "kid_tee",
+ "culture": "modern_home",
+ "role": "son",
+ "status": "approved",
+ "title_vi": "Áo phông trẻ con",
+ "description_vi": "Áo phông $cloth có ngôi sao $accent, quần soóc $cloth2 (thân trẻ con 0,62 x 0,55).",
+ "silhouette_vi": "áo phông có ngôi sao, quần soóc",
+ "sources": [],
+ "torso": "$cloth",
+ "hair": "short",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "star",
+   "pts": [
+    [
+     0,
+     0.42
+    ],
+    [
+     0.035,
+     0.335
+    ],
+    [
+     0.12,
+     0.33
+    ],
+    [
+     0.05,
+     0.28
+    ],
+    [
+     0.075,
+     0.19
+    ],
+    [
+     0,
+     0.245
+    ],
+    [
+     -0.075,
+     0.19
+    ],
+    [
+     -0.05,
+     0.28
+    ],
+    [
+     -0.12,
+     0.33
+    ],
+    [
+     -0.035,
+     0.335
+    ]
+   ],
+   "mat": "$trim",
+   "z": 0.16,
+   "outline": 0.012
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shorts",
+   "pts": [
+    [
+     -0.31,
+     0.12
+    ],
+    [
+     0.31,
+     0.12
+    ],
+    [
+     0.36,
+     -0.14
+    ],
+    [
+     0.04,
+     -0.14
+    ],
+    [
+     0,
+     -0.04
+    ],
+    [
+     -0.04,
+     -0.14
+    ],
+    [
+     -0.36,
+     -0.14
+    ]
+   ],
+   "mat": "$cloth2",
+   "z": 0.15,
+   "outline": 0.022
+  }
+ ]
+}

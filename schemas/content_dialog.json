@@ -1,0 +1,455 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "format",
+  "title",
+  "title_vi",
+  "hook",
+  "premise_vi",
+  "minutes",
+  "cast",
+  "setting",
+  "idle",
+  "lines",
+  "highlight",
+  "end_sfx",
+  "library_needs"
+ ],
+ "properties": {
+  "format": {
+   "const": "dialog"
+  },
+  "title": {
+   "type": "string",
+   "description": "tiêu đề tiếng Anh ngắn"
+  },
+  "title_vi": {
+   "type": "string"
+  },
+  "hook": {
+   "type": "string",
+   "description": "dòng chữ cố định trên đầu video (≤ 32 ký tự, không emoji), kiểu 'This is true love', 'When mom finds out'"
+  },
+  "premise_vi": {
+   "type": "string",
+   "description": "tình huống và cú đảo, 1-2 câu"
+  },
+  "minutes": {
+   "type": "number"
+  },
+  "cast": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "name",
+     "role",
+     "gender",
+     "age",
+     "body",
+     "voice_id",
+     "voice_instruct",
+     "hair",
+     "hair_color",
+     "outfit",
+     "colors",
+     "personality_vi"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,20}$",
+      "description": "id ngắn chữ thường, ví dụ 'mia'"
+     },
+     "name": {
+      "type": "string",
+      "description": "tên gọi trong lời thoại (tiếng Anh), ví dụ 'Mia'"
+     },
+     "role": {
+      "enum": [
+       "husband",
+       "wife",
+       "boyfriend",
+       "girlfriend",
+       "dad",
+       "mom",
+       "son",
+       "daughter",
+       "grandma",
+       "grandpa",
+       "friend",
+       "boss",
+       "neighbor"
+      ]
+     },
+     "gender": {
+      "enum": [
+       "male",
+       "female"
+      ]
+     },
+     "age": {
+      "enum": [
+       "child",
+       "teenager",
+       "young adult",
+       "middle-aged",
+       "elderly"
+      ]
+     },
+     "body": {
+      "enum": [
+       "adult",
+       "child"
+      ],
+      "description": "child = thân trẻ con (thấp, đầu to)"
+     },
+     "voice_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,40}$",
+      "description": "giọng trong library/voices: dùng lại id có sẵn nếu hợp vai (nhân vật quen của kênh), không thì đặt id mới"
+     },
+     "voice_instruct": {
+      "type": "string",
+      "description": "OmniVoice voice design, thuộc tính tiếng Anh cách nhau dấu phẩy: giới tính, tuổi, độ cao giọng, giọng vùng. Ví dụ 'female, young adult, high pitch, american accent'"
+     },
+     "hair": {
+      "enum": [
+       "short",
+       "long",
+       "tied",
+       "curly",
+       "topknot",
+       "braids",
+       "bald_sides",
+       "none"
+      ]
+     },
+     "hair_color": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1
+      },
+      "minItems": 3,
+      "maxItems": 3
+     },
+     "outfit": {
+      "enum": [
+       "casual_tee",
+       "casual_dress",
+       "hoodie",
+       "shirt_tie",
+       "home_apron",
+       "cardigan",
+       "kid_tee",
+       "kid_dress"
+      ]
+     },
+     "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "cloth",
+       "cloth2"
+      ],
+      "properties": {
+       "cloth": {
+        "type": "array",
+        "items": {
+         "type": "number",
+         "minimum": 0,
+         "maximum": 1
+        },
+        "minItems": 3,
+        "maxItems": 3
+       },
+       "cloth2": {
+        "type": "array",
+        "items": {
+         "type": "number",
+         "minimum": 0,
+         "maximum": 1
+        },
+        "minItems": 3,
+        "maxItems": 3
+       }
+      },
+      "description": "màu áo chính và màu phụ (quần/cà vạt/tạp dề), đậm và tươi, mỗi người khác nhau rõ"
+     },
+     "personality_vi": {
+      "type": "string"
+     }
+    }
+   },
+   "minItems": 2,
+   "maxItems": 3
+  },
+  "setting": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "set",
+    "params",
+    "brief_vi"
+   ],
+   "properties": {
+    "set": {
+     "type": "string",
+     "description": "tên bối cảnh trong thư viện (sets), hoặc tên mới (đưa vào library_needs)"
+    },
+    "params": {
+     "type": "object",
+     "description": "tham số của bối cảnh (xem catalog)"
+    },
+    "brief_vi": {
+     "type": "string"
+    }
+   }
+  },
+  "idle": {
+   "enum": [
+    "relaxed",
+    "hold_hands",
+    "hands_hips",
+    "cross_arms"
+   ],
+   "description": "tư thế mặc định khi không làm cử chỉ"
+  },
+  "lines": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "speaker",
+     "text",
+     "text_vi",
+     "face",
+     "listener_face",
+     "gesture",
+     "listener_gesture",
+     "shot",
+     "pause_before",
+     "speed",
+     "sfx",
+     "react",
+     "beat"
+    ],
+    "properties": {
+     "speaker": {
+      "type": "string",
+      "description": "id trong cast"
+     },
+     "text": {
+      "type": "string",
+      "description": "câu thoại tiếng Anh, ngắn (thường 3-14 từ), văn nói tự nhiên; được dùng thẻ OmniVoice [laughter] [sigh] [surprise-oh] [dissatisfaction-hnn] ở đầu/giữa câu"
+     },
+     "text_vi": {
+      "type": "string"
+     },
+     "face": {
+      "enum": [
+       "neutral",
+       "happy",
+       "smirk",
+       "wink",
+       "angry",
+       "shock",
+       "worried",
+       "grumpy",
+       "focus",
+       "smug_closed",
+       "sad",
+       "love",
+       "laugh",
+       "side_eye",
+       "annoyed",
+       "blush"
+      ],
+      "description": "mặt người nói trong câu này"
+     },
+     "listener_face": {
+      "enum": [
+       "neutral",
+       "happy",
+       "smirk",
+       "wink",
+       "angry",
+       "shock",
+       "worried",
+       "grumpy",
+       "focus",
+       "smug_closed",
+       "sad",
+       "love",
+       "laugh",
+       "side_eye",
+       "annoyed",
+       "blush"
+      ],
+      "description": "mặt người nghe (phản ứng) trong câu này; side_eye = liếc sang người kia"
+     },
+     "gesture": {
+      "enum": [
+       "none",
+       "point",
+       "hands_hips",
+       "cross_arms",
+       "shrug",
+       "wave",
+       "hold_hands",
+       "think",
+       "fist",
+       "hands_up",
+       "open_arms",
+       "facepalm"
+      ]
+     },
+     "listener_gesture": {
+      "enum": [
+       "none",
+       "point",
+       "hands_hips",
+       "cross_arms",
+       "shrug",
+       "wave",
+       "hold_hands",
+       "think",
+       "fist",
+       "hands_up",
+       "open_arms",
+       "facepalm"
+      ]
+     },
+     "shot": {
+      "enum": [
+       "auto",
+       "two",
+       "speaker",
+       "listener",
+       "both_close",
+       "wide"
+      ],
+      "description": "auto = tool tự chọn; two = hai người cả thân; speaker = cận người nói; listener = cận người nghe phản ứng; both_close = cận hai mặt sát nhau (cú chốt); wide = toàn cảnh"
+     },
+     "pause_before": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 2.5,
+      "description": "giây im lặng trước câu (0.15-0.3 bình thường; 0.6-1.2 trước cú chốt = khoảng lặng hài)"
+     },
+     "speed": {
+      "type": "number",
+      "minimum": 0.8,
+      "maximum": 1.3,
+      "description": "1.0 bình thường; 1.1-1.2 khi cuống/cãi; 0.9 khi buồn/ngập ngừng"
+     },
+     "sfx": {
+      "enum": [
+       "none",
+       "pop",
+       "boing",
+       "thud",
+       "bonk",
+       "slide_up",
+       "slide_down",
+       "steam",
+       "rumble",
+       "ding",
+       "squeak",
+       "zip_out",
+       "crash",
+       "scratch",
+       "sad_trombone",
+       "gulp",
+       "cash",
+       "swish"
+      ],
+      "description": "tiếng động hài ở đầu câu (ít thôi, chỉ chỗ đắt)"
+     },
+     "react": {
+      "enum": [
+       "none",
+       "hop",
+       "flinch",
+       "shiver",
+       "proud"
+      ],
+      "description": "người nghe giật mình/nảy lên ở câu này"
+     },
+     "beat": {
+      "enum": [
+       "setup",
+       "build",
+       "twist",
+       "punchline",
+       "tag"
+      ]
+     }
+    }
+   },
+   "minItems": 4
+  },
+  "highlight": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "vài chữ nhấn (phụ đề tô vàng to), chữ có trong lời thoại"
+  },
+  "end_sfx": {
+   "enum": [
+    "none",
+    "pop",
+    "boing",
+    "thud",
+    "bonk",
+    "slide_up",
+    "slide_down",
+    "steam",
+    "rumble",
+    "ding",
+    "squeak",
+    "zip_out",
+    "crash",
+    "scratch",
+    "sad_trombone",
+    "gulp",
+    "cash",
+    "swish"
+   ],
+   "description": "tiếng chốt cuối video (sad_trombone, scratch, boing…) hoặc none"
+  },
+  "library_needs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "kind",
+     "name",
+     "brief"
+    ],
+    "properties": {
+     "kind": {
+      "enum": [
+       "sets"
+      ]
+     },
+     "name": {
+      "type": "string"
+     },
+     "brief": {
+      "type": "string"
+     }
+    }
+   },
+   "description": "chỉ bối cảnh chưa có trong thư viện (tối đa 1)"
+  }
+ }
+}

@@ -1,0 +1,211 @@
+{
+  "format": "dialog",
+  "title": "She Doesn't Care About Money",
+  "title_vi": "Cô ấy không quan tâm tiền bạc",
+  "hook": "This is true love",
+  "premise_vi": "Vợ thề rằng tiền không quan trọng, chỉ cần có nhau. Chồng xúc động thú nhận mình vừa mất việc, thì cô ấy đổi giọng ngay.",
+  "minutes": 0.5,
+  "cast": [
+    {
+      "id": "mia",
+      "name": "Mia",
+      "role": "wife",
+      "gender": "female",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "demo_mia",
+      "voice_instruct": "female, young adult, high pitch, american accent",
+      "hair": "tied",
+      "hair_color": [
+        0.08,
+        0.06,
+        0.05
+      ],
+      "outfit": "casual_dress",
+      "colors": {
+        "cloth": [
+          0.85,
+          0.2,
+          0.35
+        ],
+        "cloth2": [
+          0.98,
+          0.8,
+          0.2
+        ]
+      },
+      "personality_vi": "ngọt ngào, đổi ý nhanh"
+    },
+    {
+      "id": "ben",
+      "name": "Ben",
+      "role": "husband",
+      "gender": "male",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "demo_ben",
+      "voice_instruct": "male, young adult, low pitch, american accent",
+      "hair": "short",
+      "hair_color": [
+        0.1,
+        0.07,
+        0.05
+      ],
+      "outfit": "casual_tee",
+      "colors": {
+        "cloth": [
+          0.15,
+          0.45,
+          0.85
+        ],
+        "cloth2": [
+          0.12,
+          0.2,
+          0.45
+        ]
+      },
+      "personality_vi": "hiền, thật thà"
+    }
+  ],
+  "setting": {
+    "set": "kitchen",
+    "params": {
+      "stuck_toast": false
+    },
+    "brief_vi": "bếp nhà ban ngày"
+  },
+  "idle": "hold_hands",
+  "lines": [
+    {
+      "speaker": "mia",
+      "text": "Baby, you know I don't need anything fancy.",
+      "text_vi": "Anh yêu, anh biết em không cần gì sang chảnh mà.",
+      "face": "love",
+      "listener_face": "happy",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "two",
+      "pause_before": 0.2,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "ben",
+      "text": "Wait, really?",
+      "text_vi": "Thật à?",
+      "face": "happy",
+      "listener_face": "blush",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "mia",
+      "text": "Money doesn't matter. As long as we have each other.",
+      "text_vi": "Tiền không quan trọng. Miễn là mình có nhau.",
+      "face": "blush",
+      "listener_face": "love",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "Oh, I'm so glad you said that.",
+      "text_vi": "Ồ, anh mừng vì em nói vậy.",
+      "face": "happy",
+      "listener_face": "happy",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.3,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "Because I lost my job today.",
+      "text_vi": "Vì hôm nay anh mất việc rồi.",
+      "face": "worried",
+      "listener_face": "shock",
+      "gesture": "shrug",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.5,
+      "speed": 0.95,
+      "sfx": "scratch",
+      "react": "flinch",
+      "beat": "twist"
+    },
+    {
+      "speaker": "mia",
+      "text": "[surprise-oh] You what?",
+      "text_vi": "Anh làm sao cơ?",
+      "face": "shock",
+      "listener_face": "worried",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.4,
+      "speed": 1.1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "twist"
+    },
+    {
+      "speaker": "mia",
+      "text": "Ben, I think we need some time apart.",
+      "text_vi": "Ben, em nghĩ mình cần thời gian xa nhau.",
+      "face": "annoyed",
+      "listener_face": "sad",
+      "gesture": "cross_arms",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.9,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "punchline"
+    },
+    {
+      "speaker": "ben",
+      "text": "[sigh] True love.",
+      "text_vi": "Tình yêu đích thực.",
+      "face": "sad",
+      "listener_face": "side_eye",
+      "gesture": "none",
+      "listener_gesture": "cross_arms",
+      "shot": "auto",
+      "pause_before": 0.5,
+      "speed": 0.9,
+      "sfx": "none",
+      "react": "none",
+      "beat": "tag"
+    }
+  ],
+  "highlight": [
+    "matter",
+    "job",
+    "apart"
+  ],
+  "end_sfx": "sad_trombone",
+  "library_needs": [],
+  "vo_en": "Baby, you know I don't need anything fancy. Wait, really? Money doesn't matter. As long as we have each other. Oh, I'm so glad you said that. Because I lost my job today. [surprise-oh] You what? Ben, I think we need some time apart. [sigh] True love.",
+  "vo_vi": "Anh yêu, anh biết em không cần gì sang chảnh mà. Thật à? Tiền không quan trọng. Miễn là mình có nhau. Ồ, anh mừng vì em nói vậy. Vì hôm nay anh mất việc rồi. Anh làm sao cơ? Ben, em nghĩ mình cần thời gian xa nhau. Tình yêu đích thực.",
+  "word_count": 45,
+  "sequences": []
+}

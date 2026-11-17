@@ -1,0 +1,333 @@
+{
+  "format": "dialog",
+  "title": "Would You Still Love Me If I Was a Worm?",
+  "title_vi": "Anh còn yêu em nếu em là con giun không?",
+  "hook": "This is true love",
+  "premise_vi": "Mia hỏi Ben câu kinh điển \"nếu em là con giun\". Ben thề yêu không giới hạn, còn đùa \"trừ khi em đụng vào pizza của anh\". Cú đảo: Mia vừa ăn hết pizza của anh. Ben lập tức đổi phe, đi \"gọi con chim\" đến ăn con giun.",
+  "minutes": 0.75,
+  "cast": [
+    {
+      "id": "mia",
+      "name": "Mia",
+      "role": "girlfriend",
+      "gender": "female",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "demo_mia",
+      "voice_instruct": "female, young adult, high pitch",
+      "hair": "tied",
+      "hair_color": [
+        0.35,
+        0.12,
+        0.04
+      ],
+      "outfit": "casual_dress",
+      "colors": {
+        "cloth": [
+          0.95,
+          0.2,
+          0.45
+        ],
+        "cloth2": [
+          0.98,
+          0.75,
+          0.05
+        ]
+      },
+      "personality_vi": "Lém lỉnh, thích thử lòng người yêu, luôn có ẩn ý trong mỗi câu hỏi."
+    },
+    {
+      "id": "ben",
+      "name": "Ben",
+      "role": "boyfriend",
+      "gender": "male",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "demo_ben",
+      "voice_instruct": "male, young adult, low pitch",
+      "hair": "short",
+      "hair_color": [
+        0.05,
+        0.04,
+        0.03
+      ],
+      "outfit": "hoodie",
+      "colors": {
+        "cloth": [
+          0.03,
+          0.3,
+          0.75
+        ],
+        "cloth2": [
+          0.15,
+          0.15,
+          0.18
+        ]
+      },
+      "personality_vi": "Lãng mạn quá đà, hứa hẹn hoành tráng, nhưng yêu pizza không kém yêu bạn gái."
+    }
+  ],
+  "setting": {
+    "set": "kitchen",
+    "params": {
+      "stuck_toast": false
+    },
+    "brief_vi": "Bếp Mỹ ban ngày, hai người đứng giữa bếp trước quầy, tủ lạnh xanh bạc hà bên phải (nơi từng có hộp pizza)."
+  },
+  "idle": "relaxed",
+  "lines": [
+    {
+      "speaker": "mia",
+      "text": "Babe, would you still love me if I was a worm?",
+      "text_vi": "Anh ơi, nếu em là con giun anh còn yêu em không?",
+      "face": "love",
+      "listener_face": "side_eye",
+      "gesture": "hold_hands",
+      "listener_gesture": "none",
+      "shot": "two",
+      "pause_before": 0.15,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "ben",
+      "text": "Of course. I'd build you a tiny worm house.",
+      "text_vi": "Tất nhiên. Anh sẽ xây cho em một ngôi nhà giun tí hon.",
+      "face": "happy",
+      "listener_face": "love",
+      "gesture": "open_arms",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "mia",
+      "text": "Even if I was slimy?",
+      "text_vi": "Kể cả khi em nhớt nhớt?",
+      "face": "smirk",
+      "listener_face": "neutral",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "Extra slimy. I'd carry you in my pocket.",
+      "text_vi": "Nhớt gấp đôi luôn. Anh sẽ bỏ em vào túi áo mang theo.",
+      "face": "love",
+      "listener_face": "blush",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "And if a bird tried to eat me?",
+      "text_vi": "Thế nếu có con chim định ăn em?",
+      "face": "worried",
+      "listener_face": "focus",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "I'd fight the bird. Bare hands.",
+      "text_vi": "Anh đấm nhau với con chim. Tay không.",
+      "face": "angry",
+      "listener_face": "shock",
+      "gesture": "fist",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.2,
+      "speed": 1.1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "[laughter] Aww, you really love me.",
+      "text_vi": "[cười] Ôi, anh yêu em thật.",
+      "face": "laugh",
+      "listener_face": "smug_closed",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "Worm, human, whatever. My love has no limits.",
+      "text_vi": "Giun hay người gì cũng được. Tình yêu của anh không có giới hạn.",
+      "face": "smug_closed",
+      "listener_face": "love",
+      "gesture": "open_arms",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "No limits at all?",
+      "text_vi": "Không giới hạn gì hết á?",
+      "face": "smirk",
+      "listener_face": "happy",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.3,
+      "speed": 0.95,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "Zero. Unless you touch my pizza. Kidding.",
+      "text_vi": "Không có. Trừ khi em đụng vào pizza của anh. Đùa thôi.",
+      "face": "wink",
+      "listener_face": "side_eye",
+      "gesture": "point",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "Good. Because I ate your pizza.",
+      "text_vi": "Tốt. Vì em vừa ăn pizza của anh rồi.",
+      "face": "happy",
+      "listener_face": "shock",
+      "gesture": "shrug",
+      "listener_gesture": "none",
+      "shot": "listener",
+      "pause_before": 0.5,
+      "speed": 1,
+      "sfx": "scratch",
+      "react": "hop",
+      "beat": "twist"
+    },
+    {
+      "speaker": "ben",
+      "text": "The one I was saving for tonight?",
+      "text_vi": "Cái anh để dành cho tối nay á?",
+      "face": "shock",
+      "listener_face": "smirk",
+      "gesture": "hands_up",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.3,
+      "speed": 1.1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "twist"
+    },
+    {
+      "speaker": "mia",
+      "text": "All four slices.",
+      "text_vi": "Cả bốn miếng.",
+      "face": "smug_closed",
+      "listener_face": "sad",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "listener",
+      "pause_before": 0.3,
+      "speed": 0.95,
+      "sfx": "slide_down",
+      "react": "none",
+      "beat": "twist"
+    },
+    {
+      "speaker": "ben",
+      "text": "Babe... I'm calling the bird.",
+      "text_vi": "Em yêu... anh đi gọi con chim đây.",
+      "face": "grumpy",
+      "listener_face": "shock",
+      "gesture": "point",
+      "listener_gesture": "none",
+      "shot": "both_close",
+      "pause_before": 1,
+      "speed": 0.9,
+      "sfx": "none",
+      "react": "flinch",
+      "beat": "punchline"
+    },
+    {
+      "speaker": "mia",
+      "text": "[surprise-oh] You said no limits!",
+      "text_vi": "[ồ] Anh bảo không giới hạn mà!",
+      "face": "angry",
+      "listener_face": "annoyed",
+      "gesture": "hands_hips",
+      "listener_gesture": "cross_arms",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1.15,
+      "sfx": "none",
+      "react": "none",
+      "beat": "tag"
+    },
+    {
+      "speaker": "ben",
+      "text": "That was before the pizza.",
+      "text_vi": "Đó là trước khi có vụ pizza.",
+      "face": "side_eye",
+      "listener_face": "annoyed",
+      "gesture": "cross_arms",
+      "listener_gesture": "hands_hips",
+      "shot": "two",
+      "pause_before": 0.3,
+      "speed": 0.95,
+      "sfx": "none",
+      "react": "none",
+      "beat": "tag"
+    }
+  ],
+  "highlight": [
+    "worm",
+    "bird",
+    "no limits",
+    "pizza",
+    "calling the bird"
+  ],
+  "end_sfx": "boing",
+  "library_needs": [],
+  "vo_en": "Babe, would you still love me if I was a worm? Of course. I'd build you a tiny worm house. Even if I was slimy? Extra slimy. I'd carry you in my pocket. And if a bird tried to eat me? I'd fight the bird. Bare hands. [laughter] Aww, you really love me. Worm, human, whatever. My love has no limits. No limits at all? Zero. Unless you touch my pizza. Kidding. Good. Because I ate your pizza. The one I was saving for tonight? All four slices. Babe... I'm calling the bird. [surprise-oh] You said no limits! That was before the pizza.",
+  "vo_vi": "Anh ơi, nếu em là con giun anh còn yêu em không? Tất nhiên. Anh sẽ xây cho em một ngôi nhà giun tí hon. Kể cả khi em nhớt nhớt? Nhớt gấp đôi luôn. Anh sẽ bỏ em vào túi áo mang theo. Thế nếu có con chim định ăn em? Anh đấm nhau với con chim. Tay không. [cười] Ôi, anh yêu em thật. Giun hay người gì cũng được. Tình yêu của anh không có giới hạn. Không giới hạn gì hết á? Không có. Trừ khi em đụng vào pizza của anh. Đùa thôi. Tốt. Vì em vừa ăn pizza của anh rồi. Cái anh để dành cho tối nay á? Cả bốn miếng. Em yêu... anh đi gọi con chim đây. [ồ] Anh bảo không giới hạn mà! Đó là trước khi có vụ pizza.",
+  "word_count": 101,
+  "sequences": []
+}

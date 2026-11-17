@@ -1,0 +1,279 @@
+{
+ "words": [
+  [
+   0.35,
+   "Baby,"
+  ],
+  [
+   0.97,
+   "you"
+  ],
+  [
+   1.2,
+   "know"
+  ],
+  [
+   1.44,
+   "I"
+  ],
+  [
+   1.67,
+   "don't"
+  ],
+  [
+   1.9,
+   "need"
+  ],
+  [
+   2.14,
+   "anything"
+  ],
+  [
+   2.83,
+   "fancy."
+  ],
+  [
+   3.55,
+   "Wait,"
+  ],
+  [
+   4.05,
+   "really?"
+  ],
+  [
+   4.71,
+   "Money"
+  ],
+  [
+   5.14,
+   "doesn't"
+  ],
+  [
+   5.36,
+   "matter."
+  ],
+  [
+   6.19,
+   "As"
+  ],
+  [
+   6.43,
+   "long"
+  ],
+  [
+   6.67,
+   "as"
+  ],
+  [
+   6.9,
+   "we"
+  ],
+  [
+   7.14,
+   "have"
+  ],
+  [
+   7.38,
+   "each"
+  ],
+  [
+   7.61,
+   "other."
+  ],
+  [
+   8.39,
+   "Oh,"
+  ],
+  [
+   8.85,
+   "I'm"
+  ],
+  [
+   9.09,
+   "so"
+  ],
+  [
+   9.33,
+   "glad"
+  ],
+  [
+   9.57,
+   "you"
+  ],
+  [
+   9.81,
+   "said"
+  ],
+  [
+   10.05,
+   "that."
+  ],
+  [
+   10.79,
+   "Because"
+  ],
+  [
+   11.28,
+   "I"
+  ],
+  [
+   11.53,
+   "lost"
+  ],
+  [
+   11.77,
+   "my"
+  ],
+  [
+   12.02,
+   "job"
+  ],
+  [
+   12.27,
+   "today."
+  ],
+  [
+   13.16,
+   "You"
+  ],
+  [
+   13.65,
+   "what?"
+  ],
+  [
+   15.05,
+   "Ben,"
+  ],
+  [
+   15.51,
+   "I"
+  ],
+  [
+   15.75,
+   "think"
+  ],
+  [
+   15.99,
+   "we"
+  ],
+  [
+   16.23,
+   "need"
+  ],
+  [
+   16.48,
+   "some"
+  ],
+  [
+   16.72,
+   "time"
+  ],
+  [
+   16.96,
+   "apart."
+  ],
+  [
+   17.94,
+   "True"
+  ],
+  [
+   18.5,
+   "love."
+  ]
+ ],
+ "segments": [
+  [
+   0.35,
+   3.3
+  ],
+  [
+   3.55,
+   4.46
+  ],
+  [
+   4.71,
+   8.09
+  ],
+  [
+   8.39,
+   10.29
+  ],
+  [
+   10.79,
+   12.76
+  ],
+  [
+   13.16,
+   14.15
+  ],
+  [
+   15.05,
+   17.44
+  ],
+  [
+   17.94,
+   19.05
+  ]
+ ],
+ "duration": 20.55,
+ "frames": 617,
+ "word_count": 45,
+ "lines": [
+  {
+   "n": 1,
+   "speaker": "mia",
+   "start": 0.35,
+   "end": 3.3,
+   "text": "Baby, you know I don't need anything fancy."
+  },
+  {
+   "n": 2,
+   "speaker": "ben",
+   "start": 3.55,
+   "end": 4.46,
+   "text": "Wait, really?"
+  },
+  {
+   "n": 3,
+   "speaker": "mia",
+   "start": 4.71,
+   "end": 8.09,
+   "text": "Money doesn't matter. As long as we have each other."
+  },
+  {
+   "n": 4,
+   "speaker": "ben",
+   "start": 8.39,
+   "end": 10.29,
+   "text": "Oh, I'm so glad you said that."
+  },
+  {
+   "n": 5,
+   "speaker": "ben",
+   "start": 10.79,
+   "end": 12.76,
+   "text": "Because I lost my job today."
+  },
+  {
+   "n": 6,
+   "speaker": "mia",
+   "start": 13.16,
+   "end": 14.15,
+   "text": "You what?"
+  },
+  {
+   "n": 7,
+   "speaker": "mia",
+   "start": 15.05,
+   "end": 17.44,
+   "text": "Ben, I think we need some time apart."
+  },
+  {
+   "n": 8,
+   "speaker": "ben",
+   "start": 17.94,
+   "end": 19.05,
+   "text": "True love."
+  }
+ ]
+}

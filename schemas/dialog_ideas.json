@@ -1,0 +1,72 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "ideas"
+ ],
+ "properties": {
+  "ideas": {
+   "type": "array",
+   "minItems": 3,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "title",
+     "title_vi",
+     "score",
+     "hook",
+     "logline",
+     "relationship",
+     "twist",
+     "punchline",
+     "set"
+    ],
+    "properties": {
+     "title": {
+      "type": "string"
+     },
+     "title_vi": {
+      "type": "string"
+     },
+     "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+     },
+     "hook": {
+      "type": "string",
+      "description": "dòng chữ trên đầu video"
+     },
+     "logline": {
+      "type": "string",
+      "description": "tình huống (tiếng Việt)"
+     },
+     "relationship": {
+      "enum": [
+       "couple",
+       "married",
+       "parents_kid",
+       "siblings",
+       "grandparents",
+       "friends",
+       "boss_employee"
+      ]
+     },
+     "twist": {
+      "type": "string",
+      "description": "cú đảo (tiếng Việt)"
+     },
+     "punchline": {
+      "type": "string",
+      "description": "câu chốt tiếng Anh"
+     },
+     "set": {
+      "type": "string",
+      "description": "bối cảnh (tên trong thư viện nếu có)"
+     }
+    }
+   }
+  }
+ }
+}

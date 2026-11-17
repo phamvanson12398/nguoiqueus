@@ -16,6 +16,7 @@ if ROOT not in sys.path: sys.path.insert(0, ROOT)
 import claude_bridge as bridge
 import storycheck
 import longform
+import dialog, tts
 
 PROJECTS = os.path.join(ROOT, "projects")
 UI = os.path.join(ROOT, "ui")
@@ -190,6 +191,10 @@ def is_long(slug):
     return (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("format") == "long"
 
 
+def is_dialog(slug):
+    return (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("format") == "dialog"
+
+
 def sub_target(slug, chapter):
     """a long project's chapter is planned/built/rendered as the sub-project <slug>/chapters/NN"""
     return longform.chapter_slug(slug, int(chapter)) if chapter else slug
@@ -199,6 +204,11 @@ def estimate(minutes, wpm=None, fmt="short"):
     """numbers shown next to the minutes box (wpm: measured from the project's voice when known)"""
     wpm = wpm or WPM
     words = int(round(minutes * wpm))
+    if fmt == "dialog":                       # back-and-forth lines with pauses: ~2.3 words/s
+        frames = int(round(minutes * 60 * FPS)); words = int(round(minutes * 60 * bridge.DIALOG_WPS))
+        return {"minutes": minutes, "words": words, "sequences": max(8, round(words / 7)), "chapters": 0, "frames": frames,
+                "render_seconds": round(frames * spf_for("short")), "wpm": wpm, "format": "dialog",
+                "render_by_quality": {q: round(frames * spf_for("short") * k) for q, k in QUALITY_FACTOR.items()}}
     if fmt == "long":
         frames = int(round(minutes * 60 * FPS)); n_ch = max(2, round(minutes / 3))
         return {"minutes": minutes, "words": words, "sequences": max(n_ch * 3, round(minutes * 60 / 35)), "chapters": n_ch,
@@ -242,6 +252,11 @@ def project_state(slug):
                          subs=sorted(os.listdir(os.path.join(yd, "subs"))) if os.path.isdir(os.path.join(yd, "subs")) else [],
                          refs=sorted(f for f in os.listdir(os.path.join(yd, "refs")) if f.endswith(".png")) if os.path.isdir(os.path.join(yd, "refs")) else []) if os.path.isdir(yd) else None
     st["chapters"] = longform.status(slug) if st["format"] == "long" else None
+    st["dialog"] = None
+    if st["format"] == "dialog": st["lib_sets"] = [n for n in storycheck.LibIndex().list("sets") if n not in ("parchment_map", "tactical_board", "paper_diagram", "diagram_board")]
+    if st["format"] == "dialog" and dialog.is_dialog(st["content"]):
+        try: st["dialog"] = dialog.voice_status(slug)
+        except Exception as e: st["dialog"] = {"error": str(e)}
     st["retention"] = jload(os.path.join(d, "retention_review.json"))
     st["analytics"] = jload(os.path.join(d, "analytics", "report.json"))
     st["lessons"] = open(os.path.join(bridge.LIB, "LESSONS.md"), encoding="utf-8").read() if os.path.exists(os.path.join(bridge.LIB, "LESSONS.md")) else ""
@@ -263,6 +278,10 @@ def save_settings(slug, **kw):
 #  job bodies
 # =====================================================================
 def job_ideas(job, slug, topic):
+    if is_dialog(slug):
+        job.say("Claude nghĩ ý tưởng đối thoại hài" + (f" về: {topic}" if topic else "") + " (thường 1-3 phút)…")
+        data = bridge.dialog_ideas(slug, topic or None)
+        job.say(f"Xong: {len(data['ideas'])} ý tưởng."); return {"count": len(data["ideas"])}
     job.say("Claude đang đào ý tưởng" + (f" về: {topic}" if topic else "") + " (có tra web, thường 1-4 phút)…")
     data = bridge.ideas(slug, topic or None)
     job.say(f"Xong: {len(data['ideas'])} ý tưởng.")
@@ -275,6 +294,12 @@ def job_write(job, slug, minutes):
     e = estimate(minutes)
     wpm = (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("wpm_measured") or WPM
     e = estimate(minutes, wpm)
+    if is_dialog(slug):
+        e = estimate(minutes, fmt="dialog")
+        job.say(f"Claude viết kịch bản đối thoại {minutes} phút (~{e['words']} từ, ~{e['sequences']} câu)…")
+        data = bridge.write_dialog(slug, idea, minutes)
+        job.say(f"Xong: {len(data['lines'])} câu, {data['word_count']} từ, {len(data['cast'])} nhân vật, bối cảnh {data['setting']['set']}.")
+        return {"words": data["word_count"]}
     fmt = "long" if is_long(slug) else "short"
     e = estimate(minutes, wpm, fmt)
     job.say(f"Claude đang viết content {minutes} phút " + ("(video dài 16:9, " + f"{e['chapters']} phần, " if fmt == "long" else "(")
@@ -289,6 +314,68 @@ def job_rewrite(job, slug, sid, request):
     data = bridge.rewrite_seq(slug, sid, request)
     job.say("Xong. " + data.get("note_vi", ""))
     return {"id": sid}
+
+
+def job_rewrite_dialog(job, slug, a, b, request):
+    job.say(f"Claude viết lại câu {a + 1}-{b + 1}: {request}")
+    r = bridge.rewrite_dialog(slug, a, b, request)
+    job.say("Xong. " + r["explain_vi"]); return {"lines": len(r["content"]["lines"])}
+
+
+def job_audition(job, vid, instruct, n=3, meta=None):
+    job.say(f"Tạo {n} giọng thử cho '{vid}': {instruct}")
+    v = tts.audition(vid, instruct, n=n, log=job.say, procs=job.procs, cancelled=lambda: job.cancelled, **(meta or {}))
+    job.say("Xong. Nghe thử rồi bấm Chọn giọng ưng ý (mọi câu của nhân vật sẽ nhái theo giọng này).")
+    return {"voice": v}
+
+
+def job_cast_auditions(job, slug):
+    """voice auditions for every cast member that has no voice yet"""
+    c = dialog.content_of(slug); todo = [m for m in c["cast"] if not (tts.voice(m["voice_id"]) or {}).get("has_ref")]
+    if not todo: job.say("Mọi nhân vật đã có giọng."); return {"voices": 0}
+    for m in todo:
+        job.say(f"--- {m['name']} ({m['role']}) ---")
+        tts.audition(m["voice_id"], m["voice_instruct"], n=3, log=job.say, procs=job.procs, cancelled=lambda: job.cancelled,
+                     name=m["name"], role=m["role"], gender=m["gender"], age=m["age"])
+    job.say("Xong. Nghe 3 giọng thử của từng nhân vật rồi bấm Chọn.")
+    return {"voices": len(todo)}
+
+
+def job_speak(job, slug, only=None, reseed=False):
+    """OmniVoice for changed lines, then join them into voice.wav + words.json"""
+    dialog.speak(slug, only=only, reseed=reseed, log=job.say, procs=job.procs, cancelled=lambda: job.cancelled)
+    job.say("Ghép các câu thành voice.wav và canh chữ từng câu…")
+    w = dialog.assemble(slug, log=job.say)
+    return {"duration": w["duration"], "frames": w["frames"]}
+
+
+def job_build_dialog(job, slug, design=True, preview=True):
+    """dialogue: (new set designed by Claude if needed) -> story.json by the tool itself (no plan_shots) -> preview"""
+    c = dialog.content_of(slug); lib = storycheck.LibIndex()
+    if not os.path.exists(os.path.join(pdir(slug), "words.json")) or "lines" not in (jload(os.path.join(pdir(slug), "words.json")) or {}):
+        raise ValueError("chưa có giọng (bước 3: tạo giọng các câu)")
+    for need in c.get("library_needs", []):
+        if lib.exists(need["kind"], need["name"]): continue
+        if not design: raise ValueError(f"thiếu {need['kind']}/{need['name']}")
+        job.say(f"1/3 Claude thiết kế bối cảnh mới {need['name']}: {need['brief']} (vài phút)…")
+        try:
+            r = bridge.design_item(need["kind"], need["name"], need["brief"] + " Bối cảnh cho video đối thoại: 2-3 người đứng cạnh nhau quay mặt về camera "
+                                   "(phía -Y), chừa khoảng trống x -1,5..1,5 quanh điểm diễn; ghi điểm diễn vào meta.json 'stage': [x, y].")
+        except Exception as e:
+            if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}")
+            raise
+        last = ([x for x in r.get("rounds", []) if "score" in x] or [{}])[-1]
+        job.say(f"   -> {last.get('score', '?')}/10 {last.get('summary_vi', '')}")
+    job.say("2/3 Lập story.json từ thời gian từng câu (máy quay, mặt, miệng, cử chỉ, phụ đề)…")
+    st = dialog.plan(slug, (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("char_style"), log=job.say)
+    if not preview: return {"frames": st["meta"]["frames"]}
+    frames = default_preview_frames(slug)
+    job.say(f"3/3 Dựng cảnh trong Blender và xem trước khung {frames} (35 %)…")
+    out = job_preview(job, slug, frames)["log"]
+    warns = [l for l in out.splitlines() if l.startswith("WARN")]
+    for l in warns[:10]: job.say("   " + l)
+    job.say("Xong: xem ảnh rồi bấm Render. Muốn đổi máy quay một câu: sửa ô 'Máy quay' của câu đó ở bước 2 rồi dựng lại (vài giây, không tốn lượt Claude).")
+    return {"frames": st["meta"]["frames"], "warnings": warns}
 
 
 def job_align(job, slug):
@@ -444,6 +531,7 @@ def pending_designs(slug):
 def job_build(job, slug, design=True, preview=True, chapters=None, replan=False):
     """'Duyệt & dựng': plan shots -> design missing library items -> check -> build + preview, with automatic fix rounds"""
     if "/chapters/" not in slug and is_long(slug): return job_build_long(job, slug, design, preview, chapters, replan)
+    if "/" not in slug and is_dialog(slug): return job_build_dialog(job, slug, design, preview)
     d = pdir(slug); lib = storycheck.LibIndex()
     if not os.path.exists(os.path.join(d, "words.json")): raise ValueError("chưa có giọng đọc đã canh chữ (tải voice.wav lên trước)")
     job.say("1/4 Claude chuyển content thành story.json (bảng khung hình, " + ("16:9, shot list" if "/chapters/" in slug else "camera v3") + ")…")
@@ -489,6 +577,10 @@ def job_build(job, slug, design=True, preview=True, chapters=None, replan=False)
                 failed.append(oid); job.say(f"   -> LỖI: {e}")
     if failed: raise ValueError("thiết kế chưa xong: " + ", ".join(failed) + " (xem log; có thể thiết kế lại ở tab Thư viện rồi bấm 'Chỉ render lại xem trước')")
     if "/chapters/" in slug: longform.stitch(slug.split("/chapters/")[0], log=job.say)   # parts of one seamless video
+    cs_ = (jload(os.path.join(pdir(slug.split("/chapters/")[0]), "settings.json")) or {}).get("char_style")
+    stp = os.path.join(d, "story.json"); stj = jload(stp)
+    if cs_ in ("2d", "3d") and stj and stj["meta"].get("char_style") != cs_:       # 2D/3D characters chosen for this video
+        stj["meta"]["char_style"] = cs_; json.dump(stj, open(stp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     errs = storycheck.check_story(jload(os.path.join(d, "story.json")))
     if errs: raise ValueError("story.json còn lỗi: " + "; ".join(errs[:5]))
     if not preview: return {"missing": missing}
@@ -805,7 +897,9 @@ class Handler(BaseHTTPRequestHandler):
         return self.rfile.read(n) if n else b""
 
     def jbody(self):
-        b = self.body(); return json.loads(b.decode("utf-8")) if b else {}
+        if getattr(self, "_jb", None) is None:         # read once: a route may look at the body before another reads it
+            b = self.body(); self._jb = json.loads(b.decode("utf-8")) if b else {}
+        return self._jb
 
     @staticmethod
     def safe_join(base, rel):
@@ -826,6 +920,7 @@ class Handler(BaseHTTPRequestHandler):
     do_PUT = do_POST
 
     def route(self, method):
+        self._jb = None                                # one handler serves several requests on a keep-alive connection
         u = urlparse(self.path); path = unquote(u.path); q = parse_qs(u.query)
         parts = [p for p in path.split("/") if p]
         if method == "GET" and (path == "/" or path == "/index.html"):
@@ -878,8 +973,9 @@ class Handler(BaseHTTPRequestHandler):
             b = self.jbody(); slug = slugify(b.get("slug") or b.get("title") or "video")
             base, k = slug, 2
             while os.path.exists(os.path.join(PROJECTS, slug)): slug = f"{base}-{k}"; k += 1
-            os.makedirs(pdir(slug)); save_settings(slug, minutes=float(b.get("minutes", 1.0)), title=b.get("title", ""),
-                                                   format="long" if b.get("format") == "long" else "short")
+            fmt = b.get("format") if b.get("format") in ("long", "dialog") else "short"
+            os.makedirs(pdir(slug)); save_settings(slug, minutes=float(b.get("minutes", 1.0)), title=b.get("title", ""), format=fmt,
+                                                   **({"char_style": b["char_style"]} if b.get("char_style") in ("2d", "3d") else {}))
             return self.send_json({"slug": slug})
 
         if api[:1] == ["projects"] and len(api) >= 2:
@@ -904,6 +1000,27 @@ class Handler(BaseHTTPRequestHandler):
             if act == ["content", "rewrite"]:
                 b = self.jbody()
                 return self.send_json(start_job("rewrite_seq", slug, job_rewrite, slug, int(b["id"]), b["request"]).to_json())
+            if act == ["content"] and method == "POST" and dialog.is_dialog(self.jbody().get("content")):
+                c = {k: v for k, v in self.jbody()["content"].items() if k not in bridge.DIALOG_DERIVED}
+                errs = bridge.validate(c, bridge.load_schema("content_dialog"))
+                if errs: raise ValueError("kịch bản sai cấu trúc: " + "; ".join(errs[:3]))
+                probs = [e for e in bridge.check_dialog(c) if "từ" not in e or "lines[" in e]
+                if probs: raise ValueError("; ".join(probs[:4]))
+                bridge._save_versioned(slug, "content.json", bridge.dialog_fill(c))
+                return self.send_json({"ok": True, "word_count": c["word_count"]})
+            if act == ["content", "rewrite_lines"]:
+                b = self.jbody()
+                return self.send_json(start_job("rewrite_dialog", slug, job_rewrite_dialog, slug, int(b["a"]), int(b["b"]), b["request"]).to_json())
+            if act == ["dialog", "auditions"]:
+                return self.send_json(start_job("auditions", slug, job_cast_auditions, slug).to_json())
+            if act == ["dialog", "speak"]:
+                b = self.jbody()
+                return self.send_json(start_job("speak", slug, job_speak, slug, [int(x) for x in b.get("only") or []] or None, bool(b.get("reseed"))).to_json())
+            if act == ["dialog", "line"] and method == "POST":         # the user's own recording of one line
+                n = int(q.get("n", ["0"])[0]); data = self.body()
+                if data[:4] != b"RIFF" or data[8:12] != b"WAVE": raise ValueError("cần file .wav")
+                r = dialog.upload_line(slug, n, data)
+                return self.send_json(start_job("speak", slug, job_speak, slug).to_json() if q.get("assemble") else r)
             if act == ["content"] and method == "POST":
                 c = self.jbody()["content"]
                 errs = bridge.validate(c, bridge.load_schema("content_long" if longform.is_long(c) else "content"))
@@ -991,6 +1108,26 @@ class Handler(BaseHTTPRequestHandler):
             if act[:1] == ["file"]:
                 return self.send_file(self.safe_join(d, "/".join(act[1:])))
 
+        if api == ["voices"]:
+            return self.send_json({"voices": tts.list_voices(), "tts": tts.status()})
+        if api == ["voices", "settings"] and method == "POST":           # python.exe that has OmniVoice (this machine only)
+            py = (self.jbody().get("python") or "").strip().strip('"')
+            if py and not os.path.exists(py): raise ValueError(f"không thấy {py}")
+            ls = local_settings(); ls["omnivoice_python"] = py or None
+            json.dump(ls, open(LOCAL, "w", encoding="utf-8"), indent=1)
+            return self.send_json(tts.status())
+        if api == ["voices", "audition"] and method == "POST":
+            b = self.jbody(); vid = b["voice_id"]; tts.vdir(vid)
+            meta = {k: b[k] for k in ("name", "role", "gender", "age") if b.get(k)}
+            return self.send_json(start_job("audition", b.get("project") or f"voice:{vid}", job_audition, vid, b["instruct"], int(b.get("n", 3)), meta).to_json())
+        if api == ["voices", "pick"] and method == "POST":
+            b = self.jbody(); return self.send_json(tts.pick(b["voice_id"], int(b["k"])))
+        if api == ["voices", "upload"] and method == "POST":
+            vid = q.get("voice_id", [""])[0]; data = self.body()
+            if data[:4] != b"RIFF" or data[8:12] != b"WAVE": raise ValueError("cần file .wav (3-10 giây)")
+            return self.send_json(tts.upload_ref(vid, data, q.get("ref_text", [""])[0], name=q.get("name", [None])[0]))
+        if api[:1] == ["voices"] and len(api) == 3 and api[2].endswith(".wav"):
+            return self.send_file(self.safe_join(tts.vdir(api[1]), api[2]))
         if api == ["library"]:
             return self.send_json(self.library())
         if api[:2] == ["library", "approve"]:
@@ -1015,7 +1152,8 @@ class Handler(BaseHTTPRequestHandler):
                 "json_schema": bool(claude_ok and "--json-schema" in (h or "")), "blender": b,
                 "blender_found": bool(shutil.which(b) or os.path.exists(b)), "usage": bridge.usage(),
                 "wpm": WPM, "sec_per_frame": spf_for("short"), "sec_per_frame_long": spf_for("long"), "ffmpeg": bool(shutil.which("ffmpeg")),
-                "jobs": [j.to_json(10 ** 9) for j in JOBS.values() if j.status == "running"], "pid": os.getpid(), "started": STARTED}
+                "jobs": [j.to_json(10 ** 9) for j in JOBS.values() if j.status == "running"], "pid": os.getpid(), "started": STARTED,
+                "tts": tts.status()}
 
     def library(self):
         lib = storycheck.LibIndex(); out = {}

@@ -34,3 +34,9 @@ projects/*/clips/*/parts/
 projects/*/clips/*/*.mp4
 projects/*/clips/*/mix.wav
 projects/*/analytics/*.csv
+projects/*/lines/
+library/voices/*/cand_*.wav
+library/voices/demo_*/
+projects/demo-dialog/voice.wav
+projects/demo-family/voice.wav
+projects/girlfriend-worm-test/voice.wav

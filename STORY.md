@@ -162,6 +162,12 @@ chặn đỉnh −1,5 dB → `mix.wav`. Builder in dòng `AUDIO … LUFS`. Đo k
 `vfx`: smoke, dust, fire, arrows, sparks, banner, light_shafts, rain, snow (`core/fx_long.py`); shot `grade` chỉnh màu (day, dawn, dusk,
 night, cold, warm, desert, sepia, storm, fire). Chi tiết tham số: `LONGFORM_RULES.md` mục 8-9. Mẫu: `projects/demo-legion`.
 
+### Video đối thoại (`meta.dialog: true`)
+`dialog.py plan` tự viết story từ `content.json` (format "dialog") + `words.json` (thời gian từng câu): khổ 9:16 nhưng rig `long` (cú máy
+`frame`), nhân vật `person`/`child` có `outfit` + `look.palette` (`cloth`, `cloth2`: màu áo riêng), `faces` gồm cả mặt hài
+(`sad love laugh side_eye_l side_eye_r annoyed blush`), thẻ `banner` (chữ tối trên nền trắng ở đầu khung, hiện suốt video),
+`sound.auto.ticks: false` (không tick mỗi chữ phụ đề). Sửa tay được như mọi story; dựng lại qua trang sẽ ghi đè.
+
 ### `teleport_holds`
 Danh sách vật thể được giữ khung để motion blur không kéo vệt khi dịch chuyển tức thời. Mặc định gồm gốc các nhân vật và các đạo cụ có track `location`.
 

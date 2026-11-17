@@ -1,6 +1,8 @@
 """Face library: expressions built as swappable 2D groups on a character head.
 
 Kinds: neutral (blinks), happy, smirk, wink, angry, shock, worried, grumpy, focus, smug_closed.
+Comedy kinds (dialogue videos; only built when a story lists them in `faces`, so older videos stay identical):
+sad, love (heart eyes), laugh, side_eye_l / side_eye_r (pupils to screen left/right), annoyed (half-lidded stare), blush.
 """
 import math
 from . import geo
@@ -9,12 +11,27 @@ from .look import flat
 
 MOUTH = TONGUE = TEETH = SWEAT = RED_M = None
 KINDS = ("neutral", "happy", "smirk", "wink", "angry", "shock", "worried", "grumpy", "focus", "smug_closed")
+COMEDY_KINDS = ("sad", "love", "laugh", "side_eye_l", "side_eye_r", "annoyed", "blush")
+HEART = BLUSH = None
+
+
+def heart_pts(cx, cy, s, n=28):
+    """a heart outline centred at (cx, cy), about 2*s wide"""
+    pts = []
+    for k in range(n):
+        t = 2 * math.pi * k / n
+        x = 16 * math.sin(t) ** 3
+        y = 13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)
+        pts.append((cx + x * s / 16, cy + y * s / 16))
+    return pts
 
 
 def init():
     global MOUTH, TONGUE, TEETH, SWEAT, RED_M
     MOUTH = flat("mouth", (0.55, 0.10, 0.10)); TONGUE = flat("tongue", (0.95, 0.45, 0.45))
     TEETH = flat("teeth", (1, 1, 1)); SWEAT = flat("sweat", (0.45, 0.75, 1.0)); RED_M = flat("vein", (0.85, 0.1, 0.1))
+    global HEART, BLUSH
+    HEART = RED_M; BLUSH = None          # comedy materials are made on first use (no new datablocks for older videos)
 
 
 def eye(parent, name, x, y, z, rx=0.055, ry=0.085):
@@ -85,4 +102,54 @@ def build_faces(head, p, skin, kinds, ey=-0.02, dx=0.15):
             for s in (-1, 1):
                 stroke(g, f"{p}c_e{s}", arc(s * dx, ey + 0.02, 0.07, 0.05, 200, 340), 0.035, z)
             stroke(g, f"{p}c_m", [(-0.12, ey - 0.13), (0, ey - 0.17), (0.12, ey - 0.13), (0.16, ey - 0.10)], 0.035, z)
+        elif kind in COMEDY_KINDS:
+            comedy_face(g, p, kind, skin, ey, dx, z)
     return F, blink_eyes
+
+
+def comedy_face(g, p, kind, skin, ey, dx, z):
+    global BLUSH
+    if kind == "sad":                     # inner brows up, small eyes, frown, one tear
+        eye(g, f"{p}sd_eL", -dx, ey - 0.01, z, 0.045, 0.06); eye(g, f"{p}sd_eR", dx, ey - 0.01, z, 0.045, 0.06)
+        stroke(g, f"{p}sd_bL", [(-dx - 0.08, ey + 0.09), (-dx + 0.07, ey + 0.15)], 0.03, z)
+        stroke(g, f"{p}sd_bR", [(dx - 0.07, ey + 0.15), (dx + 0.08, ey + 0.09)], 0.03, z)
+        stroke(g, f"{p}sd_m", arc(0, ey - 0.25, 0.10, 0.06, 25, 155), 0.035, z)
+        shape(g, f"{p}sd_tear", [(dx + 0.02, ey - 0.06), (dx + 0.045, ey - 0.12), (dx + 0.045, ey - 0.15), (dx + 0.02, ey - 0.17),
+                                 (dx - 0.005, ey - 0.15), (dx - 0.005, ey - 0.12)], SWEAT, z + 0.01, outline=0.015)
+    elif kind == "love":                  # heart eyes + open smile
+        for s_ in (-1, 1):
+            shape(g, f"{p}lv_h{s_}", heart_pts(s_ * dx, ey + 0.01, 0.085), HEART, z, outline=0.025)
+        mp = [(-0.14, ey - 0.12)] + arc(0, ey - 0.12, 0.14, 0.13, 180, 360, 16)[1:]
+        shape(g, f"{p}lv_m", mp, MOUTH, z, outline=0.03)
+    elif kind == "laugh":                 # ^ ^ eyes, big open mouth, tongue, a tear of joy
+        for s_ in (-1, 1):
+            stroke(g, f"{p}lg_e{s_}", [(s_ * dx - 0.07, ey - 0.03), (s_ * dx, ey + 0.04), (s_ * dx + 0.07, ey - 0.03)], 0.035, z)
+        mp = [(-0.2, ey - 0.09)] + arc(0, ey - 0.09, 0.2, 0.2, 180, 360, 18)[1:]
+        shape(g, f"{p}lg_m", mp, MOUTH, z, outline=0.03)
+        shape(g, f"{p}lg_t", ellipse(0, ey - 0.23, 0.08, 0.045, 16), TONGUE, z + 0.02, outline=0)
+        shape(g, f"{p}lg_tear", ellipse(-dx - 0.1, ey - 0.06, 0.025, 0.04, 12), SWEAT, z + 0.01, outline=0.012)
+    elif kind in ("side_eye_l", "side_eye_r"):   # half-lidded, pupils to one side, flat crooked mouth
+        sx = -1 if kind == "side_eye_l" else 1
+        for s_ in (-1, 1):
+            shape(g, f"{p}se_w{s_}", ellipse(s_ * dx, ey, 0.075, 0.07, 24), geo.WHITE, z, outline=0.025)
+            disc(g, f"{p}se_p{s_}", s_ * dx + sx * 0.035, ey - 0.012, 0.032, z + 0.02)
+            shape(g, f"{p}se_lid{s_}", rrect(s_ * dx, ey + 0.045, 0.17, 0.07, 0.01), skin, z + 0.03, outline=0)
+            stroke(g, f"{p}se_l{s_}", [(s_ * dx - 0.08, ey + 0.012), (s_ * dx + 0.08, ey + 0.012)], 0.028, z + 0.04)
+        stroke(g, f"{p}se_m", [(-0.08 + sx * 0.03, ey - 0.17), (0.08 + sx * 0.03, ey - 0.15)], 0.032, z)
+    elif kind == "annoyed":               # flat half-lidded stare, one brow down, flat mouth
+        for s_ in (-1, 1):
+            eye(g, f"{p}an_e{s_}", s_ * dx, ey - 0.02, z, 0.05, 0.045)
+            shape(g, f"{p}an_lid{s_}", rrect(s_ * dx, ey + 0.035, 0.15, 0.05, 0.01), skin, z + 0.03, outline=0)
+            stroke(g, f"{p}an_l{s_}", [(s_ * dx - 0.07, ey + 0.01), (s_ * dx + 0.07, ey + 0.01)], 0.03, z + 0.04)
+        stroke(g, f"{p}an_bL", [(-dx - 0.08, ey + 0.10), (-dx + 0.07, ey + 0.09)], 0.03, z)
+        stroke(g, f"{p}an_bR", [(dx - 0.07, ey + 0.13), (dx + 0.08, ey + 0.15)], 0.03, z)
+        stroke(g, f"{p}an_m", [(-0.09, ey - 0.17), (0.09, ey - 0.17)], 0.032, z)
+    elif kind == "blush":                 # shy: soft eyes, pink cheeks, small smile
+        if BLUSH is None: BLUSH = flat("blush", (1.0, 0.45, 0.5))
+        for s_ in (-1, 1):
+            stroke(g, f"{p}bl_e{s_}", arc(s_ * dx, ey - 0.02, 0.06, 0.05, 20, 160), 0.032, z)
+            shape(g, f"{p}bl_c{s_}", ellipse(s_ * (dx + 0.12), ey - 0.12, 0.08, 0.045, 18), BLUSH, z - 0.005, outline=0)
+            for k in range(3):
+                x0 = s_ * (dx + 0.07) + k * 0.035
+                stroke(g, f"{p}bl_s{s_}{k}", [(x0, ey - 0.1), (x0 - 0.02, ey - 0.14)], 0.012, z + 0.005)
+        stroke(g, f"{p}bl_m", arc(0, ey - 0.13, 0.07, 0.05, 200, 340), 0.03, z)

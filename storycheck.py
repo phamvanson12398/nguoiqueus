@@ -3,7 +3,8 @@ Used by builder.py (before building) and claude_bridge.py (to validate plan_shot
 import json, os
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-FACES = ("neutral", "happy", "smirk", "wink", "angry", "shock", "worried", "grumpy", "focus", "smug_closed")
+FACES = ("neutral", "happy", "smirk", "wink", "angry", "shock", "worried", "grumpy", "focus", "smug_closed",
+         "sad", "love", "laugh", "side_eye_l", "side_eye_r", "annoyed", "blush")
 REACTS = ("hop", "flinch", "shiver", "proud")
 SFX_NAMES = ("whoosh", "swish", "pop", "tick", "boing", "thud", "bonk", "step", "slide_up", "slide_down", "steam", "rumble",
              "ding", "squeak", "zip_out", "crash", "scratch", "horn", "chug", "sad_trombone", "gulp", "cash")
@@ -139,7 +140,7 @@ def check_story(st, lib=None, pending=()):
         if cd["to"] < cd["from"]: errs.append(f"cards[{k}]: 'to' ({cd['to']}) before 'from' ({cd['from']})")
     N = st["meta"]["frames"]
     cam = st["camera"]
-    if cam.get("rig") == "long" and st["meta"].get("aspect", "9:16") != "16:9" and not st["meta"].get("clip"):
+    if cam.get("rig") == "long" and st["meta"].get("aspect", "9:16") != "16:9" and not st["meta"].get("clip") and not st["meta"].get("dialog"):
         errs.append("camera: rig 'long' is for long-form videos, set meta.aspect to '16:9'")
     spans = [(s["a"], s["b"]) for s in (cam.get("shots") or cam.get("seqs") or [])]
     if spans:

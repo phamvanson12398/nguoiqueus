@@ -1,0 +1,136 @@
+{
+ "kind": "outfit",
+ "name": "shirt_tie",
+ "culture": "modern_home",
+ "role": "dad",
+ "status": "approved",
+ "title_vi": "Sơ mi + cà vạt",
+ "description_vi": "Sơ mi $trim, cổ áo nhọn, cà vạt $cloth, quần tây $cloth2.",
+ "silhouette_vi": "cổ áo trắng nhọn, cà vạt",
+ "sources": [],
+ "torso": "$trim",
+ "hair": "auto",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "collar_l",
+   "pts": [
+    [
+     -0.02,
+     0.82
+    ],
+    [
+     -0.16,
+     0.82
+    ],
+    [
+     -0.06,
+     0.68
+    ]
+   ],
+   "mat": "$trim",
+   "z": 0.17,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "collar_r",
+   "pts": [
+    [
+     0.02,
+     0.82
+    ],
+    [
+     0.16,
+     0.82
+    ],
+    [
+     0.06,
+     0.68
+    ]
+   ],
+   "mat": "$trim",
+   "z": 0.17,
+   "outline": 0.018
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tie_knot",
+   "pts": {
+    "ellipse": [
+     0,
+     0.77,
+     0.045,
+     0.04,
+     14
+    ]
+   },
+   "mat": "$cloth",
+   "z": 0.16,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tie",
+   "pts": [
+    [
+     -0.04,
+     0.74
+    ],
+    [
+     0.04,
+     0.74
+    ],
+    [
+     0.07,
+     0.3
+    ],
+    [
+     0,
+     0.22
+    ],
+    [
+     -0.07,
+     0.3
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.155,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pants",
+   "pts": {
+    "rrect": [
+     0,
+     0.06,
+     0.8,
+     0.14,
+     0.05
+    ]
+   },
+   "mat": "$cloth2",
+   "z": 0.16,
+   "outline": 0.022
+  }
+ ]
+}

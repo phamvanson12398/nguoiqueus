@@ -1,0 +1,210 @@
+{
+  "format": "dialog",
+  "title": "Dad Logic",
+  "title_vi": "Logic của bố",
+  "hook": "Dad logic",
+  "premise_vi": "Con trai xin tiền mua điện thoại mới, bố giảng giải về giá trị đồng tiền, mẹ tiết lộ bố vừa mua máy chơi game.",
+  "minutes": 0.5,
+  "cast": [
+    {
+      "id": "mom",
+      "name": "Mom",
+      "role": "mom",
+      "gender": "female",
+      "age": "middle-aged",
+      "body": "adult",
+      "voice_id": "demo_mom",
+      "voice_instruct": "female, middle-aged, moderate pitch, american accent",
+      "hair": "curly",
+      "hair_color": [
+        0.25,
+        0.12,
+        0.05
+      ],
+      "outfit": "home_apron",
+      "colors": {
+        "cloth": [
+          0.95,
+          0.75,
+          0.2
+        ],
+        "cloth2": [
+          0.35,
+          0.65,
+          0.4
+        ]
+      },
+      "personality_vi": "tỉnh táo, thích bóc phốt"
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "role": "son",
+      "gender": "male",
+      "age": "child",
+      "body": "child",
+      "voice_id": "demo_leo",
+      "voice_instruct": "male, child, high pitch, american accent",
+      "hair": "short",
+      "hair_color": [
+        0.12,
+        0.08,
+        0.05
+      ],
+      "outfit": "kid_tee",
+      "colors": {
+        "cloth": [
+          0.9,
+          0.3,
+          0.15
+        ],
+        "cloth2": [
+          0.2,
+          0.3,
+          0.7
+        ]
+      },
+      "personality_vi": "lém lỉnh"
+    },
+    {
+      "id": "dad",
+      "name": "Dad",
+      "role": "dad",
+      "gender": "male",
+      "age": "middle-aged",
+      "body": "adult",
+      "voice_id": "demo_dad",
+      "voice_instruct": "male, middle-aged, low pitch, american accent",
+      "hair": "bald_sides",
+      "hair_color": [
+        0.15,
+        0.1,
+        0.07
+      ],
+      "outfit": "shirt_tie",
+      "colors": {
+        "cloth": [
+          0.75,
+          0.1,
+          0.12
+        ],
+        "cloth2": [
+          0.2,
+          0.22,
+          0.3
+        ]
+      },
+      "personality_vi": "hay giảng đạo lý"
+    }
+  ],
+  "setting": {
+    "set": "kitchen",
+    "params": {
+      "stuck_toast": false
+    },
+    "brief_vi": "bếp"
+  },
+  "idle": "relaxed",
+  "lines": [
+    {
+      "speaker": "leo",
+      "text": "Dad, can I get a new phone?",
+      "text_vi": "Bố ơi, con mua điện thoại mới được không?",
+      "face": "happy",
+      "listener_face": "neutral",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "two",
+      "pause_before": 0.2,
+      "speed": 1.05,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "dad",
+      "text": "Son, money doesn't grow on trees.",
+      "text_vi": "Con trai, tiền không mọc trên cây.",
+      "face": "smug_closed",
+      "listener_face": "sad",
+      "gesture": "point",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.3,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "dad",
+      "text": "You have to learn the value of a dollar.",
+      "text_vi": "Con phải học giá trị của đồng tiền.",
+      "face": "focus",
+      "listener_face": "annoyed",
+      "gesture": "hands_hips",
+      "listener_gesture": "cross_arms",
+      "shot": "auto",
+      "pause_before": 0.3,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mom",
+      "text": "Says the man who bought a game console yesterday.",
+      "text_vi": "Nói bởi người hôm qua vừa mua máy chơi game.",
+      "face": "side_eye",
+      "listener_face": "shock",
+      "gesture": "cross_arms",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.6,
+      "speed": 1.0,
+      "sfx": "scratch",
+      "react": "flinch",
+      "beat": "twist"
+    },
+    {
+      "speaker": "dad",
+      "text": "That was... for the family.",
+      "text_vi": "Cái đó là... cho cả nhà mà.",
+      "face": "worried",
+      "listener_face": "annoyed",
+      "gesture": "shrug",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.5,
+      "speed": 0.95,
+      "sfx": "gulp",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "leo",
+      "text": "Great. Then I'll play it on my new phone.",
+      "text_vi": "Tuyệt. Vậy con sẽ chơi nó trên điện thoại mới.",
+      "face": "smirk",
+      "listener_face": "shock",
+      "gesture": "point",
+      "listener_gesture": "none",
+      "shot": "both_close",
+      "pause_before": 0.7,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "punchline"
+    }
+  ],
+  "highlight": [
+    "dollar",
+    "console"
+  ],
+  "end_sfx": "boing",
+  "library_needs": [],
+  "vo_en": "Dad, can I get a new phone? Son, money doesn't grow on trees. You have to learn the value of a dollar. Says the man who bought a game console yesterday. That was... for the family. Great. Then I'll play it on my new phone.",
+  "vo_vi": "Bố ơi, con mua điện thoại mới được không? Con trai, tiền không mọc trên cây. Con phải học giá trị của đồng tiền. Nói bởi người hôm qua vừa mua máy chơi game. Cái đó là... cho cả nhà mà. Tuyệt. Vậy con sẽ chơi nó trên điện thoại mới.",
+  "word_count": 45,
+  "sequences": []
+}

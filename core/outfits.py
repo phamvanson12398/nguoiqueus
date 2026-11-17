@@ -44,6 +44,7 @@ def resolve_look(spec, faction, culture, outfit, seed_base=0):
     pal = dict(DEFAULT_PALETTE)
     pal.update({k: tuple(v) for k, v in (culture or {}).get("palette", {}).items()})
     pal.update({k: tuple(v) for k, v in (outfit or {}).get("palette", {}).items()})
+    pal.update({k: tuple(v) for k, v in look.get("palette", {}).items()})      # this character's own colours (dialogue videos)
     team = tuple((faction or {}).get("color") or pal.get("team") or (0.6, 0.1, 0.08))
     hairs = (culture or {}).get("hair_colors") or [(0.20, 0.12, 0.06), (0.10, 0.07, 0.05), (0.35, 0.20, 0.08)]
     skins = (culture or {}).get("skin_tones") or [(0.98, 0.98, 0.97)]

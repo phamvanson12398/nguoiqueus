@@ -1,0 +1,116 @@
+{
+ "kind": "outfit",
+ "name": "cardigan",
+ "culture": "modern_home",
+ "role": "grandma",
+ "status": "approved",
+ "title_vi": "Áo len cardigan",
+ "description_vi": "Áo trong $trim, áo len cardigan $cloth mở vạt trước, cúc $cloth2.",
+ "silhouette_vi": "vạt áo len mở, hàng cúc",
+ "sources": [],
+ "torso": "$trim",
+ "hair": "topknot",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cardi_l",
+   "pts": [
+    [
+     -0.4,
+     0.82
+    ],
+    [
+     -0.06,
+     0.82
+    ],
+    [
+     -0.1,
+     0.0
+    ],
+    [
+     -0.4,
+     0.0
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cardi_r",
+   "pts": [
+    [
+     0.06,
+     0.82
+    ],
+    [
+     0.4,
+     0.82
+    ],
+    [
+     0.4,
+     0.0
+    ],
+    [
+     0.1,
+     0.0
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.022
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn1",
+   "c": [
+    -0.13,
+    0.6
+   ],
+   "r": 0.03,
+   "mat": "$cloth2",
+   "z": 0.17
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn2",
+   "c": [
+    -0.13,
+    0.4
+   ],
+   "r": 0.03,
+   "mat": "$cloth2",
+   "z": 0.17
+  },
+  {
+   "op": "disc",
+   "on": "torso",
+   "name": "btn3",
+   "c": [
+    -0.13,
+    0.2
+   ],
+   "r": 0.03,
+   "mat": "$cloth2",
+   "z": 0.17
+  }
+ ]
+}

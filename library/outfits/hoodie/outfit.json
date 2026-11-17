@@ -1,0 +1,124 @@
+{
+ "kind": "outfit",
+ "name": "hoodie",
+ "culture": "modern_home",
+ "role": "boyfriend",
+ "status": "approved",
+ "title_vi": "Áo hoodie",
+ "description_vi": "Áo hoodie màu $cloth: mũ trùm sau gáy, dây rút $trim, túi kangaroo, cạp jean $cloth2.",
+ "silhouette_vi": "mũ trùm sau gáy, túi bụng",
+ "sources": [],
+ "torso": "$cloth",
+ "hair": "auto",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "hood",
+   "pts": {
+    "ellipse": [
+     0,
+     0.86,
+     0.36,
+     0.22,
+     24
+    ]
+   },
+   "mat": "$cloth",
+   "z": -0.05,
+   "outline": 0.022
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "string_l",
+   "pts": [
+    [
+     -0.08,
+     0.78
+    ],
+    [
+     -0.09,
+     0.56
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$trim",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "string_r",
+   "pts": [
+    [
+     0.08,
+     0.78
+    ],
+    [
+     0.09,
+     0.56
+    ]
+   ],
+   "w": 0.025,
+   "mat": "$trim",
+   "z": 0.16
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pocket",
+   "pts": [
+    [
+     -0.24,
+     0.42
+    ],
+    [
+     0.24,
+     0.42
+    ],
+    [
+     0.3,
+     0.2
+    ],
+    [
+     -0.3,
+     0.2
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "jeans",
+   "pts": {
+    "rrect": [
+     0,
+     0.05,
+     0.8,
+     0.12,
+     0.05
+    ]
+   },
+   "mat": "$cloth2",
+   "z": 0.16,
+   "outline": 0.022
+  }
+ ]
+}

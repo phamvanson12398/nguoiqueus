@@ -1,0 +1,133 @@
+{
+ "kind": "outfit",
+ "name": "home_apron",
+ "culture": "modern_home",
+ "role": "mom",
+ "status": "approved",
+ "title_vi": "Áo + tạp dề",
+ "description_vi": "Áo $cloth2, tạp dề $cloth có túi và dây cổ, viền $trim.",
+ "silhouette_vi": "tạp dề có túi",
+ "sources": [],
+ "torso": "$cloth2",
+ "hair": "curly",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "apron",
+   "pts": [
+    [
+     -0.24,
+     0.62
+    ],
+    [
+     0.24,
+     0.62
+    ],
+    [
+     0.36,
+     -0.3
+    ],
+    [
+     -0.36,
+     -0.3
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.022
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "apron_hem",
+   "pts": [
+    [
+     -0.36,
+     -0.3
+    ],
+    [
+     0.36,
+     -0.3
+    ],
+    [
+     0.35,
+     -0.24
+    ],
+    [
+     -0.35,
+     -0.24
+    ]
+   ],
+   "mat": "$trim",
+   "z": 0.16,
+   "outline": 0.01
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "apron_pocket",
+   "pts": {
+    "rrect": [
+     0,
+     0.2,
+     0.3,
+     0.16,
+     0.04
+    ]
+   },
+   "mat": "$cloth",
+   "z": 0.165,
+   "outline": 0.022
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "strap_l",
+   "pts": [
+    [
+     -0.2,
+     0.62
+    ],
+    [
+     -0.1,
+     0.82
+    ]
+   ],
+   "w": 0.03,
+   "mat": "$cloth",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "strap_r",
+   "pts": [
+    [
+     0.2,
+     0.62
+    ],
+    [
+     0.1,
+     0.82
+    ]
+   ],
+   "w": 0.03,
+   "mat": "$cloth",
+   "z": 0.16
+  }
+ ]
+}

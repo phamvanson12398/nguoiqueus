@@ -1,0 +1,1311 @@
+{
+ "meta": {
+  "title": "Would You Still Love Me If I Was a Worm?",
+  "slug": "girlfriend-worm-test",
+  "fps": 30,
+  "frames": 1210,
+  "seed": 7,
+  "voice": "voice.wav",
+  "output": "out.mp4",
+  "samples": 32,
+  "aspect": "9:16",
+  "char_style": "3d",
+  "dialog": true,
+  "fast_build": true
+ },
+ "sets": [
+  {
+   "id": "stage",
+   "type": "kitchen",
+   "params": {
+    "stuck_toast": false
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "shots": [
+   {
+    "a": 1,
+    "b": 102,
+    "type": "full",
+    "frame": {
+     "size": 3.6,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 103,
+    "b": 189,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 190,
+    "b": 243,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 244,
+    "b": 341,
+    "type": "full",
+    "frame": {
+     "size": 3.6,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 342,
+    "b": 405,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 406,
+    "b": 459,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 460,
+    "b": 529,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 530,
+    "b": 642,
+    "type": "full",
+    "frame": {
+     "size": 3.6,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 643,
+    "b": 684,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 685,
+    "b": 793,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 794,
+    "b": 867,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 868,
+    "b": 933,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 934,
+    "b": 992,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 993,
+    "b": 1055,
+    "type": "medium",
+    "frame": {
+     "size": 2.5,
+     "look_dz": 0.42,
+     "move": "push_in",
+     "amount": 1.1,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 1056,
+    "b": 1110,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 1111,
+    "b": 1210,
+    "type": "full",
+    "frame": {
+     "size": 3.6,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   }
+  ],
+  "hand": 0.35
+ },
+ "chars": [
+  {
+   "id": "mia",
+   "type": "person",
+   "outfit": "casual_dress",
+   "loc": [
+    -0.62,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      -0.62,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 1210,
+      "location": [
+       -0.62,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "tied",
+    "hair_color": [
+     0.35,
+     0.12,
+     0.04
+    ],
+    "beard": "none",
+    "seed": 1,
+    "palette": {
+     "cloth": [
+      0.95,
+      0.2,
+      0.45
+     ],
+     "cloth2": [
+      0.98,
+      0.75,
+      0.05
+     ]
+    }
+   },
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "love"
+    ],
+    [
+     193,
+     "smirk"
+    ],
+    [
+     251,
+     "blush"
+    ],
+    [
+     345,
+     "worried"
+    ],
+    [
+     413,
+     "shock"
+    ],
+    [
+     463,
+     "laugh"
+    ],
+    [
+     537,
+     "love"
+    ],
+    [
+     646,
+     "smirk"
+    ],
+    [
+     692,
+     "side_eye_r"
+    ],
+    [
+     797,
+     "happy"
+    ],
+    [
+     875,
+     "smirk"
+    ],
+    [
+     937,
+     "smug_closed"
+    ],
+    [
+     1000,
+     "shock"
+    ],
+    [
+     1059,
+     "angry"
+    ],
+    [
+     1118,
+     "annoyed"
+    ]
+   ],
+   "blinks": [
+    44,
+    170,
+    259,
+    340,
+    460,
+    588,
+    715,
+    842,
+    959,
+    1039,
+    1142
+   ],
+   "talk": [
+    [
+     11,
+     98
+    ],
+    [
+     193,
+     241
+    ],
+    [
+     345,
+     403
+    ],
+    [
+     463,
+     527
+    ],
+    [
+     646,
+     682
+    ],
+    [
+     797,
+     862
+    ],
+    [
+     937,
+     966
+    ],
+    [
+     1059,
+     1105
+    ]
+   ],
+   "pose": {
+    "default": {},
+    "segments": [
+     {
+      "from": 7,
+      "to": 104,
+      "armR": [
+       "ik",
+       [
+        0.59,
+        0.2
+       ],
+       1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 189,
+      "to": 247,
+      "tilt": 0.05
+     },
+     {
+      "from": 341,
+      "to": 409,
+      "tilt": 0.05
+     },
+     {
+      "from": 459,
+      "to": 533,
+      "tilt": 0.05
+     },
+     {
+      "from": 642,
+      "to": 688,
+      "tilt": 0.05
+     },
+     {
+      "from": 793,
+      "to": 868,
+      "armL": [
+       "ik",
+       [
+        -0.66,
+        0.66
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.66,
+        0.66
+       ],
+       1
+      ],
+      "tilt": 0.1
+     },
+     {
+      "from": 933,
+      "to": 972,
+      "tilt": 0.05
+     },
+     {
+      "from": 1055,
+      "to": 1111,
+      "armL": [
+       "ik",
+       [
+        -0.43,
+        0.22
+       ],
+       1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.43,
+        0.22
+       ],
+       -1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 1114,
+      "to": 1174,
+      "armL": [
+       "ik",
+       [
+        -0.43,
+        0.22
+       ],
+       1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.43,
+        0.22
+       ],
+       -1
+      ]
+     }
+    ]
+   },
+   "reacts": [
+    [
+     999,
+     "flinch"
+    ]
+   ],
+   "reaction_fx": [
+    999
+   ]
+  },
+  {
+   "id": "ben",
+   "type": "person",
+   "outfit": "hoodie",
+   "loc": [
+    0.62,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      0.62,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 1210,
+      "location": [
+       0.62,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "short",
+    "hair_color": [
+     0.05,
+     0.04,
+     0.03
+    ],
+    "beard": "none",
+    "seed": 2,
+    "palette": {
+     "cloth": [
+      0.03,
+      0.3,
+      0.75
+     ],
+     "cloth2": [
+      0.15,
+      0.15,
+      0.18
+     ]
+    }
+   },
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "side_eye_l"
+    ],
+    [
+     106,
+     "happy"
+    ],
+    [
+     197,
+     "neutral"
+    ],
+    [
+     247,
+     "love"
+    ],
+    [
+     349,
+     "focus"
+    ],
+    [
+     409,
+     "angry"
+    ],
+    [
+     467,
+     "smug_closed"
+    ],
+    [
+     650,
+     "happy"
+    ],
+    [
+     688,
+     "wink"
+    ],
+    [
+     801,
+     "shock"
+    ],
+    [
+     941,
+     "sad"
+    ],
+    [
+     996,
+     "grumpy"
+    ],
+    [
+     1063,
+     "annoyed"
+    ],
+    [
+     1114,
+     "side_eye_l"
+    ]
+   ],
+   "blinks": [
+    65,
+    155,
+    286,
+    401,
+    482,
+    597,
+    688,
+    770,
+    847,
+    926,
+    1018,
+    1139
+   ],
+   "talk": [
+    [
+     106,
+     187
+    ],
+    [
+     247,
+     339
+    ],
+    [
+     409,
+     457
+    ],
+    [
+     533,
+     637
+    ],
+    [
+     688,
+     782
+    ],
+    [
+     871,
+     928
+    ],
+    [
+     996,
+     1053
+    ],
+    [
+     1114,
+     1166
+    ]
+   ],
+   "pose": {
+    "default": {},
+    "segments": [
+     {
+      "from": 102,
+      "to": 193,
+      "armL": [
+       "ik",
+       [
+        -0.86,
+        0.86
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.86,
+        0.86
+       ],
+       1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 243,
+      "to": 345,
+      "tilt": -0.05
+     },
+     {
+      "from": 405,
+      "to": 463,
+      "armR": [
+       "ik",
+       [
+        0.45,
+        "1.05 + 0.05 * sin(f * 1.4)"
+       ],
+       -1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 529,
+      "to": 643,
+      "armL": [
+       "ik",
+       [
+        -0.86,
+        0.86
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.86,
+        0.86
+       ],
+       1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 684,
+      "to": 788,
+      "armL": [
+       "ik",
+       [
+        -0.92,
+        0.82
+       ],
+       1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 867,
+      "to": 934,
+      "armL": [
+       "ik",
+       [
+        -0.56,
+        1.42
+       ],
+       1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.56,
+        1.42
+       ],
+       -1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 992,
+      "to": 1059,
+      "armL": [
+       "ik",
+       [
+        -0.92,
+        0.82
+       ],
+       1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 1059,
+      "to": 1113,
+      "armL": [
+       "ik",
+       [
+        0.16,
+        0.44
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        -0.16,
+        0.48
+       ],
+       1
+      ]
+     },
+     {
+      "from": 1110,
+      "to": 1172,
+      "armL": [
+       "ik",
+       [
+        0.16,
+        0.44
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        -0.16,
+        0.48
+       ],
+       1
+      ],
+      "tilt": -0.05
+     }
+    ]
+   },
+   "reacts": [
+    [
+     800,
+     "hop"
+    ]
+   ],
+   "reaction_fx": [
+    800
+   ]
+  }
+ ],
+ "words": [
+  [
+   0.35,
+   "Babe,"
+  ],
+  [
+   0.85,
+   "would"
+  ],
+  [
+   1.09,
+   "you"
+  ],
+  [
+   1.33,
+   "still"
+  ],
+  [
+   1.57,
+   "love"
+  ],
+  [
+   1.81,
+   "me"
+  ],
+  [
+   2.05,
+   "if"
+  ],
+  [
+   2.28,
+   "I"
+  ],
+  [
+   2.52,
+   "was"
+  ],
+  [
+   2.76,
+   "a"
+  ],
+  [
+   3.0,
+   "worm?"
+  ],
+  [
+   3.49,
+   "Of"
+  ],
+  [
+   3.73,
+   "course."
+  ],
+  [
+   4.37,
+   "I'd"
+  ],
+  [
+   4.6,
+   "build"
+  ],
+  [
+   4.82,
+   "you"
+  ],
+  [
+   5.05,
+   "a"
+  ],
+  [
+   5.28,
+   "tiny"
+  ],
+  [
+   5.74,
+   "worm"
+  ],
+  [
+   5.96,
+   "house."
+  ],
+  [
+   6.39,
+   "Even"
+  ],
+  [
+   6.85,
+   "if"
+  ],
+  [
+   7.08,
+   "I"
+  ],
+  [
+   7.3,
+   "was"
+  ],
+  [
+   7.53,
+   "slimy?"
+  ],
+  [
+   8.19,
+   "Extra"
+  ],
+  [
+   8.59,
+   "slimy."
+  ],
+  [
+   9.39,
+   "I'd"
+  ],
+  [
+   9.63,
+   "carry"
+  ],
+  [
+   10.1,
+   "you"
+  ],
+  [
+   10.34,
+   "in"
+  ],
+  [
+   10.57,
+   "my"
+  ],
+  [
+   10.81,
+   "pocket."
+  ],
+  [
+   11.48,
+   "And"
+  ],
+  [
+   11.72,
+   "if"
+  ],
+  [
+   11.96,
+   "a"
+  ],
+  [
+   12.2,
+   "bird"
+  ],
+  [
+   12.44,
+   "tried"
+  ],
+  [
+   12.68,
+   "to"
+  ],
+  [
+   12.92,
+   "eat"
+  ],
+  [
+   13.16,
+   "me?"
+  ],
+  [
+   13.6,
+   "I'd"
+  ],
+  [
+   13.81,
+   "fight"
+  ],
+  [
+   14.02,
+   "the"
+  ],
+  [
+   14.23,
+   "bird."
+  ],
+  [
+   14.8,
+   "Bare"
+  ],
+  [
+   15.0,
+   "hands."
+  ],
+  [
+   15.4,
+   "Aww,"
+  ],
+  [
+   15.76,
+   "you"
+  ],
+  [
+   16.11,
+   "really"
+  ],
+  [
+   16.83,
+   "love"
+  ],
+  [
+   17.18,
+   "me."
+  ],
+  [
+   17.74,
+   "Worm,"
+  ],
+  [
+   18.2,
+   "human,"
+  ],
+  [
+   18.84,
+   "whatever."
+  ],
+  [
+   19.76,
+   "My"
+  ],
+  [
+   20.0,
+   "love"
+  ],
+  [
+   20.24,
+   "has"
+  ],
+  [
+   20.47,
+   "no"
+  ],
+  [
+   20.71,
+   "limits."
+  ],
+  [
+   21.49,
+   "No"
+  ],
+  [
+   21.73,
+   "limits"
+  ],
+  [
+   22.22,
+   "at"
+  ],
+  [
+   22.47,
+   "all?"
+  ],
+  [
+   22.91,
+   "Zero."
+  ],
+  [
+   23.71,
+   "Unless"
+  ],
+  [
+   24.16,
+   "you"
+  ],
+  [
+   24.38,
+   "touch"
+  ],
+  [
+   24.6,
+   "my"
+  ],
+  [
+   24.82,
+   "pizza."
+  ],
+  [
+   25.67,
+   "Kidding."
+  ],
+  [
+   26.54,
+   "Good."
+  ],
+  [
+   27.18,
+   "Because"
+  ],
+  [
+   27.61,
+   "I"
+  ],
+  [
+   27.83,
+   "ate"
+  ],
+  [
+   28.04,
+   "your"
+  ],
+  [
+   28.26,
+   "pizza."
+  ],
+  [
+   28.99,
+   "The"
+  ],
+  [
+   29.2,
+   "one"
+  ],
+  [
+   29.41,
+   "I"
+  ],
+  [
+   29.63,
+   "was"
+  ],
+  [
+   29.84,
+   "saving"
+  ],
+  [
+   30.26,
+   "for"
+  ],
+  [
+   30.48,
+   "tonight?"
+  ],
+  [
+   31.2,
+   "All"
+  ],
+  [
+   31.44,
+   "four"
+  ],
+  [
+   31.68,
+   "slices."
+  ],
+  [
+   33.16,
+   "Babe..."
+  ],
+  [
+   33.86,
+   "I'm"
+  ],
+  [
+   34.1,
+   "calling"
+  ],
+  [
+   34.59,
+   "the"
+  ],
+  [
+   34.84,
+   "bird."
+  ],
+  [
+   35.28,
+   "You"
+  ],
+  [
+   35.58,
+   "said"
+  ],
+  [
+   35.89,
+   "no"
+  ],
+  [
+   36.19,
+   "limits!"
+  ],
+  [
+   37.1,
+   "That"
+  ],
+  [
+   37.35,
+   "was"
+  ],
+  [
+   37.59,
+   "before"
+  ],
+  [
+   38.08,
+   "the"
+  ],
+  [
+   38.33,
+   "pizza."
+  ]
+ ],
+ "captions": {
+  "style": "pop",
+  "highlight": [
+   "worm",
+   "bird",
+   "no limits",
+   "pizza",
+   "calling the bird"
+  ]
+ },
+ "cards": [
+  {
+   "style": "banner",
+   "text": "This is true love",
+   "from": 1,
+   "to": 1210
+  }
+ ],
+ "sound": {
+  "music": {
+   "mood": "playful",
+   "gain": 0.12,
+   "gain_with_voice": 0.07
+  },
+  "auto": {
+   "ticks": false
+  },
+  "events": [
+   [
+    795,
+    "scratch",
+    0.55
+   ],
+   [
+    937,
+    "slide_down",
+    0.55
+   ],
+   [
+    1172,
+    "boing",
+    0.6
+   ]
+  ]
+ }
+}

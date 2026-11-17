@@ -367,6 +367,42 @@ Shorts giữ nguyên: mọi thay đổi kiểm bằng fingerprint (manhole-round
 - Server: sau MAX_FIX vòng sửa mà chỉ còn WARN (cảnh dựng được) thì vẫn giao ảnh xem trước + liệt kê cảnh báo, không báo dựng hỏng.
 - Bụi (`dust`) bám đất, cao ~ngang hông; nhãn đè đầu không dời được chỉ là NOTE.
 
+## Video đối thoại hài 9:16 (cặp đôi, vợ chồng, gia đình) — đang làm
+Yêu cầu của người dùng: video kiểu TikTok "This is true love": 2-3 nhân vật đứng cạnh nhau trong một bối cảnh, nói qua nói lại, kết bằng cú đảo.
+Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D cho từng video.
+- Định dạng `settings.format = "dialog"`; `content.json` có `format: "dialog"`, `hook` (chữ cố định trên đầu), `cast` (tên, vai, giới tính,
+  tuổi, thân người lớn/trẻ con, tóc, áo, 2 màu, `voice_id`, `voice_instruct`), `setting` (bối cảnh thư viện), `idle` (tư thế chờ),
+  `lines` (speaker, text EN có thẻ OmniVoice, text_vi, face, listener_face, gesture, listener_gesture, shot, pause_before, speed, sfx, react, beat).
+  Schema `schemas/content_dialog.json`; luật viết hài `DIALOG_RULES.md`; bridge `dialog_ideas`, `write_dialog`, `rewrite_dialog` (viết lại đoạn câu a..b),
+  `check_dialog`, `dialog_fill` (thêm `vo_en`/`word_count` cho các phần khác của tool).
+- Giọng: `tts.py` + `tools/omnivoice_worker.py` chạy trong Python riêng có OmniVoice (`tools/install_omnivoice.bat` tạo
+  `%USERPROFILE%\WhyShortsVoice\venv`: torch cu128 + omnivoice; hoặc ô đường dẫn python.exe trên trang → `local_settings.json`).
+  `library/voices/<id>/`: 3 giọng thử từ `voice_instruct` (voice design cho giọng mới mỗi lần) → người dùng chọn → `ref.wav`; mọi câu
+  NHÁI giọng đó (voice clone prompt dựng một lần mỗi người) nên giọng không đổi và dùng lại cho video sau; hoặc tải giọng thật 3-10 s.
+  `WHYSHORTS_TTS=fake` = giọng giả (âm tiết đúng nhịp) để thử khi không có OmniVoice/GPU (container).
+- `dialog.py`: `speak` (mỗi câu một wav `lines/NN_<speaker>.wav`, lưu đệm theo chữ/giọng/tốc độ/seed: sửa 1 câu chỉ đọc lại câu đó; ↻ đổi seed;
+  tải bản tự thu từng câu), `assemble` (cắt lặng, ghép theo `pause_before`, chuẩn đỉnh −1 dB, canh chữ từng câu → `words.json` + `lines`),
+  `plan` → `story.json` KHÔNG cần Claude (vài giây): 9:16 + rig `long` (framing preset), mỗi câu một cú máy (cắt trước câu 3 khung; câu ngắn
+  gộp vào cú trước; auto: câu đầu hai người, câu chốt cận hai mặt, câu có phản ứng → cận người nghe, cứ 4 câu lại hai người), mặt người nói
+  ở đầu câu + mặt người nghe trễ 4 khung (side_eye tự quay về phía người kia), miệng theo câu, cử chỉ (point, hands_hips, cross_arms, shrug, wave,
+  hold_hands, think, fist, hands_up, open_arms, facepalm), chớp mắt ngẫu nhiên, react + reaction_fx, phụ đề pop, thẻ `banner`, nhạc playful +
+  tiếng hài từng câu + `end_sfx`, không tick phụ đề.
+- Core/thư viện thêm: mặt `sad love laugh side_eye_l side_eye_r annoyed blush` (chỉ dựng khi story liệt kê trong `faces`: video cũ giữ nguyên),
+  thẻ `banner`, `look.palette` (màu áo riêng từng người), văn hóa `modern_home` + 8 trang phục đời thường, thân `chars/child`,
+  `sound.auto.pops/ticks`, `meta.dialog` (cho rig long ở 9:16), `meta.fast_build` bật được cho 9:16.
+- Server/trang: kiểu dự án thứ 3, ô Nhân vật 3D/2D (mọi kiểu Shorts; ghi `meta.char_style` sau khi lập story), bước 2 sửa từng câu + nhân vật,
+  bước 3 OmniVoice (giọng thử, chọn, tải giọng thật, giọng từng câu), bước 4 `job_build_dialog` (bối cảnh mới → design_set, rồi `dialog.plan`
+  và xem trước). Gói YouTube nhận kịch bản thoại.
+- Đã thử trong container (giọng giả, Blender 5.2.3 tải về `/opt/blender`):
+  - `projects/demo-dialog` (tay viết theo video mẫu): giọng → ghép → plan → xem trước `CAMERA OK`, 7 cú máy/20 s; sửa 1 câu → chỉ đọc lại câu đó.
+  - `projects/girlfriend-worm-test`: Claude thật viết kịch bản qua server trong 42 s (16 câu, 101 từ, gài "unless you touch my pizza" →
+    cú đảo ăn pizza → chốt "I'm calling the bird"), tự dùng lại giọng Mia/Ben có sẵn; dựng 102 s; giọng −14 dB trung bình, đỉnh −1 dB, nhạc+SFX −27 dB.
+  - `projects/demo-family` (bố, mẹ, con trai thân trẻ con, 2D): cử chỉ trẻ con co theo thân (×0,68); cú phản ứng chọn người được đáp lời
+    (người nói câu trước), không phải người đứng gần nhất. Ảnh: `docs/img/dialog_demo.jpg`.
+  - Fingerprint 3 Shorts cũ (demo-v3, manhole-round, toast-butter-side, 2D) trước/sau: giống hệt (dữ liệu, âm thanh, điểm ảnh).
+  - Còn phải thử: OmniVoice thật trên máy người dùng (container không có GPU; `pip install omnivoice` chưa chạy ở đây).
+  - Còn để ý: cảnh 3 người toàn thân ở 9:16 nhân vật nhỏ; màu tóc rất tối lên hình hơi nâu ở 3D.
+
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
 - Đồng hồ việc chạy trên trang giữa các lần hỏi; hỏi tiến độ có giới hạn 8 s, hỏng ≥ 4 lần liền thì báo "Studio không trả lời"

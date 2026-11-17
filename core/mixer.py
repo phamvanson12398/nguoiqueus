@@ -26,16 +26,16 @@ class Mix:
         return path
 
 
-def auto_sfx(mix, cuts, chars, caps, avoid_cuts=(), gain=1.0, gesture_chars=None):
+def auto_sfx(mix, cuts, chars, caps, avoid_cuts=(), gain=1.0, gesture_chars=None, pops=True, ticks=True):
     """whoosh before each cut (not within 8 f of an avoid frame), pop on expression changes,
     tick on each caption, swish on gesture onsets.  Call order matters (shared noise generator)."""
     for c_ in cuts:
         if not near(c_, avoid_cuts, 8): mix.sfx("whoosh", c_ - 5, 0.22 * gain)
-    pops = sorted({fr for ch in chars for fr, _ in ch.expr_table[1:]})
+    pop_frames = sorted({fr for ch in chars for fr, _ in ch.expr_table[1:]}) if pops else []
     last = -99
-    for fr in pops:
+    for fr in pop_frames:
         if fr - last > 4 and not near(fr, cuts, 2): mix.sfx("pop", fr, 0.2 * gain); last = fr
-    for c in caps:
+    for c in (caps if ticks else ()):
         mix.sfx("tick", c[1], 0.07 * gain)
     GESTURES = {}
     for ch in (gesture_chars if gesture_chars is not None else chars):
