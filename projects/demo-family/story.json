@@ -801,14 +801,6 @@
    "console"
   ]
  },
- "cards": [
-  {
-   "style": "banner",
-   "text": "Dad logic",
-   "from": 1,
-   "to": 533
-  }
- ],
  "sound": {
   "music": {
    "mood": "playful",

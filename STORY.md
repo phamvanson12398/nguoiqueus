@@ -165,7 +165,7 @@ night, cold, warm, desert, sepia, storm, fire). Chi tiết tham số: `LONGFORM_
 ### Video đối thoại (`meta.dialog: true`)
 `dialog.py plan` tự viết story từ `content.json` (format "dialog") + `words.json` (thời gian từng câu): khổ 9:16 nhưng rig `long` (cú máy
 `frame`), nhân vật `person`/`child` có `outfit` + `look.palette` (`cloth`, `cloth2`: màu áo riêng), `faces` gồm cả mặt hài
-(`sad love laugh side_eye_l side_eye_r annoyed blush`), thẻ `banner` (chữ tối trên nền trắng ở đầu khung, hiện suốt video),
+(`sad love laugh side_eye_l side_eye_r annoyed blush`), không có dòng chữ trên đầu (thẻ `banner` vẫn dùng tay được: chữ tối trên nền trắng),
 `sound.auto.ticks: false` (không tick mỗi chữ phụ đề). Sửa tay được như mọi story; dựng lại qua trang sẽ ghi đè.
 
 ### `teleport_holds`

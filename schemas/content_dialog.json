@@ -29,7 +29,7 @@
   },
   "hook": {
    "type": "string",
-   "description": "dòng chữ cố định trên đầu video (≤ 32 ký tự, không emoji), kiểu 'This is true love', 'When mom finds out'"
+   "description": "tiêu đề gợi ý ngắn (≤ 32 ký tự) người dùng tự thêm lên đầu video khi chỉnh sửa, kiểu 'This is true love', 'When mom finds out'; tool KHÔNG vẽ nó vào video"
   },
   "premise_vi": {
    "type": "string",

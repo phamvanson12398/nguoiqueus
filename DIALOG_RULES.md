@@ -7,7 +7,7 @@ Lời thoại tiếng Anh (giọng OmniVoice, mỗi nhân vật một giọng), 
 ## 1. Cấu trúc (30-75 giây, 8-22 câu)
 1. **Câu móc (0-3 s)**: câu đầu đặt ngay xung đột hoặc một câu lạ ("Baby, I have to tell you something… I ate your fries.").
    Không chào hỏi, không giới thiệu.
-2. **Dòng chữ trên đầu (`hook`)**: đặt kỳ vọng mà video sẽ lật ngược ("This is true love", "When she says 'I'm fine'",
+2. **Tiêu đề gợi ý (`hook`)**, người dùng tự thêm lên đầu video khi chỉnh sửa (tool không vẽ): đặt kỳ vọng mà video sẽ lật ngược ("This is true love", "When she says 'I'm fine'",
    "Dad logic"). ≤ 32 ký tự, không emoji (font không có emoji).
 3. **Đẩy lên (setup → build)**: mỗi câu tăng một nấc; luật ba (hai lần như dự đoán, lần thứ ba lệch); người kia phản ứng ngày càng
    nghi ngờ/bực/sốc. Đừng giải thích, để người xem tự đoán.

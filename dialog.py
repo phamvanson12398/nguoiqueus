@@ -6,7 +6,9 @@ and reaction shots by itself (seconds instead of a 12-minute plan_shots).
 
     python dialog.py speak <slug> [--only 3,7] [--reseed]   OmniVoice: one wav per line (lines/NN_<speaker>.wav)
     python dialog.py assemble <slug>                        lines -> voice.wav + words.json (+ per-line timings)
-    python dialog.py plan <slug> [--style 3d|2d|2d_grey]   (2d_grey: grey characters on a coloured set)            -> story.json (9:16, rig long, pop captions, banner)
+    python dialog.py plan <slug> [--style 3d|2d|2d_grey]    -> story.json (9:16, rig long, pop captions)
+                                                            (2d_grey: grey characters on a coloured set)
+The `hook` line ("This is true love") is a title suggestion only: the user adds it in their editor, it is not drawn.
 
 Line wavs are cached by text/voice/speed/seed: after editing two lines only those two are spoken again.
 A line can also be the user's own recording (upload_line): it is kept until that line's text changes.
@@ -392,7 +394,6 @@ def plan(slug, char_style=None, log=print):
         "chars": chars,
         "words": words,
         "captions": {"style": "pop", "highlight": [h for h in c.get("highlight", [])]},
-        "cards": [{"style": "banner", "text": c["hook"], "from": 1, "to": N}],
         "sound": {"music": {"mood": "playful", "gain": 0.12, "gain_with_voice": 0.07}, "auto": {"ticks": False},
                   "events": sorted(events)},
     }

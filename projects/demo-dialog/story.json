@@ -691,14 +691,6 @@
    "apart"
   ]
  },
- "cards": [
-  {
-   "style": "banner",
-   "text": "This is true love",
-   "from": 1,
-   "to": 617
-  }
- ],
  "sound": {
   "music": {
    "mood": "playful",

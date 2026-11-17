@@ -153,7 +153,7 @@ small.err{color:var(--bad)}
           <button id="dSave" class="blue">Lưu</button>
           <select id="dHist"><option value="">Lịch sử phiên bản…</option></select><button id="dRestore">Khôi phục</button></div>
         <div class="fields" style="display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:10px">
-          <div><label class="muted">Dòng chữ trên đầu video (≤ 32 ký tự, không emoji)</label><input type="text" id="dHook" style="width:100%"></div>
+          <div><label class="muted">Tiêu đề gợi ý (không đưa vào video: bạn tự thêm khi chỉnh sửa)</label><input type="text" id="dHook" style="width:100%"></div>
           <div class="row" style="gap:8px"><label class="muted">Bối cảnh <select id="dSet"></select></label>
             <label class="muted">Tư thế chờ <select id="dIdle"><option value="relaxed">thả lỏng</option><option value="hold_hands">nắm tay</option><option value="hands_hips">chống nạnh</option><option value="cross_arms">khoanh tay</option></select></label>
             <label class="muted">Tiếng chốt cuối <select id="dEnd"></select></label></div>
@@ -682,7 +682,7 @@ function renderBuild() {
     return;
   }
   $('#previews').classList.add('thumbs');
-  $('#buildHelp').innerHTML = st.format === 'dialog' ? 'Video đối thoại: tool tự lập <code>story.json</code> từ thời gian từng câu (vài giây, không tốn lượt Claude): máy quay cắt giữa cảnh hai người, cận người nói, cận người nghe phản ứng; mặt, miệng, cử chỉ theo từng câu; phụ đề và dòng chữ trên đầu. Bối cảnh chưa có thì Claude thiết kế trước. Rồi render vài khung xem trước ở 35 %.'
+  $('#buildHelp').innerHTML = st.format === 'dialog' ? 'Video đối thoại: tool tự lập <code>story.json</code> từ thời gian từng câu (vài giây, không tốn lượt Claude): máy quay cắt giữa cảnh hai người, cận người nói, cận người nghe phản ứng; mặt, miệng, cử chỉ theo từng câu; phụ đề (tiêu đề gợi ý thì bạn tự thêm khi chỉnh sửa). Bối cảnh chưa có thì Claude thiết kế trước. Rồi render vài khung xem trước ở 35 %.'
     : 'Lần lượt: Claude chuyển content thành <code>story.json</code> (camera v3, theo thời gian từng chữ) → thiết kế đồ còn thiếu trong thư viện (tự render rồi tự xem lại) → kiểm tra → render vài khung xem trước ở 35 %.';
   $('#storyInfo').innerHTML = s ? `story.json: ${s.frames} khung (${(s.frames / 30).toFixed(1)} s) · camera ${esc(s.camera)} · ${s.sequences} chuỗi · nhân vật: ${s.chars.map(esc).join(', ')}` : 'Chưa có story.json.';
   $('#previews').innerHTML = st.previews.map(f => `<figure><img loading="lazy" src="${P('/file/preview/' + f)}?t=${Date.now()}" data-f="${esc(f)}"><figcaption>khung ${parseInt(f.slice(2, 6))}</figcaption></figure>`).join('') || '<span class="muted">Chưa có ảnh xem trước.</span>';

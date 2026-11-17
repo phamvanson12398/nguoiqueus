@@ -385,7 +385,7 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   `plan` → `story.json` KHÔNG cần Claude (vài giây): 9:16 + rig `long` (framing preset), mỗi câu một cú máy (cắt trước câu 3 khung; câu ngắn
   gộp vào cú trước; auto: câu đầu hai người, câu chốt cận hai mặt, câu có phản ứng → cận người nghe, cứ 4 câu lại hai người), mặt người nói
   ở đầu câu + mặt người nghe trễ 4 khung (side_eye tự quay về phía người kia), miệng theo câu, cử chỉ (point, hands_hips, cross_arms, shrug, wave,
-  hold_hands, think, fist, hands_up, open_arms, facepalm), chớp mắt ngẫu nhiên, react + reaction_fx, phụ đề pop, thẻ `banner`, nhạc playful +
+  hold_hands, think, fist, hands_up, open_arms, facepalm), chớp mắt ngẫu nhiên, react + reaction_fx, phụ đề pop, nhạc playful +
   tiếng hài từng câu + `end_sfx`, không tick phụ đề.
 - Core/thư viện thêm: mặt `sad love laugh side_eye_l side_eye_r annoyed blush` (chỉ dựng khi story liệt kê trong `faces`: video cũ giữ nguyên),
   thẻ `banner`, `look.palette` (màu áo riêng từng người), văn hóa `modern_home` + 8 trang phục đời thường, thân `chars/child`,
@@ -402,6 +402,7 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - Fingerprint 3 Shorts cũ (demo-v3, manhole-round, toast-butter-side, 2D) trước/sau: giống hệt (dữ liệu, âm thanh, điểm ảnh).
   - Còn phải thử: OmniVoice thật trên máy người dùng (container không có GPU; `pip install omnivoice` chưa chạy ở đây).
   - Còn để ý: cảnh 3 người toàn thân ở 9:16 nhân vật nhỏ; màu tóc rất tối lên hình hơi nâu ở 3D.
+- `hook` ("This is true love") chỉ là tiêu đề gợi ý: người dùng tự thêm khi chỉnh sửa video, story không vẽ nó (thẻ `banner` vẫn còn để dùng tay).
 - Kiểu "2D xám" (người dùng gửi video mẫu thứ hai: bối cảnh có màu, người xám): `settings.char_style = "2d_grey"` → story
   `meta.char_style "2d"` + `meta.char_tone "grey"`. Builder đặt `faces.SCLERA` (mỗi chấm mắt nằm trên tròng trắng viền mực) rồi
   `chars.tone_grey`: mặt xám 0,50, áo xám theo độ sáng màu gốc (giữ nếp áo/váy), tóc đen, bàn tay chấm đen; giữ màu miệng, lưỡi, nước mắt,

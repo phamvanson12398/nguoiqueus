@@ -36,7 +36,7 @@ Bấm "+ Dự án mới" rồi gõ **3** (hoặc chọn "Đối thoại hài" �
    Câu nào chưa hay: ↻ đọc lại, hoặc tải bản tự thu của câu đó. Sửa chữ một câu thì chỉ câu đó được đọc lại.
    Giọng lưu ở `library/voices/`, video sau dùng lại được (nhân vật quen của kênh).
 4. **Duyệt & dựng**: tool tự lập cảnh trong vài giây (không tốn lượt Claude): máy quay cắt giữa hai người / cận người nói / cận người nghe
-   phản ứng / cận hai mặt ở câu chốt, mặt + miệng + cử chỉ theo từng câu, phụ đề, dòng chữ trên đầu. Muốn đổi máy quay một câu thì sửa
+   phản ứng / cận hai mặt ở câu chốt, mặt + miệng + cử chỉ theo từng câu, phụ đề (tiêu đề gợi ý ở bước 2 thì tự thêm khi chỉnh sửa video). Muốn đổi máy quay một câu thì sửa
    ô "Máy quay" của câu đó rồi dựng lại.
 5. **Render** như Shorts.
 
