@@ -31,7 +31,8 @@
     "b": 103,
     "type": "full",
     "frame": {
-     "size": 3.6,
+     "size": 3.35,
+     "look_dz": 0.12,
      "move": "drift",
      "amount": 0.7,
      "subject": [
@@ -68,7 +69,8 @@
     "b": 321,
     "type": "full",
     "frame": {
-     "size": 3.6,
+     "size": 3.35,
+     "look_dz": 0.12,
      "move": "drift",
      "amount": 0.7,
      "subject": [
@@ -131,17 +133,17 @@
  "chars": [
   {
    "id": "mia",
-   "type": "person",
-   "outfit": "casual_dress",
+   "type": "soft",
+   "outfit": "soft_dress",
    "loc": [
-    -0.62,
+    -0.63,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      -0.62,
+      -0.63,
       4.3,
       0
      ]
@@ -151,7 +153,7 @@
       "from": 1,
       "to": 617,
       "location": [
-       -0.62,
+       -0.63,
        4.3,
        0
       ]
@@ -256,7 +258,7 @@
      "armR": [
       "ik",
       [
-       0.59,
+       0.6,
        0.2
       ],
       1
@@ -284,7 +286,7 @@
       "armL": [
        "ik",
        [
-        0.16,
+        0.1,
         0.44
        ],
        -1
@@ -292,7 +294,7 @@
       "armR": [
        "ik",
        [
-        -0.16,
+        -0.1,
         0.48
        ],
        1
@@ -305,7 +307,7 @@
       "armL": [
        "ik",
        [
-        0.16,
+        0.1,
         0.44
        ],
        -1
@@ -313,7 +315,7 @@
       "armR": [
        "ik",
        [
-        -0.16,
+        -0.1,
         0.48
        ],
        1
@@ -333,17 +335,17 @@
   },
   {
    "id": "ben",
-   "type": "person",
-   "outfit": "casual_tee",
+   "type": "soft",
+   "outfit": "soft_tee",
    "loc": [
-    0.62,
+    0.63,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      0.62,
+      0.63,
       4.3,
       0
      ]
@@ -353,7 +355,7 @@
       "from": 1,
       "to": 617,
       "location": [
-       0.62,
+       0.63,
        4.3,
        0
       ]
@@ -454,7 +456,7 @@
      "armL": [
       "ik",
       [
-       -0.59,
+       -0.6,
        0.2
       ],
       -1

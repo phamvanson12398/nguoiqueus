@@ -1,0 +1,67 @@
+{
+ "kind": "outfit",
+ "name": "soft_kid_tee",
+ "culture": "modern_home",
+ "role": "son",
+ "status": "approved",
+ "title_vi": "Áo phông trẻ con",
+ "description_vi": "Áo phông trẻ con cho thân soft_child (video đối thoại).",
+ "silhouette_vi": "Áo phông trẻ con",
+ "sources": [],
+ "torso": "$cloth",
+ "hair": "short",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "body": "soft_child",
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "shorts",
+   "pts": [
+    [
+     -0.2,
+     0.0
+    ],
+    [
+     0.2,
+     0.0
+    ],
+    [
+     0.21,
+     -0.12
+    ],
+    [
+     0.03,
+     -0.12
+    ],
+    [
+     0,
+     -0.05
+    ],
+    [
+     -0.03,
+     -0.12
+    ],
+    [
+     -0.21,
+     -0.12
+    ]
+   ],
+   "mat": "$cloth2",
+   "z": 0.15,
+   "outline": 0.016
+  }
+ ]
+}

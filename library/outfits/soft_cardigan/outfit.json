@@ -1,0 +1,81 @@
+{
+ "kind": "outfit",
+ "name": "soft_cardigan",
+ "culture": "modern_home",
+ "role": "grandma",
+ "status": "approved",
+ "title_vi": "Áo len cardigan",
+ "description_vi": "Áo len cardigan cho thân soft (video đối thoại).",
+ "silhouette_vi": "Áo len cardigan",
+ "sources": [],
+ "torso": "$trim",
+ "hair": "topknot",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "body": "soft",
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cardi_l",
+   "pts": [
+    [
+     -0.25,
+     0.0
+    ],
+    [
+     -0.04,
+     0.0
+    ],
+    [
+     -0.03,
+     0.72
+    ],
+    [
+     -0.15,
+     0.76
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.016
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "cardi_r",
+   "pts": [
+    [
+     0.04,
+     0.0
+    ],
+    [
+     0.25,
+     0.0
+    ],
+    [
+     0.15,
+     0.76
+    ],
+    [
+     0.03,
+     0.72
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.016
+  }
+ ]
+}

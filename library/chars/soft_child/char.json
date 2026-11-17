@@ -1,0 +1,74 @@
+{
+ "kind": "char",
+ "status": "approved",
+ "faces": [
+  "neutral",
+  "happy",
+  "smirk",
+  "wink",
+  "angry",
+  "shock",
+  "worried",
+  "grumpy",
+  "focus",
+  "smug_closed"
+ ],
+ "extras": [],
+ "materials": {
+  "person_shirt": [
+   0.6,
+   0.6,
+   0.6
+  ],
+  "soft_shoe": [
+   0.03,
+   0.03,
+   0.035
+  ]
+ },
+ "name": "soft_child",
+ "title_vi": "Trẻ con thân mềm (đối thoại)",
+ "description_vi": "Như soft nhưng nhỏ (cao ~2,0): đầu to hơn so với thân. Mặc soft_kid_tee, soft_kid_dress.",
+ "cfg": {
+  "leg": [
+   0.52,
+   0.27,
+   0.25
+  ],
+  "torso": [
+   0.4,
+   0.52,
+   "person_shirt"
+  ],
+  "torso_taper": [
+   0.24,
+   0.4
+  ],
+  "arm": [
+   0.09,
+   0.46,
+   0.25,
+   0.23
+  ],
+  "head": [
+   0.96,
+   0.5
+  ],
+  "head_scale": 1.05,
+  "limb_w": [
+   0.03,
+   0.035
+  ],
+  "hip_x": 0.07,
+  "neck": false,
+  "outline": 0.028,
+  "shoe": {
+   "mat": "soft_shoe",
+   "rx": 0.07,
+   "ry": 0.042,
+   "dx": 0.03,
+   "outline": 0.0
+  },
+  "hand_r": 0.045
+ }
+}

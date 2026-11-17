@@ -407,7 +407,11 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   `meta.char_style "2d"` + `meta.char_tone "grey"`. Builder đặt `faces.SCLERA` (mỗi chấm mắt nằm trên tròng trắng viền mực) rồi
   `chars.tone_grey`: mặt xám 0,50, áo xám theo độ sáng màu gốc (giữ nếp áo/váy), tóc đen, bàn tay chấm đen; giữ màu miệng, lưỡi, nước mắt,
   tim, má hồng và hiệu ứng phản ứng. Mọi kiểu Shorts dùng được (ô Nhân vật ở bước 2). Ảnh so với mẫu: `docs/img/dialog_grey.jpg`.
-  Khác mẫu còn lại: thân nhân vật của tool to bè hơn (mẫu thân mảnh, đầu to).
+- Thân mềm (người dùng: "nhân vật cần mềm mại hơn"): video đối thoại dùng `chars/soft` và `chars/soft_child` thay cho person/child:
+  đầu to tròn (`head_scale` 1,22: nét mặt to theo), không cổ, thân thon ở vai xòe dần xuống (`torso_taper`, vai bo tròn, gấu hơi cong),
+  tay chân que mảnh (`limb_w`), hông hẹp (`hip_x`), bàn tay nhỏ (`hand_r`), bàn chân nhỏ. Trang phục `soft_*` vừa thân thon (dialog.py tự đổi
+  casual_dress → soft_dress có gấu lượn sóng…). Các khóa này chỉ có trong char.json mới: Shorts cũ giống hệt (fingerprint demo-v3, toast).
+  Ảnh: `docs/img/dialog_soft.jpg` (khung phải cùng là video mẫu).
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

@@ -1,0 +1,108 @@
+{
+ "kind": "outfit",
+ "name": "soft_hoodie",
+ "culture": "modern_home",
+ "role": "boyfriend",
+ "status": "approved",
+ "title_vi": "Áo hoodie",
+ "description_vi": "Áo hoodie cho thân soft (video đối thoại).",
+ "silhouette_vi": "Áo hoodie",
+ "sources": [],
+ "torso": "$cloth",
+ "hair": "auto",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "body": "soft",
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "hood",
+   "pts": {
+    "ellipse": [
+     0,
+     0.76,
+     0.24,
+     0.12,
+     20
+    ]
+   },
+   "mat": "$cloth",
+   "z": -0.05,
+   "outline": 0.02
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "string_l",
+   "pts": [
+    [
+     -0.05,
+     0.72
+    ],
+    [
+     -0.06,
+     0.54
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$trim",
+   "z": 0.16
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "string_r",
+   "pts": [
+    [
+     0.05,
+     0.72
+    ],
+    [
+     0.06,
+     0.54
+    ]
+   ],
+   "w": 0.018,
+   "mat": "$trim",
+   "z": 0.16
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pocket",
+   "pts": [
+    [
+     -0.15,
+     0.3
+    ],
+    [
+     0.15,
+     0.3
+    ],
+    [
+     0.19,
+     0.14
+    ],
+    [
+     -0.19,
+     0.14
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.016
+  }
+ ]
+}

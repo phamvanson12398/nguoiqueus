@@ -1,0 +1,85 @@
+{
+ "kind": "outfit",
+ "name": "soft_shirt_tie",
+ "culture": "modern_home",
+ "role": "dad",
+ "status": "approved",
+ "title_vi": "Sơ mi cà vạt",
+ "description_vi": "Sơ mi cà vạt cho thân soft (video đối thoại).",
+ "silhouette_vi": "Sơ mi cà vạt",
+ "sources": [],
+ "torso": "$trim",
+ "hair": "auto",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "body": "soft",
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "tie",
+   "pts": [
+    [
+     -0.025,
+     0.74
+    ],
+    [
+     0.025,
+     0.74
+    ],
+    [
+     0.045,
+     0.32
+    ],
+    [
+     0,
+     0.26
+    ],
+    [
+     -0.045,
+     0.32
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.155,
+   "outline": 0.014
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "pants",
+   "pts": [
+    [
+     -0.25,
+     0.0
+    ],
+    [
+     0.25,
+     0.0
+    ],
+    [
+     0.235,
+     0.09
+    ],
+    [
+     -0.235,
+     0.09
+    ]
+   ],
+   "mat": "$cloth2",
+   "z": 0.15,
+   "outline": 0.016
+  }
+ ]
+}

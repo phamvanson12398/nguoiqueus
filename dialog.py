@@ -27,6 +27,8 @@ MIN_SHOT = 28          # frames: shorter shots are merged into the previous one
 MAX_SHOT = 150         # frames: longer shots get a reaction cutaway
 ALL_FACES = ["neutral", "happy", "smirk", "wink", "angry", "shock", "worried", "grumpy", "focus", "smug_closed",
              "sad", "love", "laugh", "side_eye_l", "side_eye_r", "annoyed", "blush"]
+SOFT_OUTFIT = {"casual_dress": "soft_dress", "casual_tee": "soft_tee", "hoodie": "soft_hoodie", "shirt_tie": "soft_shirt_tie",
+               "home_apron": "soft_apron", "cardigan": "soft_cardigan", "kid_tee": "soft_kid_tee", "kid_dress": "soft_kid_dress"}
 STAGES = {"kitchen": [0.0, 4.3], "street": [0.0, 4.0], "office": [0.0, 2.6]}     # where the cast stands (sets without "stage")
 
 
@@ -209,7 +211,7 @@ def _face(f, d):
     return f if f in ALL_FACES else "neutral"
 
 
-def gesture_pose(g, d, gap, scale=1.0):
+def gesture_pose(g, d, gap, scale=1.0, slim=True):
     """arm specs (torso space: shoulders at (+-0.33, 0.66), arm reach 0.66) for a gesture; d = side of the partner"""
     near_arm, far_arm = ("armR", "armL") if d > 0 else ("armL", "armR")
     if g == "hold_hands" and scale != 1.0: gap = gap / scale      # still reach the partner's hand
@@ -220,9 +222,11 @@ def gesture_pose(g, d, gap, scale=1.0):
     elif g == "hold_hands":
         P[near_arm] = ["ik", [d * max(0.45, gap / 2 - 0.03), 0.2], d]
     elif g == "hands_hips":
-        P["armL"] = ["ik", [-0.43, 0.22], 1]; P["armR"] = ["ik", [0.43, 0.22], -1]
+        hx = 0.3 if slim else 0.43
+        P["armL"] = ["ik", [-hx, 0.22], 1]; P["armR"] = ["ik", [hx, 0.22], -1]
     elif g == "cross_arms":
-        P["armL"] = ["ik", [0.16, 0.44], -1]; P["armR"] = ["ik", [-0.16, 0.48], 1]
+        cx = 0.1 if slim else 0.16
+        P["armL"] = ["ik", [cx, 0.44], -1]; P["armR"] = ["ik", [-cx, 0.48], 1]
     elif g == "shrug":
         P["armL"] = ["ik", [-0.66, 0.66], -1]; P["armR"] = ["ik", [0.66, 0.66], 1]; P["tilt"] = 0.1 * d
     elif g == "wave":
@@ -245,7 +249,7 @@ def gesture_pose(g, d, gap, scale=1.0):
 
 
 SHOT = {   # type, frame overrides
-    "two":        ("full",    {"size": 3.6, "move": "drift", "amount": 0.7}),
+    "two":        ("full",    {"size": 3.35, "look_dz": 0.12, "move": "drift", "amount": 0.7}),
     "speaker":    ("medium",  {"size": 2.25, "move": "push_in", "amount": 0.55}),
     "listener":   ("closeup", {"move": "push_in", "amount": 0.7}),
     "both_close": ("medium",  {"size": 2.5, "look_dz": 0.42, "move": "push_in", "amount": 1.1}),
@@ -304,7 +308,7 @@ def plan(slug, char_style=None, log=print):
     params = dict(c["setting"].get("params") or {})
     if set_name == "kitchen": params.setdefault("stuck_toast", False)
     cast = c["cast"]; n = len(cast)
-    gap = 1.24 if n == 2 else 1.05
+    gap = 1.26                                   # big heads (r ~0.61) almost touch, like the reference
     kids = [m["body"] == "child" for m in cast]
     xs = [stage[0] + (i - (n - 1) / 2) * gap for i in range(n)]
     y0 = stage[1]
@@ -313,7 +317,7 @@ def plan(slug, char_style=None, log=print):
     chars = []
     idle = c.get("idle", "relaxed")
     for i, m in enumerate(cast):
-        dd = _dir(i, xs); ks = 0.68 if kids[i] else 1.0       # child torso 0.62 x 0.55, shoulders (+-0.26, 0.44)
+        dd = _dir(i, xs); ks = 0.66 if kids[i] else 1.0       # child torso 0.52 tall vs 0.78
         talk = [[fr(x["start"]), fr(x["end"])] for x in lt if x["speaker"] == m["id"]]
         # faces: speaker's face when their line starts, listener's reaction a few frames after the other starts
         ex = []
@@ -345,7 +349,7 @@ def plan(slug, char_style=None, log=print):
                 segs.append({"from": max(1, a - 4), "to": min(N, b + 6), **pose})
         default = gesture_pose(idle, dd, gap, ks) if idle != "relaxed" and (idle != "hold_hands" or i < 2) else {}
         if idle == "hold_hands" and n == 3 and i == 2: default = {}
-        spec = {"id": m["id"], "type": "child" if kids[i] else "person", "outfit": m["outfit"], "loc": [round(xs[i], 3), y0, 0],
+        spec = {"id": m["id"], "type": "soft_child" if kids[i] else "soft", "outfit": SOFT_OUTFIT.get(m["outfit"], m["outfit"]), "loc": [round(xs[i], 3), y0, 0],
                 "blocking": {"default": {"location": [round(xs[i], 3), y0, 0]},
                              "segments": [{"from": 1, "to": N, "location": [round(xs[i], 3), y0, 0]}]},
                 "look": {"hair": m["hair"], "hair_color": m["hair_color"], "beard": "none", "seed": i + 1,

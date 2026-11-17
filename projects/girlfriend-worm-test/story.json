@@ -30,7 +30,8 @@
     "b": 102,
     "type": "full",
     "frame": {
-     "size": 3.6,
+     "size": 3.35,
+     "look_dz": 0.12,
      "move": "drift",
      "amount": 0.7,
      "subject": [
@@ -67,7 +68,8 @@
     "b": 341,
     "type": "full",
     "frame": {
-     "size": 3.6,
+     "size": 3.35,
+     "look_dz": 0.12,
      "move": "drift",
      "amount": 0.7,
      "subject": [
@@ -115,7 +117,8 @@
     "b": 642,
     "type": "full",
     "frame": {
-     "size": 3.6,
+     "size": 3.35,
+     "look_dz": 0.12,
      "move": "drift",
      "amount": 0.7,
      "subject": [
@@ -209,7 +212,8 @@
     "b": 1210,
     "type": "full",
     "frame": {
-     "size": 3.6,
+     "size": 3.35,
+     "look_dz": 0.12,
      "move": "drift",
      "amount": 0.7,
      "subject": [
@@ -225,17 +229,17 @@
  "chars": [
   {
    "id": "mia",
-   "type": "person",
-   "outfit": "casual_dress",
+   "type": "soft",
+   "outfit": "soft_dress",
    "loc": [
-    -0.62,
+    -0.63,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      -0.62,
+      -0.63,
       4.3,
       0
      ]
@@ -245,7 +249,7 @@
       "from": 1,
       "to": 1210,
       "location": [
-       -0.62,
+       -0.63,
        4.3,
        0
       ]
@@ -411,7 +415,7 @@
       "armR": [
        "ik",
        [
-        0.59,
+        0.6,
         0.2
        ],
        1
@@ -470,7 +474,7 @@
       "armL": [
        "ik",
        [
-        -0.43,
+        -0.3,
         0.22
        ],
        1
@@ -478,7 +482,7 @@
       "armR": [
        "ik",
        [
-        0.43,
+        0.3,
         0.22
        ],
        -1
@@ -491,7 +495,7 @@
       "armL": [
        "ik",
        [
-        -0.43,
+        -0.3,
         0.22
        ],
        1
@@ -499,7 +503,7 @@
       "armR": [
        "ik",
        [
-        0.43,
+        0.3,
         0.22
        ],
        -1
@@ -519,17 +523,17 @@
   },
   {
    "id": "ben",
-   "type": "person",
-   "outfit": "hoodie",
+   "type": "soft",
+   "outfit": "soft_hoodie",
    "loc": [
-    0.62,
+    0.63,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      0.62,
+      0.63,
       4.3,
       0
      ]
@@ -539,7 +543,7 @@
       "from": 1,
       "to": 1210,
       "location": [
-       0.62,
+       0.63,
        4.3,
        0
       ]
@@ -809,7 +813,7 @@
       "armL": [
        "ik",
        [
-        0.16,
+        0.1,
         0.44
        ],
        -1
@@ -817,7 +821,7 @@
       "armR": [
        "ik",
        [
-        -0.16,
+        -0.1,
         0.48
        ],
        1
@@ -829,7 +833,7 @@
       "armL": [
        "ik",
        [
-        0.16,
+        0.1,
         0.44
        ],
        -1
@@ -837,7 +841,7 @@
       "armR": [
        "ik",
        [
-        -0.16,
+        -0.1,
         0.48
        ],
        1

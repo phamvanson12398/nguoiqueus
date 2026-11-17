@@ -1,0 +1,94 @@
+{
+ "kind": "outfit",
+ "name": "soft_apron",
+ "culture": "modern_home",
+ "role": "mom",
+ "status": "approved",
+ "title_vi": "Áo + tạp dề",
+ "description_vi": "Áo + tạp dề cho thân soft (video đối thoại).",
+ "silhouette_vi": "Áo + tạp dề",
+ "sources": [],
+ "torso": "$cloth2",
+ "hair": "curly",
+ "beard": "none",
+ "palette": {
+  "trim": [
+   0.97,
+   0.96,
+   0.93
+  ],
+  "leather": [
+   0.3,
+   0.18,
+   0.08
+  ]
+ },
+ "body": "soft",
+ "items": [
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "apron",
+   "pts": [
+    [
+     -0.12,
+     0.6
+    ],
+    [
+     0.12,
+     0.6
+    ],
+    [
+     0.24,
+     -0.2
+    ],
+    [
+     -0.24,
+     -0.2
+    ]
+   ],
+   "mat": "$cloth",
+   "z": 0.15,
+   "outline": 0.02
+  },
+  {
+   "op": "shape",
+   "on": "torso",
+   "name": "apron_pocket",
+   "pts": {
+    "rrect": [
+     0,
+     0.18,
+     0.18,
+     0.11,
+     0.03
+    ]
+   },
+   "mat": "$cloth",
+   "z": 0.16,
+   "outline": 0.014
+  },
+  {
+   "op": "stroke",
+   "on": "torso",
+   "name": "strap",
+   "pts": [
+    [
+     -0.1,
+     0.6
+    ],
+    [
+     0,
+     0.76
+    ],
+    [
+     0.1,
+     0.6
+    ]
+   ],
+   "w": 0.02,
+   "mat": "$cloth",
+   "z": 0.155
+  }
+ ]
+}

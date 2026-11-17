@@ -35,20 +35,27 @@ def make_char(name, loc, cfg):
     shoe = cfg.get("shoe")
     if shoe:                                     # custom shoes (colour/size) instead of the black ovals
         shoe = dict(shoe); shoe["mat"] = flat(shoe["mat"], (1, 1, 1)) if isinstance(shoe["mat"], str) else shoe["mat"]
-    c.legL = limb(c.body, name + "_legL", (-0.15, hipY), lL1, lL2, 0.065, 0.05, "shoe", shoe=shoe)
-    c.legR = limb(c.body, name + "_legR", (0.15, hipY), lL1, lL2, 0.065, 0.05, "shoe", shoe=shoe)
+    aw, lw = cfg.get("limb_w", (0.05, 0.065))   # soft body: thin stick limbs
+    hx = cfg.get("hip_x", 0.15)
+    c.legL = limb(c.body, name + "_legL", (-hx, hipY), lL1, lL2, lw, 0.05, "shoe", shoe=shoe)
+    c.legR = limb(c.body, name + "_legR", (hx, hipY), lL1, lL2, lw, 0.05, "shoe", shoe=shoe)
     c.footL, c.footR, c.foot_y = c.legL[1], c.legR[1], -lL2      # extras "on": "footL"/"footR" follow the legs
     c.torso = empty(name + "_torso", c.body, (0, hipY - 0.04, 0))
     tw, th, tcol = cfg["torso"]
     c.torso_h = th
-    shape(c.torso, name + "_shirt", rrect(0, th / 2, tw, th, 0.3 if tw < 0.9 else 0.32), tcol, 0.12)
+    if cfg.get("torso_taper"):                   # soft body: narrow rounded shoulders widening to the hem
+        shape(c.torso, name + "_shirt", taper_pts(cfg["torso_taper"][0], cfg["torso_taper"][1], th), tcol, 0.12,
+              outline=cfg.get("outline", 0.035))
+    else:
+        shape(c.torso, name + "_shirt", rrect(0, th / 2, tw, th, 0.3 if tw < 0.9 else 0.32), tcol, 0.12)
     shX, shY, aL1, aL2 = cfg["arm"]
     c.sh = {"L": (-shX, shY), "R": (shX, shY)}; c.aL = (aL1, aL2)
-    c.armL = limb(c.torso, name + "_armL", (-shX, shY), aL1, aL2, 0.05, 0.30, "hand")
-    c.armR = limb(c.torso, name + "_armR", (shX, shY), aL1, aL2, 0.05, 0.30, "hand")
-    stroke(c.torso, name + "_neck", [(0, th - 0.04), (0, th + 0.08)], 0.06, 0.1)
+    c.armL = limb(c.torso, name + "_armL", (-shX, shY), aL1, aL2, aw, 0.30, "hand", hand_r=cfg.get("hand_r", 0.075))
+    c.armR = limb(c.torso, name + "_armR", (shX, shY), aL1, aL2, aw, 0.30, "hand", hand_r=cfg.get("hand_r", 0.075))
+    if cfg.get("neck", True): stroke(c.torso, name + "_neck", [(0, th - 0.04), (0, th + 0.08)], 0.06, 0.1)
     hy, hr = cfg["head"]
     c.head = empty(name + "_head", c.torso, (0, hy, 0.36))
+    if cfg.get("head_scale"): c.head.scale = (cfg["head_scale"],) * 3     # big round head, face features grow with it
     c.skin = flat(name + "_skin", (0.98, 0.98, 0.97))
     shape(c.head, name + "_face", ellipse(0, 0, hr, hr * 0.97, 48), c.skin, 0.0)
     cfg["extras"](c)
@@ -74,6 +81,14 @@ def draw_extras(c, cid, L):
             geo.disc(parent, nm, op["c"][0] + (0.04 if dy else 0), op["c"][1] + dy, op["r"], op["z"], m)
         else:
             raise ValueError(f"char {cid}: unknown extras op {op['op']!r}")
+
+
+def taper_pts(top, bottom, h, n=14):
+    """soft torso outline: rounded shoulders (half ellipse) on straight sides that widen to a gently rounded hem"""
+    ry = top * 0.42; cy = h - ry
+    arc_ = [(top / 2 * math.cos(math.pi * k / n), cy + ry * math.sin(math.pi * k / n)) for k in range(n + 1)]   # right -> left
+    hem = [(-bottom / 2 + 0.02, 0.0)] + [(bottom / 2 * (-1 + 2 * k / 6), -0.012 * math.sin(math.pi * k / 6)) for k in range(1, 6)] + [(bottom / 2 - 0.02, 0.0)]
+    return [(bottom / 2, 0.03)] + arc_ + [(-bottom / 2, 0.03)] + hem
 
 
 def char_cfg(L, faces_override=None):

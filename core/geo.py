@@ -152,7 +152,7 @@ def text(name, body, size, parent, loc, m, align_y=True, font_path="default", of
     return o
 
 
-def limb(parent, name, origin, L1, L2, w, z, hand=None, shoe=None):
+def limb(parent, name, origin, L1, L2, w, z, hand=None, shoe=None, hand_r=0.075):
     """two-segment stick limb. returns (upper, lower) pivots.
     shoe: optional dict(mat, rx, ry, dx, outline) replacing the default black oval shoe"""
     up = empty(name + "_up", parent, (origin[0], origin[1], z))
@@ -161,7 +161,7 @@ def limb(parent, name, origin, L1, L2, w, z, hand=None, shoe=None):
     lo = empty(name + "_lo", up, (0, -L1, 0))
     stroke(lo, name + "_s2", [(0, 0), (0, -L2)], w, 0)
     if hand == "hand":
-        shape(lo, name + "_hand", ellipse(0, -L2 - 0.05, 0.075, 0.075, 24), WHITE, 0.03, outline=0.03)
+        shape(lo, name + "_hand", ellipse(0, -L2 - 0.05 * (hand_r / 0.075), hand_r, hand_r, 24), WHITE, 0.03, outline=0.03 * hand_r / 0.075)
     elif hand == "shoe" and shoe:
         shape(lo, name + "_shoe", ellipse(shoe.get("dx", 0.04), -L2 - 0.02, shoe.get("rx", 0.13), shoe.get("ry", 0.065), 24),
               shoe["mat"], 0.0, outline=shoe.get("outline", 0.03))
