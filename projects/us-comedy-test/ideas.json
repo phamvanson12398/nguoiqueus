@@ -1,0 +1,114 @@
+{
+  "ideas": [
+    {
+      "title": "The Thermostat War",
+      "title_vi": "Cuộc chiến cái điều hòa",
+      "score": 9,
+      "hook": "Married couples be like",
+      "logline": "Chồng hỏi vặn vợ ba lần \"Ai lại chỉnh nhiệt độ?\", vợ chối tỉnh bơ, còn anh thì cứ khoe đã hạ xuống 68 độ và thấy mát hẳn.",
+      "relationship": "married",
+      "twist": "Vợ thú nhận cái núm điều hòa anh vặn mỗi ngày là đồ giả, không nối dây, cô gắn từ mấy năm trước để anh vặn cho yên tâm. Đầu video đã gài câu anh khoe \"I can feel the difference\".",
+      "punchline": "It's been fake since 2019.",
+      "set": "kitchen (stuck_toast: false)"
+    },
+    {
+      "title": "We Have Food at Home",
+      "title_vi": "Nhà có đồ ăn mà",
+      "score": 9,
+      "hook": "Every mom ever",
+      "logline": "Đứa con xin gọi DoorDash, mẹ nghiêm giọng đáp \"We have food at home\" hai lần, rồi lần thứ ba mở tủ lạnh ra kể món, càng kể càng thấy thảm (nửa củ hành, nước sốt, ít đá).",
+      "relationship": "parents_kid",
+      "twist": "Chuông cửa reo, shipper giao một túi đồ ăn đứng tên mẹ. Mẹ đã lén gọi từ 20 phút trước.",
+      "punchline": "That's... the food at home.",
+      "set": "kitchen (stuck_toast: false)"
+    },
+    {
+      "title": "Do You Know What Day It Is?",
+      "title_vi": "Anh có biết hôm nay ngày gì không?",
+      "score": 8,
+      "hook": "When she asks 'what day is it'",
+      "logline": "Vợ hỏi \"Anh có biết hôm nay ngày gì không?\", chồng hoảng, đoán ngày càng liều: kỷ niệm cưới, ngày hẹn hò đầu tiên, sinh nhật mẹ vợ, cuối cùng là Taco Tuesday.",
+      "relationship": "married",
+      "twist": "Vợ cũng chẳng nhớ ngày kỷ niệm nào cả. Cô hỏi vì hôm nay là ngày đổ rác, và tới lượt anh.",
+      "punchline": "Trash day. Go.",
+      "set": "kitchen (stuck_toast: false)"
+    },
+    {
+      "title": "The Neighbor Who Mows Too Much",
+      "title_vi": "Ông hàng xóm cắt cỏ chăm chỉ",
+      "score": 9,
+      "hook": "HOA neighbors be like",
+      "logline": "Ông hàng xóm khó tính chê cỏ nhà Dave cao quá, Dave cãi là mình cắt mỗi thứ Bảy suốt ba năm nay, không bỏ tuần nào.",
+      "relationship": "friends",
+      "twist": "Hai người nhìn qua đường mới vỡ lẽ: ba năm nay Dave cắt nhầm bãi cỏ nhà người khác, chính là nhà ông hàng xóm.",
+      "punchline": "So... who's mowing mine?",
+      "set": "street"
+    },
+    {
+      "title": "Per My Last Email",
+      "title_vi": "Như email trước tôi đã nói",
+      "score": 8,
+      "hook": "Corporate passive aggression",
+      "logline": "Nhân viên ngày càng gắt với sếp: \"per my last email\", \"as previously stated\", rồi tới \"per my last FIVE emails\". Sếp vẫn tỉnh bơ uống cà phê.",
+      "relationship": "boss_employee",
+      "twist": "Sếp chưa bao giờ đọc email. Ông đã trả lời hết bằng tin nhắn thoại, và hộp thư thoại của nhân viên đang có 47 tin chưa nghe.",
+      "punchline": "Check your voicemail.",
+      "set": "office"
+    },
+    {
+      "title": "Grandpa's Candy Mission",
+      "title_vi": "Nhiệm vụ kẹo của ông nội",
+      "score": 8,
+      "hook": "Grandparents rules",
+      "logline": "Đứa cháu xin kẹo, ông nghiêm mặt \"Your mom said no sugar\" hai lần, rồi lần thứ ba ông hỏi nhỏ \"...How much candy are we talking?\"",
+      "relationship": "grandparents",
+      "twist": "Hóa ra ông bị bác sĩ cấm đồ ngọt, nên lấy cháu làm bình phong. Giấu kẹo xong, ông chia cho cháu đúng một viên, phần mình giữ chín viên.",
+      "punchline": "If Mom asks, it was you.",
+      "set": "kitchen (stuck_toast: false)"
+    },
+    {
+      "title": "The $200 Target Receipt",
+      "title_vi": "Hóa đơn Target 200 đô",
+      "score": 8,
+      "hook": "Just one thing at Target",
+      "logline": "Chồng đọc từng hóa đơn để \"nói chuyện ngân sách\" với vợ: 12 đô, ừ được; 40 đô, thôi cũng được; 212 đô thì anh nổi đóa.",
+      "relationship": "married",
+      "twist": "Vợ lật mặt sau tờ 212 đô: đây là hóa đơn Home Depot, mua bộ nướng BBQ thứ ba của chính anh.",
+      "punchline": "...It was on sale.",
+      "set": "kitchen (stuck_toast: false)"
+    },
+    {
+      "title": "Who's Using Our Netflix?",
+      "title_vi": "Ai đang xài ké Netflix nhà mình?",
+      "score": 8,
+      "hook": "Netflix password drama",
+      "logline": "Cậu con trai báo có người lạ ở Ohio xem chùa Netflix nhà mình. Hai bố con lần lượt đoán: bạn trai cũ của chị, hàng xóm cũ, hacker.",
+      "relationship": "parents_kid",
+      "twist": "Người ở Ohio là bà nội, đang cày tới mùa 4 một phim hẹn hò thực tế. Bố định đá bà ra thì con nhắc: tài khoản này đứng tên bà, bà trả tiền.",
+      "punchline": "She pays. She stays.",
+      "set": "living_room (mới)"
+    },
+    {
+      "title": "Dad Helps With Homework",
+      "title_vi": "Bố kèm bài tập",
+      "score": 8,
+      "hook": "Asking dad for homework help",
+      "logline": "Cô con gái nhờ bố giải bài toán. Câu nào bố cũng biến thành dad joke, con mỗi lúc một bực, mặt chuyển từ side_eye sang annoyed rồi facepalm.",
+      "relationship": "parents_kid",
+      "twist": "Tới câu cuối, chính cô bé buột miệng một câu dad joke để trả lời. Bố xúc động như vừa xem con tốt nghiệp.",
+      "punchline": "I've never been prouder.",
+      "set": "kitchen (stuck_toast: false)"
+    },
+    {
+      "title": "He Memorized Her Coffee Order",
+      "title_vi": "Anh thuộc lòng món cà phê của em",
+      "score": 8,
+      "hook": "This is true love",
+      "logline": "Anh người yêu tập đọc thuộc lòng món cà phê dài 23 chữ của cô (oat milk, half-sweet, extra foam…) để tạo bất ngờ, ba lần sai rồi lần thứ ba trơn tru.",
+      "relationship": "couple",
+      "twist": "Cô cảm động thật, nhưng thú nhận từ hôm qua cô đã bỏ đường, giờ chỉ uống cà phê đen.",
+      "punchline": "Black. Just black.",
+      "set": "kitchen (stuck_toast: false)"
+    }
+  ]
+}

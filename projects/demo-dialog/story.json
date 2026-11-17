@@ -180,8 +180,15 @@
       0.8,
       0.2
      ]
-    }
+    },
+    "signature": "bow",
+    "sig_color": [
+     0.95,
+     0.15,
+     0.3
+    ]
    },
+   "head_shape": "egg",
    "faces": [
     "neutral",
     "happy",
@@ -382,8 +389,15 @@
       0.2,
       0.45
      ]
-    }
+    },
+    "signature": "cap",
+    "sig_color": [
+     0.1,
+     0.55,
+     0.95
+    ]
    },
+   "head_shape": "wide",
    "faces": [
     "neutral",
     "happy",

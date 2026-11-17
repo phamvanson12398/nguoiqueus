@@ -353,7 +353,10 @@ def plan(slug, char_style=None, log=print):
                 "blocking": {"default": {"location": [round(xs[i], 3), y0, 0]},
                              "segments": [{"from": 1, "to": N, "location": [round(xs[i], 3), y0, 0]}]},
                 "look": {"hair": m["hair"], "hair_color": m["hair_color"], "beard": "none", "seed": i + 1,
-                         "palette": {"cloth": m["colors"]["cloth"], "cloth2": m["colors"]["cloth2"]}},
+                         "palette": {"cloth": m["colors"]["cloth"], "cloth2": m["colors"]["cloth2"]},
+                         **({"signature": m["signature"], "sig_color": m.get("sig_color") or [0.92, 0.2, 0.3]}
+                            if m.get("signature", "none") != "none" else {})},
+                "head_shape": m.get("head_shape", "round"),
                 "faces": ALL_FACES, "expressions": clean, "blinks": blinks, "talk": talk,
                 "pose": {"default": default, "segments": segs}}
         if reacts: spec["reacts"] = reacts

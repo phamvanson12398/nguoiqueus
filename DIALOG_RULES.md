@@ -29,6 +29,20 @@ Lời thoại tiếng Anh (giọng OmniVoice, mỗi nhân vật một giọng), 
 - Đề tài dễ viral: "relatable" (ai yêu/ai có bố mẹ cũng gặp), so sánh "lời nói vs ý thật", logic trẻ con, logic bố mẹ, hiểu lầm chữ nghĩa,
   lời hứa vs thực tế, kiểm tra tình yêu ("Would you still love me if I was a worm?").
 
+## 2b. Hài kiểu Mỹ (bắt buộc)
+Người xem chính là khán giả Mỹ: viết như sitcom/sketch Mỹ, người Mỹ đọc thấy tự nhiên và buồn cười.
+- **Đời sống Mỹ hằng ngày** làm chất liệu: chạy Target "chỉ mua một món" rồi ra 200 đô, thẻ Costco, gọi DoorDash/Uber Eats khi
+  "we have food at home", chia mật khẩu Netflix, group chat gia đình, Thanksgiving với nhà vợ/chồng, fantasy football, hóa đơn tiền điện,
+  student loans, tiền thuê nhà, đơn Starbucks dài ngoằng, gym tháng Một, gói Amazon chất đống, HOA hàng xóm khó tính, therapy-speak
+  ("I'm setting a boundary", "that's a red flag"), "per my last email", bố kể dad joke, mẹ nói "I'm not mad, I'm disappointed".
+  Chỉ nhắc tên thương hiệu như người thật nói chuyện (không quảng cáo, không chê bai sản phẩm).
+- **Kỹ thuật hài Mỹ**: deadpan (nói chuyện vô lý bằng giọng tỉnh bơ), sarcasm, understatement ("So that's… not great."),
+  hyperbole, chữ nghĩa bị hiểu theo nghĩa đen, logic sai mà tự tin tuyệt đối, "yes-and" leo thang (mỗi câu chấp nhận rồi đẩy xa hơn),
+  callback (câu cuối gọi lại một chi tiết đầu video), khoảng lặng ngượng (awkward pause) trước câu chốt, câu chốt thật ngắn (2-6 từ).
+- **Giọng văn**: tiếng Anh Mỹ thông tục, rút gọn (gonna, wanna, y'know, literally, low-key, no way, are you serious?, okay but…),
+  câu ngắn, ngắt nhịp tự nhiên; tránh từ cổ, tránh kiểu Anh-Anh, tránh dịch từ tiếng Việt.
+- Hài ấm áp, không cay độc: không chính trị, không tôn giáo, không chê ngoại hình/giới/sắc tộc; cặp đôi vẫn thương nhau ở cuối.
+
 ## 3. Diễn xuất (mỗi câu)
 - `face` người nói và `listener_face` người nghe đổi theo nghĩa câu; người nghe PHẢN ỨNG là nửa cái hài (side_eye, annoyed, shock, sad).
   Mặt có sẵn: neutral happy smirk wink angry shock worried grumpy focus smug_closed sad love laugh side_eye annoyed blush.
@@ -43,6 +57,13 @@ Lời thoại tiếng Anh (giọng OmniVoice, mỗi nhân vật một giọng), 
 ## 4. Nhân vật và giọng
 - Mỗi nhân vật: tên, vai, giới tính, tuổi, `body` (child cho trẻ con), tóc + màu tóc, trang phục đời thường (casual_tee, casual_dress, hoodie,
   shirt_tie, home_apron, cardigan, kid_tee, kid_dress), hai màu áo đậm và tươi, mỗi người khác nhau rõ (không cùng tông).
+- **Đơn giản nhưng lạ mắt**: thân và mặt vẫn tối giản (đầu tròn to, thân thon, tay chân que), mỗi nhân vật có:
+  - `head_shape` riêng: `round` (tròn), `egg` (quả trứng, cao), `wide` (bè ngang), `tall` (dài). Hai người trong video khác dáng đầu.
+  - đúng MỘT `signature` (món nhận diện trên đầu): `bow` nơ, `glasses` kính, `ahoge` một sợi tóc dựng xoắn, `cap` mũ lưỡi trai,
+    `freckles` tàn nhang, `earrings` bông tai, `headband` băng đô, `beanie` mũ len có quả bông, `flower` hoa cài, `lashes` mi cong.
+    Hợp tính cách (mọt sách → glasses, bố → cap, cô nàng lém lỉnh → bow/flower, người lười → beanie, đứa trẻ tinh nghịch → ahoge/freckles).
+  - `sig_color`: một màu rực cho món đó (đỏ, vàng, xanh ngọc, hồng, cam), hai người khác màu. Ở kiểu nhân vật xám, đây là điểm màu duy nhất
+    trên người nên rất nổi.
 - `voice_instruct` cho OmniVoice: tiếng Anh, thuộc tính cách nhau dấu phẩy: `male`/`female`, tuổi (`child`, `teenager`, `young adult`,
   `middle-aged`, `elderly`), độ cao (`very low pitch`, `low pitch`, `moderate pitch`, `high pitch`, `very high pitch`), giọng vùng
   (`american accent`, `british accent`…). Hai giọng trong một video phải khác nhau rõ (giới tính hoặc độ cao).

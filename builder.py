@@ -29,6 +29,7 @@ from storycheck import LibIndex
 
 LIB_DIR = os.path.join(ROOT, "library")
 ANIM_PROPS = ("location", "rotation_euler", "scale")
+HEAD_SHAPES = {"round": (1.0, 1.0), "egg": (0.92, 1.1), "wide": (1.13, 0.92), "tall": (0.86, 1.17)}
 POSE_FIELDS = ("armL", "armR", "legs", "tilt", "body", "lean")
 
 
@@ -169,6 +170,9 @@ class Builder:
         L = self.lib.json("chars", cs["type"])
         cid = cs["id"]
         cfg = chars.char_cfg(L, cs.get("faces"))
+        if cs.get("head_shape") and cs["head_shape"] != "round":          # dialogue characters: egg / wide / tall heads
+            sx, sy = HEAD_SHAPES[cs["head_shape"]]; hs = cfg.get("head_scale", 1.0)
+            cfg["head_scale"] = (hs * sx, hs * sy, hs)
         of, fac, cul = self.outfit_for(cs) if (cs.get("outfit") or (cs.get("role") and cs["type"] == "person")) else (None, None, None)
         changes = cs.get("outfit_changes", [])
         if of or changes:

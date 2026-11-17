@@ -412,6 +412,11 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   tay chân que mảnh (`limb_w`), hông hẹp (`hip_x`), bàn tay nhỏ (`hand_r`), bàn chân nhỏ. Trang phục `soft_*` vừa thân thon (dialog.py tự đổi
   casual_dress → soft_dress có gấu lượn sóng…). Các khóa này chỉ có trong char.json mới: Shorts cũ giống hệt (fingerprint demo-v3, toast).
   Ảnh: `docs/img/dialog_soft.jpg` (khung phải cùng là video mẫu).
+- "Đơn giản nhưng lạ mắt" + "hài kiểu Mỹ": mỗi nhân vật có `head_shape` (round/egg/wide/tall: tỉ lệ x, y của đầu, `builder.HEAD_SHAPES`) và
+  đúng một `signature` trên đầu (`outfits.signature_ops`: bow, glasses, ahoge, cap, freckles, earrings, headband, beanie, flower, lashes) với
+  `sig_color` rực; ở kiểu xám món này giữ màu (điểm màu duy nhất). DIALOG_RULES mục 2b (đời sống Mỹ, deadpan, sarcasm, callback, câu chốt
+  2-6 từ, tiếng Anh Mỹ thông tục) và mục 4; `check_dialog_look` khi Claude viết. Thử thật: 10 ý tưởng (57 s), kịch bản "The Thermostat War"
+  (39 s, 17 câu, callback "But I could feel the difference"), dựng 2D xám. Ảnh: `docs/img/dialog_us.jpg`.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

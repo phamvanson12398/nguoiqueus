@@ -34,7 +34,14 @@
           0.2
         ]
       },
-      "personality_vi": "ngọt ngào, đổi ý nhanh"
+      "personality_vi": "ngọt ngào, đổi ý nhanh",
+      "head_shape": "egg",
+      "signature": "bow",
+      "sig_color": [
+        0.95,
+        0.15,
+        0.3
+      ]
     },
     {
       "id": "ben",
@@ -64,7 +71,14 @@
           0.45
         ]
       },
-      "personality_vi": "hiền, thật thà"
+      "personality_vi": "hiền, thật thà",
+      "head_shape": "wide",
+      "signature": "cap",
+      "sig_color": [
+        0.1,
+        0.55,
+        0.95
+      ]
     }
   ],
   "setting": {

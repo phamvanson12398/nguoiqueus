@@ -34,7 +34,14 @@
           0.4
         ]
       },
-      "personality_vi": "tỉnh táo, thích bóc phốt"
+      "personality_vi": "tỉnh táo, thích bóc phốt",
+      "head_shape": "egg",
+      "signature": "earrings",
+      "sig_color": [
+        1.0,
+        0.75,
+        0.1
+      ]
     },
     {
       "id": "leo",
@@ -64,7 +71,14 @@
           0.7
         ]
       },
-      "personality_vi": "lém lỉnh"
+      "personality_vi": "lém lỉnh",
+      "head_shape": "round",
+      "signature": "ahoge",
+      "sig_color": [
+        0.2,
+        0.8,
+        0.5
+      ]
     },
     {
       "id": "dad",
@@ -94,7 +108,14 @@
           0.3
         ]
       },
-      "personality_vi": "hay giảng đạo lý"
+      "personality_vi": "hay giảng đạo lý",
+      "head_shape": "wide",
+      "signature": "glasses",
+      "sig_color": [
+        0.9,
+        0.2,
+        0.15
+      ]
     }
   ],
   "setting": {

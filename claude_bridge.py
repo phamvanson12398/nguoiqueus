@@ -984,7 +984,7 @@ def _dialog_sets_text():
 
 
 def dialog_ideas(slug, topic=None, count=10, model=None):
-    prompt = (f"Đề xuất {count} ý tưởng video ĐỐI THOẠI HÀI theo DIALOG_RULES.md bên dưới"
+    prompt = (f"Đề xuất {count} ý tưởng video ĐỐI THOẠI HÀI KIỂU MỸ (khán giả Mỹ, đời sống Mỹ, mục 2b) theo DIALOG_RULES.md bên dưới"
               + (f", xoay quanh: {topic}." if topic else " (cặp đôi, vợ chồng, gia đình, bạn bè).")
               + " Nghĩ 25-30 ý rồi lọc, chỉ giữ ý 8/10 trở lên: tình huống ai cũng gặp, cú đảo bất ngờ mà hợp lý, câu chốt ngắn."
               + " Mỗi ý: tiêu đề tiếng Anh, tiêu đề Việt, dòng chữ hook trên đầu video, tình huống, quan hệ, cú đảo, câu chốt (tiếng Anh), bối cảnh."
@@ -1029,6 +1029,18 @@ def check_dialog(x, minutes=None):
     return e
 
 
+def check_dialog_look(x):
+    """new scripts: every character gets its own head shape and one coloured signature item (simple but memorable)"""
+    e = []
+    for c in x["cast"]:
+        if not c.get("head_shape"): e.append(f"{c['id']}: thiếu head_shape (round/egg/wide/tall)")
+        if not c.get("signature") or c["signature"] == "none": e.append(f"{c['id']}: cần một signature (bow, glasses, ahoge, cap…)")
+        if not c.get("sig_color"): e.append(f"{c['id']}: thiếu sig_color")
+    if len({c.get("head_shape") for c in x["cast"]}) < min(2, len(x["cast"])): e.append("các nhân vật phải khác dáng đầu (head_shape)")
+    if len({c.get("signature") for c in x["cast"]}) < len(x["cast"]): e.append("mỗi nhân vật một signature khác nhau")
+    return e
+
+
 def dialog_fill(x):
     """fields the rest of the tool reads from every content.json (word counts, YouTube, retention)"""
     x["vo_en"] = " ".join(l["text"] for l in x["lines"])
@@ -1043,11 +1055,12 @@ def write_dialog(slug, idea, minutes=0.75, model=None):
     n_lines = max(8, min(30, int(round(words / 7))))
     prompt = (f"Viết kịch bản video đối thoại hài cho ý tưởng sau (JSON):\n{json.dumps(idea, ensure_ascii=False)}\n\n"
               + lessons_note() +
-              f"Độ dài: {minutes} phút ≈ {words} từ thoại tiếng Anh (±20 %), khoảng {n_lines} câu. Theo DIALOG_RULES.md bên dưới.\n"
+              f"Độ dài: {minutes} phút ≈ {words} từ thoại tiếng Anh (±20 %), khoảng {n_lines} câu. Theo DIALOG_RULES.md bên dưới: "
+              "hài kiểu Mỹ (mục 2b), nhân vật đơn giản nhưng lạ mắt (head_shape + một signature có màu, mục 4).\n"
               f"Giọng đã có trong thư viện (dùng lại nếu hợp vai): {_voices_text()}\n"
               f"Bối cảnh có sẵn: {_dialog_sets_text()}" + dialog_rules())
     data, info = call("write_dialog", prompt, load_schema("content_dialog"), project=slug, model=model,
-                      check=lambda x: check_dialog(x, minutes))
+                      check=lambda x: check_dialog(x, minutes) + check_dialog_look(x))
     data["minutes"] = minutes
     _save_versioned(slug, "content.json", dialog_fill(data))
     return data

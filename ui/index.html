@@ -894,6 +894,9 @@ const D_ROLES = ['husband', 'wife', 'boyfriend', 'girlfriend', 'dad', 'mom', 'so
 const D_OUTFITS = {casual_tee: 'áo phông + jean', casual_dress: 'váy liền', hoodie: 'hoodie', shirt_tie: 'sơ mi cà vạt', home_apron: 'tạp dề', cardigan: 'áo len',
   kid_tee: 'áo trẻ con', kid_dress: 'váy trẻ con'};
 const D_HAIR = ['short', 'long', 'tied', 'curly', 'topknot', 'braids', 'bald_sides', 'none'];
+const D_HEAD = {round: 'đầu tròn', egg: 'đầu trứng', wide: 'đầu bè', tall: 'đầu dài'};
+const D_SIG = {none: '— không —', bow: 'nơ', glasses: 'kính', ahoge: 'sợi tóc dựng', cap: 'mũ lưỡi trai', freckles: 'tàn nhang', earrings: 'bông tai',
+  headband: 'băng đô', beanie: 'mũ len', flower: 'hoa cài', lashes: 'mi cong'};
 const D_AGE = ['child', 'teenager', 'young adult', 'middle-aged', 'elderly'];
 const opts = (list, v, label) => (Array.isArray(list) ? list.map(x => [x, label ? label[x] || x : x]) : Object.entries(list))
   .map(([k, t]) => `<option value="${esc(k)}" ${k === v ? 'selected' : ''}>${esc(t)}</option>`).join('');
@@ -949,6 +952,10 @@ function dlgCastCard(m, i) {
       <label>Tóc <select data-k="hair">${opts(D_HAIR, m.hair)}</select></label><input type="color" data-k="hair_color" value="${rgb2hex(m.hair_color)}" title="Màu tóc">
       <label>Áo <select data-k="outfit">${opts(D_OUTFITS, m.outfit)}</select></label>
       <input type="color" data-k="cloth" value="${rgb2hex(m.colors.cloth)}" title="Màu chính"><input type="color" data-k="cloth2" value="${rgb2hex(m.colors.cloth2)}" title="Màu phụ"></div>
+    <div class="row" style="gap:6px;margin-top:6px" title="Đơn giản nhưng lạ mắt: dáng đầu riêng + một món nhận diện có màu">
+      <select data-k="head_shape">${opts(D_HEAD, m.head_shape || 'round')}</select>
+      <select data-k="signature">${opts(D_SIG, m.signature || 'none')}</select>
+      <input type="color" data-k="sig_color" value="${rgb2hex(m.sig_color || [0.92, 0.2, 0.3])}" title="Màu món nhận diện"></div>
     <label class="muted" style="display:block;margin-top:6px">Giọng (OmniVoice): <input type="text" data-k="voice_instruct" value="${esc(m.voice_instruct)}" style="width:100%"></label>
     <label class="muted">Mã giọng trong thư viện <input type="text" data-k="voice_id" value="${esc(m.voice_id)}" style="width:150px"></label>
     <div class="muted" style="font-size:12.5px;margin-top:4px">${esc(m.personality_vi || '')}</div></div>`;
@@ -988,6 +995,7 @@ function collectDialog() {
     const m = Object.assign({}, c.cast[i]); const v = k => el.querySelector(`[data-k=${k}]`).value;
     for (const k of ['name', 'role', 'gender', 'age', 'body', 'hair', 'outfit', 'voice_instruct', 'voice_id']) m[k] = v(k).trim();
     m.hair_color = hex2rgb(v('hair_color')); m.colors = {cloth: hex2rgb(v('cloth')), cloth2: hex2rgb(v('cloth2'))};
+    m.head_shape = v('head_shape'); m.signature = v('signature'); m.sig_color = hex2rgb(v('sig_color'));
     return m;
   });
   c.lines = $$('#dLines .dl').map(el => {

@@ -34,7 +34,14 @@
           0.05
         ]
       },
-      "personality_vi": "Lém lỉnh, thích thử lòng người yêu, luôn có ẩn ý trong mỗi câu hỏi."
+      "personality_vi": "Lém lỉnh, thích thử lòng người yêu, luôn có ẩn ý trong mỗi câu hỏi.",
+      "head_shape": "egg",
+      "signature": "flower",
+      "sig_color": [
+        1.0,
+        0.35,
+        0.6
+      ]
     },
     {
       "id": "ben",
@@ -64,7 +71,14 @@
           0.18
         ]
       },
-      "personality_vi": "Lãng mạn quá đà, hứa hẹn hoành tráng, nhưng yêu pizza không kém yêu bạn gái."
+      "personality_vi": "Lãng mạn quá đà, hứa hẹn hoành tráng, nhưng yêu pizza không kém yêu bạn gái.",
+      "head_shape": "tall",
+      "signature": "beanie",
+      "sig_color": [
+        0.15,
+        0.75,
+        0.7
+      ]
     }
   ],
   "setting": {

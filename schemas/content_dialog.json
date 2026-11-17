@@ -183,6 +183,42 @@
      },
      "personality_vi": {
       "type": "string"
+     },
+     "head_shape": {
+      "enum": [
+       "round",
+       "egg",
+       "wide",
+       "tall"
+      ],
+      "description": "dáng đầu: tròn, quả trứng, bè ngang, dài; mỗi nhân vật một dáng khác để nhận ra ngay"
+     },
+     "signature": {
+      "enum": [
+       "none",
+       "bow",
+       "glasses",
+       "ahoge",
+       "cap",
+       "freckles",
+       "earrings",
+       "headband",
+       "beanie",
+       "flower",
+       "lashes"
+      ],
+      "description": "MỘT món nhận diện trên đầu: nơ, kính, sợi tóc dựng, mũ lưỡi trai, tàn nhang, bông tai, băng đô, mũ len, hoa cài, mi cong. Giữ màu kể cả kiểu nhân vật xám"
+     },
+     "sig_color": {
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1
+      },
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "màu món nhận diện: một màu rực (đỏ, vàng, xanh ngọc, hồng…), hai nhân vật khác màu"
      }
     }
    },

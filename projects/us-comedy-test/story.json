@@ -1,0 +1,1342 @@
+{
+ "meta": {
+  "title": "The Thermostat War",
+  "slug": "us-comedy-test",
+  "fps": 30,
+  "frames": 1448,
+  "seed": 7,
+  "voice": "voice.wav",
+  "output": "out.mp4",
+  "samples": 32,
+  "aspect": "9:16",
+  "char_style": "2d",
+  "char_tone": "grey",
+  "dialog": true,
+  "fast_build": true
+ },
+ "sets": [
+  {
+   "id": "stage",
+   "type": "kitchen",
+   "params": {
+    "stuck_toast": false
+   }
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "shots": [
+   {
+    "a": 1,
+    "b": 76,
+    "type": "full",
+    "frame": {
+     "size": 3.35,
+     "look_dz": 0.12,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 77,
+    "b": 111,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 112,
+    "b": 202,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 203,
+    "b": 267,
+    "type": "full",
+    "frame": {
+     "size": 3.35,
+     "look_dz": 0.12,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 268,
+    "b": 348,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 349,
+    "b": 429,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 430,
+    "b": 490,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 491,
+    "b": 583,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 584,
+    "b": 629,
+    "type": "full",
+    "frame": {
+     "size": 3.35,
+     "look_dz": 0.12,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 630,
+    "b": 673,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 674,
+    "b": 739,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "mia"
+    }
+   },
+   {
+    "a": 740,
+    "b": 856,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 857,
+    "b": 932,
+    "type": "full",
+    "frame": {
+     "size": 3.35,
+     "look_dz": 0.12,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 933,
+    "b": 1009,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 1010,
+    "b": 1086,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 1087,
+    "b": 1227,
+    "type": "closeup",
+    "frame": {
+     "move": "push_in",
+     "amount": 0.7,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 1228,
+    "b": 1264,
+    "type": "medium",
+    "frame": {
+     "size": 2.25,
+     "move": "push_in",
+     "amount": 0.55,
+     "subject": "ben"
+    }
+   },
+   {
+    "a": 1265,
+    "b": 1322,
+    "type": "medium",
+    "frame": {
+     "size": 2.5,
+     "look_dz": 0.42,
+     "move": "push_in",
+     "amount": 1.1,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   },
+   {
+    "a": 1323,
+    "b": 1448,
+    "type": "full",
+    "frame": {
+     "size": 3.35,
+     "look_dz": 0.12,
+     "move": "drift",
+     "amount": 0.7,
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ]
+    }
+   }
+  ],
+  "hand": 0.35
+ },
+ "chars": [
+  {
+   "id": "ben",
+   "type": "soft",
+   "outfit": "soft_hoodie",
+   "loc": [
+    -0.63,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      -0.63,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 1448,
+      "location": [
+       -0.63,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "short",
+    "hair_color": [
+     0.22,
+     0.12,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 1,
+    "palette": {
+     "cloth": [
+      0.03,
+      0.22,
+      0.55
+     ],
+     "cloth2": [
+      0.98,
+      0.3,
+      0.02
+     ]
+    },
+    "signature": "cap",
+    "sig_color": [
+     0.85,
+     0.06,
+     0.04
+    ]
+   },
+   "head_shape": "wide",
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "angry"
+    ],
+    [
+     84,
+     "side_eye_r"
+    ],
+    [
+     115,
+     "shock"
+    ],
+    [
+     210,
+     "annoyed"
+    ],
+    [
+     271,
+     "smug_closed"
+    ],
+    [
+     437,
+     "side_eye_r"
+    ],
+    [
+     494,
+     "grumpy"
+    ],
+    [
+     591,
+     "annoyed"
+    ],
+    [
+     681,
+     "angry"
+    ],
+    [
+     864,
+     "worried"
+    ],
+    [
+     1013,
+     "shock"
+    ],
+    [
+     1326,
+     "sad"
+    ]
+   ],
+   "blinks": [
+    58,
+    172,
+    275,
+    358,
+    447,
+    524,
+    655,
+    735,
+    856,
+    944,
+    1023,
+    1142,
+    1265,
+    1381
+   ],
+   "talk": [
+    [
+     11,
+     74
+    ],
+    [
+     115,
+     200
+    ],
+    [
+     271,
+     425
+    ],
+    [
+     494,
+     581
+    ],
+    [
+     633,
+     671
+    ],
+    [
+     743,
+     845
+    ],
+    [
+     1013,
+     1078
+    ],
+    [
+     1231,
+     1238
+    ],
+    [
+     1326,
+     1403
+    ]
+   ],
+   "pose": {
+    "default": {},
+    "segments": [
+     {
+      "from": 7,
+      "to": 80,
+      "armL": [
+       "ik",
+       [
+        -0.3,
+        0.22
+       ],
+       1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.3,
+        0.22
+       ],
+       -1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 111,
+      "to": 206,
+      "armR": [
+       "ik",
+       [
+        0.92,
+        0.82
+       ],
+       -1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 267,
+      "to": 431,
+      "armL": [
+       "ik",
+       [
+        -0.86,
+        0.86
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.86,
+        0.86
+       ],
+       1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 490,
+      "to": 587,
+      "armL": [
+       "ik",
+       [
+        0.1,
+        0.44
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        -0.1,
+        0.48
+       ],
+       1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 629,
+      "to": 677,
+      "tilt": 0.05
+     },
+     {
+      "from": 739,
+      "to": 851,
+      "armL": [
+       "ik",
+       [
+        -0.45,
+        "1.05 + 0.05 * sin(f * 1.4)"
+       ],
+       1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 860,
+      "to": 1015,
+      "armR": [
+       "ik",
+       [
+        0.6,
+        0.2
+       ],
+       1
+      ]
+     },
+     {
+      "from": 1009,
+      "to": 1084,
+      "tilt": 0.05
+     },
+     {
+      "from": 1227,
+      "to": 1244,
+      "armL": [
+       "ik",
+       [
+        -0.56,
+        1.42
+       ],
+       1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.56,
+        1.42
+       ],
+       -1
+      ],
+      "tilt": 0.05
+     },
+     {
+      "from": 1322,
+      "to": 1409,
+      "tilt": 0.05
+     }
+    ]
+   },
+   "reacts": [
+    [
+     1093,
+     "flinch"
+    ],
+    [
+     1271,
+     "hop"
+    ]
+   ],
+   "reaction_fx": [
+    1093,
+    1271
+   ]
+  },
+  {
+   "id": "mia",
+   "type": "soft",
+   "outfit": "soft_cardigan",
+   "loc": [
+    0.63,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      0.63,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 1448,
+      "location": [
+       0.63,
+       4.3,
+       0
+      ]
+     }
+    ]
+   },
+   "look": {
+    "hair": "long",
+    "hair_color": [
+     0.5,
+     0.2,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 2,
+    "palette": {
+     "cloth": [
+      0.75,
+      0.05,
+      0.35
+     ],
+     "cloth2": [
+      0.95,
+      0.75,
+      0.05
+     ]
+    },
+    "signature": "earrings",
+    "sig_color": [
+     0,
+     0.75,
+     0.65
+    ]
+   },
+   "head_shape": "egg",
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     80,
+     "smug_closed"
+    ],
+    [
+     119,
+     "neutral"
+    ],
+    [
+     275,
+     "smirk"
+    ],
+    [
+     433,
+     "laugh"
+    ],
+    [
+     498,
+     "neutral"
+    ],
+    [
+     637,
+     "smug_closed"
+    ],
+    [
+     677,
+     "wink"
+    ],
+    [
+     747,
+     "side_eye_l"
+    ],
+    [
+     860,
+     "worried"
+    ],
+    [
+     1017,
+     "neutral"
+    ],
+    [
+     1268,
+     "smirk"
+    ],
+    [
+     1330,
+     "love"
+    ]
+   ],
+   "blinks": [
+    55,
+    192,
+    288,
+    407,
+    537,
+    634,
+    715,
+    816,
+    927,
+    1002,
+    1117,
+    1196,
+    1301,
+    1422
+   ],
+   "talk": [
+    [
+     80,
+     109
+    ],
+    [
+     206,
+     265
+    ],
+    [
+     433,
+     485
+    ],
+    [
+     587,
+     621
+    ],
+    [
+     677,
+     737
+    ],
+    [
+     860,
+     1007
+    ],
+    [
+     1090,
+     1222
+    ],
+    [
+     1268,
+     1308
+    ]
+   ],
+   "pose": {
+    "default": {},
+    "segments": [
+     {
+      "from": 76,
+      "to": 115,
+      "tilt": -0.05
+     },
+     {
+      "from": 202,
+      "to": 271,
+      "armL": [
+       "ik",
+       [
+        -0.66,
+        0.66
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.66,
+        0.66
+       ],
+       1
+      ],
+      "tilt": -0.1
+     },
+     {
+      "from": 429,
+      "to": 491,
+      "tilt": -0.05
+     },
+     {
+      "from": 583,
+      "to": 627,
+      "tilt": -0.05
+     },
+     {
+      "from": 673,
+      "to": 743,
+      "armL": [
+       "ik",
+       [
+        -0.66,
+        0.66
+       ],
+       -1
+      ],
+      "armR": [
+       "ik",
+       [
+        0.66,
+        0.66
+       ],
+       1
+      ],
+      "tilt": -0.1
+     },
+     {
+      "from": 856,
+      "to": 1013,
+      "armL": [
+       "ik",
+       [
+        -0.6,
+        0.2
+       ],
+       -1
+      ],
+      "tilt": -0.05
+     },
+     {
+      "from": 1086,
+      "to": 1228,
+      "tilt": -0.05
+     },
+     {
+      "from": 1264,
+      "to": 1314,
+      "tilt": -0.05
+     }
+    ]
+   }
+  }
+ ],
+ "words": [
+  [
+   0.35,
+   "Mia."
+  ],
+  [
+   0.97,
+   "Who"
+  ],
+  [
+   1.18,
+   "touched"
+  ],
+  [
+   1.6,
+   "the"
+  ],
+  [
+   1.8,
+   "thermostat?"
+  ],
+  [
+   2.63,
+   "Not"
+  ],
+  [
+   2.87,
+   "me,"
+  ],
+  [
+   3.37,
+   "babe."
+  ],
+  [
+   3.81,
+   "It"
+  ],
+  [
+   4.0,
+   "was"
+  ],
+  [
+   4.2,
+   "on"
+  ],
+  [
+   4.39,
+   "seventy-four."
+  ],
+  [
+   5.55,
+   "Seventy-four,"
+  ],
+  [
+   6.41,
+   "Mia!"
+  ],
+  [
+   6.82,
+   "Weird."
+  ],
+  [
+   7.46,
+   "Maybe"
+  ],
+  [
+   7.68,
+   "it's"
+  ],
+  [
+   7.91,
+   "the"
+  ],
+  [
+   8.13,
+   "house"
+  ],
+  [
+   8.35,
+   "settling."
+  ],
+  [
+   9.0,
+   "So"
+  ],
+  [
+   9.24,
+   "I"
+  ],
+  [
+   9.47,
+   "put"
+  ],
+  [
+   9.71,
+   "it"
+  ],
+  [
+   9.94,
+   "back"
+  ],
+  [
+   10.18,
+   "to"
+  ],
+  [
+   10.41,
+   "sixty-eight."
+  ],
+  [
+   11.28,
+   "Instantly"
+  ],
+  [
+   11.83,
+   "better."
+  ],
+  [
+   12.6,
+   "I"
+  ],
+  [
+   12.82,
+   "can"
+  ],
+  [
+   13.04,
+   "feel"
+  ],
+  [
+   13.26,
+   "the"
+  ],
+  [
+   13.48,
+   "difference."
+  ],
+  [
+   14.39,
+   "Wow."
+  ],
+  [
+   14.82,
+   "Totally."
+  ],
+  [
+   16.43,
+   "Okay,"
+  ],
+  [
+   17.09,
+   "round"
+  ],
+  [
+   17.3,
+   "two."
+  ],
+  [
+   17.89,
+   "Who"
+  ],
+  [
+   18.1,
+   "touched"
+  ],
+  [
+   18.52,
+   "it"
+  ],
+  [
+   18.72,
+   "this"
+  ],
+  [
+   18.93,
+   "morning?"
+  ],
+  [
+   19.55,
+   "Probably"
+  ],
+  [
+   20.21,
+   "the"
+  ],
+  [
+   20.43,
+   "dog."
+  ],
+  [
+   21.05,
+   "We"
+  ],
+  [
+   21.31,
+   "don't"
+  ],
+  [
+   21.57,
+   "have"
+  ],
+  [
+   21.83,
+   "a"
+  ],
+  [
+   22.09,
+   "dog."
+  ],
+  [
+   22.55,
+   "Then"
+  ],
+  [
+   22.77,
+   "it's"
+  ],
+  [
+   23.0,
+   "a"
+  ],
+  [
+   23.22,
+   "mystery,"
+  ],
+  [
+   24.15,
+   "honey."
+  ],
+  [
+   24.74,
+   "Third"
+  ],
+  [
+   24.95,
+   "time"
+  ],
+  [
+   25.17,
+   "this"
+  ],
+  [
+   25.39,
+   "week!"
+  ],
+  [
+   25.96,
+   "I'm"
+  ],
+  [
+   26.14,
+   "setting"
+  ],
+  [
+   26.5,
+   "a"
+  ],
+  [
+   26.68,
+   "boundary"
+  ],
+  [
+   27.22,
+   "with"
+  ],
+  [
+   27.4,
+   "that"
+  ],
+  [
+   27.58,
+   "thermostat."
+  ],
+  [
+   28.62,
+   "Okay."
+  ],
+  [
+   30.02,
+   "Babe."
+  ],
+  [
+   30.68,
+   "Sit"
+  ],
+  [
+   30.92,
+   "down."
+  ],
+  [
+   31.6,
+   "I"
+  ],
+  [
+   31.84,
+   "gotta"
+  ],
+  [
+   32.32,
+   "tell"
+  ],
+  [
+   32.56,
+   "you"
+  ],
+  [
+   32.81,
+   "something."
+  ],
+  [
+   33.73,
+   "Did"
+  ],
+  [
+   33.95,
+   "you"
+  ],
+  [
+   34.16,
+   "change"
+  ],
+  [
+   34.38,
+   "the"
+  ],
+  [
+   34.6,
+   "Netflix"
+  ],
+  [
+   35.03,
+   "password"
+  ],
+  [
+   35.47,
+   "again?"
+  ],
+  [
+   36.3,
+   "The"
+  ],
+  [
+   36.54,
+   "dial"
+  ],
+  [
+   36.78,
+   "you"
+  ],
+  [
+   37.03,
+   "turn"
+  ],
+  [
+   37.27,
+   "every"
+  ],
+  [
+   38.0,
+   "day?"
+  ],
+  [
+   38.66,
+   "It's"
+  ],
+  [
+   38.89,
+   "not"
+  ],
+  [
+   39.11,
+   "connected"
+  ],
+  [
+   39.79,
+   "to"
+  ],
+  [
+   40.01,
+   "anything."
+  ],
+  [
+   40.99,
+   "What?"
+  ],
+  [
+   42.24,
+   "It's"
+  ],
+  [
+   42.5,
+   "been"
+  ],
+  [
+   42.77,
+   "fake"
+  ],
+  [
+   43.03,
+   "since"
+  ],
+  [
+   43.3,
+   "2019."
+  ],
+  [
+   44.16,
+   "But"
+  ],
+  [
+   44.48,
+   "I"
+  ],
+  [
+   44.81,
+   "could"
+  ],
+  [
+   45.13,
+   "feel"
+  ],
+  [
+   45.45,
+   "the"
+  ],
+  [
+   45.78,
+   "difference."
+  ]
+ ],
+ "captions": {
+  "style": "pop",
+  "highlight": [
+   "thermostat",
+   "sixty-eight",
+   "feel the difference",
+   "not connected",
+   "fake",
+   "2019"
+  ]
+ },
+ "sound": {
+  "music": {
+   "mood": "playful",
+   "gain": 0.12,
+   "gain_with_voice": 0.07
+  },
+  "auto": {
+   "ticks": false
+  },
+  "events": [
+   [
+    858,
+    "gulp",
+    0.55
+   ],
+   [
+    1088,
+    "scratch",
+    0.55
+   ],
+   [
+    1409,
+    "sad_trombone",
+    0.6
+   ]
+  ]
+ }
+}

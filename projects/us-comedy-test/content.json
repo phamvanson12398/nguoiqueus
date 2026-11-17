@@ -1,0 +1,363 @@
+{
+  "format": "dialog",
+  "title": "The Thermostat War",
+  "title_vi": "Cuộc chiến cái điều hòa",
+  "hook": "Married couples be like",
+  "premise_vi": "Ben hỏi vặn vợ ba lần \"ai lại chỉnh nhiệt độ?\", Mia chối tỉnh bơ, còn anh khoe đã hạ xuống 68 độ và \"thấy mát hẳn\". Cú đảo: cái núm anh vặn mỗi ngày là đồ giả, không nối dây, Mia gắn từ năm 2019 cho anh yên tâm.",
+  "minutes": 0.75,
+  "cast": [
+    {
+      "id": "ben",
+      "name": "Ben",
+      "role": "husband",
+      "gender": "male",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "demo_ben",
+      "voice_instruct": "male, young adult, low pitch, american accent",
+      "hair": "short",
+      "hair_color": [
+        0.22,
+        0.12,
+        0.05
+      ],
+      "head_shape": "wide",
+      "signature": "cap",
+      "sig_color": [
+        0.85,
+        0.06,
+        0.04
+      ],
+      "outfit": "hoodie",
+      "colors": {
+        "cloth": [
+          0.03,
+          0.22,
+          0.55
+        ],
+        "cloth2": [
+          0.98,
+          0.3,
+          0.02
+        ]
+      },
+      "personality_vi": "Chồng nóng nảy, cực kỳ nghiêm túc về cái điều hòa, tự tin tuyệt đối vào cảm giác của mình."
+    },
+    {
+      "id": "mia",
+      "name": "Mia",
+      "role": "wife",
+      "gender": "female",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "demo_mia",
+      "voice_instruct": "female, young adult, high pitch, american accent",
+      "hair": "long",
+      "hair_color": [
+        0.5,
+        0.2,
+        0.05
+      ],
+      "head_shape": "egg",
+      "signature": "earrings",
+      "sig_color": [
+        0,
+        0.75,
+        0.65
+      ],
+      "outfit": "cardigan",
+      "colors": {
+        "cloth": [
+          0.75,
+          0.05,
+          0.35
+        ],
+        "cloth2": [
+          0.95,
+          0.75,
+          0.05
+        ]
+      },
+      "personality_vi": "Vợ tỉnh bơ, lém lỉnh, chối không chớp mắt, luôn đi trước chồng một bước nhưng vẫn thương anh."
+    }
+  ],
+  "setting": {
+    "set": "kitchen",
+    "params": {
+      "stuck_toast": false
+    },
+    "brief_vi": "Bếp Mỹ ban ngày đầy nắng, không có bánh mì dính đèn; hai vợ chồng đứng giữa bếp."
+  },
+  "idle": "relaxed",
+  "lines": [
+    {
+      "speaker": "ben",
+      "text": "Mia. Who touched the thermostat?",
+      "text_vi": "Mia. Ai đụng vào cái điều hòa?",
+      "face": "angry",
+      "listener_face": "neutral",
+      "gesture": "hands_hips",
+      "listener_gesture": "none",
+      "shot": "two",
+      "pause_before": 0.15,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "mia",
+      "text": "Not me, babe.",
+      "text_vi": "Không phải em, anh yêu.",
+      "face": "smug_closed",
+      "listener_face": "side_eye",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "ben",
+      "text": "It was on seventy-four. Seventy-four, Mia!",
+      "text_vi": "Nó để 74 độ. 74 đó, Mia!",
+      "face": "shock",
+      "listener_face": "neutral",
+      "gesture": "point",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1.1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "mia",
+      "text": "Weird. Maybe it's the house settling.",
+      "text_vi": "Lạ ghê. Chắc tại nhà nó lún.",
+      "face": "neutral",
+      "listener_face": "annoyed",
+      "gesture": "shrug",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "So I put it back to sixty-eight. Instantly better. I can feel the difference.",
+      "text_vi": "Nên anh hạ lại 68. Mát hẳn luôn. Anh cảm nhận được sự khác biệt.",
+      "face": "smug_closed",
+      "listener_face": "smirk",
+      "gesture": "open_arms",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "[laughter] Wow. Totally.",
+      "text_vi": "[cười] Ừ. Chuẩn luôn.",
+      "face": "laugh",
+      "listener_face": "side_eye",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "listener",
+      "pause_before": 0.25,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "Okay, round two. Who touched it this morning?",
+      "text_vi": "Rồi, hiệp hai. Sáng nay ai đụng vào nó?",
+      "face": "grumpy",
+      "listener_face": "neutral",
+      "gesture": "cross_arms",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.3,
+      "speed": 1.05,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "Probably the dog.",
+      "text_vi": "Chắc là con chó.",
+      "face": "neutral",
+      "listener_face": "annoyed",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "We don't have a dog.",
+      "text_vi": "Nhà mình làm gì có chó.",
+      "face": "annoyed",
+      "listener_face": "smug_closed",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.4,
+      "speed": 0.95,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "Then it's a mystery, honey.",
+      "text_vi": "Vậy thì là bí ẩn rồi, anh yêu.",
+      "face": "wink",
+      "listener_face": "angry",
+      "gesture": "shrug",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "ben",
+      "text": "Third time this week! I'm setting a boundary with that thermostat.",
+      "text_vi": "Lần thứ ba trong tuần rồi! Anh sẽ đặt ranh giới với cái điều hòa đó.",
+      "face": "angry",
+      "listener_face": "side_eye",
+      "gesture": "fist",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1.15,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "[sigh] Okay. Babe. Sit down. I gotta tell you something.",
+      "text_vi": "[thở dài] Được rồi. Anh. Ngồi xuống đi. Em phải nói với anh chuyện này.",
+      "face": "worried",
+      "listener_face": "worried",
+      "gesture": "hold_hands",
+      "listener_gesture": "hold_hands",
+      "shot": "two",
+      "pause_before": 0.5,
+      "speed": 0.9,
+      "sfx": "gulp",
+      "react": "none",
+      "beat": "twist"
+    },
+    {
+      "speaker": "ben",
+      "text": "Did you change the Netflix password again?",
+      "text_vi": "Em lại đổi mật khẩu Netflix à?",
+      "face": "shock",
+      "listener_face": "neutral",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.2,
+      "speed": 1.1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "twist"
+    },
+    {
+      "speaker": "mia",
+      "text": "The dial you turn every day? It's not connected to anything.",
+      "text_vi": "Cái núm anh vặn mỗi ngày ấy? Nó không nối với cái gì hết.",
+      "face": "neutral",
+      "listener_face": "shock",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "listener",
+      "pause_before": 0.4,
+      "speed": 0.95,
+      "sfx": "scratch",
+      "react": "flinch",
+      "beat": "twist"
+    },
+    {
+      "speaker": "ben",
+      "text": "What?",
+      "text_vi": "Cái gì?",
+      "face": "shock",
+      "listener_face": "neutral",
+      "gesture": "hands_up",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.3,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "twist"
+    },
+    {
+      "speaker": "mia",
+      "text": "It's been fake since 2019.",
+      "text_vi": "Nó là đồ giả từ năm 2019 rồi.",
+      "face": "smirk",
+      "listener_face": "shock",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "both_close",
+      "pause_before": 1,
+      "speed": 0.95,
+      "sfx": "none",
+      "react": "hop",
+      "beat": "punchline"
+    },
+    {
+      "speaker": "ben",
+      "text": "[dissatisfaction-hnn] ...But I could feel the difference.",
+      "text_vi": "[hừm] ...Nhưng anh cảm nhận được sự khác biệt mà.",
+      "face": "sad",
+      "listener_face": "love",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "two",
+      "pause_before": 0.6,
+      "speed": 0.9,
+      "sfx": "none",
+      "react": "none",
+      "beat": "tag"
+    }
+  ],
+  "highlight": [
+    "thermostat",
+    "sixty-eight",
+    "feel the difference",
+    "not connected",
+    "fake",
+    "2019"
+  ],
+  "end_sfx": "sad_trombone",
+  "library_needs": [],
+  "vo_en": "Mia. Who touched the thermostat? Not me, babe. It was on seventy-four. Seventy-four, Mia! Weird. Maybe it's the house settling. So I put it back to sixty-eight. Instantly better. I can feel the difference. [laughter] Wow. Totally. Okay, round two. Who touched it this morning? Probably the dog. We don't have a dog. Then it's a mystery, honey. Third time this week! I'm setting a boundary with that thermostat. [sigh] Okay. Babe. Sit down. I gotta tell you something. Did you change the Netflix password again? The dial you turn every day? It's not connected to anything. What? It's been fake since 2019. [dissatisfaction-hnn] ...But I could feel the difference.",
+  "vo_vi": "Mia. Ai đụng vào cái điều hòa? Không phải em, anh yêu. Nó để 74 độ. 74 đó, Mia! Lạ ghê. Chắc tại nhà nó lún. Nên anh hạ lại 68. Mát hẳn luôn. Anh cảm nhận được sự khác biệt. [cười] Ừ. Chuẩn luôn. Rồi, hiệp hai. Sáng nay ai đụng vào nó? Chắc là con chó. Nhà mình làm gì có chó. Vậy thì là bí ẩn rồi, anh yêu. Lần thứ ba trong tuần rồi! Anh sẽ đặt ranh giới với cái điều hòa đó. [thở dài] Được rồi. Anh. Ngồi xuống đi. Em phải nói với anh chuyện này. Em lại đổi mật khẩu Netflix à? Cái núm anh vặn mỗi ngày ấy? Nó không nối với cái gì hết. Cái gì? Nó là đồ giả từ năm 2019 rồi. [hừm] ...Nhưng anh cảm nhận được sự khác biệt mà.",
+  "word_count": 107,
+  "sequences": []
+}

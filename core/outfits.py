@@ -57,7 +57,9 @@ def resolve_look(spec, faction, culture, outfit, seed_base=0):
     beard = look.get("beard") or (outfit or {}).get("beard")
     if not beard:
         beard = rnd.choice((culture or {}).get("beard_styles") or ["full"]) if rnd.random() < beard_p else "none"
-    return {"slots": slots, "hair": hair, "beard": beard, "skin_mode": look.get("skin_mode", "cartoon"), "has_accent": bool(look.get("accent"))}
+    if look.get("signature"): slots["sig"] = tuple(look.get("sig_color") or (0.92, 0.2, 0.3))
+    return {"slots": slots, "hair": hair, "beard": beard, "skin_mode": look.get("skin_mode", "cartoon"), "has_accent": bool(look.get("accent")),
+            "signature": look.get("signature")}
 
 
 def mat(name, slots, key):
@@ -158,7 +160,55 @@ def dress(c, cid, outfit, look, head_r, prefix=None):
             {"op": "shape", "on": "torso", "name": "scarf", "pts": {"rrect": [0, th - 0.02, 0.46, 0.15, 0.06]}, "mat": "$accent", "z": 0.335, "outline": 0.025},
             {"op": "shape", "on": "torso", "name": "scarf_tail", "pts": [[0.06, th - 0.06], [0.2, th - 0.06], [0.16, th - 0.32], [0.04, th - 0.28]],
              "mat": "$accent", "z": 0.34, "outline": 0.022}], slots, groups)
+    if look.get("signature") and look["signature"] != "none":            # dialogue: one memorable item per character
+        draw_ops(c, prefix + "_sig", signature_ops(look["signature"], head_r), slots, groups)
     return list(groups.values())
+
+
+# ---------------------------------------------------------------- signature items (dialogue characters)
+SIGNATURES = ("none", "bow", "glasses", "ahoge", "cap", "freckles", "earrings", "headband", "beanie", "flower", "lashes")
+
+
+def signature_ops(kind, r=0.5):
+    """one memorable item per character, drawn on the head (r = head radius, eyes at y -0.02, x +-0.15).
+    Colour slot $sig (stays coloured in the grey look: a single spot of colour on a grey character)."""
+    k = r / 0.5; S = "$sig"
+    def P(pts): return [[round(x * k, 4), round(y * k, 4)] for x, y in pts]
+    if kind == "bow":
+        return [{"op": "shape", "on": "head", "name": "sig_bow_l", "pts": P([[0.3, 0.44], [0.1, 0.6], [0.08, 0.32]]), "mat": S, "z": 0.02, "outline": 0.022},
+                {"op": "shape", "on": "head", "name": "sig_bow_r", "pts": P([[0.3, 0.44], [0.5, 0.62], [0.52, 0.34]]), "mat": S, "z": 0.02, "outline": 0.022},
+                {"op": "disc", "on": "head", "name": "sig_bow_k", "c": P([[0.3, 0.44]])[0], "r": 0.055 * k, "mat": S, "z": 0.025}]
+    if kind == "glasses":
+        return [{"op": "stroke", "on": "head", "name": f"sig_glass{s_}", "pts": {"ring": [s_ * 0.16 * k, -0.02 * k, 0.135 * k, 0.13 * k, 28]},
+                 "w": 0.032 * k, "mat": S, "z": 0.1} for s_ in (-1, 1)] +                [{"op": "stroke", "on": "head", "name": "sig_glass_bridge", "pts": P([[-0.03, 0.0], [0.0, 0.02], [0.03, 0.0]]), "w": 0.028 * k, "mat": S, "z": 0.1}]
+    if kind == "ahoge":           # one stubborn curl of hair standing up
+        return [{"op": "stroke", "on": "head", "name": "sig_hair_curl", "pts": P([[0.02, 0.46], [-0.01, 0.6], [0.06, 0.72], [0.15, 0.7], [0.14, 0.61], [0.07, 0.62]]),
+                 "w": 0.04 * k, "mat": "$hair", "z": -0.04}]
+    if kind == "cap":
+        return [{"op": "shape", "on": "head", "name": "sig_cap", "pts": {"ellipse": [0, 0.26 * k, 0.53 * k, 0.32 * k, 28, 0, 3.14159]}, "mat": S, "z": 0.02, "outline": 0.025},
+                {"op": "shape", "on": "head", "name": "sig_cap_brim", "pts": P([[0.05, 0.3], [0.72, 0.3], [0.7, 0.22], [0.05, 0.22]]), "mat": S, "z": 0.025, "outline": 0.022},
+                {"op": "disc", "on": "head", "name": "sig_cap_btn", "c": [0, 0.59 * k], "r": 0.035 * k, "mat": S, "z": 0.022}]
+    if kind == "freckles":
+        return [{"op": "disc", "on": "head", "name": f"sig_frk{s_}{j}", "c": [round(s_ * (0.24 + 0.05 * (j % 2)) * k, 4), round((-0.11 - 0.04 * (j // 2)) * k, 4)],
+                 "r": 0.016 * k, "mat": [0.45, 0.22, 0.1], "z": 0.07} for s_ in (-1, 1) for j in range(3)]
+    if kind == "earrings":
+        return [{"op": "stroke", "on": "head", "name": f"sig_ear{s_}", "pts": {"ring": [s_ * 0.5 * k, -0.24 * k, 0.05 * k, 0.06 * k, 18]},
+                 "w": 0.022 * k, "mat": S, "z": -0.03} for s_ in (-1, 1)]
+    if kind == "headband":
+        return [{"op": "stroke", "on": "head", "name": "sig_band", "pts": {"arc": [0, 0.1 * k, 0.5 * k, 0.4 * k, 20, 160, 20]}, "w": 0.075 * k, "mat": S, "z": 0.02}]
+    if kind == "beanie":
+        return [{"op": "shape", "on": "head", "name": "sig_beanie", "pts": {"ellipse": [0, 0.3 * k, 0.53 * k, 0.33 * k, 28, 0, 3.14159]}, "mat": S, "z": 0.02, "outline": 0.025},
+                {"op": "shape", "on": "head", "name": "sig_beanie_rim", "pts": {"rrect": [0, 0.3 * k, 1.1 * k, 0.12 * k, 0.05 * k]}, "mat": S, "z": 0.025, "outline": 0.022},
+                {"op": "disc", "on": "head", "name": "sig_beanie_pom", "c": [0, 0.66 * k], "r": 0.085 * k, "mat": S, "z": 0.015}]
+    if kind == "flower":
+        cx, cy = 0.33 * k, 0.4 * k
+        import math as _m
+        return [{"op": "disc", "on": "head", "name": f"sig_petal{j}", "c": [round(cx + 0.07 * k * _m.cos(j * 1.2566), 4), round(cy + 0.07 * k * _m.sin(j * 1.2566), 4)],
+                 "r": 0.055 * k, "mat": S, "z": 0.02} for j in range(5)] +                [{"op": "disc", "on": "head", "name": "sig_petal_c", "c": [cx, cy], "r": 0.04 * k, "mat": [1.0, 0.82, 0.15], "z": 0.025}]
+    if kind == "lashes":          # three lashes flicking out of each eye
+        return [{"op": "stroke", "on": "head", "name": f"sig_lash{s_}{j}", "pts": P([[s_ * (0.2 + 0.035 * j), 0.07 - 0.02 * j], [s_ * (0.25 + 0.05 * j), 0.13 - 0.035 * j]]),
+                 "w": 0.02 * k, "mat": "$ink", "z": 0.09} for s_ in (-1, 1) for j in range(3)]
+    return []
 
 
 def apply_skin(c, cid, look):

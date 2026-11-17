@@ -152,8 +152,15 @@
       0.65,
       0.4
      ]
-    }
+    },
+    "signature": "earrings",
+    "sig_color": [
+     1.0,
+     0.75,
+     0.1
+    ]
    },
+   "head_shape": "egg",
    "faces": [
     "neutral",
     "happy",
@@ -308,8 +315,15 @@
       0.3,
       0.7
      ]
-    }
+    },
+    "signature": "ahoge",
+    "sig_color": [
+     0.2,
+     0.8,
+     0.5
+    ]
    },
+   "head_shape": "round",
    "faces": [
     "neutral",
     "happy",
@@ -474,8 +488,15 @@
       0.22,
       0.3
      ]
-    }
+    },
+    "signature": "glasses",
+    "sig_color": [
+     0.9,
+     0.2,
+     0.15
+    ]
    },
+   "head_shape": "wide",
    "faces": [
     "neutral",
     "happy",

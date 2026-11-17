@@ -986,6 +986,25 @@
         "additionalProperties": {
          "$ref": "#/$defs/rgb"
         }
+       },
+       "signature": {
+        "enum": [
+         "none",
+         "bow",
+         "glasses",
+         "ahoge",
+         "cap",
+         "freckles",
+         "earrings",
+         "headband",
+         "beanie",
+         "flower",
+         "lashes"
+        ],
+        "description": "món nhận diện trên đầu (giữ màu cả ở kiểu xám)"
+       },
+       "sig_color": {
+        "$ref": "#/$defs/rgb"
        }
       }
      },
@@ -1744,6 +1763,25 @@
        "additionalProperties": {
         "$ref": "#/$defs/rgb"
        }
+      },
+      "signature": {
+       "enum": [
+        "none",
+        "bow",
+        "glasses",
+        "ahoge",
+        "cap",
+        "freckles",
+        "earrings",
+        "headband",
+        "beanie",
+        "flower",
+        "lashes"
+       ],
+       "description": "món nhận diện trên đầu (giữ màu cả ở kiểu xám)"
+      },
+      "sig_color": {
+       "$ref": "#/$defs/rgb"
       }
      }
     },
@@ -1761,6 +1799,15 @@
       "minItems": 2,
       "maxItems": 3
      }
+    },
+    "head_shape": {
+     "enum": [
+      "round",
+      "egg",
+      "wide",
+      "tall"
+     ],
+     "description": "dáng đầu (video đối thoại)"
     }
    }
   },

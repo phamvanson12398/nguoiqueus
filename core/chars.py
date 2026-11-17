@@ -55,7 +55,8 @@ def make_char(name, loc, cfg):
     if cfg.get("neck", True): stroke(c.torso, name + "_neck", [(0, th - 0.04), (0, th + 0.08)], 0.06, 0.1)
     hy, hr = cfg["head"]
     c.head = empty(name + "_head", c.torso, (0, hy, 0.36))
-    if cfg.get("head_scale"): c.head.scale = (cfg["head_scale"],) * 3     # big round head, face features grow with it
+    if cfg.get("head_scale"):                    # big round head (or egg/wide/tall: x, y scale), face features grow with it
+        hs = cfg["head_scale"]; c.head.scale = tuple(hs) if isinstance(hs, (list, tuple)) else (hs,) * 3
     c.skin = flat(name + "_skin", (0.98, 0.98, 0.97))
     shape(c.head, name + "_face", ellipse(0, 0, hr, hr * 0.97, 48), c.skin, 0.0)
     cfg["extras"](c)
@@ -200,6 +201,7 @@ def tone_grey(c, face=0.50, body=0.62, hair=0.022):
     for o in descendants(c.root):
         n = o.name.lower()
         if o.name in fx_objs: continue
+        if "_sig_" in n and not any(w in n for w in HAIR_WORDS): continue   # the signature item: the one spot of colour
         for sl in o.material_slots:
             m = sl.material
             if n.endswith("_hand"): sl.material = geo.INK; continue          # small black hands, like the reference

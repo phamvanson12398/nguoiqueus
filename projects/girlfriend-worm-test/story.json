@@ -276,8 +276,15 @@
       0.75,
       0.05
      ]
-    }
+    },
+    "signature": "flower",
+    "sig_color": [
+     1.0,
+     0.35,
+     0.6
+    ]
    },
+   "head_shape": "egg",
    "faces": [
     "neutral",
     "happy",
@@ -570,8 +577,15 @@
       0.15,
       0.18
      ]
-    }
+    },
+    "signature": "beanie",
+    "sig_color": [
+     0.15,
+     0.75,
+     0.7
+    ]
    },
+   "head_shape": "tall",
    "faces": [
     "neutral",
     "happy",
