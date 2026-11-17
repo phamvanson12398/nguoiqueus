@@ -118,7 +118,7 @@ small.err{color:var(--bad)}
       <h2>Độ dài</h2>
       <div class="row">
         <label>Khổ video <select id="fmt"><option value="short">Shorts dọc 9:16 (45 giây – 10 phút)</option><option value="long">Video dài YouTube 16:9 (5–20 phút, một mạch liền)</option><option value="dialog">Đối thoại hài 9:16 (cặp đôi, gia đình; 0,5–3 phút)</option></select></label>
-        <label title="Nhân vật khối tròn 3D, hoặc nét phẳng 2D như hoạt hình vẽ tay">Nhân vật <select id="charStyle"><option value="3d">3D (khối tròn)</option><option value="2d">2D (phẳng)</option></select></label>
+        <label title="Nhân vật khối tròn 3D, hoặc nét phẳng 2D như hoạt hình vẽ tay">Nhân vật <select id="charStyle"><option value="3d">3D (khối tròn)</option><option value="2d">2D (phẳng, có màu)</option><option value="2d_grey">2D xám (bối cảnh màu, người xám)</option></select></label>
         <label>Số phút <input type="number" id="minutes" min="0.5" max="10" step="0.5" value="1" style="width:80px"></label>
         <div class="stats" id="est"></div>
       </div>
@@ -473,7 +473,7 @@ $('#fmt').onchange = async () => {
 };
 $('#charStyle').onchange = async () => { if (!S.slug) return; await api(P('/settings'), {body: {char_style: $('#charStyle').value}});
   S.state.settings = Object.assign(S.state.settings || {}, {char_style: $('#charStyle').value});
-  toast(`Nhân vật ${$('#charStyle').value.toUpperCase()}: áp dụng khi bấm Duyệt & dựng`); };
+  toast(`Nhân vật ${$('#charStyle').selectedOptions[0].text}: áp dụng khi bấm Duyệt & dựng`); };
 $('#btnWrite').onclick = () => {
   if (!S.state.idea) return toast('Chọn ý tưởng hoặc nhập chủ đề ở bước 1');
   if (S.state.content && !confirm('Viết content mới? Bản hiện tại vẫn được giữ trong lịch sử.')) return;

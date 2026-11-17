@@ -6,7 +6,7 @@ and reaction shots by itself (seconds instead of a 12-minute plan_shots).
 
     python dialog.py speak <slug> [--only 3,7] [--reseed]   OmniVoice: one wav per line (lines/NN_<speaker>.wav)
     python dialog.py assemble <slug>                        lines -> voice.wav + words.json (+ per-line timings)
-    python dialog.py plan <slug> [--style 3d|2d]            -> story.json (9:16, rig long, pop captions, banner)
+    python dialog.py plan <slug> [--style 3d|2d|2d_grey]   (2d_grey: grey characters on a coloured set)            -> story.json (9:16, rig long, pop captions, banner)
 
 Line wavs are cached by text/voice/speed/seed: after editing two lines only those two are spoken again.
 A line can also be the user's own recording (upload_line): it is kept until that line's text changes.
@@ -385,7 +385,8 @@ def plan(slug, char_style=None, log=print):
     words = [[w[0], w[1]] for w in wj["words"]]
     st = {
         "meta": {"title": c["title"], "slug": slug, "fps": FPS, "frames": N, "seed": 7, "voice": "voice.wav", "output": "out.mp4",
-                 "samples": 32, "aspect": "9:16", "char_style": style, "dialog": True, "fast_build": True},
+                 "samples": 32, "aspect": "9:16", "char_style": "2d" if style == "2d_grey" else style,
+                 **({"char_tone": "grey"} if style == "2d_grey" else {}), "dialog": True, "fast_build": True},
         "sets": [{"id": "stage", "type": set_name, "params": params}],
         "camera": {"rig": "long", "shots": shots, "hand": 0.35},
         "chars": chars,

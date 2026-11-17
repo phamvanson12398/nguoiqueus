@@ -26,7 +26,7 @@ Bấm "+ Dự án mới" rồi chọn **OK = video dài** (hoặc đổi "Khổ 
 - Render lần lượt các chương chưa có video rồi ghép thành `out.mp4` (cần ffmpeg). Bị ngắt giữa chừng thì bấm Render lại để làm tiếp.
 
 ### Đối thoại hài (cặp đôi, vợ chồng, gia đình) 9:16
-Bấm "+ Dự án mới" rồi gõ **3** (hoặc chọn "Đối thoại hài" ở ô Khổ video, bước 2). Ô "Nhân vật" ở bước 2 chọn 3D hoặc 2D cho từng video.
+Bấm "+ Dự án mới" rồi gõ **3** (hoặc chọn "Đối thoại hài" ở ô Khổ video, bước 2). Ô "Nhân vật" ở bước 2 chọn 3D, 2D có màu, hoặc **2D xám** (bối cảnh có màu, người xám, mắt tròn trắng) cho từng video.
 1. **Ý tưởng**: nhập chủ đề hài (hoặc để trống) → "Gợi ý ý tưởng" → chọn ý (có câu chữ trên đầu video, cú đảo, câu chốt).
 2. **Content**: chọn số phút (0,5–3) → "Viết content". Claude viết lời thoại tiếng Anh + bản dịch, nhân vật (tóc, áo, màu, giọng) và cho từng câu:
    mặt người nói, mặt người nghe, cử chỉ, máy quay, khoảng nghỉ, tốc độ, tiếng động. Sửa thẳng trên trang, ▲▼ đổi thứ tự, đánh dấu ☑

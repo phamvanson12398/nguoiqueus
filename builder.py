@@ -775,6 +775,8 @@ class Builder:
                 self.place(o, p); self.story_props.add(p["id"])
 
         self.build_camera_object()
+        grey = meta.get("char_tone") == "grey"
+        faces.SCLERA = grey
         for cs in st.get("chars", []):
             self.build_char(cs)
         for k, cr in enumerate(st.get("crowds", [])):
@@ -783,6 +785,9 @@ class Builder:
             fx.add_reaction_fx(c)
         for cs in self.char_specs:
             if cs.get("talk"): chars.add_talk_mouth(self.chars[cs["id"]])
+        if grey:
+            for c in self.chars.values(): chars.tone_grey(c)
+        faces.SCLERA = False
         self.char_style = body3d.style(meta)
         if self.char_style == "3d":
             t3 = time.time()

@@ -579,8 +579,12 @@ def job_build(job, slug, design=True, preview=True, chapters=None, replan=False)
     if "/chapters/" in slug: longform.stitch(slug.split("/chapters/")[0], log=job.say)   # parts of one seamless video
     cs_ = (jload(os.path.join(pdir(slug.split("/chapters/")[0]), "settings.json")) or {}).get("char_style")
     stp = os.path.join(d, "story.json"); stj = jload(stp)
-    if cs_ in ("2d", "3d") and stj and stj["meta"].get("char_style") != cs_:       # 2D/3D characters chosen for this video
-        stj["meta"]["char_style"] = cs_; json.dump(stj, open(stp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    if cs_ in ("2d", "3d", "2d_grey") and stj:                                     # 2D/3D (grey) characters chosen for this video
+        want = {"char_style": "2d" if cs_ == "2d_grey" else cs_, "char_tone": "grey" if cs_ == "2d_grey" else None}
+        if any(stj["meta"].get(k) != v for k, v in want.items()):
+            stj["meta"].update(want)
+            if want["char_tone"] is None: stj["meta"].pop("char_tone", None)
+            json.dump(stj, open(stp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     errs = storycheck.check_story(jload(os.path.join(d, "story.json")))
     if errs: raise ValueError("story.json còn lỗi: " + "; ".join(errs[:5]))
     if not preview: return {"missing": missing}
@@ -975,7 +979,7 @@ class Handler(BaseHTTPRequestHandler):
             while os.path.exists(os.path.join(PROJECTS, slug)): slug = f"{base}-{k}"; k += 1
             fmt = b.get("format") if b.get("format") in ("long", "dialog") else "short"
             os.makedirs(pdir(slug)); save_settings(slug, minutes=float(b.get("minutes", 1.0)), title=b.get("title", ""), format=fmt,
-                                                   **({"char_style": b["char_style"]} if b.get("char_style") in ("2d", "3d") else {}))
+                                                   **({"char_style": b["char_style"]} if b.get("char_style") in ("2d", "3d", "2d_grey") else {}))
             return self.send_json({"slug": slug})
 
         if api[:1] == ["projects"] and len(api) >= 2:

@@ -402,6 +402,11 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - Fingerprint 3 Shorts cũ (demo-v3, manhole-round, toast-butter-side, 2D) trước/sau: giống hệt (dữ liệu, âm thanh, điểm ảnh).
   - Còn phải thử: OmniVoice thật trên máy người dùng (container không có GPU; `pip install omnivoice` chưa chạy ở đây).
   - Còn để ý: cảnh 3 người toàn thân ở 9:16 nhân vật nhỏ; màu tóc rất tối lên hình hơi nâu ở 3D.
+- Kiểu "2D xám" (người dùng gửi video mẫu thứ hai: bối cảnh có màu, người xám): `settings.char_style = "2d_grey"` → story
+  `meta.char_style "2d"` + `meta.char_tone "grey"`. Builder đặt `faces.SCLERA` (mỗi chấm mắt nằm trên tròng trắng viền mực) rồi
+  `chars.tone_grey`: mặt xám 0,50, áo xám theo độ sáng màu gốc (giữ nếp áo/váy), tóc đen, bàn tay chấm đen; giữ màu miệng, lưỡi, nước mắt,
+  tim, má hồng và hiệu ứng phản ứng. Mọi kiểu Shorts dùng được (ô Nhân vật ở bước 2). Ảnh so với mẫu: `docs/img/dialog_grey.jpg`.
+  Khác mẫu còn lại: thân nhân vật của tool to bè hơn (mẫu thân mảnh, đầu to).
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

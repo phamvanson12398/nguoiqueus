@@ -9,7 +9,8 @@
   "output": "out.mp4",
   "samples": 32,
   "aspect": "9:16",
-  "char_style": "3d",
+  "char_style": "2d",
+  "char_tone": "grey",
   "dialog": true,
   "fast_build": true
  },

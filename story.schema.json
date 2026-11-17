@@ -122,6 +122,13 @@
      },
      "description": "Short cut from a long video: render frames from..to of this (re-framed 9:16) story; tool-made"
     },
+    "char_tone": {
+     "enum": [
+      "color",
+      "grey"
+     ],
+     "description": "grey = nhân vật xám (mặt xám, áo xám nhạt, tóc đen, mắt tròn trắng) trên bối cảnh có màu"
+    },
     "dialog": {
      "type": "boolean",
      "description": "video đối thoại hài (dialog.py lập story; nhân vật luôn quay về camera)"

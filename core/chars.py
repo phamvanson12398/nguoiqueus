@@ -1,6 +1,7 @@
 """2D characters on camera-facing planes: builder, IK posing with follow-through,
 squash/stretch reactions, expressions with blinks, lip flap, walk cycle, hand props."""
 import math
+import bpy
 from . import ctx, geo, faces
 from .geo import empty, shape, stroke, ellipse, rrect, limb, billboard_root, set_visible, vis_track
 from .look import flat
@@ -164,6 +165,36 @@ def apply_expressions(c, blinks=()):
         bl = any(b_ <= f < b_ + 4 for b_ in blinks)
         for e_ in c.blink:
             e_.scale = (e_.scale[0], 0.012 if bl else 0.085, 1); timing.key(e_, "scale", f)
+
+
+# ---------------- grey look (dialogue videos: coloured set, grey characters) ----------------
+HAIR_WORDS = ("hair", "braid", "beard", "mustache", "moustache", "goatee")
+
+
+def tone_grey(c, face=0.50, body=0.62, hair=0.022):
+    """every colour of this character becomes grey (face a bit darker than the clothes, shading of the clothes kept as
+    light/dark greys), hair black, hands ink; eyes, mouth, tears, hearts and blush keep their colours"""
+    from .look import descendants
+    keep = {geo.INK, geo.WHITE, faces.MOUTH, faces.TONGUE, faces.TEETH, faces.SWEAT, faces.RED_M, faces.BLUSH}
+    c.skin.node_tree.nodes["Emission"].inputs[0].default_value = (face, face, face, 1)
+    hair_m = flat("tone_hair", (hair, hair, hair))
+    fx_objs = set()
+    for nm in ("_speedlines", "_excl", "_steam", "_drips"):                # reaction effects keep their colours
+        e = bpy.data.objects.get(c.name + nm)
+        if e: fx_objs |= {e.name} | {x.name for x in descendants(e)}
+    for o in descendants(c.root):
+        n = o.name.lower()
+        if o.name in fx_objs: continue
+        for sl in o.material_slots:
+            m = sl.material
+            if n.endswith("_hand"): sl.material = geo.INK; continue          # small black hands, like the reference
+            if m is None or m in keep or m is c.skin: continue
+            if any(w in n for w in HAIR_WORDS): sl.material = hair_m; continue
+            try: r, g, b, _ = m.node_tree.nodes["Emission"].inputs[0].default_value
+            except (KeyError, AttributeError): continue
+            lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+            v = round(min(0.86, body * (0.78 + 0.45 * min(1.0, lum))), 2)   # darker cloth -> darker grey
+            sl.material = flat(f"tone_grey_{v:.2f}", (v, v, v))
 
 
 # ---------------- talking mouth (lip flap from the voice) ----------------

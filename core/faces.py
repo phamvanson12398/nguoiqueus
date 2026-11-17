@@ -34,8 +34,17 @@ def init():
     HEART = RED_M; BLUSH = None          # comedy materials are made on first use (no new datablocks for older videos)
 
 
+SCLERA = False        # grey 2D look (dialogue videos): every eye dot sits on a white eyeball with an ink rim
+
+
 def eye(parent, name, x, y, z, rx=0.055, ry=0.085):
-    g = empty(name, parent, (x, y, z)); disc(g, name + "_d", 0, 0, 1.0, 0, geo.INK); g.scale = (rx, ry, 1); return g
+    g = empty(name, parent, (x, y, z))
+    if SCLERA:
+        disc(g, name + "_rim", 0, 0, 1.98, -0.006, geo.INK); disc(g, name + "_w", 0, 0, 1.72, -0.004, geo.WHITE)
+        disc(g, name + "_d", 0.12, -0.1, 0.82, 0, geo.INK)
+    else:
+        disc(g, name + "_d", 0, 0, 1.0, 0, geo.INK)
+    g.scale = (rx, ry, 1); return g
 
 def build_faces(head, p, skin, kinds, ey=-0.02, dx=0.15):
     """returns dict kind -> group, plus 'blink' eye list for neutral"""
