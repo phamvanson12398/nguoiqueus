@@ -20,8 +20,26 @@ Lời thoại tiếng Anh (giọng OmniVoice, mỗi nhân vật một giọng), 
 - Văn nói tự nhiên, ngắn: phần lớn 3-12 từ, tối đa ~16; không ai nói quá 2 câu liền. Hỏi – đáp nhanh.
 - Tốc độ ~2,3 từ/giây tính cả khoảng nghỉ: 45 s ≈ 100 từ, 60 s ≈ 135 từ.
 - Gọi nhau bằng tên/biệt danh ("babe", "honey", "Mom") để người xem biết ai với ai.
-- Thẻ OmniVoice cho tiếng cười/thở dài: `[laughter]`, `[sigh]`, `[surprise-oh]`, `[surprise-wa]`, `[dissatisfaction-hnn]`,
-  `[question-ah]`. Dùng ít (2-4 cả video), đặt đầu câu. Không viết "haha", "*sigh*".
+- **Thẻ cảm xúc OmniVoice** (viết thẳng vào `text`, OmniVoice đọc thành tiếng thật; phụ đề tự bỏ thẻ). Chỉ dùng đúng 13 thẻ này:
+  - `[laughter]` = tiếng cười: câu đùa của chính mình, chọc người kia, cười trừ khi bị bắt quả tang
+  - `[sigh]` = thở dài: chán, bất lực, chịu thua, mệt với người kia ("[sigh] Fine. You pick.")
+  - `[surprise-oh]` = "Oh!" ngạc nhiên: vừa hiểu ra / vừa nghe tin lạ ("[surprise-oh] You're serious?")
+  - `[surprise-ah]` = "Ah!" giật mình: giật mình, bị bắt quả tang, đau, hoảng
+  - `[surprise-wa]` = "Wa!" sốc mạnh: sốc to, choáng ("[surprise-wa] Four hundred dollars?!")
+  - `[surprise-yo]` = "Yo!" thích thú: hào hứng, khoái chí khi thấy thứ hay
+  - `[question-ah]` = "Hả?" hỏi lại: không tin tai mình, hỏi lại ("[question-ah] Taco Bell?")
+  - `[question-oh]` = "Ồ?" nghi ngờ: nghi ngờ, bắt bẻ nhẹ ("[question-oh] Since when?")
+  - `[question-en]` = "Hửm?" ngơ ngác: lơ đãng, không nghe rõ, giả vờ không hiểu
+  - `[question-ei]` = "Ê?" ngạc nhiên hỏi: ngạc nhiên kèm hỏi, thân mật
+  - `[question-yi]` = "Hử?" khó hiểu: khó hiểu, thấy lạ
+  - `[confirmation-en]` = "Ừm." xác nhận: đồng ý chiếu lệ, tỉnh bơ, "uh-huh" kiểu không nghe
+  - `[dissatisfaction-hnn]` = "Hừm" không vừa ý: bực, dỗi, không chịu, càu nhàu
+  - Dùng ĐỀU cả video: khoảng 1 thẻ mỗi 2-3 câu (≈ 30-45 % số câu), dồn vào chỗ cảm xúc mạnh: phản ứng sau cú đảo, câu chốt, lúc
+    bị bắt quả tang, lúc chịu thua. Không 2 câu liền của cùng một người đều có thẻ; không quá 1 thẻ mỗi câu (cùng lắm 2 khi câu dài).
+  - Đặt đầu câu (cách dùng chuẩn của OmniVoice) hoặc giữa hai vế sau dấu câu: "No way. [laughter] You did NOT.".
+  - Khớp với `face`: laugh → [laughter]; shock → [surprise-oh]/[surprise-wa]/[question-ah]; sad, chịu thua → [sigh];
+    grumpy/angry → [dissatisfaction-hnn]; side_eye/smirk hỏi vặn → [question-oh]; "uh-huh" tỉnh bơ → [confirmation-en].
+  - Không viết "haha", "*sigh*", "(laughs)", không bịa thẻ khác (`[angry]`, `[cry]`… sẽ bị đọc thành chữ).
 - `speed`: 1.1-1.2 khi cuống, cãi nhau, nói nhanh để chối; 0.9 khi buồn, ngập ngừng, nghiêm giả vờ.
 - **Ngắt nghỉ, không nói một mạch**: OmniVoice ngừng theo dấu câu, nên viết chỗ ngừng ngay trong câu: "So... I did a thing.",
   "Okay, but—", "Wait. Wait, wait, wait.", "You're telling me... it's fake?". Nhịp đổi theo cảm xúc:
@@ -33,7 +51,7 @@ Lời thoại tiếng Anh (giọng OmniVoice, mỗi nhân vật một giọng), 
   - Dấu câu: "?!" khi sốc, "!" khi phấn khích/bực, "..." khi ngập ngừng/ngượng, "—" khi bị cắt ngang, câu cụt khi tỉnh bơ.
   - Thán từ ở đầu câu: "Oh my God.", "Wait—what?!", "Ugh.", "Okay, okay.", "Nope.", "Babe...", "Uh-huh.", "Wow." (đừng lạm dụng).
   - Kéo dài/nhấn: "Sooo…", "No. Way.", "I am NOT mad." (viết hoa MỘT chữ cần nhấn, không viết hoa cả câu).
-  - Thẻ `[laughter]`, `[sigh]`, `[surprise-oh]`, `[dissatisfaction-hnn]` ở chỗ cảm xúc thật sự (3-5 cả video).
+  - Thẻ cảm xúc OmniVoice (danh sách ở trên) ở chỗ cảm xúc thật sự, khoảng 1 thẻ mỗi 2-3 câu.
   - `face` của người nói cũng chỉnh âm lượng câu: angry/shock to hơn, sad/blush nhỏ hơn; tool đọc mỗi câu vài bản và giữ bản có ngữ điệu nhất.
 - Hài lành mạnh, đáng yêu: đùa vào tình huống và thói quen (đồ ăn, điện thoại, tiền, mua sắm, remote TV, nhiệt độ điều hòa, ngủ nướng,
   mẹ chồng/mẹ vợ, bài tập về nhà, quên ngày kỷ niệm), không chê ngoại hình, không xúc phạm giới/dân tộc/tôn giáo, không bạo lực thật,

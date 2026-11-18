@@ -328,7 +328,7 @@
      },
      "text": {
       "type": "string",
-      "description": "câu thoại tiếng Anh, ngắn (thường 3-14 từ), văn nói tự nhiên; được dùng thẻ OmniVoice [laughter] [sigh] [surprise-oh] [dissatisfaction-hnn] ở đầu/giữa câu"
+      "description": "câu thoại tiếng Anh, ngắn (thường 3-14 từ), văn nói tự nhiên. Thẻ cảm xúc OmniVoice (chỉ 13 thẻ này, đặt đầu câu hoặc sau dấu câu, ~1 thẻ mỗi 2-3 câu): [laughter], [sigh], [surprise-oh], [surprise-ah], [surprise-wa], [surprise-yo], [question-ah], [question-oh], [question-en], [question-ei], [question-yi], [confirmation-en], [dissatisfaction-hnn]."
      },
      "text_vi": {
       "type": "string"

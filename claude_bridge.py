@@ -27,6 +27,7 @@ import ast, datetime, json, math, os, re, shutil, subprocess, sys, threading, ti
 ROOT = os.path.dirname(os.path.abspath(__file__))
 if ROOT not in sys.path: sys.path.insert(0, ROOT)
 from jsonval import validate
+import vtags
 import storycheck
 
 LOG_DIR = os.path.join(ROOT, "logs")
@@ -1010,6 +1011,13 @@ def check_dialog(x, minutes=None):
         n = len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split())
         if n > 18: e.append(f"lines[{k}] dài {n} từ (tối đa ~16, tách thành 2 câu hoặc rút gọn)")
         if n == 0: e.append(f"lines[{k}] không có chữ")
+        bad = vtags.unknown(l["text"])
+        if bad: e.append(f"lines[{k}] thẻ {bad} không phải thẻ OmniVoice (chỉ dùng: {', '.join(vtags.TAGS)})")
+        if len(vtags.tags_in(l["text"])) > 2: e.append(f"lines[{k}] quá nhiều thẻ cảm xúc (tối đa 1-2 mỗi câu)")
+    nt = sum(1 for l in x["lines"] if vtags.tags_in(l["text"])); nl = len(x["lines"])
+    if nl >= 6 and nt < max(2, round(nl * 0.25)):
+        e.append(f"chỉ {nt}/{nl} câu có thẻ cảm xúc OmniVoice: thêm cho khoảng 30-45 % số câu ở chỗ cảm xúc mạnh (DIALOG_RULES mục 2)")
+    if nt > max(3, round(nl * 0.6)): e.append(f"{nt}/{nl} câu có thẻ cảm xúc: quá dày, giữ khoảng 30-45 %")
     held = {c["id"]: {(c.get("holding") or {}).get("kind")} - {None} for c in x["cast"]}
     for k, l in enumerate(x["lines"]):                     # props in hand / walking make sense in order
         a, pr, who = l.get("action", "none"), l.get("prop") or "", l["speaker"]
@@ -1097,7 +1105,8 @@ def import_script(slug, parsed, draft, translate=False, model=None, improve=Fals
                  "nhịp hài tốt hơn (tổng số câu trong khoảng ±30 %), làm câu chốt ngắn và sắc hơn, thêm callback nếu hợp; mỗi câu `text_vi` là "
                  "bản dịch tiếng Việt của câu MỚI. Ghi tóm tắt các thay đổi chính vào premise_vi (sau tình huống).\n" if improve else
                  "- GIỮ NGUYÊN TỪNG CHỮ của mỗi câu thoại (`text`), đúng thứ tự, đúng người nói, không thêm/bớt/gộp/tách câu. "
-                 "Chỉ được thêm thẻ OmniVoice ([laughter], [sigh]…) ở đầu câu nếu ghi chú của người dùng gợi ý.\n" if keep else
+                 "Được (và nên) thêm thẻ cảm xúc OmniVoice ở đầu câu hoặc sau dấu câu cho khoảng 30-45 % số câu, ở chỗ cảm xúc mạnh "
+                 "(DIALOG_RULES mục 2): thẻ không đổi chữ của người dùng.\n" if keep else
                  "- Kịch bản viết tiếng Việt: dịch từng câu sang tiếng Anh Mỹ nói tự nhiên, buồn cười như sitcom (mục 2b), giữ đúng ý, thứ tự, "
                  "người nói và số câu; `text_vi` là nguyên văn câu tiếng Việt của người dùng.\n") +
               "- Điền diễn xuất cho từng câu theo nghĩa câu và ghi chú trong ngoặc của người dùng (cues): face, listener_face, gesture, "

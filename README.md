@@ -40,6 +40,8 @@ Bấm "+ Dự án mới" rồi gõ **3** (hoặc chọn "Đối thoại hài" �
    đi vào cảnh, nói xong bỏ đi) + "Đồ vật" (điện thoại, cà phê, khoai tây chiên, hoa, hộp quà… 21 món) + "Tới chỗ" (partner = lại gần,
    away = lùi ra, hoặc tên chỗ đứng của bối cảnh). Ô "Cầm sẵn từ đầu" ở thẻ nhân vật. Kịch bản tự viết nhận ra ghi chú kiểu
    `(uống cà phê)`, `(đưa điện thoại cho Emily)`, `(bỏ đi)`, `(bước lại gần)`, `*sips coffee*`, `(walks off)`.
+   **Thẻ cảm xúc OmniVoice** (`[laughter]`, `[sigh]`, `[surprise-wa]`, `[question-ah]`, `[dissatisfaction-hnn]`… 13 thẻ, rê chuột vào
+   nhãn câu thoại để xem): Claude tự đặt khoảng 1 thẻ mỗi 2-3 câu; kịch bản có sẵn thì bấm "😮 Thêm thẻ cảm xúc" rồi tạo lại giọng.
 3. **Giọng đọc** (OmniVoice, cài một lần bằng `tools\install_omnivoice.bat`, cần card NVIDIA):
    "Tạo giọng thử" → nghe 3 giọng của mỗi nhân vật → **Chọn** (hoặc tải giọng thật của bạn 3-10 giây) → "Tạo giọng các câu & ghép".
    Câu nào chưa hay: ↻ đọc lại, hoặc tải bản tự thu của câu đó. Sửa chữ một câu thì chỉ câu đó được đọc lại.

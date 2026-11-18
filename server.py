@@ -1040,7 +1040,8 @@ class Handler(BaseHTTPRequestHandler):
                 c = {k: v for k, v in self.jbody()["content"].items() if k not in bridge.DIALOG_DERIVED}
                 errs = bridge.validate(c, bridge.load_schema("content_dialog"))
                 if errs: raise ValueError("kịch bản sai cấu trúc: " + "; ".join(errs[:3]))
-                probs = [e for e in bridge.check_dialog(c) if "từ" not in e or "lines[" in e]
+                soft = ("từ", "thẻ cảm xúc", "action", "to_spot")            # advice, not a reason to refuse saving the user's edits
+                probs = [e for e in bridge.check_dialog(c) if not any(w in e for w in soft) or ("lines[" in e and "không phải thẻ" in e)]
                 if probs: raise ValueError("; ".join(probs[:4]))
                 bridge._save_versioned(slug, "content.json", bridge.dialog_fill(c))
                 return self.send_json({"ok": True, "word_count": c["word_count"]})
@@ -1061,6 +1062,13 @@ class Handler(BaseHTTPRequestHandler):
                 bridge._save_versioned(slug, "content.json", bridge.dialog_fill(draft))
                 save_settings(slug, format="dialog", minutes=draft["minutes"])
                 return self.send_json({"ok": True, "lines": len(draft["lines"]), "speakers": p["speakers"], "warnings": p["warnings"]})
+            if act == ["content", "autotag"] and method == "POST":    # OmniVoice emotion tags at the strong moments, no Claude
+                import vtags
+                c = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+                if not dialog.is_dialog(c): raise ValueError("chỉ dùng cho video đối thoại")
+                n = vtags.auto_tag(c["lines"])
+                if n: bridge._save_versioned(slug, "content.json", bridge.dialog_fill({k: v for k, v in c.items() if k not in bridge.DIALOG_DERIVED}))
+                return self.send_json({"ok": True, "added": n, "tagged": sum(1 for l in c["lines"] if vtags.tags_in(l["text"])), "lines": len(c["lines"])})
             if act == ["content", "rewrite_lines"]:
                 b = self.jbody()
                 return self.send_json(start_job("rewrite_dialog", slug, job_rewrite_dialog, slug, int(b["a"]), int(b["b"]), b["request"]).to_json())

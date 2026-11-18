@@ -22,6 +22,7 @@ parse(text) -> {"title", "hook", "setting", "idle", "speakers": [...], "lines": 
 to_content(parsed, voices=(), minutes=None) -> a complete content.json (defaults chosen by the tool, no Claude)
 """
 import re, unicodedata
+import vtags
 
 HEADERS = {"title": "title", "tiêu đề": "title", "tieu de": "title", "hook": "hook", "tagline": "hook", "dòng chữ": "hook",
            "setting": "setting", "set": "setting", "bối cảnh": "setting", "boi canh": "setting", "location": "setting",
@@ -30,6 +31,9 @@ HEADERS = {"title": "title", "tiêu đề": "title", "tieu de": "title", "hook":
 CUES = [
     (r"laugh|giggl|chuckl|cười lớn|cười to|bật cười|haha", ("laugh", None, "[laughter]", 0, None)),
     (r"sigh|deep breath|thở dài|hít sâu|hít một hơi", ("annoyed", None, "[sigh]", 0, 0.92)),
+    (r"uh-huh|mm-hm|chiếu lệ|ừ ừ", (None, None, "[confirmation-en]", 0, None)),
+    (r"huh\?|confused|hả\b|ngơ ngác", ("worried", None, "[question-ah]", 0, None)),
+    (r"hmph|scoff|hừ|hứ", ("grumpy", None, "[dissatisfaction-hnn]", 0, None)),
     (r"stare|glare|deadpan look|nhìn chằm chằm|lườm|trừng", ("annoyed", None, None, 0, None)),
     (r"mutter|grumbl|lẩm bẩm|càu nhàu", ("grumpy", None, None, 0, 0.95)),
     (r"furious|angry|mad\b|yell|shout|giận|tức|hét|quát|cáu", ("angry", None, None, 0, 1.12)),
@@ -172,7 +176,7 @@ def parse(text):
     for k, l in enumerate(lines):
         cues = re.findall(r"\(([^)]*)\)|\*([^*]+)\*|\[([^\]]+)\]", l["raw"])
         cue_txt = [a or b or c for a, b, c in cues]
-        keep_tags = [c for c in cue_txt if re.fullmatch(r"(laughter|sigh|surprise-\w+|dissatisfaction-\w+|question-\w+|confirmation-\w+)", c.strip())]
+        keep_tags = [c for c in cue_txt if "[" + c.strip() + "]" in vtags.TAGS]
         body = re.sub(r"\(([^)]*)\)|\*([^*]+)\*|\[([^\]]+)\]", " ", l["raw"])
         body = re.sub(r"\s+", " ", body).strip().strip('"“”')
         face, gesture, tags, pause, speed = _apply_cues(cue_txt)
@@ -278,6 +282,7 @@ def to_content(p, voices=(), minutes=None, have_sets=()):
                       "pause_before": round(max(0.25, l["pause"] or 0.25), 2), "speed": l["speed"] or 1.0, "sfx": "none",
                       "react": "flinch" if beat == "twist" else "none", "beat": beat,
                       **({"action": l["action"], "prop": l.get("prop") or "", "to_spot": l.get("to_spot") or ""} if l.get("action", "none") != "none" else {})})
+    vtags.auto_tag(lines)                       # OmniVoice emotion tags at the strong moments (~40 % of lines at most)
     words = sum(len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split()) for l in lines)
     st, need = pick_set(p.get("setting") or p.get("notes"), have_sets)
     return {"format": "dialog", "title": p.get("title") or lines[0]["text"][:40], "title_vi": "", "hook": (p.get("hook") or "")[:32],

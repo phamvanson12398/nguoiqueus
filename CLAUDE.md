@@ -484,6 +484,13 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - Thử (`projects/props-walk-test` 2D xám, bản 3D): cầm cà phê từ đầu, uống (cốc lên trước mặt, cả 3D), bước ra/lại gần, lấy + giơ điện
     thoại, cất, đưa cà phê (người kia nhận và cầm), bỏ đi; `CAMERA OK`. Ảnh: `docs/img/dialog_props.jpg`. Còn để ý: đứng sát nhau thì đồ
     giơ ra có thể bị đầu người kia che; 3D lỗi `ReferenceError` (miếng da che miệng bị thay) đã sửa bằng tìm theo tên.
+- Thẻ cảm xúc OmniVoice (người dùng: "omni voice dùng được các thẻ tag cảm xúc, thêm vào content cho hay"): `vtags.py` = đúng 13 thẻ
+  README OmniVoice ([laughter], [sigh], [confirmation-en], [question-en/ah/oh/ei/yi], [surprise-ah/oh/wa/yo], [dissatisfaction-hnn]) + nghĩa
+  + lúc dùng. DIALOG_RULES mục 2: ~1 thẻ mỗi 2-3 câu (30-45 %), dồn vào chỗ cảm xúc mạnh, khớp `face`, đầu câu hoặc sau dấu câu; schema
+  mô tả đủ 13 thẻ. `check_dialog`: thẻ lạ ([angry]) là lỗi, < 25 % hoặc > 60 % số câu có thẻ là lỗi (khi Claude viết; lưu tay chỉ chặn thẻ lạ).
+  `vtags.auto_tag` (theo mặt + chữ, ưu tiên câu chốt/cú đảo/sốc/cười, tối đa 40 %, không hai câu liền một người): tự chạy khi "Nhận diện ngay";
+  nút "😮 Thêm thẻ cảm xúc" ở bước 2 (`POST content/autotag`); "Nhận diện + Claude" giữ chữ nhưng được thêm thẻ. Thử: "Ăn gì cũng được"
+  tự thêm 9/26; Claude thật viết "Who Ate My Leftovers" (16 câu) dùng 5 thẻ khác nhau ([question-en], [question-oh], [surprise-ah], [sigh]).
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
