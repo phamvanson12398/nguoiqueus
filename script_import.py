@@ -189,7 +189,8 @@ PLACES = [
     (r"backyard|garden|sân sau|vườn", "backyard"),
 ]
 STAND = (" Bối cảnh cho video đối thoại: 2-3 người ĐỨNG cạnh nhau quay mặt về camera (phía -Y), chừa khoảng trống x -1,5..1,5 quanh "
-         "điểm diễn; nếu cảnh gốc là ngồi (trong xe, bàn ăn, sofa) thì dựng chỗ đứng cạnh xe/bàn/sofa. Ghi điểm diễn vào meta.json 'stage'.")
+         "điểm diễn; nếu cảnh gốc là ngồi (trong xe, bàn ăn, sofa) thì dựng chỗ đứng cạnh xe/bàn/sofa. Khai báo 'stage' (x, y) và 'spots': 4-6 chỗ "
+         "đứng có tên theo đồ vật/vai trò (vd driver_door, counter, doorway, sofa_left), tọa độ sàn x, y thật trong bối cảnh, mô tả ngắn.")
 
 
 def pick_set(desc, have=()):

@@ -30,15 +30,15 @@
     "b": 73,
     "type": "full",
     "frame": {
-     "size": 4.1875,
-     "look_dz": 0.12,
-     "move": "drift",
-     "amount": 0.7,
+     "size": 6.29,
+     "look_dz": 0.27,
+     "move": "still",
      "subject": [
       0.0,
-      4.3,
+      4.217,
       0
-     ]
+     ],
+     "y": -0.3
     }
    },
    {
@@ -46,29 +46,31 @@
     "b": 148,
     "type": "medium",
     "frame": {
-     "size": 2.25,
-     "move": "push_in",
-     "amount": 0.55,
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
      "subject": "dad"
     }
    },
    {
     "a": 149,
     "b": 224,
-    "type": "closeup",
+    "type": "medium",
     "frame": {
-     "move": "push_in",
-     "amount": 0.7,
+     "size": 2.65,
+     "look_dz": 0.45,
+     "move": "still",
      "subject": "leo"
     }
    },
    {
     "a": 225,
     "b": 327,
-    "type": "closeup",
+    "type": "medium",
     "frame": {
-     "move": "push_in",
-     "amount": 0.7,
+     "size": 2.65,
+     "look_dz": 0.45,
+     "move": "still",
      "subject": "dad"
     }
    },
@@ -77,9 +79,9 @@
     "b": 407,
     "type": "medium",
     "frame": {
-     "size": 2.25,
-     "move": "push_in",
-     "amount": 0.55,
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
      "subject": "dad"
     }
    },
@@ -88,34 +90,34 @@
     "b": 533,
     "type": "medium",
     "frame": {
-     "size": 2.5,
+     "size": 3.5,
      "look_dz": 0.0,
-     "move": "push_in",
-     "amount": 1.1,
+     "move": "still",
      "subject": [
-      0.63,
-      4.3,
+      -0.56,
+      4.175,
       0
      ]
     }
    }
   ],
-  "hand": 0.35
+  "hand": 0.0
  },
  "chars": [
   {
    "id": "mom",
+   "gaze": -1,
    "type": "soft",
    "outfit": "soft_apron",
    "loc": [
-    -1.26,
+    1.12,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      -1.26,
+      1.12,
       4.3,
       0
      ]
@@ -125,7 +127,7 @@
       "from": 1,
       "to": 533,
       "location": [
-       -1.26,
+       1.12,
        4.3,
        0
       ]
@@ -195,7 +197,7 @@
     ],
     [
      228,
-     "side_eye_r"
+     "side_eye_l"
     ],
     [
      335,
@@ -243,7 +245,7 @@
       ]
      },
      {
-      "from": 224,
+      "from": 218,
       "to": 322,
       "armL": [
        "ik",
@@ -261,25 +263,27 @@
        ],
        1
       ],
-      "tilt": 0.05
+      "tilt": -0.05
      }
-    ]
+    ],
+    "smooth": 0.2
    }
   },
   {
    "id": "leo",
+   "gaze": 1,
    "type": "soft_child",
    "outfit": "soft_kid_tee",
    "loc": [
     0.0,
-    4.3,
+    4.05,
     0
    ],
    "blocking": {
     "default": {
      "location": [
       0.0,
-      4.3,
+      4.05,
       0
      ]
     },
@@ -289,7 +293,7 @@
       "to": 533,
       "location": [
        0.0,
-       4.3,
+       4.05,
        0
       ]
      }
@@ -390,9 +394,9 @@
     "default": {},
     "segments": [
      {
-      "from": 7,
+      "from": 1,
       "to": 74,
-      "tilt": -0.05
+      "tilt": 0.05
      },
      {
       "from": 140,
@@ -415,19 +419,20 @@
       ]
      },
      {
-      "from": 407,
+      "from": 401,
       "to": 495,
-      "armL": [
+      "armR": [
        "ik",
        [
-        -0.607,
+        0.607,
         0.541
        ],
-       1
+       -1
       ],
-      "tilt": -0.05
+      "tilt": 0.05
      }
-    ]
+    ],
+    "smooth": 0.2
    },
    "reacts": [
     [
@@ -441,17 +446,18 @@
   },
   {
    "id": "dad",
+   "gaze": 1,
    "type": "soft",
    "outfit": "soft_shirt_tie",
    "loc": [
-    1.26,
+    -1.12,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      1.26,
+      -1.12,
       4.3,
       0
      ]
@@ -461,7 +467,7 @@
       "from": 1,
       "to": 533,
       "location": [
-       1.26,
+       -1.12,
        4.3,
        0
       ]
@@ -567,20 +573,20 @@
     "default": {},
     "segments": [
      {
-      "from": 73,
+      "from": 67,
       "to": 137,
-      "armL": [
+      "armR": [
        "ik",
        [
-        -0.92,
+        0.92,
         0.82
        ],
-       1
+       -1
       ],
-      "tilt": -0.05
+      "tilt": 0.05
      },
      {
-      "from": 136,
+      "from": 130,
       "to": 216,
       "armL": [
        "ik",
@@ -598,10 +604,10 @@
        ],
        -1
       ],
-      "tilt": -0.05
+      "tilt": 0.05
      },
      {
-      "from": 327,
+      "from": 321,
       "to": 396,
       "armL": [
        "ik",
@@ -619,9 +625,10 @@
        ],
        1
       ],
-      "tilt": -0.1
+      "tilt": 0.1
      }
-    ]
+    ],
+    "smooth": 0.2
    },
    "reacts": [
     [
@@ -817,37 +824,11 @@
   ]
  ],
  "captions": {
-  "style": "pop",
-  "highlight": [
-   "dollar",
-   "console"
-  ]
+  "style": "word"
  },
  "sound": {
-  "music": {
-   "mood": "playful",
-   "gain": 0.12,
-   "gain_with_voice": 0.07
-  },
   "auto": {
-   "ticks": false
-  },
-  "events": [
-   [
-    226,
-    "scratch",
-    0.55
-   ],
-   [
-    329,
-    "gulp",
-    0.55
-   ],
-   [
-    495,
-    "boing",
-    0.6
-   ]
-  ]
+   "enabled": false
+  }
  }
 }

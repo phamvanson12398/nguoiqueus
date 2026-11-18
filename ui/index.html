@@ -974,6 +974,8 @@ function dlgCastCard(m, i) {
       <select data-k="head_shape">${opts(D_HEAD, m.head_shape || 'round')}</select>
       <select data-k="signature">${opts(D_SIG, m.signature || 'none')}</select>
       <input type="color" data-k="sig_color" value="${rgb2hex(m.sig_color || [0.92, 0.2, 0.3])}" title="Màu món nhận diện"></div>
+    <label class="muted" style="display:block;margin-top:6px">Chỗ đứng <select data-k="spot">${opts(Object.assign({'': 'tool tự xếp theo vai', left: 'bên trái', center: 'giữa', right: 'bên phải'},
+        Object.fromEntries(Object.entries(S.state.set_spots || {}).map(([k, d]) => [k, k + ' — ' + d]))), m.spot || '')}</select></label>
     <label class="muted" style="display:block;margin-top:6px">Giọng (OmniVoice): <input type="text" data-k="voice_instruct" value="${esc(m.voice_instruct)}" style="width:100%"></label>
     <label class="muted">Mã giọng trong thư viện <input type="text" data-k="voice_id" value="${esc(m.voice_id)}" style="width:150px"></label>
     <div class="muted" style="font-size:12.5px;margin-top:4px">${esc(m.personality_vi || '')}</div></div>`;
@@ -1023,6 +1025,7 @@ function collectDialog() {
     for (const k of ['name', 'role', 'gender', 'age', 'body', 'hair', 'outfit', 'voice_instruct', 'voice_id']) m[k] = v(k).trim();
     m.hair_color = hex2rgb(v('hair_color')); m.colors = {cloth: hex2rgb(v('cloth')), cloth2: hex2rgb(v('cloth2'))};
     m.head_shape = v('head_shape'); m.signature = v('signature'); m.sig_color = hex2rgb(v('sig_color'));
+    if (v('spot')) m.spot = v('spot'); else delete m.spot;
     return m;
   });
   c.lines = $$('#dLines .dl').map(el => {

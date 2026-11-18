@@ -41,7 +41,8 @@
         0.95,
         0.12,
         0.1
-      ]
+      ],
+      "spot": "driver_door"
     },
     {
       "id": "emily",
@@ -78,7 +79,8 @@
         0.98,
         0.75,
         0.05
-      ]
+      ],
+      "spot": "passenger_side"
     }
   ],
   "setting": {

@@ -219,6 +219,10 @@
       "minItems": 3,
       "maxItems": 3,
       "description": "màu món nhận diện: một màu rực (đỏ, vàng, xanh ngọc, hồng…), hai nhân vật khác màu"
+     },
+     "spot": {
+      "type": "string",
+      "description": "chỗ đứng: tên một spot của bối cảnh (xem danh sách spots) hợp vai trò (người lái → driver_door, người nấu → stove, khách → doorway…), hoặc left / center / right; để trống = tool tự xếp"
      }
     }
    },

@@ -242,6 +242,72 @@ def _dir(i, xs):
     return 1 if near > xs[i] else -1
 
 
+ROMANCE = {"husband", "wife", "boyfriend", "girlfriend"}
+FAMILY = {"dad", "mom", "son", "daughter", "grandma", "grandpa"}
+MIN_GAP = 1.1          # big soft heads (r ~0.61, a child's ~0.53) must not overlap
+
+
+def pair_gap(a, b):
+    """how far apart two people stand, from who they are to each other"""
+    ra, rb = a.get("role"), b.get("role")
+    if "child" in (a.get("body"), b.get("body")): return 1.12               # a child's head is smaller: stand closer
+    if ra in ROMANCE and rb in ROMANCE: return 1.2                       # a couple: close (holding hands reaches)
+    if ra in FAMILY and rb in FAMILY: return 1.28
+    if "boss" in (ra, rb) or "neighbor" in (ra, rb): return 1.6          # work / not close: keep a polite distance
+    return 1.35                                                          # friends
+
+
+def place_cast(cast, lines, stage, spots=None, log=print):
+    """floor spot (x, y) of every cast member, fitted to roles and to the set:
+    - a cast member's `spot` = a named spot of the set (driver_door, stove, doorway…) -> exactly there
+    - `spot` left / center / right -> that order; otherwise whoever speaks first stands on the left (the eye reads the exchange)
+    - a child between two adults, a step forward; gaps from the relationship (couple close, boss far)
+    - nobody closer than MIN_GAP to anyone else (pushed apart sideways)"""
+    spots = spots or {}; n = len(cast)
+    first = {m["id"]: next((k for k, l in enumerate(lines) if l["speaker"] == m["id"]), 999) for m in cast}
+    fixed = {}; hint = {}
+    for i, m in enumerate(cast):
+        sp = (m.get("spot") or "").strip()
+        if sp in spots: fixed[i] = list(spots[sp]["xy"])
+        elif sp in ("left", "center", "right"): hint[i] = {"left": -1, "center": 0, "right": 1}[sp]
+        elif sp: log(f"   lưu ý: {m['name']} chọn chỗ '{sp}' nhưng bối cảnh không có chỗ đó, tool tự xếp")
+    free = [i for i in range(n) if i not in fixed]
+    order = sorted(free, key=lambda i: (hint.get(i, 0), first[cast[i]["id"]]))
+    kids = [i for i in order if cast[i]["body"] == "child"]
+    if n == 3 and len(free) == 3 and len(kids) == 1 and not hint:       # the child stands between the grown-ups
+        order.remove(kids[0]); order.insert(1, kids[0])
+    pos = {}
+    if free:
+        if fixed:                                                        # line up beside the people on fixed spots
+            fx = [fixed[i][0] for i in fixed]; side = 1 if sum(fx) / len(fx) <= stage[0] else -1
+            x = (max(fx) if side > 0 else min(fx)); y = sum(fixed[i][1] for i in fixed) / len(fixed)
+            seq = order if side > 0 else order[::-1]
+            anchor = min(fixed, key=lambda i: abs(fixed[i][0] - x))
+            prev = cast[anchor]
+            for i in seq:
+                x += side * pair_gap(prev, cast[i]); pos[i] = [x, y]; prev = cast[i]
+        else:
+            gaps = [pair_gap(cast[a], cast[b]) for a, b in zip(order, order[1:])]
+            width = sum(gaps); x = stage[0] - width / 2
+            for k, i in enumerate(order):
+                pos[i] = [x, stage[1]]
+                if k < len(gaps): x += gaps[k]
+    pos.update(fixed)
+    for i in range(n):
+        if cast[i]["body"] == "child" and i not in fixed: pos[i][1] -= 0.25           # a child a step forward (not hidden)
+    xs = [pos[i][0] for i in range(n)]; ys = [pos[i][1] for i in range(n)]
+    for _ in range(3):                                                   # keep heads apart
+        idx = sorted(range(n), key=lambda i: xs[i])
+        for a, b in zip(idx, idx[1:]):
+            if abs(ys[a] - ys[b]) < 0.8 and xs[b] - xs[a] < MIN_GAP:
+                push = (MIN_GAP - (xs[b] - xs[a])) / 2
+                if b in fixed and a not in fixed: xs[a] -= 2 * push
+                elif a in fixed and b not in fixed: xs[b] += 2 * push
+                else: xs[a] -= push; xs[b] += push
+    return [round(x, 3) for x in xs], [round(y, 3) for y in ys]
+
+
+
 def _face(f, d):
     if f == "side_eye": return "side_eye_r" if d > 0 else "side_eye_l"
     return f if f in ALL_FACES else "neutral"
@@ -345,10 +411,10 @@ def plan(slug, char_style=None, log=print):
     params = dict(c["setting"].get("params") or {})
     if set_name == "kitchen": params.setdefault("stuck_toast", False)
     cast = c["cast"]; n = len(cast)
-    gap = 1.26                                   # big heads (r ~0.61) almost touch, like the reference
     kids = [m["body"] == "child" for m in cast]
-    xs = [stage[0] + (i - (n - 1) / 2) * gap for i in range(n)]
-    y0 = stage[1]
+    xs, ys = place_cast(cast, c["lines"], stage, (smeta or {}).get("spots"), log=log)    # where each one stands, by role and set
+    y0 = round(sum(ys) / n, 3)
+    gap = max(MIN_GAP, (max(xs) - min(xs)) / max(1, n - 1))
     rnd = random.Random(sum(map(ord, slug)))
     ids = [m["id"] for m in cast]
     chars = []
@@ -386,9 +452,9 @@ def plan(slug, char_style=None, log=print):
                 segs.append({"from": max(1, a - 10), "to": min(N, b + 6), **pose})      # starts early: smoothing glides into it
         default = gesture_pose(idle, dd, gap, ks) if idle != "relaxed" and (idle != "hold_hands" or i < 2) else {}
         if idle == "hold_hands" and n == 3 and i == 2: default = {}
-        spec = {"id": m["id"], "gaze": dd, "type": "soft_child" if kids[i] else "soft", "outfit": SOFT_OUTFIT.get(m["outfit"], m["outfit"]), "loc": [round(xs[i], 3), y0, 0],
-                "blocking": {"default": {"location": [round(xs[i], 3), y0, 0]},
-                             "segments": [{"from": 1, "to": N, "location": [round(xs[i], 3), y0, 0]}]},
+        spec = {"id": m["id"], "gaze": dd, "type": "soft_child" if kids[i] else "soft", "outfit": SOFT_OUTFIT.get(m["outfit"], m["outfit"]), "loc": [round(xs[i], 3), ys[i], 0],
+                "blocking": {"default": {"location": [round(xs[i], 3), ys[i], 0]},
+                             "segments": [{"from": 1, "to": N, "location": [round(xs[i], 3), ys[i], 0]}]},
                 "look": {"hair": m["hair"], "hair_color": m["hair_color"], "beard": "none", "seed": i + 1,
                          "palette": {"cloth": m["colors"]["cloth"], "cloth2": m["colors"]["cloth2"]},
                          **({"signature": m["signature"], "sig_color": m.get("sig_color") or [0.92, 0.2, 0.3]}
@@ -400,7 +466,7 @@ def plan(slug, char_style=None, log=print):
         if rfx: spec["reaction_fx"] = rfx
         chars.append(spec)
 
-    mid = [round(sum(xs) / n, 3), y0, 0]
+    mid = [round((min(xs) + max(xs)) / 2, 3), y0, 0]
 
     def addressee(k):
         """who line k is said to: the last other speaker before it, else the next one, else the nearest person"""
@@ -417,9 +483,12 @@ def plan(slug, char_style=None, log=print):
         else: subj = line["speaker"]
         frame = dict(ov, subject=subj)
         if n == 3 and kind in ("two", "wide"): frame["size"] = ov.get("size", 3.6) * 1.25
+        if kind in ("two", "wide"):                     # everyone in: the frame is 9/16 as wide as it is tall
+            frame["size"] = round(max(frame["size"], (max(xs) - min(xs) + 1.3) * 16 / 9), 2)
+            if frame["size"] > 3.6: frame["y"] = -0.3          # a wider frame: keep the group low, less empty floor, more room above
         if kind == "both_close" and n == 3:              # two closest: the speaker and the one they talk to
             j = ids.index(line["speaker"]); o = ids.index(addressee(s["line"]))
-            frame["subject"] = [round((xs[j] + xs[o]) / 2, 3), y0, 0]
+            frame["subject"] = [round((xs[j] + xs[o]) / 2, 3), round((ys[j] + ys[o]) / 2, 3), 0]
         if kind == "both_close" and any(kids):
             frame["look_dz"] = 0.0
         shots.append({"a": s["a"], "b": s["b"], "type": typ, "frame": frame})

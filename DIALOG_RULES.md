@@ -80,6 +80,13 @@ Người xem chính là khán giả Mỹ: viết như sitcom/sketch Mỹ, ngư�
   (`american accent`, `british accent`…). Hai giọng trong một video phải khác nhau rõ (giới tính hoặc độ cao).
 - `voice_id`: nếu library/voices đã có giọng hợp vai (nhân vật quen của kênh) thì dùng lại id đó (giữ tên nhân vật cũ); không thì đặt id mới.
 
+## 4b. Vị trí đứng (`spot`)
+- Mỗi nhân vật đứng ở chỗ hợp vai và tình huống: chọn trong `spots` của bối cảnh (xem danh sách bối cảnh), ví dụ người lái xe ở
+  `driver_door`, người đang nấu ở `stove`, người vừa về nhà hay khách ở `doorway`, sếp ở chỗ "của mình" (bàn/cửa sổ văn phòng), người
+  đang trốn việc ở mép cảnh. Không có chỗ hợp thì ghi `left`/`center`/`right` hoặc để trống.
+- Tool tự xếp phần còn lại: người nói trước đứng bên trái, trẻ con đứng giữa bố mẹ và nhích lên trước, cặp đôi đứng sát (nắm tay được),
+  gia đình gần, bạn bè vừa, sếp/hàng xóm xa hơn; không ai đứng chồng lên ai.
+
 ## 5. Bối cảnh
 - Một bối cảnh cho cả video, chọn trong thư viện (bếp `kitchen` với `stuck_toast: false`, `office`, `street`…). Nếu không hợp thì đặt
   tên mới (living_room, bedroom, restaurant, car_front_seats, supermarket…) và đưa vào `library_needs` (tối đa 1 món mới).

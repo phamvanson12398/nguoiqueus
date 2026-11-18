@@ -195,5 +195,46 @@
       "Mặt đèn phát sáng nằm ở mặt dưới đầu đèn nên gần như không thấy từ góc thấp, và mặt nhựa chưa rõ vũng sáng của đèn spot. Đèn 'bắt đầu sáng' nên tinh tế vẫn chấp nhận được.",
       "Biển MARKET bị cây che một phần ở góc này. Ở góc chính diện từ -Y thì không bị che."
     ]
+  },
+  "stage": [
+    0.0,
+    4.0
+  ],
+  "spots": {
+    "driver_door": {
+      "xy": [
+        0.15,
+        4.6
+      ],
+      "desc_vi": "ngay cửa tài xế (người lái xe)"
+    },
+    "passenger_side": {
+      "xy": [
+        -1.2,
+        4.4
+      ],
+      "desc_vi": "phía sau xe bên trái (người đi cùng, ghế phụ)"
+    },
+    "car_front": {
+      "xy": [
+        2.0,
+        4.4
+      ],
+      "desc_vi": "trước mũi xe bên phải"
+    },
+    "center": {
+      "xy": [
+        0.0,
+        4.0
+      ],
+      "desc_vi": "giữa bãi, trước xe"
+    },
+    "cart": {
+      "xy": [
+        -2.6,
+        4.2
+      ],
+      "desc_vi": "cạnh chỗ xe đẩy, bên trái"
+    }
   }
 }

@@ -168,5 +168,53 @@
       "Nhỏ: ô trắng hơi ngả xanh do phản chiếu trời, nhưng vẫn đọc rõ là gạch đen trắng",
       "Ở góc máy thumbnail này, hai lát bánh dưới đèn nhìn hơi nhỏ; các góc máy cận đã gợi ý vẫn thấy rõ"
     ]
+  },
+  "stage": [
+    0.0,
+    4.3
+  ],
+  "spots": {
+    "window": {
+      "xy": [
+        -2.3,
+        4.5
+      ],
+      "desc_vi": "trước cửa sổ và bồn rửa, bên trái"
+    },
+    "counter": {
+      "xy": [
+        -0.9,
+        4.6
+      ],
+      "desc_vi": "trước quầy bếp, giữa-trái"
+    },
+    "center": {
+      "xy": [
+        0.0,
+        4.3
+      ],
+      "desc_vi": "giữa bếp"
+    },
+    "stove": {
+      "xy": [
+        1.0,
+        4.6
+      ],
+      "desc_vi": "trước quầy, giữa-phải (chỗ nấu ăn)"
+    },
+    "fridge": {
+      "xy": [
+        2.5,
+        4.5
+      ],
+      "desc_vi": "cạnh tủ lạnh bên phải"
+    },
+    "doorway": {
+      "xy": [
+        3.3,
+        3.4
+      ],
+      "desc_vi": "mép phải, gần lối vào (người vừa bước vào)"
+    }
   }
 }

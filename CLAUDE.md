@@ -456,6 +456,12 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
     cà phê, siêu thị, công viên, lớp học, biển, văn phòng, phố, bếp, phòng tắm, gym, sân sau; không khớp → `scene_<mô tả>`) dùng bối cảnh có
     sẵn hoặc đưa vào library_needs (brief + luật "đứng cạnh nhau"); "Nhận diện ngay" không còn đổi bối cảnh lạ thành bếp. Trang: ô Bối cảnh có
     "+ Bối cảnh mới…" (tên + mô tả). `job_build_dialog`: bối cảnh đã chọn mà chưa có và không nằm trong library_needs cũng được thiết kế.
+- Vị trí đứng theo vai (người dùng: "xem xét nhân vật đứng ở đâu cho phù hợp với vai trò"): meta bối cảnh có `stage` + `spots`
+  (tên → xy sàn + mô tả; tay viết cho kitchen, parking_lot, office (x 300!), street; schema design_set nhận `stage`/`spots`, brief bối cảnh
+  đối thoại bắt Claude khai báo). `cast[].spot` (Claude chọn theo vai: driver_door, stove, doorway…; hoặc left/center/right; ô "Chỗ đứng" trên
+  trang). `dialog.place_cast`: chỗ cố định → đúng xy; còn lại xếp cạnh, người nói trước bên trái, trẻ con giữa bố mẹ + lên trước 0,25,
+  khoảng cách theo quan hệ (`pair_gap`: cặp đôi 1,2, gia đình 1,28, cạnh trẻ con 1,12, bạn 1,35, sếp/hàng xóm 1,6), đẩy tách < 1,1.
+  Cảnh hai người/toàn cảnh nới theo độ trải (+1,3) và hạ nhóm thấp (y −0,3) khi khung > 3,6. Ảnh: `docs/img/dialog_spots.jpg`.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

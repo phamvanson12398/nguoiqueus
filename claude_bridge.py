@@ -461,7 +461,7 @@ def _write_item(kind, name, data, brief, status="draft", review=None):
     d = os.path.join(LIB, kind, name); os.makedirs(d, exist_ok=True)
     open(os.path.join(d, "build.py"), "w", encoding="utf-8").write(data["build_py"].rstrip() + "\n")
     meta = {"kind": kind[:-1], "name": name, "title_vi": data["title_vi"], "description_vi": data["description_vi"]}
-    for k in ("dim", "params", "parts", "space", "anchors", "views", "tags", "notes_vi"):
+    for k in ("dim", "params", "parts", "space", "anchors", "views", "tags", "notes_vi", "stage", "spots"):
         if k in data: meta[k] = data[k]
     meta.update(status=status, brief_vi=brief, designed_by="claude_bridge",
                 updated=datetime.datetime.now().isoformat(timespec="seconds"))
@@ -979,7 +979,7 @@ def _voices_text():
 
 def _dialog_sets_text():
     cat = storycheck.LibIndex().catalog()
-    return json.dumps([{k: s.get(k) for k in ("name", "title_vi", "description_vi", "params") if s.get(k)} for s in cat["sets"]
+    return json.dumps([{k: s.get(k) for k in ("name", "title_vi", "description_vi", "params", "spots") if s.get(k)} for s in cat["sets"]
                        if s["name"] not in ("parchment_map", "tactical_board", "paper_diagram", "diagram_board")], ensure_ascii=False)
 
 

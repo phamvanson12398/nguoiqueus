@@ -93,6 +93,40 @@
     "additionalProperties": false
    },
    "minItems": 1
+  },
+  "stage": {
+   "type": "array",
+   "items": {
+    "type": "number"
+   },
+   "minItems": 2,
+   "maxItems": 2,
+   "description": "điểm diễn chính trên sàn (x, y) cho video đối thoại"
+  },
+  "spots": {
+   "type": "object",
+   "description": "chỗ đứng có tên cho nhân vật (video đối thoại): tên -> {xy: [x, y] trên sàn, desc_vi}; người đứng quay về camera (-Y), chỗ trống bán kính 0,5, không lọt vào đồ vật",
+   "additionalProperties": {
+    "type": "object",
+    "required": [
+     "xy",
+     "desc_vi"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "xy": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2
+     },
+     "desc_vi": {
+      "type": "string"
+     }
+    }
+   }
   }
  },
  "required": [

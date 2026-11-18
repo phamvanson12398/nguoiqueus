@@ -253,7 +253,11 @@ def project_state(slug):
                          refs=sorted(f for f in os.listdir(os.path.join(yd, "refs")) if f.endswith(".png")) if os.path.isdir(os.path.join(yd, "refs")) else []) if os.path.isdir(yd) else None
     st["chapters"] = longform.status(slug) if st["format"] == "long" else None
     st["dialog"] = None
-    if st["format"] == "dialog": st["lib_sets"] = [n for n in storycheck.LibIndex().list("sets") if n not in ("parchment_map", "tactical_board", "paper_diagram", "diagram_board")]
+    if st["format"] == "dialog":
+        _lib = storycheck.LibIndex()
+        st["lib_sets"] = [n for n in _lib.list("sets") if n not in ("parchment_map", "tactical_board", "paper_diagram", "diagram_board")]
+        _set = ((st.get("content") or {}).get("setting") or {}).get("set")
+        st["set_spots"] = {k: v.get("desc_vi", "") for k, v in ((_lib.meta("sets", _set) or {}).get("spots") or {}).items()} if _set and _lib.exists("sets", _set) else {}
     if st["format"] == "dialog" and dialog.is_dialog(st["content"]):
         try: st["dialog"] = dialog.voice_status(slug)
         except Exception as e: st["dialog"] = {"error": str(e)}
@@ -387,7 +391,8 @@ def job_build_dialog(job, slug, design=True, preview=True):
         job.say(f"1/3 Claude thiết kế bối cảnh mới {need['name']}: {need['brief']} (vài phút)…")
         try:
             r = bridge.design_item(need["kind"], need["name"], need["brief"] + " Bối cảnh cho video đối thoại: 2-3 người đứng cạnh nhau quay mặt về camera "
-                                   "(phía -Y), chừa khoảng trống x -1,5..1,5 quanh điểm diễn; ghi điểm diễn vào meta.json 'stage': [x, y].")
+                                   "(phía -Y), chừa khoảng trống x -1,5..1,5 quanh điểm diễn; khai báo 'stage' [x, y] và 'spots' (4-6 chỗ đứng có tên "
+                                   "theo đồ vật/vai trò, tọa độ sàn thật, mô tả).")
         except Exception as e:
             if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}")
             raise
