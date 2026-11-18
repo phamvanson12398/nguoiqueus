@@ -316,7 +316,7 @@ class Builder:
                         legL=tuple(legs[0]), legR=tuple(legs[1]),
                         head_tilt=self.env.val(spec.get("tilt", 0.0), ns, w),
                         body=tuple(self.env.val(spec.get("body", [0, 0]), ns, w)),
-                        lean=self.env.val(spec.get("lean", 0.0), ns, w))
+                        lean=self.env.val(spec.get("lean", 0.0), ns, w), smooth=float(P.get("smooth", 0.0)))
         for e in cs.get("fx", []):
             if e["type"] == "steam": fx.bake_steam_frame(c, f, e.get("ranges", []))
             elif e["type"] == "drips": fx.bake_drips_frame(c, f, e.get("from", 1))
@@ -838,6 +838,9 @@ class Builder:
                                                burst_word=cp.get("burst_word", (cp.get("impact") or [""])[0].upper() or None))
         elif cstyle == "bottom":
             cap_root = captions.build_subtitles(WORDS, self.lens, y=cp.get("y", -0.80), size=cp.get("size", 0.034))
+        elif cstyle == "word":
+            cap_root = captions.build_word_captions(WORDS, self.lens, y=cp.get("y", -0.45), size=cp.get("size", 0.085),
+                                                    rgb=tuple(cp.get("color", (1.0, 0.86, 0.04))))
         else:
             cap_root = None
 

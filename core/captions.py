@@ -142,3 +142,51 @@ def build_subtitles(WORDS, lens_by_frame, y=-0.80, size=0.034, ref_lens=28.0, ma
         for fc in fcurves_of(holder):
             for kp in fc.keyframe_points: kp.interpolation = 'CONSTANT'
     return root
+
+
+# =====================================================================
+#  simple word captions (dialogue Shorts): one word at a time, yellow, thin dark rim + soft shadow, no pop
+# =====================================================================
+def build_word_captions(WORDS, lens_by_frame, y=-0.45, size=0.085, rgb=(1.0, 0.86, 0.04), ref_lens=28.0, max_hold=0.9):
+    """each spoken word alone, as said (lower case kept, quotes and trailing punctuation dropped), centred at screen y"""
+    N, FPS = ctx.N, ctx.FPS
+    hh = ctx.frame_half()[1] if ctx.ASPECT != "9:16" else 36 / 28 / 2
+    font = bpy.data.fonts.load(ctx.FONT_PATH, check_existing=True) if ctx.FONT_PATH else None
+    root = empty("captions", ctx.cam, (0, y * hh, -1.0))
+    for f in range(1, N + 1):                 # at depth lens/28 the frame is always 2*hh tall: only the depth follows the lens
+        k_ = lens_by_frame[f] / ref_lens
+        root.location = (0, y * hh, -1.0 * k_); root.keyframe_insert("location", frame=f)
+    fill = flat(f"wordcap{tuple(round(c, 3) for c in rgb)}", rgb)
+    shadow = flat("wordcap_shadow", (0.05, 0.04, 0.02))
+    spans = []
+    for k, (t0, w) in enumerate(WORDS):
+        txt = re.sub(r"^[^\w']+|[^\w']+$", "", clean(w))
+        if not txt: continue
+        a = int(t0 * FPS) + 1
+        nxt = int(WORDS[k + 1][0] * FPS) if k + 1 < len(WORDS) else a + int(max_hold * FPS)
+        spans.append([a, max(a + 3, min(nxt, a + int(max_hold * FPS))), txt])
+    for k in range(len(spans) - 1):
+        spans[k][1] = min(spans[k][1], spans[k + 1][0] - 1)
+    for i, (a, b, txt) in enumerate(spans):
+        if b < a: continue
+        holder = empty(f"wcap{i}", root)
+        layers = ((shadow, size * 0.10, (size * 0.05, -size * 0.06, -0.006)),      # soft drop shadow (offset rim)
+                  (geo.INK, size * 0.075, (0, 0, -0.003)),                         # thin dark rim
+                  (fill, 0.0, (0, 0, 0.0)))
+        for layer, (m, rim, loc) in enumerate(layers):
+            cu = bpy.data.curves.new(f"wcap{i}_{layer}", 'FONT'); cu.body = txt
+            if font: cu.font = font
+            cu.size = size; cu.align_x = 'CENTER'; cu.align_y = 'CENTER'
+            if rim:
+                cu.bevel_depth = rim; cu.bevel_resolution = 3
+                loc = (loc[0], loc[1], loc[2] - rim)
+            o = bpy.data.objects.new(f"wcap{i}_{layer}", cu); ctx.col.objects.link(o)
+            o.parent = holder; o.location = loc; o.data.materials.append(m)
+        holder.scale = (0, 0, 0); holder.keyframe_insert("scale", frame=1)
+        for f in (a - 1, a, b, b + 1):
+            if 1 <= f <= N:
+                s_ = 1.0 if a <= f <= b else 0.0
+                holder.scale = (s_, s_, s_); holder.keyframe_insert("scale", frame=f)
+        for fc in fcurves_of(holder):
+            for kp in fc.keyframe_points: kp.interpolation = 'CONSTANT'
+    return root

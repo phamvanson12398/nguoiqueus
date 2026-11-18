@@ -276,7 +276,8 @@
      "enum": [
       "pop",
       "bottom",
-      "off"
+      "off",
+      "word"
      ],
      "description": "pop = Shorts word-by-word (default for 9:16); bottom = phrase subtitles at the bottom (default for 16:9); off"
     },
@@ -291,6 +292,9 @@
      "minimum": 0.015,
      "maximum": 0.08,
      "description": "bottom style: letter height (default 0.034)"
+    },
+    "color": {
+     "$ref": "#/$defs/rgb"
     }
    }
   },
@@ -1697,6 +1701,12 @@
        "items": {
         "$ref": "#/$defs/pose"
        }
+      },
+      "smooth": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1,
+       "description": "0 = tắt; 0,15-0,3 = cử chỉ và đầu chuyển mượt (vào chậm, ra chậm), tay đung đưa nhẹ"
       }
      }
     },

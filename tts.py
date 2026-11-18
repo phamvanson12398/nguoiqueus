@@ -257,6 +257,54 @@ def upload_ref(vid, data, ref_text, **meta):
     return save_voice(vid, ref_text=ref_text.strip() or None, source="upload", status="approved", **meta)
 
 
+# =====================================================================
+#  how expressive a take sounds (pick the liveliest of several OmniVoice takes)
+# =====================================================================
+def pitch_track(x, sr, hop=0.01, win=0.04, fmin=70.0, fmax=420.0):
+    """-> (pitch Hz per voiced frame, energy dB per frame): autocorrelation, numpy only"""
+    n = int(sr * win); h = int(sr * hop)
+    if len(x) < n * 2: return np.array([]), np.array([])
+    frames = np.lib.stride_tricks.sliding_window_view(x, n)[::h]
+    e = 10 * np.log10(np.mean(frames ** 2, axis=1) + 1e-10)
+    voiced = e > e.max() - 28
+    lo, hi = int(sr / fmax), int(sr / fmin)
+    f0 = []
+    w = np.hanning(n)
+    for fr in frames[voiced]:
+        y = (fr - fr.mean()) * w
+        ac = np.fft.irfft(np.abs(np.fft.rfft(y, 2 * n)) ** 2)[:n]
+        if ac[0] <= 0: continue
+        seg = ac[lo:hi]
+        if len(seg) == 0: continue
+        k = int(np.argmax(seg)); peak = seg[k] / ac[0]
+        if peak > 0.35: f0.append(sr / (lo + k))
+    return np.array(f0), e[voiced]
+
+
+def expressiveness(x, sr):
+    """bigger = livelier: spread of pitch (semitones, 10-90 %) + loudness movement; garbled/very flat takes score low"""
+    f0, e = pitch_track(np.asarray(x, np.float64), sr)
+    if len(f0) < 5: return 0.0
+    st = 12 * np.log2(f0 / np.median(f0))
+    p10, p90 = np.percentile(st, [10, 90])
+    return float((p90 - p10) + 0.12 * np.std(e))
+
+
+def emotion_gain_db(face):
+    """louder for anger/shock/excitement, softer for sadness/shyness (applied after levelling every line)"""
+    return {"angry": 2.5, "shock": 2.5, "laugh": 1.5, "happy": 1.0, "love": 0.5, "annoyed": 0.8, "grumpy": 0.8, "smirk": 0.0,
+            "wink": 0.5, "worried": -1.0, "blush": -1.5, "sad": -2.5, "smug_closed": 0.0, "focus": -0.5, "side_eye": 0.0}.get(face, 0.0)
+
+
+def level(x, target_db=-20.0):
+    """RMS of the loud part of a line -> target (lines from TTS come out at different levels)"""
+    if len(x) == 0: return x
+    a = np.abs(x); thr = a.max() * 0.05
+    loud = x[a > thr]
+    rms = math.sqrt(float(np.mean(loud ** 2))) if len(loud) else 1e-4
+    return (x * (10 ** (target_db / 20) / max(rms, 1e-5))).astype(np.float32)
+
+
 def main(argv):
     if not argv or argv[0] == "status": print(json.dumps(status(), ensure_ascii=False, indent=1)); return
     if argv[0] == "audition": print(json.dumps(audition(argv[1], argv[2]), ensure_ascii=False, indent=1)); return

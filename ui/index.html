@@ -156,7 +156,7 @@ small.err{color:var(--bad)}
           <div><label class="muted">Tiêu đề gợi ý (không đưa vào video: bạn tự thêm khi chỉnh sửa)</label><input type="text" id="dHook" style="width:100%"></div>
           <div class="row" style="gap:8px"><label class="muted">Bối cảnh <select id="dSet"></select></label>
             <label class="muted">Tư thế chờ <select id="dIdle"><option value="relaxed">thả lỏng</option><option value="hold_hands">nắm tay</option><option value="hands_hips">chống nạnh</option><option value="cross_arms">khoanh tay</option></select></label>
-            <label class="muted">Tiếng chốt cuối <select id="dEnd"></select></label></div>
+            <label class="muted hidden">Tiếng chốt cuối <select id="dEnd"></select></label></div>
           <div><label class="muted">Tình huống + cú đảo</label><textarea id="dPremise" rows="2"></textarea></div>
           <div><label class="muted">Chữ nhấn trong phụ đề (phẩy)</label><input type="text" id="dHi" style="width:100%"></div>
         </div>
@@ -204,6 +204,8 @@ small.err{color:var(--bad)}
       <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Giọng nhân vật</h2><button id="dAud" class="blue">Tạo giọng thử cho nhân vật chưa có giọng</button></div>
         <div id="dVoices" class="grid" style="margin-top:10px"></div></div>
       <div class="panel"><div class="row"><h2 style="margin:0;flex:1">Giọng từng câu</h2>
+          <label class="muted" title="OmniVoice đọc mỗi câu vài lần (ngữ điệu mỗi lần khác), tool giữ bản lên xuống giọng nhiều nhất">Mỗi câu
+            <select id="dTakes"><option value="1">1 bản</option><option value="2">2 bản</option><option value="3" selected>3 bản</option><option value="4">4 bản</option></select> chọn bản biểu cảm nhất</label>
           <button id="dSpeak" class="primary">Tạo giọng các câu &amp; ghép</button><button id="dReAll" title="Mọi câu đọc lại với ngữ điệu khác">Đọc lại tất cả</button></div>
         <p class="muted">Chỉ câu mới hoặc vừa sửa chữ mới được đọc lại. Câu nào nghe chưa hay: bấm ↻ (đọc lại kiểu khác) hoặc tải bản tự thu của câu đó.</p>
         <audio id="dVoicePlayer" controls class="hidden" style="width:100%;margin:6px 0"></audio>
@@ -935,7 +937,7 @@ function dlgLineCard(l, i, cast) {
         ${sel('face', D_FACES.map(f => [f, D_FACE_VI[f]]).reduce((o, [k, t]) => (o[k] = t, o), {}), 'Mặt người nói ', l.face)}
         ${sel('listener_face', D_FACES.map(f => [f, D_FACE_VI[f]]).reduce((o, [k, t]) => (o[k] = t, o), {}), 'Mặt người nghe ', l.listener_face)}
         ${sel('gesture', D_GEST_VI, 'Cử chỉ ', l.gesture)} ${sel('listener_gesture', D_GEST_VI, 'Người nghe ', l.listener_gesture)}
-        ${sel('react', D_REACT, 'Phản ứng ', l.react)} ${sel('shot', D_SHOT, 'Máy quay ', l.shot)} ${sel('sfx', D_SFX, 'Tiếng ', l.sfx)}
+        ${sel('react', D_REACT, 'Phản ứng ', l.react)} ${sel('shot', D_SHOT, 'Máy quay ', l.shot)} <input type="hidden" data-k="sfx" value="none">
         <label>Nghỉ trước <input type="number" data-k="pause_before" min="0" max="2.5" step="0.05" value="${l.pause_before}" style="width:64px"> s</label>
         <label>Tốc độ <input type="number" data-k="speed" min="0.8" max="1.3" step="0.05" value="${l.speed}" style="width:64px"></label>
       </div></div></div>`;
@@ -969,7 +971,7 @@ function renderDialog() {
   $('#dHook').value = c.hook; $('#dPremise').value = c.premise_vi || ''; $('#dHi').value = (c.highlight || []).join(', ');
   const sets = Array.from(new Set([...(st.lib_sets || []), c.setting.set]));
   $('#dSet').innerHTML = opts(sets, c.setting.set); $('#dIdle').value = c.idle || 'relaxed';
-  $('#dEnd').innerHTML = opts(D_SFX, c.end_sfx || 'none');
+  $('#dEnd').innerHTML = opts(['none'], 'none');      // dialogue videos: voices only, no music or sound effects
   $('#dNeeds').innerHTML = (c.library_needs || []).length ? 'Bối cảnh mới (Claude thiết kế khi bấm Duyệt & dựng): ' + c.library_needs.map(n => `<span class="chip draft" title="${esc(n.brief)}">${esc(n.name)}</span>`).join('') : '';
   $('#dCast').innerHTML = c.cast.map(dlgCastCard).join('');
   $('#dLines').innerHTML = c.lines.map((l, i) => dlgLineCard(l, i, c.cast)).join('');
@@ -1050,7 +1052,7 @@ function renderDialogVoice(st) {
   const names = {}; (st.content.cast || []).forEach(m => names[m.id] = m.name);
   const lt = {}; ((st.words || {}).lines || []).forEach(x => lt[x.n] = x);
   $('#dLineVoices').innerHTML = dv.lines.map(x => `<div class="row" style="gap:8px;padding:4px 0;border-bottom:1px dashed var(--line)">
-      <b style="width:22px">${x.n}</b>${chip(x)}<span style="width:70px" class="muted">${esc(names[x.speaker] || x.speaker)}</span>
+      <b style="width:22px">${x.n}</b>${chip(x)}${x.take ? `<span class="muted" title="Bản được chọn / điểm biểu cảm từng bản">bản ${x.take}</span>` : ''}<span style="width:70px" class="muted">${esc(names[x.speaker] || x.speaker)}</span>
       <span style="flex:1;min-width:200px">${esc(x.text)} ${lt[x.n] ? `<span class="muted">· ${lt[x.n].start.toFixed(1)}–${lt[x.n].end.toFixed(1)} s</span>` : ''}</span>
       ${x.exists ? `<audio controls preload="none" src="${P('/file/' + x.file)}?t=${Date.now()}" style="height:30px;width:220px"></audio>` : ''}
       <button class="lRe" data-n="${x.n}" title="Đọc lại câu này với ngữ điệu khác">↻</button>
@@ -1058,11 +1060,13 @@ function renderDialogVoice(st) {
   $$('#dLineVoices .lRe').forEach(b => b.onclick = () => run(P('/dialog/speak'), {only: [+b.dataset.n], reseed: true}, `Đọc lại câu ${b.dataset.n}`));
   $$('#dLineVoices .lUp').forEach(inp => inp.onchange = async () => { const f = inp.files[0]; if (!f) return;
     try { const j = await api(P(`/dialog/line?n=${inp.dataset.n}&assemble=1`), {raw: await f.arrayBuffer()}); watchJob(j.id, `Ghép giọng (câu ${inp.dataset.n} tự thu)`); } catch (e) { toast(e.message, 6000); } });
+  $('#dTakes').value = String((st.settings || {}).voice_takes || 3);
   const pl = $('#dVoicePlayer'); pl.classList.toggle('hidden', !st.has_voice);
   if (st.has_voice) pl.src = P('/file/voice.wav') + '?t=' + ((st.words || {}).duration || 0);
 }
 $('#dAud').onclick = () => run(P('/dialog/auditions'), {}, 'Tạo giọng thử');
 $('#dSpeak').onclick = () => run(P('/dialog/speak'), {}, 'Tạo giọng các câu');
+$('#dTakes').onchange = async () => { await api(P('/settings'), {body: {voice_takes: +$('#dTakes').value}}); toast('Áp dụng cho các câu đọc lần tới'); };
 $('#dReAll').onclick = () => { if (!confirm('Đọc lại TẤT CẢ các câu với ngữ điệu khác?')) return;
   run(P('/dialog/speak'), {only: (S.state.content.lines || []).map((_, i) => i + 1), reseed: true}, 'Đọc lại tất cả'); };
 $('#tvSave').onclick = async () => { try { const t = await api('/api/voices/settings', {body: {python: $('#tvPy').value}}); toast(t.message, 5000); await loadStatus(); renderDialog(); } catch (e) { toast(e.message, 6000); } };

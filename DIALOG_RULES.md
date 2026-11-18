@@ -23,6 +23,12 @@ Lời thoại tiếng Anh (giọng OmniVoice, mỗi nhân vật một giọng), 
 - Thẻ OmniVoice cho tiếng cười/thở dài: `[laughter]`, `[sigh]`, `[surprise-oh]`, `[surprise-wa]`, `[dissatisfaction-hnn]`,
   `[question-ah]`. Dùng ít (2-4 cả video), đặt đầu câu. Không viết "haha", "*sigh*".
 - `speed`: 1.1-1.2 khi cuống, cãi nhau, nói nhanh để chối; 0.9 khi buồn, ngập ngừng, nghiêm giả vờ.
+- **Giọng phải có biểu cảm** (OmniVoice đọc theo chữ và dấu câu, không có nút "cảm xúc"): viết sao cho chữ tự mang cảm xúc.
+  - Dấu câu: "?!" khi sốc, "!" khi phấn khích/bực, "..." khi ngập ngừng/ngượng, "—" khi bị cắt ngang, câu cụt khi tỉnh bơ.
+  - Thán từ ở đầu câu: "Oh my God.", "Wait—what?!", "Ugh.", "Okay, okay.", "Nope.", "Babe...", "Uh-huh.", "Wow." (đừng lạm dụng).
+  - Kéo dài/nhấn: "Sooo…", "No. Way.", "I am NOT mad." (viết hoa MỘT chữ cần nhấn, không viết hoa cả câu).
+  - Thẻ `[laughter]`, `[sigh]`, `[surprise-oh]`, `[dissatisfaction-hnn]` ở chỗ cảm xúc thật sự (3-5 cả video).
+  - `face` của người nói cũng chỉnh âm lượng câu: angry/shock to hơn, sad/blush nhỏ hơn; tool đọc mỗi câu vài bản và giữ bản có ngữ điệu nhất.
 - Hài lành mạnh, đáng yêu: đùa vào tình huống và thói quen (đồ ăn, điện thoại, tiền, mua sắm, remote TV, nhiệt độ điều hòa, ngủ nướng,
   mẹ chồng/mẹ vợ, bài tập về nhà, quên ngày kỷ niệm), không chê ngoại hình, không xúc phạm giới/dân tộc/tôn giáo, không bạo lực thật,
   không nội dung người lớn. Cả hai phía đều có lúc "thắng".
@@ -51,8 +57,7 @@ Người xem chính là khán giả Mỹ: viết như sitcom/sketch Mỹ, ngư�
 - `react` (người nghe giật mình/nảy lên): ở cú đảo hoặc câu chốt, 1-3 lần cả video.
 - `shot`: để `auto` phần lớn (tool tự cắt: hai người, cận người nói, cận người nghe phản ứng). Đặt `both_close` cho cú chốt,
   `listener` khi phản ứng mới là trò cười, `wide` cho câu đầu nếu cần thấy bối cảnh.
-- `sfx`: tiếng hài ở đầu câu, chỉ chỗ đắt (≤ 1 mỗi 10 giây): scratch (khựng lại "wait what?"), boing, gulp (nuốt khan), ding (ý hay),
-  squeak, cash (tiền), bonk, slide_down (xẹp), sad_trombone (thua). `end_sfx` cho cú chốt cuối.
+- `sfx` và `end_sfx`: luôn `none`. Video đối thoại KHÔNG có nhạc nền và tiếng động, chỉ có giọng; cái hài nằm ở lời, ngữ điệu, mặt và khoảng lặng.
 
 ## 4. Nhân vật và giọng
 - Mỗi nhân vật: tên, vai, giới tính, tuổi, `body` (child cho trẻ con), tóc + màu tóc, trang phục đời thường (casual_tee, casual_dress, hoodie,

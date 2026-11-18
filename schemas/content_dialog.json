@@ -406,7 +406,7 @@
        "cash",
        "swish"
       ],
-      "description": "tiếng động hài ở đầu câu (ít thôi, chỉ chỗ đắt)"
+      "description": "luôn 'none': video đối thoại chỉ có giọng (không nhạc, không tiếng động)"
      },
      "react": {
       "enum": [
@@ -459,7 +459,7 @@
     "cash",
     "swish"
    ],
-   "description": "tiếng chốt cuối video (sad_trombone, scratch, boing…) hoặc none"
+   "description": "luôn 'none'"
   },
   "library_needs": {
    "type": "array",

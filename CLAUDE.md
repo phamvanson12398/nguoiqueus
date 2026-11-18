@@ -417,6 +417,18 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   `sig_color` rực; ở kiểu xám món này giữ màu (điểm màu duy nhất). DIALOG_RULES mục 2b (đời sống Mỹ, deadpan, sarcasm, callback, câu chốt
   2-6 từ, tiếng Anh Mỹ thông tục) và mục 4; `check_dialog_look` khi Claude viết. Thử thật: 10 ý tưởng (57 s), kịch bản "The Thermostat War"
   (39 s, 17 câu, callback "But I could feel the difference"), dựng 2D xám. Ảnh: `docs/img/dialog_us.jpg`.
+- Góp ý tiếp của người dùng (chuyển động mềm, giọng biểu cảm, bỏ nhạc/hiệu ứng, phụ đề như video mẫu, góc máy hơi gần):
+  - Chuyển động: `pose.smooth` (0 = tắt, đối thoại 0,2) → `chars._soft` lọc hai tầng góc tay/khuỷu (theo vòng quay gần nhất), nghiêng đầu,
+    nhịp đầu khi nói; tay đung đưa nhẹ khi đứng; cử chỉ bắt đầu sớm 10 khung để lướt vào. Đo `us-comedy-test`: bước nhảy lớn nhất của
+    tay/đầu trong một khung 5,34 rad (tay lật gần một vòng) → 0,19 rad. Rung tay máy 0,35 → 0,12.
+  - Giọng: mỗi câu OmniVoice đọc `voice_takes` bản (mặc định 3, ô trên tab Giọng đọc), `tts.expressiveness` (độ trải cao độ 10-90 % theo
+    nửa cung + độ động âm lượng; bản dài bất thường bị trừ điểm) chọn bản sống nhất, các bản ở `lines/takes/`; khi ghép mỗi câu cân cùng
+    mức rồi cộng `emotion_gain_db` theo mặt (angry/shock +2,5 dB, sad −2,5…). DIALOG_RULES: dấu câu, thán từ, nhấn chữ, thẻ cười/thở.
+  - Âm thanh: chỉ có giọng (`sound.auto.enabled: false`, không nhạc, không events); sfx/end_sfx luôn none, ẩn trên trang.
+  - Phụ đề `captions.style "word"` (`captions.build_word_captions`): từng chữ đúng như nói (chữ thường, bỏ dấu câu), vàng, viền mực mảnh
+    + bóng đổ, không nảy, y −0,45, cỡ 0,085.
+  - Góc máy (thân soft): hai người 3,15, người nói 3,0 (từ đầu gối), người nghe 2,65 (từ ngực, không còn closeup), cận hai mặt 3,5.
+  - Fingerprint demo-v3 + toast trước/sau: giống hệt. Ảnh: `docs/img/dialog_v4.jpg` (khung phải: video mẫu).
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

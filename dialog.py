@@ -22,6 +22,7 @@ FPS = 30
 LEAD = 0.35            # seconds before the first line
 TAIL = 1.5             # seconds after the last line (the reaction to the punchline)
 GAP = 0.22             # default pause between lines
+TAKES = 3              # OmniVoice takes per line; the most expressive one is kept (settings.voice_takes)
 PRE = 3                # frames: cut a little before the speaker starts
 MIN_SHOT = 28          # frames: shorter shots are merged into the previous one
 MAX_SHOT = 150         # frames: longer shots get a reaction cutaway
@@ -93,7 +94,8 @@ def voice_status(slug):
         fresh = os.path.exists(f) and (m.get("source") == "upload" and m.get("text") == l["text"]
                                        or m.get("key") == _key(l, vid, ref, m.get("seed", k + 1)))
         out.append({"n": k + 1, "speaker": l["speaker"], "text": l["text"], "file": os.path.relpath(f, pdir(slug)).replace("\\", "/"),
-                    "exists": os.path.exists(f), "fresh": bool(fresh), "source": m.get("source"), "seconds": m.get("seconds")})
+                    "exists": os.path.exists(f), "fresh": bool(fresh), "source": m.get("source"), "seconds": m.get("seconds"),
+                    "take": m.get("take"), "scores": m.get("scores")})
     import tts
     voices = []
     for m in c["cast"]:
@@ -123,20 +125,41 @@ def speak(slug, only=None, reseed=False, log=print, procs=None, cancelled=lambda
                       "speed": float(l.get("speed") or 1.0), "seed": seed, "_key": _key(l, vid, ref, seed), "_line": k})
     if not items:
         log("Mọi câu đã có giọng (không câu nào đổi)."); return {"spoken": 0}
-    log(f"Tạo giọng {len(items)}/{len(c['lines'])} câu…")
+    takes = max(1, min(5, int((_j(os.path.join(pdir(slug), "settings.json"), {}) or {}).get("voice_takes", TAKES))))
+    log(f"Tạo giọng {len(items)}/{len(c['lines'])} câu, mỗi câu {takes} bản, giữ bản có biểu cảm nhất…")
     for it in items:            # stale files of a line whose speaker changed
         for fn in os.listdir(os.path.dirname(it["out"])) if os.path.isdir(os.path.dirname(it["out"])) else []:
             if fn.startswith(it["id"] + "_") and fn.endswith(".wav") and os.path.join(os.path.dirname(it["out"]), fn) != it["out"]:
                 os.remove(os.path.join(os.path.dirname(it["out"]), fn))
-    okk, errs = tts.run_items([{k: v for k, v in it.items() if not k.startswith("_")} for it in items], log, procs, cancelled=cancelled)
+    tdir = os.path.join(pdir(slug), "lines", "takes"); os.makedirs(tdir, exist_ok=True)
+    jobs = []
+    for it in items:            # several takes per line (OmniVoice phrases each one differently)
+        for t in range(1, takes + 1):
+            jobs.append(dict({k: v for k, v in it.items() if not k.startswith("_")}, id=f"{it['id']}_t{t}",
+                             out=os.path.join(tdir, f"{it['id']}_t{t}.wav"), seed=it["seed"] * 10 + t))
+    okk, errs = tts.run_items(jobs, log, procs, cancelled=cancelled)
+    import shutil
+    failed = {}
     for it in items:
-        if it["id"] in okk:
-            x, sr = tts.read_wav(it["out"])
-            man[it["id"]] = {"source": "tts", "key": it["_key"], "seed": it["seed"], "text": c["lines"][it["_line"]]["text"],
-                             "seconds": round(len(x) / sr, 2)}
+        cands = []
+        for t in range(1, takes + 1):
+            tid = f"{it['id']}_t{t}"
+            if tid not in okk: continue
+            x, sr = tts.read_wav(os.path.join(tdir, tid + ".wav"))
+            cands.append((tts.expressiveness(tts.trim(x, sr), sr), t, len(x) / sr))
+        if not cands:
+            failed[it["id"]] = "; ".join(v for k, v in errs.items() if k.startswith(it["id"] + "_t"))[:300] or "không có bản nào"; continue
+        med = sorted(d for _, _, d in cands)[len(cands) // 2]
+        best = max(cands, key=lambda c_: c_[0] - (3.0 if c_[2] > 1.6 * med else 0.0))      # a much longer take is usually garbled
+        shutil.copy(os.path.join(tdir, f"{it['id']}_t{best[1]}.wav"), it["out"])
+        man[it["id"]] = {"source": "tts", "key": it["_key"], "seed": it["seed"], "text": c["lines"][it["_line"]]["text"],
+                         "seconds": round(best[2], 2), "take": best[1], "scores": [round(s_, 2) for s_, _, _ in cands]}
+        if takes > 1: log(f"   câu {int(it['id'])}: bản {best[1]}/{len(cands)} (biểu cảm {', '.join(f'{s_:.1f}' for s_, _, _ in cands)})")
+        okk.append(it["id"])
+    errs = failed
     _w(os.path.join(pdir(slug), "lines", "manifest.json"), man)
     if errs: raise ValueError(f"{len(errs)} câu chưa tạo được giọng: " + "; ".join(f"câu {k}: {v}" for k, v in list(errs.items())[:5]))
-    return {"spoken": len(okk)}
+    return {"spoken": len([i for i in items if i["id"] in okk])}
 
 
 def upload_line(slug, n, data):
@@ -170,6 +193,7 @@ def assemble(slug, log=print):
     for k, l in enumerate(c["lines"]):
         x, sr = tts.read_wav(line_file(slug, k, l["speaker"]))
         x = tts.resample(tts.trim(x, sr), sr, tts.SR)
+        x = tts.level(x) * (10 ** (tts.emotion_gain_db(l.get("face")) / 20))      # same level for everyone, then emotion
         gap = LEAD if k == 0 else max(0.0, float(l.get("pause_before", GAP)))
         pieces.append(np.zeros(int(round(gap * tts.SR)), np.float32)); t += gap
         a = t; dur = len(x) / tts.SR
@@ -249,10 +273,11 @@ def gesture_pose(g, d, gap, scale=1.0, slim=True):
 
 
 SHOT = {   # type, frame overrides
-    "two":        ("full",    {"size": 3.35, "look_dz": 0.12, "move": "drift", "amount": 0.7}),
-    "speaker":    ("medium",  {"size": 2.25, "move": "push_in", "amount": 0.55}),
-    "listener":   ("closeup", {"move": "push_in", "amount": 0.7}),
-    "both_close": ("medium",  {"size": 2.5, "look_dz": 0.42, "move": "push_in", "amount": 1.1}),
+    # sizes for the soft body (head top ~2.7-3.0 with a cap/bow): never tighter than chest-up, with headroom
+    "two":        ("full",    {"size": 3.15, "look_dz": 0.27, "move": "drift", "amount": 0.5}),
+    "speaker":    ("medium",  {"size": 3.0, "look_dz": 0.3, "move": "push_in", "amount": 0.4}),
+    "listener":   ("medium",  {"size": 2.65, "look_dz": 0.45, "move": "push_in", "amount": 0.45}),
+    "both_close": ("medium",  {"size": 3.5, "look_dz": 0.3, "move": "push_in", "amount": 0.6}),
     "wide":       ("wide",    {"size": 6.4, "move": "pull_out", "amount": 0.6}),
 }
 
@@ -346,7 +371,7 @@ def plan(slug, char_style=None, log=print):
                 g = l.get("gesture", "none")
                 pose = gesture_pose(g, dd, gap, ks) if g and g != "none" else {}
                 pose.setdefault("tilt", 0.05 * dd)               # a small lean of the head toward the partner while talking
-                segs.append({"from": max(1, a - 4), "to": min(N, b + 6), **pose})
+                segs.append({"from": max(1, a - 10), "to": min(N, b + 6), **pose})      # starts early: smoothing glides into it
         default = gesture_pose(idle, dd, gap, ks) if idle != "relaxed" and (idle != "hold_hands" or i < 2) else {}
         if idle == "hold_hands" and n == 3 and i == 2: default = {}
         spec = {"id": m["id"], "type": "soft_child" if kids[i] else "soft", "outfit": SOFT_OUTFIT.get(m["outfit"], m["outfit"]), "loc": [round(xs[i], 3), y0, 0],
@@ -358,7 +383,7 @@ def plan(slug, char_style=None, log=print):
                             if m.get("signature", "none") != "none" else {})},
                 "head_shape": m.get("head_shape", "round"),
                 "faces": ALL_FACES, "expressions": clean, "blinks": blinks, "talk": talk,
-                "pose": {"default": default, "segments": segs}}
+                "pose": {"default": default, "segments": segs, "smooth": 0.2}}
         if reacts: spec["reacts"] = reacts
         if rfx: spec["reaction_fx"] = rfx
         chars.append(spec)
@@ -386,23 +411,17 @@ def plan(slug, char_style=None, log=print):
         if kind == "both_close" and any(kids):
             frame["look_dz"] = 0.0
         shots.append({"a": s["a"], "b": s["b"], "type": typ, "frame": frame})
-    # sounds: comedy hits at line starts, the closing sting after the last line
-    events = []
-    for x, l in zip(lt, c["lines"]):
-        if l.get("sfx", "none") != "none": events.append([fr(x["start"]) - 2 if l["sfx"] in ("scratch", "gulp") else fr(x["start"]), l["sfx"], 0.55])
-    if c.get("end_sfx", "none") != "none": events.append([min(N - 10, fr(lt[-1]["end"]) + 6), c["end_sfx"], 0.6])
     words = [[w[0], w[1]] for w in wj["words"]]
     st = {
         "meta": {"title": c["title"], "slug": slug, "fps": FPS, "frames": N, "seed": 7, "voice": "voice.wav", "output": "out.mp4",
                  "samples": 32, "aspect": "9:16", "char_style": "2d" if style == "2d_grey" else style,
                  **({"char_tone": "grey"} if style == "2d_grey" else {}), "dialog": True, "fast_build": True},
         "sets": [{"id": "stage", "type": set_name, "params": params}],
-        "camera": {"rig": "long", "shots": shots, "hand": 0.35},
+        "camera": {"rig": "long", "shots": shots, "hand": 0.12},
         "chars": chars,
         "words": words,
-        "captions": {"style": "pop", "highlight": [h for h in c.get("highlight", [])]},
-        "sound": {"music": {"mood": "playful", "gain": 0.12, "gain_with_voice": 0.07}, "auto": {"ticks": False},
-                  "events": sorted(events)},
+        "captions": {"style": "word"},                    # one plain yellow word at a time, like the reference videos
+        "sound": {"auto": {"enabled": False}},             # voices only: no music, no sound effects
     }
     errs = storycheck.check_story(st, lib)
     if errs: raise ValueError("story.json lỗi: " + "; ".join(errs[:6]))
