@@ -481,6 +481,9 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - Kịch bản tự viết: `script_import._actions` nhận ghi chú EN/VI (uống/nhấp/ăn/cắn/lướt điện thoại, đưa cho, giơ, cất, lấy ra, bước lại gần,
     lùi lại, đi vào, bỏ đi; "gives up" không có đồ thì không phải đưa đồ); câu chỉ có hành động của chính người nói câu sau → action câu đó.
     `check_dialog` kiểm action thiếu prop, use khi không cầm gì, walk_to thiếu to_spot, quá 1/3 số câu có action. DIALOG_RULES mục 4c.
+  - Thử (`projects/props-walk-test` 2D xám, bản 3D): cầm cà phê từ đầu, uống (cốc lên trước mặt, cả 3D), bước ra/lại gần, lấy + giơ điện
+    thoại, cất, đưa cà phê (người kia nhận và cầm), bỏ đi; `CAMERA OK`. Ảnh: `docs/img/dialog_props.jpg`. Còn để ý: đứng sát nhau thì đồ
+    giơ ra có thể bị đầu người kia che; 3D lỗi `ReferenceError` (miếng da che miệng bị thay) đã sửa bằng tìm theo tên.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
