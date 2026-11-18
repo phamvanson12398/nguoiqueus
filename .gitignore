@@ -45,3 +45,7 @@ projects/an-gi-cung-duoc/voice.wav
 projects/own-script-*/voice.wav
 library/voices/jake*/
 library/voices/emily*/
+projects/props-walk-test/voice.wav
+projects/props-walk-test/preview/
+projects/props-walk-test/lines/
+projects/props-walk-test/sfx_music.wav
