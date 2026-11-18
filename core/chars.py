@@ -186,6 +186,7 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
             tl = prop_tilt[0 if side == "L" else 1]
             if smooth: tl = _soft(c, "pt" + side, tl, smooth * 0.8)
             g.rotation_euler = (0, 0, tl - c.arm_rot[side] - c.body.rotation_euler[2]); timing.key(g, "rotation_euler", f)
+            g.location = (g.location[0], g.location[1], min(0.32, abs(tl) * 0.45)); timing.key(g, "location", f)   # tipped to the mouth: in front of the face
 
 
 def walk_legs(ph, amp=0.42):
@@ -259,7 +260,8 @@ def add_soft_mouth(c, ey):
     """dialogue mouth: a few drawn openings swapped on twos (no squashed outline); dark inside, a white
     upper-teeth band, a small tongue when wide open, ink rim"""
     g = empty(c.name + "_talk", c.head, (0.1 * getattr(c, "gaze", 0.0), 0, 0.14))
-    c.talk_patch = shape(g, c.name + "_talk_patch", ellipse(0, ey - 0.19, 0.2, 0.13, 24), c.skin, 0, outline=0)[0]
+    shape(g, c.name + "_talk_patch", ellipse(0, ey - 0.19, 0.2, 0.13, 24), c.skin, 0, outline=0)
+    c.talk_patch = c.name + "_talk_patch"          # by name: the 3D conversion replaces the curve
     inside = flat("mouth_in", (0.28, 0.04, 0.07))
     c.talk_levels = []
     for k, h in enumerate(SOFT_LEVELS):
@@ -289,7 +291,7 @@ def add_talk_mouth(c, ey=-0.02, style="classic"):
 
 def bake_talk(c, ranges, amp):
     if getattr(c, "talk_levels", None):              # soft mouth: pick an opening on twos from the smoothed voice level
-        vis_track(c.talk_patch, ranges)
+        vis_track(bpy.data.objects[c.talk_patch], ranges)
         per = {k: [] for k in range(len(c.talk_levels))}
         s = 0.0; lv = 0
         for f in range(1, ctx.N + 1):
