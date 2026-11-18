@@ -381,7 +381,7 @@ def action_arm(act, kind, hand, d, reach, ks):
     """(arm spec, prop tilt) for an item action; d = side of the partner, reach = how far the partner's hand is"""
     s = _sgn(hand); sc = lambda v: round(v * ks, 3)
     if act == "show":                        # held out toward the partner at face height
-        return ["ik", [sc(d * 0.46), sc(0.86)], -s], 0.0
+        return ["ik", [sc(d * 0.38), sc(0.8)], -s], 0.0
     if act == "give":                        # arm out toward the partner (meets their hand)
         return ["ik", [round(d * min(0.62 * ks, reach), 3), sc(0.5)], -s], 0.0
     if act == "take":
@@ -390,9 +390,9 @@ def action_arm(act, kind, hand, d, reach, ks):
         return ["ik", [sc(s * 0.24), sc(0.1)], -s], 0.0
     use = USE.get(kind, "look")
     if use == "drink":                       # cup at the side of the mouth, tipped toward it
-        return ["ik", [sc(s * 0.36), sc(0.98)], -s], round(s * 0.9, 2)
+        return ["ik", [sc(s * 0.46), sc(0.78)], -s], round(s * 1.05, 2)
     if use == "eat":
-        return ["ik", [sc(s * 0.3), sc(1.0)], -s], round(s * 0.45, 2)
+        return ["ik", [sc(s * 0.4), sc(0.82)], -s], round(s * 0.6, 2)
     return ["ik", [sc(d * 0.2), sc(0.62)], -s], 0.0          # look at it (phone, letter…) in front of the chest
 
 

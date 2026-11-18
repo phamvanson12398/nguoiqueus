@@ -186,7 +186,7 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
             tl = prop_tilt[0 if side == "L" else 1]
             if smooth: tl = _soft(c, "pt" + side, tl, smooth * 0.8)
             g.rotation_euler = (0, 0, tl - c.arm_rot[side] - c.body.rotation_euler[2]); timing.key(g, "rotation_euler", f)
-            g.location = (g.location[0], g.location[1], min(0.32, abs(tl) * 0.45)); timing.key(g, "location", f)   # tipped to the mouth: in front of the face
+            g.location = (g.location[0], g.location[1], min(0.7, abs(tl) * 0.75)); timing.key(g, "location", f)   # tipped to the mouth: in front of the face
 
 
 def walk_legs(ph, amp=0.42):
