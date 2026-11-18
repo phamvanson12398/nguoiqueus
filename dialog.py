@@ -822,7 +822,7 @@ def plan(slug, char_style=None, log=print):
         mid, spread = group_at(fm)
         on = [i for i in range(n) if abs(pos_at(i, fm)[0] - stage[0]) < OFF - 0.6]
         pst = {i: posture_at(i, fm) for i in on}
-        if any(q == "lie" for q in pst.values()): spread += 1.8
+        if any(q == "lie" for q in pst.values()): spread += 0.8
         if kind in ("two", "wide", "both_close"): subj = mid
         elif kind == "listener": subj = addressee(s["line"])
         else: subj = line["speaker"]
@@ -841,9 +841,9 @@ def plan(slug, char_style=None, log=print):
             j = ids.index(subj); q = posture_at(j, fm); kd = BODY_DIMS[bool(kids[j])]
             if q == "sit": frame["look_dz"] = round(frame.get("look_dz", 0) - (kd["hip"] - FURNITURE["chair"]["seat"]), 3)
             elif q == "lie":
-                frame["look_dz"] = round(frame.get("look_dz", 0) - 0.55 * kd["tall"], 3); frame["size"] = max(frame.get("size", 3.0), 3.4)
+                frame["look_dz"] = round(frame.get("look_dz", 0) - 0.3 * kd["tall"], 3); frame["size"] = max(frame.get("size", 3.0), 3.2)
         elif pst:
-            if any(q == "lie" for q in pst.values()): frame["look_dz"] = round(frame.get("look_dz", 0) - 0.7, 3)
+            if any(q == "lie" for q in pst.values()): frame["look_dz"] = round(frame.get("look_dz", 0) - 0.3, 3)
             elif any(q == "sit" for q in pst.values()): frame["look_dz"] = round(frame.get("look_dz", 0) - 0.15, 3)
         shots.append({"a": s["a"], "b": s["b"], "type": typ, "frame": frame})
     words = [[w[0], w[1]] for w in wj["words"]]

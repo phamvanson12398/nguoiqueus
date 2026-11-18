@@ -55,8 +55,8 @@
     "b": 106,
     "type": "wide",
     "frame": {
-     "size": 7.64,
-     "look_dz": -0.3,
+     "size": 5.87,
+     "look_dz": 0.1,
      "move": "still",
      "subject": [
       0.0,
@@ -71,8 +71,8 @@
     "b": 191,
     "type": "medium",
     "frame": {
-     "size": 3.4,
-     "look_dz": -1.251,
+     "size": 3.2,
+     "look_dz": -0.546,
      "move": "still",
      "subject": "emily"
     }

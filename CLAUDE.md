@@ -491,6 +491,15 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   `vtags.auto_tag` (theo mặt + chữ, ưu tiên câu chốt/cú đảo/sốc/cười, tối đa 40 %, không hai câu liền một người): tự chạy khi "Nhận diện ngay";
   nút "😮 Thêm thẻ cảm xúc" ở bước 2 (`POST content/autotag`); "Nhận diện + Claude" giữ chữ nhưng được thêm thẻ. Thử: "Ăn gì cũng được"
   tự thêm 9/26; Claude thật viết "Who Ate My Leftovers" (16 câu) dùng 5 thẻ khác nhau ([question-en], [question-oh], [surprise-ah], [sigh]).
+- Ngồi / nằm (người dùng: "nhân vật chưa thể nằm ngồi trên giường hay xe"): `cast[].posture` (stand/sit/lie) + action `sit_down`, `lie_down`,
+  `stand_up`. `dialog.plan_postures`: chân/độ cao thân/góc nằm là biểu thức bước mượt theo f (`base + Δ·ease((f−a)/14)`) đặt trong pose
+  `default` nên mọi cử chỉ giữ nguyên tư thế; ngồi = đùi ngang về phía người kia, thân hạ tới mặt ngồi; nằm = `rest` ∓π/2 (trường mới của
+  pose: xoay thân mà đầu không trễ theo), đầu về phía người kia. Spot bối cảnh có `seat`/`bed` (chiều cao) → ngồi/nằm ở đó (bãi đỗ: `car_hood`
+  1,05); không có thì tool đặt `props/chair`, `sofa` (≥ 2 người ngồi từ đầu), `bed` (tay viết) ngay sau người (chân thò ra trước). Người nằm ngồi
+  dậy thì ngồi mép giường; đi thì tự đứng dậy trước; walk_to tới spot có ghế thì tự ngồi. Đoạn blocking đang ngồi có `note: seated` (unstick bỏ qua).
+  Cú máy theo tư thế lúc giữa cú (look_dz hạ khi ngồi/nằm). Nhập kịch bản: "(nằm…)", "(ngồi…)", "(đứng dậy)"; câu đầu của một người có ngồi/nằm
+  → tư thế lúc đầu (+ đồ đang cầm). Design brief bối cảnh đòi khai báo spot ngồi/nằm. Thử `projects/posture-test` (bếp, 2D xám): `CAMERA OK`.
+  Ảnh: `docs/img/dialog_posture.jpg`. Còn để ý: người nằm hơi lơ lửng trên mép giường; nằm thì cả mặt xoay ngang.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
