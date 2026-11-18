@@ -429,6 +429,13 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
     + bóng đổ, không nảy, y −0,45, cỡ 0,085.
   - Góc máy (thân soft): hai người 3,15, người nói 3,0 (từ đầu gối), người nghe 2,65 (từ ngực, không còn closeup), cận hai mặt 3,5.
   - Fingerprint demo-v3 + toast trước/sau: giống hệt. Ảnh: `docs/img/dialog_v4.jpg` (khung phải: video mẫu).
+- Góp ý tiếp (nhìn vào mặt nhau, OmniVoice ngắt nghỉ được, camera đừng rung, nhịp theo cảm xúc chứ không nói liên tục):
+  - `chars[].gaze` (−1 trái, +1 phải; dialog.py đặt về phía người kia): `faces.GAZE` dời cả nhóm nét mặt 0,1 về phía đó và con ngươi trên
+    tròng trắng 0,6; miệng nói dời theo (`c.gaze`). Mặc định 0: video cũ giữ nguyên.
+  - Camera: mọi cú máy đối thoại `move: "still"` (framing mới) + `hand: 0`; `long_report(still_ok)` khi `meta.dialog`. Đo: xê dịch trong cú máy = 0.
+  - Nhịp: `dialog.pause_for` giữ khoảng lặng tối thiểu theo nhịp (cùng người nói tiếp 0,4 s; sau cú đảo/chốt 0,8 s; trước câu chốt 0,7 s;
+    đáp lại câu sốc/giận 0,45 s), còn lại theo `pause_before`. DIALOG_RULES: ngừng trong câu bằng "...", ",", "—"; cãi nhau dồn, thú nhận
+    ngập ngừng, im 1-1,5 s sau tiết lộ. us-comedy-test: 48,0 → 50,5 s. Fingerprint demo-v3 + toast: giống hệt. Ảnh: `docs/img/dialog_v5.jpg`.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

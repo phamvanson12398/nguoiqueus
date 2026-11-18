@@ -35,13 +35,14 @@ def init():
 
 
 SCLERA = False        # grey 2D look (dialogue videos): every eye dot sits on a white eyeball with an ink rim
+GAZE = 0.0            # dialogue: -1 = looking at someone on the screen left, +1 = on the right (face turns, pupils follow)
 
 
 def eye(parent, name, x, y, z, rx=0.055, ry=0.085):
     g = empty(name, parent, (x, y, z))
     if SCLERA:
         disc(g, name + "_rim", 0, 0, 1.98, -0.006, geo.INK); disc(g, name + "_w", 0, 0, 1.72, -0.004, geo.WHITE)
-        disc(g, name + "_d", 0.12, -0.1, 0.82, 0, geo.INK)
+        disc(g, name + "_d", 0.6 * GAZE if GAZE else 0.12, -0.1, 0.8, 0, geo.INK)
     else:
         disc(g, name + "_d", 0, 0, 1.0, 0, geo.INK)
     g.scale = (rx, ry, 1); return g
@@ -50,7 +51,7 @@ def build_faces(head, p, skin, kinds, ey=-0.02, dx=0.15):
     """returns dict kind -> group, plus 'blink' eye list for neutral"""
     F = {}; blink_eyes = []
     for kind in kinds:
-        g = empty(f"{p}_{kind}", head); F[kind] = g; z = 0.06
+        g = empty(f"{p}_{kind}", head, (0.1 * GAZE, 0, 0)); F[kind] = g; z = 0.06        # face turned toward the partner
         if kind == "neutral":
             blink_eyes += [eye(g, f"{p}nL", -dx, ey, z), eye(g, f"{p}nR", dx, ey, z)]
             stroke(g, f"{p}n_m", arc(0, ey - 0.11, 0.11, 0.06, 200, 340), 0.035, z)

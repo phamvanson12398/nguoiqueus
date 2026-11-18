@@ -263,7 +263,7 @@ def solve_long(SHOTS, TRANS=None, PUNCH=(), SHAKES=(), hand=0.6):
     return solve_camera(seqs, trans, PUNCH, SHAKES, hand=hand), seqs, trans
 
 
-def long_report(res, SHOTS, TRANS, PUNCH=(), N=None, min_shot=0.5, max_shot=25.0):
+def long_report(res, SHOTS, TRANS, PUNCH=(), N=None, min_shot=0.5, max_shot=25.0, still_ok=False):
     """Rhythm + motion gate for long-form shot lists.  Prints stats and problems; True when OK."""
     FPS = ctx.FPS; ok = True
     lens_ = [(s["b"] - s["a"] + 1) / FPS for s in SHOTS]
@@ -291,7 +291,7 @@ def long_report(res, SHOTS, TRANS, PUNCH=(), N=None, min_shot=0.5, max_shot=25.0
         c0, l0, n0 = res[a][0], res[a][1], res[a][2]; c1, l1, n1 = res[b][0], res[b][1], res[b][2]
         dist = math.dist(c0, l0) or 1.0
         move = (math.dist(c0, c1) + 0.5 * math.dist(l0, l1)) / dist + abs(n1 - n0) / max(n0, 1)
-        if move / L < 0.006:
+        if move / L < 0.006 and not still_ok:              # dialogue videos: a locked-off camera is the style
             print(f"WARN shot {a}-{b} barely moves ({100 * move:.1f}% of subject distance in {L:.1f}s): add a slow push/pan"); ok = False
     worst = 0.0; cuts = sorted(TRANS)
     for s in SHOTS:

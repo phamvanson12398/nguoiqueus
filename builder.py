@@ -204,7 +204,9 @@ class Builder:
             cfg["extras"] = extras
         else:
             cfg["extras"] = lambda c: chars.draw_extras(c, cid, L)
+        faces.GAZE = float(cs.get("gaze", 0.0))                   # dialogue: look at the partner
         c = chars.make_char(cid, tuple(self.env.const(cs.get("loc", [0, 0, 0]))), cfg)
+        c.gaze = faces.GAZE; faces.GAZE = 0.0
         for hp in cs.get("props", []):
             parent = getattr(c, hp.get("on", "torso"))
             o = self.lib.prop(hp["type"], dict(hp.get("params", {}), name=hp["id"], parent=parent))
@@ -371,7 +373,7 @@ class Builder:
             trans = {int(k): tuple(v) for k, v in cs.get("trans", {}).items()}
             punch = [tuple(x) for x in cs.get("punch", [])]; shakes = [tuple(x) for x in cs.get("shakes", [])]
             res, shots, trans = camera.solve_long(shots, trans, punch, shakes, hand=cs.get("hand", 0.6))
-            self.report["camera_ok"] = camera.long_report(res, shots, trans, punch)
+            self.report["camera_ok"] = camera.long_report(res, shots, trans, punch, still_ok=bool(self.st["meta"].get("dialog")))
             self.lens = camera.bake_camera(self.cam, self.cam_d, res, set(trans))
             self.cuts = sorted(trans)
             self.bake_dof(res, cs, cs["shots"])

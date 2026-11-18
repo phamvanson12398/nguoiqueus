@@ -1818,6 +1818,12 @@
       "tall"
      ],
      "description": "dáng đầu (video đối thoại)"
+    },
+    "gaze": {
+     "type": "number",
+     "minimum": -1,
+     "maximum": 1,
+     "description": "hướng nhìn: -1 nhìn sang trái màn hình, +1 sang phải (mặt và con ngươi quay về người kia)"
     }
    }
   },
@@ -2340,7 +2346,8 @@
            "orbit_left",
            "orbit_right",
            "drift",
-           "static_drift"
+           "static_drift",
+           "still"
           ]
          },
          "amount": {

@@ -23,6 +23,12 @@ Lời thoại tiếng Anh (giọng OmniVoice, mỗi nhân vật một giọng), 
 - Thẻ OmniVoice cho tiếng cười/thở dài: `[laughter]`, `[sigh]`, `[surprise-oh]`, `[surprise-wa]`, `[dissatisfaction-hnn]`,
   `[question-ah]`. Dùng ít (2-4 cả video), đặt đầu câu. Không viết "haha", "*sigh*".
 - `speed`: 1.1-1.2 khi cuống, cãi nhau, nói nhanh để chối; 0.9 khi buồn, ngập ngừng, nghiêm giả vờ.
+- **Ngắt nghỉ, không nói một mạch**: OmniVoice ngừng theo dấu câu, nên viết chỗ ngừng ngay trong câu: "So... I did a thing.",
+  "Okay, but—", "Wait. Wait, wait, wait.", "You're telling me... it's fake?". Nhịp đổi theo cảm xúc:
+  - cãi nhau, chối, hoảng: câu ngắn, đối đáp dồn (`pause_before` 0,15-0,3);
+  - ngập ngừng, ngượng, sắp thú nhận: "..." trong câu, `pause_before` 0,6-1,0;
+  - sau cú đảo/tiết lộ: người kia im 1-1,5 s rồi mới phản ứng (đặt ở `pause_before` của câu phản ứng);
+  - trước câu chốt: khoảng lặng ngượng 0,8-1,5 s. Tool tự giữ khoảng lặng tối thiểu ở những chỗ này.
 - **Giọng phải có biểu cảm** (OmniVoice đọc theo chữ và dấu câu, không có nút "cảm xúc"): viết sao cho chữ tự mang cảm xúc.
   - Dấu câu: "?!" khi sốc, "!" khi phấn khích/bực, "..." khi ngập ngừng/ngượng, "—" khi bị cắt ngang, câu cụt khi tỉnh bơ.
   - Thán từ ở đầu câu: "Oh my God.", "Wait—what?!", "Ugh.", "Okay, okay.", "Nope.", "Babe...", "Uh-huh.", "Wow." (đừng lạm dụng).

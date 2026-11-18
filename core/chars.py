@@ -239,7 +239,7 @@ def tone_grey(c, face=0.50, body=0.62, hair=0.022):
 
 # ---------------- talking mouth (lip flap from the voice) ----------------
 def add_talk_mouth(c, ey=-0.02):
-    g = empty(c.name + "_talk", c.head, (0, 0, 0.14))
+    g = empty(c.name + "_talk", c.head, (0.1 * getattr(c, "gaze", 0.0), 0, 0.14))
     shape(g, c.name + "_talk_patch", ellipse(0, ey - 0.17, 0.22, 0.12, 24), c.skin, 0, outline=0)
     piv = empty(c.name + "_talk_piv", g, (0, ey - 0.17, 0.02))
     shape(piv, c.name + "_talk_m", ellipse(0, 0, 0.12, 0.10, 24), faces.MOUTH, 0, outline=0.03)

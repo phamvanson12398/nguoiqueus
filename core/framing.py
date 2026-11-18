@@ -31,7 +31,7 @@ PRESETS = {
 }
 ALIAS = {"board": "wide", "map": "wide", "diagram": "full", "card": "medium", "interior": "wide"}
 MOVES = ("push_in", "pull_out", "pan_left", "pan_right", "truck_left", "truck_right", "crane_up", "crane_down",
-         "orbit_left", "orbit_right", "drift", "static_drift")
+         "orbit_left", "orbit_right", "drift", "static_drift", "still")
 
 
 def preset(type_):
@@ -115,6 +115,8 @@ def frame_keys(fr, type_, a, b, subject_pos, aspect=16 / 9):
         c0, c1 = orb(-da / 2), orb(da / 2)
     elif move == "static_drift":
         c0 = add(cam, fwd, -0.015 * d); c1 = add(cam, fwd, 0.015 * d)
+    elif move == "still":                                     # locked-off camera (dialogue videos)
+        pass
     else:                                                     # drift: slow push + a little truck
         c0 = add(add(cam, fwd, -0.04 * d * k), side, -0.03 * W * k)
         c1 = add(add(cam, fwd, 0.04 * d * k), side, 0.03 * W * k)

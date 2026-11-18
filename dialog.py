@@ -179,6 +179,18 @@ def upload_line(slug, n, data):
 # =====================================================================
 #  lines -> voice.wav + words.json
 # =====================================================================
+def pause_for(L, k):
+    """silence before line k: the script's pause, but never shorter than the beat needs (people react, breathe, let a joke land)"""
+    l, p = L[k], L[k - 1]
+    want = float(l.get("pause_before", GAP))
+    least = 0.25
+    if l["speaker"] == p["speaker"]: least = 0.4                       # same person, next sentence: a breath
+    if p.get("beat") in ("twist", "punchline"): least = max(least, 0.8)  # the other one takes in the news
+    if l.get("beat") == "punchline": least = max(least, 0.7)            # comic pause before the punchline
+    if p.get("face") in ("shock", "angry") and l["speaker"] != p["speaker"]: least = max(least, 0.45)
+    return min(2.5, max(want, least))
+
+
 def assemble(slug, log=print):
     import numpy as np, tts, align
     c = content_of(slug); d = pdir(slug)
@@ -194,7 +206,7 @@ def assemble(slug, log=print):
         x, sr = tts.read_wav(line_file(slug, k, l["speaker"]))
         x = tts.resample(tts.trim(x, sr), sr, tts.SR)
         x = tts.level(x) * (10 ** (tts.emotion_gain_db(l.get("face")) / 20))      # same level for everyone, then emotion
-        gap = LEAD if k == 0 else max(0.0, float(l.get("pause_before", GAP)))
+        gap = LEAD if k == 0 else pause_for(c["lines"], k)
         pieces.append(np.zeros(int(round(gap * tts.SR)), np.float32)); t += gap
         a = t; dur = len(x) / tts.SR
         tmp = os.path.join(tmpd, f"{k}.wav"); tts.write_wav(tmp, x, tts.SR)
@@ -274,11 +286,11 @@ def gesture_pose(g, d, gap, scale=1.0, slim=True):
 
 SHOT = {   # type, frame overrides
     # sizes for the soft body (head top ~2.7-3.0 with a cap/bow): never tighter than chest-up, with headroom
-    "two":        ("full",    {"size": 3.15, "look_dz": 0.27, "move": "drift", "amount": 0.5}),
-    "speaker":    ("medium",  {"size": 3.0, "look_dz": 0.3, "move": "push_in", "amount": 0.4}),
-    "listener":   ("medium",  {"size": 2.65, "look_dz": 0.45, "move": "push_in", "amount": 0.45}),
-    "both_close": ("medium",  {"size": 3.5, "look_dz": 0.3, "move": "push_in", "amount": 0.6}),
-    "wide":       ("wide",    {"size": 6.4, "move": "pull_out", "amount": 0.6}),
+    "two":        ("full",    {"size": 3.15, "look_dz": 0.27, "move": "still"}),
+    "speaker":    ("medium",  {"size": 3.0, "look_dz": 0.3, "move": "still"}),
+    "listener":   ("medium",  {"size": 2.65, "look_dz": 0.45, "move": "still"}),
+    "both_close": ("medium",  {"size": 3.5, "look_dz": 0.3, "move": "still"}),
+    "wide":       ("wide",    {"size": 6.4, "move": "still"}),
 }
 
 
@@ -374,7 +386,7 @@ def plan(slug, char_style=None, log=print):
                 segs.append({"from": max(1, a - 10), "to": min(N, b + 6), **pose})      # starts early: smoothing glides into it
         default = gesture_pose(idle, dd, gap, ks) if idle != "relaxed" and (idle != "hold_hands" or i < 2) else {}
         if idle == "hold_hands" and n == 3 and i == 2: default = {}
-        spec = {"id": m["id"], "type": "soft_child" if kids[i] else "soft", "outfit": SOFT_OUTFIT.get(m["outfit"], m["outfit"]), "loc": [round(xs[i], 3), y0, 0],
+        spec = {"id": m["id"], "gaze": dd, "type": "soft_child" if kids[i] else "soft", "outfit": SOFT_OUTFIT.get(m["outfit"], m["outfit"]), "loc": [round(xs[i], 3), y0, 0],
                 "blocking": {"default": {"location": [round(xs[i], 3), y0, 0]},
                              "segments": [{"from": 1, "to": N, "location": [round(xs[i], 3), y0, 0]}]},
                 "look": {"hair": m["hair"], "hair_color": m["hair_color"], "beard": "none", "seed": i + 1,
@@ -417,7 +429,7 @@ def plan(slug, char_style=None, log=print):
                  "samples": 32, "aspect": "9:16", "char_style": "2d" if style == "2d_grey" else style,
                  **({"char_tone": "grey"} if style == "2d_grey" else {}), "dialog": True, "fast_build": True},
         "sets": [{"id": "stage", "type": set_name, "params": params}],
-        "camera": {"rig": "long", "shots": shots, "hand": 0.12},
+        "camera": {"rig": "long", "shots": shots, "hand": 0.0},          # locked-off camera, no shake (cuts only)
         "chars": chars,
         "words": words,
         "captions": {"style": "word"},                    # one plain yellow word at a time, like the reference videos
