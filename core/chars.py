@@ -50,6 +50,7 @@ def make_char(name, loc, cfg):
         shape(c.torso, name + "_shirt", rrect(0, th / 2, tw, th, 0.3 if tw < 0.9 else 0.32), tcol, 0.12)
     shX, shY, aL1, aL2 = cfg["arm"]
     c.sh = {"L": (-shX, shY), "R": (shX, shY)}; c.aL = (aL1, aL2)
+    c.hand_dy = -aL2 - 0.05 * (cfg.get("hand_r", 0.075) / 0.075)      # hand centre on the forearm (hand-held props)
     c.armL = limb(c.torso, name + "_armL", (-shX, shY), aL1, aL2, aw, 0.30, "hand", hand_r=cfg.get("hand_r", 0.075))
     c.armR = limb(c.torso, name + "_armR", (shX, shY), aL1, aL2, aw, 0.30, "hand", hand_r=cfg.get("hand_r", 0.075))
     if cfg.get("neck", True): stroke(c.torso, name + "_neck", [(0, th - 0.04), (0, th + 0.08)], 0.06, 0.1)
@@ -138,7 +139,7 @@ def _soft(c, key, target, k, wrap=False):
 
 
 def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02), head_tilt=0.0, body=(0, 0), breath=True, lean=0.0,
-              smooth=0.0):
+              smooth=0.0, prop_tilt=(0.0, 0.0)):
     """arm specs: ('ang', a1, a2) or ('ik', (x, y), bend) in torso coords.
     V2: forearms drag behind fast upper-arm moves (follow-through), reactions add squash/stretch, head lags the body.
     smooth (0 = off, ~0.15-0.3): gestures and head moves glide in and out, arms drift a little at rest (dialogue videos)."""
@@ -158,6 +159,7 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
         a2 = a2 - max(-0.5, min(0.5, 1.6 * c.vel[side]))            # forearm drags behind
         lp[0].rotation_euler = (0, 0, a1); lp[1].rotation_euler = (0, 0, a2)
         timing.key(lp[0], "rotation_euler", f); timing.key(lp[1], "rotation_euler", f)
+        if hasattr(c, "hand_items"): c.arm_rot = dict(getattr(c, "arm_rot", {}), **{side: a1 + a2})
         c.hist.setdefault(side, []).append((f, a1 + 0.5 * a2))
     for spec, lp in ((legL, c.legL), (legR, c.legR)):
         lp[0].rotation_euler = (0, 0, spec[0]); lp[1].rotation_euler = (0, 0, spec[1])
@@ -179,6 +181,11 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
     else:
         c.head.rotation_euler = (0, 0, head_tilt + 0.03 * math.sin(t * 1.7) + c.lag_tilt + 0.05 * talk * math.sin(f * 0.9))
     c.head.location = (0, c.head.location[1], c.head.location[2]); timing.key(c.head, "rotation_euler", f)
+    if hasattr(c, "hand_items"):               # hand-held items stay upright (plus the tilt an action asks for: drinking…)
+        for side, g in c.hand_items:
+            tl = prop_tilt[0 if side == "L" else 1]
+            if smooth: tl = _soft(c, "pt" + side, tl, smooth * 0.8)
+            g.rotation_euler = (0, 0, tl - c.arm_rot[side] - c.body.rotation_euler[2]); timing.key(g, "rotation_euler", f)
 
 
 def walk_legs(ph, amp=0.42):
@@ -214,7 +221,7 @@ def tone_grey(c, face=0.50, body=0.62, hair=0.022):
     """every colour of this character becomes grey (face a bit darker than the clothes, shading of the clothes kept as
     light/dark greys), hair black, hands ink; eyes, mouth, tears, hearts and blush keep their colours"""
     from .look import descendants
-    keep = {geo.INK, geo.WHITE, faces.MOUTH, faces.TONGUE, faces.TEETH, faces.SWEAT, faces.RED_M, faces.BLUSH}
+    keep = {geo.INK, geo.WHITE, faces.MOUTH, faces.TONGUE, faces.TEETH, faces.SWEAT, faces.RED_M, faces.BLUSH, flat("mouth_in", (0.28, 0.04, 0.07))}
     c.skin.node_tree.nodes["Emission"].inputs[0].default_value = (face, face, face, 1)
     hair_m = flat("tone_hair", (hair, hair, hair))
     fx_objs = set()
@@ -225,6 +232,7 @@ def tone_grey(c, face=0.50, body=0.62, hair=0.022):
         n = o.name.lower()
         if o.name in fx_objs: continue
         if "_sig_" in n and not any(w in n for w in HAIR_WORDS): continue   # the signature item: the one spot of colour
+        if "_hp_" in n: continue                                            # hand-held props keep their colours (part of the world)
         for sl in o.material_slots:
             m = sl.material
             if n.endswith("_hand"): sl.material = geo.INK; continue          # small black hands, like the reference
@@ -238,7 +246,38 @@ def tone_grey(c, face=0.50, body=0.62, hair=0.022):
 
 
 # ---------------- talking mouth (lip flap from the voice) ----------------
-def add_talk_mouth(c, ey=-0.02):
+def _d_mouth(w, h, n=18):
+    """D-shaped open mouth: an almost flat top lip, a round lower jaw (like the dialogue references)"""
+    top = [(-w + 2 * w * i / 8, -0.012 * h / 0.15 * (1 - ((-w + 2 * w * i / 8) / w) ** 2)) for i in range(9)]
+    return top + [(w * math.cos(math.pi * 2 - math.pi * i / n), h * math.sin(math.pi * 2 - math.pi * i / n)) for i in range(1, n)]
+
+
+SOFT_LEVELS = (0.04, 0.08, 0.125, 0.17)       # mouth openings (drawn shapes, not a squashed one: the ink line keeps its weight)
+
+
+def add_soft_mouth(c, ey):
+    """dialogue mouth: a few drawn openings swapped on twos (no squashed outline); dark inside, a white
+    upper-teeth band, a small tongue when wide open, ink rim"""
+    g = empty(c.name + "_talk", c.head, (0.1 * getattr(c, "gaze", 0.0), 0, 0.14))
+    c.talk_patch = shape(g, c.name + "_talk_patch", ellipse(0, ey - 0.19, 0.2, 0.13, 24), c.skin, 0, outline=0)[0]
+    inside = flat("mouth_in", (0.28, 0.04, 0.07))
+    c.talk_levels = []
+    for k, h in enumerate(SOFT_LEVELS):
+        w = 0.16 - 0.08 * (h - SOFT_LEVELS[0])
+        lv = empty(f"{c.name}_talk_l{k}", g, (0, ey - 0.13, 0.02))
+        shape(lv, f"{c.name}_talk_l{k}_m", _d_mouth(w, h), inside, 0, outline=0.028)
+        if h >= 0.07:
+            th = min(0.05, h * 0.36)
+            shape(lv, f"{c.name}_talk_l{k}_teeth", _d_mouth(w * 0.86, th, 10)[:9] + [(w * 0.8, -th), (-w * 0.8, -th)],
+                  faces.TEETH, 0.01, outline=0)
+        if h >= 0.11:
+            shape(lv, f"{c.name}_talk_l{k}_t", ellipse(0, -h * 0.72, w * 0.5, h * 0.2, 16), faces.TONGUE, 0.01, outline=0)
+        c.talk_levels.append(lv)
+    c.talk = g; c.talk_piv = None
+
+
+def add_talk_mouth(c, ey=-0.02, style="classic"):
+    if style == "soft": return add_soft_mouth(c, ey)
     g = empty(c.name + "_talk", c.head, (0.1 * getattr(c, "gaze", 0.0), 0, 0.14))
     shape(g, c.name + "_talk_patch", ellipse(0, ey - 0.17, 0.22, 0.12, 24), c.skin, 0, outline=0)
     piv = empty(c.name + "_talk_piv", g, (0, ey - 0.17, 0.02))
@@ -249,6 +288,22 @@ def add_talk_mouth(c, ey=-0.02):
 
 
 def bake_talk(c, ranges, amp):
+    if getattr(c, "talk_levels", None):              # soft mouth: pick an opening on twos from the smoothed voice level
+        vis_track(c.talk_patch, ranges)
+        per = {k: [] for k in range(len(c.talk_levels))}
+        s = 0.0; lv = 0
+        for f in range(1, ctx.N + 1):
+            on = any(a <= f <= b for a, b in ranges)
+            s = max(amp[f], 0.55 * s + 0.45 * amp[f]) if on else 0.0      # opens fast, closes softly
+            if f % 2 == 1 or not on: lv = 0 if s < 0.12 else 1 if s < 0.38 else 2 if s < 0.66 else 3
+            if on: per[lv].append(f)
+        for k, lvo in enumerate(c.talk_levels):
+            fr = per[k]; rng = []
+            for f in fr:
+                if rng and f == rng[-1][1] + 1: rng[-1][1] = f
+                else: rng.append([f, f])
+            vis_track(lvo, [tuple(r) for r in rng])
+        return
     vis_track(c.talk, ranges)
     for f in range(1, ctx.N + 1):
         on = any(a <= f <= b for a, b in ranges)

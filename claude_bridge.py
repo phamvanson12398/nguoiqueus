@@ -1010,6 +1010,17 @@ def check_dialog(x, minutes=None):
         n = len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split())
         if n > 18: e.append(f"lines[{k}] dài {n} từ (tối đa ~16, tách thành 2 câu hoặc rút gọn)")
         if n == 0: e.append(f"lines[{k}] không có chữ")
+    held = {c["id"]: {(c.get("holding") or {}).get("kind")} - {None} for c in x["cast"]}
+    for k, l in enumerate(x["lines"]):                     # props in hand / walking make sense in order
+        a, pr, who = l.get("action", "none"), l.get("prop") or "", l["speaker"]
+        if a in ("take_out", "show", "give") and not pr: e.append(f"lines[{k}] action {a} cần prop (đồ vật gì)")
+        if a in ("take_out", "show", "use") and pr: held.setdefault(who, set()).add(pr)
+        if a == "use" and not pr and not held.get(who): e.append(f"lines[{k}] action use nhưng {who} không cầm gì (ghi prop hoặc holding)")
+        if a == "give":
+            held.setdefault(who, set()).discard(pr)
+        if a == "walk_to" and not l.get("to_spot"): e.append(f"lines[{k}] walk_to cần to_spot (spot của bối cảnh, partner, away, left, right)")
+    acts = sum(1 for l in x["lines"] if l.get("action", "none") != "none")
+    if acts > max(4, len(x["lines"]) // 3): e.append(f"{acts} câu có action: quá nhiều, chỉ giữ những động tác phục vụ cái hài (tối đa ~1/3 số câu)")
     for i in ids:
         if sum(1 for l in x["lines"] if l["speaker"] == i) < 2: e.append(f"nhân vật {i} nói ít hơn 2 câu")
     if not any(l["beat"] == "punchline" for l in x["lines"]): e.append("chưa có câu nào beat = punchline")

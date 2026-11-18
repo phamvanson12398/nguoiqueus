@@ -223,6 +223,47 @@
      "spot": {
       "type": "string",
       "description": "chỗ đứng: tên một spot của bối cảnh (xem danh sách spots) hợp vai trò (người lái → driver_door, người nấu → stove, khách → doorway…), hoặc left / center / right; để trống = tool tự xếp"
+     },
+     "holding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "kind"
+      ],
+      "description": "đồ cầm sẵn từ đầu (cà phê, điện thoại, túi…)",
+      "properties": {
+       "kind": {
+        "enum": [
+         "phone",
+         "coffee",
+         "mug",
+         "soda",
+         "bottle",
+         "fries",
+         "burger",
+         "pizza",
+         "icecream",
+         "bag",
+         "keys",
+         "book",
+         "remote",
+         "paper",
+         "receipt",
+         "money",
+         "flowers",
+         "gift",
+         "card",
+         "popcorn",
+         "donut"
+        ]
+       },
+       "hand": {
+        "enum": [
+         "L",
+         "R"
+        ]
+       }
+      }
      }
     }
    },
@@ -430,6 +471,51 @@
        "punchline",
        "tag"
       ]
+     },
+     "action": {
+      "enum": [
+       "none",
+       "take_out",
+       "show",
+       "use",
+       "give",
+       "put_away",
+       "walk_to",
+       "enter",
+       "exit"
+      ],
+      "description": "việc người nói làm khi nói câu này: take_out (lấy đồ ra), show (giơ cho người kia xem), use (uống/ăn/xem điện thoại — trước câu), give (đưa cho người kia cuối câu), put_away (cất đi), walk_to (vừa nói vừa bước tới to_spot), enter (đi vào cảnh rồi nói), exit (nói xong bỏ đi)"
+     },
+     "prop": {
+      "enum": [
+       "",
+       "phone",
+       "coffee",
+       "mug",
+       "soda",
+       "bottle",
+       "fries",
+       "burger",
+       "pizza",
+       "icecream",
+       "bag",
+       "keys",
+       "book",
+       "remote",
+       "paper",
+       "receipt",
+       "money",
+       "flowers",
+       "gift",
+       "card",
+       "popcorn",
+       "donut"
+      ],
+      "description": "đồ vật trong tay cho action (để trống nếu không cần)"
+     },
+     "to_spot": {
+      "type": "string",
+      "description": "walk_to: tên spot của bối cảnh, left/right, away (lùi ra), partner (lại gần người kia)"
      }
     }
    },

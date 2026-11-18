@@ -36,6 +36,10 @@ Bấm "+ Dự án mới" rồi gõ **3** (hoặc chọn "Đối thoại hài" �
    thêm mặt/cử chỉ/nhịp/bản dịch; viết tiếng Việt thì Claude dịch sang tiếng Anh Mỹ) hoặc "Dịch & làm hay hơn" (Claude gọt câu cho hài
    kiểu Mỹ, giữ nhân vật, tình huống và cú chốt). Dòng đầu trong ngoặc kép là tiêu đề, "Bối cảnh: …" là mô tả cảnh (chưa có thì Claude
    thiết kế), câu chỉ có hành động như "Jake: (nhìn chằm chằm)" thành một nhịp im lặng. Không cần bước Ý tưởng.
+   **Đồ vật và đi lại**: mỗi câu có ô "Hành động" (lấy đồ ra, giơ cho xem, uống/ăn/xem điện thoại, đưa cho người kia, cất đi, bước tới,
+   đi vào cảnh, nói xong bỏ đi) + "Đồ vật" (điện thoại, cà phê, khoai tây chiên, hoa, hộp quà… 21 món) + "Tới chỗ" (partner = lại gần,
+   away = lùi ra, hoặc tên chỗ đứng của bối cảnh). Ô "Cầm sẵn từ đầu" ở thẻ nhân vật. Kịch bản tự viết nhận ra ghi chú kiểu
+   `(uống cà phê)`, `(đưa điện thoại cho Emily)`, `(bỏ đi)`, `(bước lại gần)`, `*sips coffee*`, `(walks off)`.
 3. **Giọng đọc** (OmniVoice, cài một lần bằng `tools\install_omnivoice.bat`, cần card NVIDIA):
    "Tạo giọng thử" → nghe 3 giọng của mỗi nhân vật → **Chọn** (hoặc tải giọng thật của bạn 3-10 giây) → "Tạo giọng các câu & ghép".
    Câu nào chưa hay: ↻ đọc lại, hoặc tải bản tự thu của câu đó. Sửa chữ một câu thì chỉ câu đó được đọc lại.

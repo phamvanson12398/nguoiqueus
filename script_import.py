@@ -87,6 +87,40 @@ def _slug(name):
     return (s if s and s[0].isalpha() else "c_" + s)[:20] or "char"
 
 
+# things in hand / walking, from the stage directions (English + Vietnamese) -> line action, prop, to_spot
+PROP_WORDS = [
+    (r"phone|điện thoại|đt\b|smartphone|iphone", "phone"), (r"coffee|cà phê|cafe|latte|starbucks", "coffee"),
+    (r"\bmug\b|\btea\b|\btrà\b|cốc|tách", "mug"), (r"soda|\bcoke\b|\bcan\b|lon\b|nước ngọt", "soda"),
+    (r"bottle|water|chai|nước suối|\bwine\b|rượu", "bottle"), (r"fries|khoai|chips", "fries"), (r"burger|bánh mì kẹp|hamburger", "burger"),
+    (r"pizza", "pizza"), (r"ice ?cream|kem\b", "icecream"), (r"\bbag\b|túi|shopping", "bag"), (r"keys?\b|chìa khóa|chìa khoá", "keys"),
+    (r"\bbook\b|sách|quyển", "book"), (r"remote|điều khiển|remote control", "remote"), (r"receipt|hóa đơn|hoá đơn|bill\b", "receipt"),
+    (r"letter|paper|note\b|tờ giấy|lá thư|thư\b|giấy", "paper"), (r"money|cash|dollars?|tiền", "money"),
+    (r"flowers?|bouquet|hoa\b|bó hoa", "flowers"), (r"gift|present|quà|hộp quà", "gift"), (r"credit card|\bcard\b|thẻ", "card"),
+    (r"popcorn|bỏng ngô|bắp rang", "popcorn"), (r"donut|doughnut|bánh vòng|bánh donut", "donut")]
+ACTION_WORDS = [
+    (r"walks? (in|into)|enters?|comes? in|bước vào|đi vào|chạy vào|xuất hiện", "enter", None),
+    (r"walks? (off|out|away)|leaves?|storms? off|exits?|bỏ đi|đi ra|đi mất|quay lưng đi|bước ra ngoài", "exit", None),
+    (r"steps? (closer|forward|up)|walks? (over|up) to|moves? closer|approach|bước tới|bước lại gần|tiến lại|đi lại gần|lại gần", "walk_to", "partner"),
+    (r"steps? back|backs? (off|away)|moves? away|lùi lại|lùi ra|bước ra xa|tránh ra", "walk_to", "away"),
+    (r"hands? (it|him|her|over)|gives?|passes?|đưa cho|đưa|trao|chìa .* cho", "give", None),
+    (r"shows?|holds? up|giơ|chìa ra|cho .* xem", "show", None),
+    (r"sips?|drinks?|eats?|bites?|takes? a (sip|bite)|uống|nhấp|hớp|ăn|cắn|nhai|scroll|looks? at (his|her|the) (phone|screen)|lướt|xem điện thoại|nhìn điện thoại|bấm điện thoại", "use", None),
+    (r"puts? (it|.*) away|pockets?|cất|bỏ vào túi", "put_away", None),
+    (r"takes? out|pulls? out|picks? up|grabs?|holds?|lấy ra|rút ra|cầm|nhặt", "take_out", None)]
+
+
+def _actions(text_cues):
+    """(action, prop, to_spot) from stage directions"""
+    low = " ".join(text_cues).lower()
+    prop = next((k for pat, k in PROP_WORDS if re.search(pat, low)), "")
+    for pat, a, ts in ACTION_WORDS:
+        if re.search(pat, low):
+            if a in ("give", "show", "take_out", "put_away") and not prop: continue     # "gives up", "holds on"…: no item, not an action
+            if a == "use" and not prop: prop = "phone" if re.search(r"scroll|lướt|màn hình|screen", low) else ""
+            return a, prop, ts or ""
+    return ("take_out", prop, "") if prop else ("none", "", "")
+
+
 def _apply_cues(text_cues):
     face = gesture = None; tags = []; pause = 0.0; speed = None
     for cue in text_cues:
@@ -145,15 +179,18 @@ def parse(text):
         tags = [f"[{t.strip()}]" for t in keep_tags] + [t for t in tags if t.strip("[]") not in keep_tags]
         if not body:
             if cue_txt:                                               # silent beat: "Jake: (stares at her)"
-                silent = {"who": l["name"], "cues": cue_txt, "face": face, "gesture": gesture}
+                silent = {"who": l["name"], "cues": cue_txt, "face": face, "gesture": gesture, "act": _actions(cue_txt)}
                 continue
             warnings.append(f"Dòng {k + 1} trống: bỏ qua"); continue
         if l["name"] not in names: names.append(l["name"])
+        act, prop, to_spot = _actions(cue_txt)
         entry = {"speaker_name": l["name"], "text": (" ".join(tags) + " " + body).strip() if tags else body, "face": face,
-                 "gesture": gesture, "pause": pause, "speed": speed, "cues": cue_txt}
+                 "gesture": gesture, "pause": pause, "speed": speed, "cues": cue_txt, "action": act, "prop": prop, "to_spot": to_spot}
         if silent:                                                    # the silent beat before this line
             entry["pause"] = max(entry["pause"], 1.3)
             entry["silent_before"] = {"who": silent["who"], "action": "; ".join(silent["cues"])}
+            if silent["who"] == l["name"] and silent["act"][0] != "none" and entry["action"] == "none":    # does it, then talks
+                entry["action"], entry["prop"], entry["to_spot"] = silent["act"]
             if silent["who"] != l["name"]:
                 entry["listener_face"] = silent["face"] or "annoyed"; entry["listener_gesture"] = silent["gesture"]
             silent = None
@@ -239,7 +276,8 @@ def to_content(p, voices=(), minutes=None, have_sets=()):
                       "gesture": l["gesture"] or "none", "listener_gesture": l.get("listener_gesture") or "none",
                       "shot": "listener" if l.get("silent_before") else "auto",
                       "pause_before": round(max(0.25, l["pause"] or 0.25), 2), "speed": l["speed"] or 1.0, "sfx": "none",
-                      "react": "flinch" if beat == "twist" else "none", "beat": beat})
+                      "react": "flinch" if beat == "twist" else "none", "beat": beat,
+                      **({"action": l["action"], "prop": l.get("prop") or "", "to_spot": l.get("to_spot") or ""} if l.get("action", "none") != "none" else {})})
     words = sum(len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split()) for l in lines)
     st, need = pick_set(p.get("setting") or p.get("notes"), have_sets)
     return {"format": "dialog", "title": p.get("title") or lines[0]["text"][:40], "title_vi": "", "hook": (p.get("hook") or "")[:32],

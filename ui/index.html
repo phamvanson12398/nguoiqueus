@@ -902,6 +902,11 @@ const D_FACES = ['neutral', 'happy', 'smirk', 'wink', 'angry', 'shock', 'worried
 const D_FACE_VI = {neutral: 'bình thường', happy: 'vui', smirk: 'nhếch mép', wink: 'nháy mắt', angry: 'giận', shock: 'sốc', worried: 'lo', grumpy: 'cau có',
   focus: 'tập trung', smug_closed: 'tự mãn', sad: 'buồn', love: 'mắt tim', laugh: 'cười lớn', side_eye: 'liếc', annoyed: 'chán', blush: 'đỏ mặt'};
 const D_GEST = ['none', 'point', 'hands_hips', 'cross_arms', 'shrug', 'wave', 'hold_hands', 'think', 'fist', 'hands_up', 'open_arms', 'facepalm'];
+const D_PROPS = {'': '—', phone: 'điện thoại', coffee: 'cà phê', mug: 'cốc', soda: 'lon nước', bottle: 'chai', fries: 'khoai tây chiên',
+  burger: 'burger', pizza: 'pizza', icecream: 'kem', bag: 'túi', keys: 'chìa khóa', book: 'sách', remote: 'điều khiển', paper: 'tờ giấy',
+  receipt: 'hóa đơn', money: 'tiền', flowers: 'hoa', gift: 'hộp quà', card: 'thẻ', popcorn: 'bỏng ngô', donut: 'bánh donut'};
+const D_ACT = {none: '—', take_out: 'lấy đồ ra', show: 'giơ cho xem', use: 'uống/ăn/xem (trước câu)', give: 'đưa cho người kia',
+  put_away: 'cất đi', walk_to: 'bước tới…', enter: 'đi vào cảnh', exit: 'nói xong bỏ đi'};
 const D_GEST_VI = {none: '—', point: 'chỉ tay', hands_hips: 'chống nạnh', cross_arms: 'khoanh tay', shrug: 'nhún vai', wave: 'vẫy', hold_hands: 'nắm tay',
   think: 'suy nghĩ', fist: 'giơ nắm đấm', hands_up: 'giơ hai tay', open_arms: 'dang tay', facepalm: 'ôm đầu'};
 const D_SHOT = {auto: 'tự chọn', two: 'hai người', speaker: 'cận người nói', listener: 'cận người nghe', both_close: 'cận hai mặt (chốt)', wide: 'toàn cảnh'};
@@ -956,6 +961,10 @@ function dlgLineCard(l, i, cast) {
         ${sel('react', D_REACT, 'Phản ứng ', l.react)} ${sel('shot', D_SHOT, 'Máy quay ', l.shot)} <input type="hidden" data-k="sfx" value="none">
         <label>Nghỉ trước <input type="number" data-k="pause_before" min="0" max="2.5" step="0.05" value="${l.pause_before}" style="width:64px"> s</label>
         <label>Tốc độ <input type="number" data-k="speed" min="0.8" max="1.3" step="0.05" value="${l.speed}" style="width:64px"></label>
+      </div>
+      <div class="row" style="gap:8px;grid-column:1/-1" title="Đồ vật trong tay và đi lại (người nói làm ở câu này)">
+        ${sel('action', D_ACT, 'Hành động ', l.action || 'none')} ${sel('prop', D_PROPS, 'Đồ vật ', l.prop || '')}
+        <label>Tới chỗ <input type="text" data-k="to_spot" value="${esc(l.to_spot || '')}" placeholder="partner / away / tên spot" style="width:140px"></label>
       </div></div></div>`;
 }
 function dlgCastCard(m, i) {
@@ -976,6 +985,7 @@ function dlgCastCard(m, i) {
       <input type="color" data-k="sig_color" value="${rgb2hex(m.sig_color || [0.92, 0.2, 0.3])}" title="Màu món nhận diện"></div>
     <label class="muted" style="display:block;margin-top:6px">Chỗ đứng <select data-k="spot">${opts(Object.assign({'': 'tool tự xếp theo vai', left: 'bên trái', center: 'giữa', right: 'bên phải'},
         Object.fromEntries(Object.entries(S.state.set_spots || {}).map(([k, d]) => [k, k + ' — ' + d]))), m.spot || '')}</select></label>
+    <label class="muted" style="display:block;margin-top:6px">Cầm sẵn từ đầu <select data-k="holding">${opts(D_PROPS, (m.holding || {}).kind || '')}</select></label>
     <label class="muted" style="display:block;margin-top:6px">Giọng (OmniVoice): <input type="text" data-k="voice_instruct" value="${esc(m.voice_instruct)}" style="width:100%"></label>
     <label class="muted">Mã giọng trong thư viện <input type="text" data-k="voice_id" value="${esc(m.voice_id)}" style="width:150px"></label>
     <div class="muted" style="font-size:12.5px;margin-top:4px">${esc(m.personality_vi || '')}</div></div>`;
@@ -1026,11 +1036,14 @@ function collectDialog() {
     m.hair_color = hex2rgb(v('hair_color')); m.colors = {cloth: hex2rgb(v('cloth')), cloth2: hex2rgb(v('cloth2'))};
     m.head_shape = v('head_shape'); m.signature = v('signature'); m.sig_color = hex2rgb(v('sig_color'));
     if (v('spot')) m.spot = v('spot'); else delete m.spot;
+    if (v('holding')) m.holding = Object.assign({}, m.holding || {}, {kind: v('holding')}); else delete m.holding;
     return m;
   });
   c.lines = $$('#dLines .dl').map(el => {
     const l = {}; el.querySelectorAll('[data-k]').forEach(inp => { l[inp.dataset.k] = inp.value; });
     l.pause_before = parseFloat(l.pause_before) || 0; l.speed = parseFloat(l.speed) || 1;
+    if (!l.action || l.action === 'none') { delete l.action; delete l.prop; delete l.to_spot; }
+    else { if (!l.prop) delete l.prop; if (!l.to_spot) delete l.to_spot; }
     return l;
   });
   return c;

@@ -462,6 +462,25 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   trang). `dialog.place_cast`: chỗ cố định → đúng xy; còn lại xếp cạnh, người nói trước bên trái, trẻ con giữa bố mẹ + lên trước 0,25,
   khoảng cách theo quan hệ (`pair_gap`: cặp đôi 1,2, gia đình 1,28, cạnh trẻ con 1,12, bạn 1,35, sếp/hàng xóm 1,6), đẩy tách < 1,1.
   Cảnh hai người/toàn cảnh nới theo độ trải (+1,3) và hạ nhóm thấp (y −0,3) khi khung > 3,6. Ảnh: `docs/img/dialog_spots.jpg`.
+- Đồ vật trong tay, đi lại, miệng mới (người dùng: "có đạo cụ thì cho cầm và thao tác, đi đi lại lại, cái mồm nói hơi xấu"):
+  - `core/handprops.py`: 21 đồ 2D (phone, coffee, mug, soda, bottle, fries, burger, pizza, icecream, bag, keys, book, remote, paper, receipt,
+    money, flowers, gift, card, popcorn, donut), vẽ sau bàn tay, nhóm gắn cẳng tay ở tâm bàn tay (`c.hand_dy`), ×1,4. `pose_char` xoay ngược
+    nhóm mỗi khung nên đồ luôn đứng thẳng, cộng `prop_tilt` [trái, phải] của đoạn tư thế (uống: nghiêng 0,9). Story: `chars[].hand_props`
+    [{id, kind, hand, color, ranges}] (hiện theo ranges); kiểu xám giữ màu đồ (`_hp_`); 3D: đồ là khối riêng (`c.held`).
+  - Content: `cast[].holding` {kind, hand}; câu `action` (take_out, show, use, give, put_away, walk_to, enter, exit) + `prop` + `to_spot`
+    (spot của bối cảnh, partner, away, left, right). `dialog.plan_actions`: tay phía người kia; show = giơ ngang mặt về phía người kia;
+    use = uống/ăn cạnh miệng hoặc xem điện thoại trước ngực (trước câu, `pause_for` chừa 0,9 s); give = đưa cuối câu, người kia đưa tay
+    nhận rồi cầm luôn; put_away = hạ tay rồi biến mất. Thứ tự đoạn tư thế (đoạn đầu tiên phủ khung thắng): đi bộ, động tác với đồ, cử chỉ
+    (giữ nguyên tay đang cầm đồ), cầm đồ.
+  - Đi lại: blocking `lerp(…, ease(…))` 1,25 đơn vị/s (bỏ đi ×1,4), chân `walk_legs(f*0,32)`, tay đánh, nhún; enter = đứng ngoài khung
+    (sân khấu ± 4,3) tới khi vào; exit = nói xong đi về phía không có ai; nói tiếp thì tự đi vào lại; walk_to không giẫm lên người khác
+    (cách ≥ MIN_GAP). Cảnh hai người/hai mặt lấy vị trí thật ở giữa cú máy (người ngoài khung không tính).
+  - Miệng nói kiểu mới (`chars[].mouth: "soft"`, video đối thoại): 4 hình miệng chữ D vẽ sẵn (môi trên gần phẳng, hàm dưới tròn, trong đỏ
+    sẫm, dải răng trắng, lưỡi hồng khi mở to, viền mực đều) đổi theo giọng mỗi 2 khung (mở nhanh, khép từ từ) thay cho hình bầu dục bị bóp
+    (viền mỏng đi khi khép). Shorts cũ giữ miệng classic.
+  - Kịch bản tự viết: `script_import._actions` nhận ghi chú EN/VI (uống/nhấp/ăn/cắn/lướt điện thoại, đưa cho, giơ, cất, lấy ra, bước lại gần,
+    lùi lại, đi vào, bỏ đi; "gives up" không có đồ thì không phải đưa đồ); câu chỉ có hành động của chính người nói câu sau → action câu đó.
+    `check_dialog` kiểm action thiếu prop, use khi không cầm gì, walk_to thiếu to_spot, quá 1/3 số câu có action. DIALOG_RULES mục 4c.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

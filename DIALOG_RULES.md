@@ -87,6 +87,21 @@ Người xem chính là khán giả Mỹ: viết như sitcom/sketch Mỹ, ngư�
 - Tool tự xếp phần còn lại: người nói trước đứng bên trái, trẻ con đứng giữa bố mẹ và nhích lên trước, cặp đôi đứng sát (nắm tay được),
   gia đình gần, bạn bè vừa, sếp/hàng xóm xa hơn; không ai đứng chồng lên ai.
 
+## 4c. Đồ vật trong tay và đi lại (`holding`, `action`, `prop`, `to_spot`)
+Đồ cầm tay là hình 2D phẳng (như nhân vật): phone, coffee, mug, soda, bottle, fries, burger, pizza, icecream, bag, keys, book,
+remote, paper, receipt, money, flowers, gift, card, popcorn, donut. Chỉ dùng khi đồ vật có ích cho cái hài (callback, cú đảo,
+gài từ trước) — tối đa khoảng 1/3 số câu có action.
+- `cast[].holding` = đồ cầm sẵn từ đầu (cốc cà phê, túi đồ…). Tool tự chọn tay phía người kia.
+- `action` của người nói ở câu đó:
+  - `take_out` (lấy ra: điện thoại, chìa khóa…), `show` (giơ cho người kia xem, cả câu), `put_away` (cất đi);
+  - `use` = uống/ăn/xem màn hình, làm ngay TRƯỚC câu (tool tự chừa ~1 s): hợp với câu bình thản kiểu "*sip* ...I don't care.";
+  - `give` = đưa cho người đang nói chuyện, cuối câu; người kia cầm luôn (dùng cho cú chốt: "They're YOUR fries.");
+  - `walk_to` + `to_spot` = vừa nói vừa bước tới: `partner` (lại gần, dỗ dành/đối chất), `away` (lùi ra, giận dỗi), `left`/`right`,
+    hoặc tên một spot của bối cảnh (fridge, driver_door…);
+  - `enter` = đi vào cảnh rồi mới nói (người thứ ba xuất hiện, bố về nhà…); trước đó người này không có trên hình;
+  - `exit` = nói xong bỏ đi (câu chốt kiểu "I'm getting two." rồi quay đi). Nói câu sau thì tự đi vào lại.
+- Không bắt hai người cùng đi một lúc; đi lại tối đa 2-3 lần mỗi video (máy quay đứng yên, đi nhiều sẽ ra khỏi khung).
+
 ## 5. Bối cảnh
 - Một bối cảnh cho cả video, chọn trong thư viện (bếp `kitchen` với `stuck_toast: false`, `office`, `street`…). Nếu không hợp thì đặt
   tên mới (living_room, bedroom, restaurant, car_front_seats, supermarket…) và đưa vào `library_needs` (tối đa 1 món mới).

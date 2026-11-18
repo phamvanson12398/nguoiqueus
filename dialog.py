@@ -188,6 +188,9 @@ def pause_for(L, k):
     if p.get("beat") in ("twist", "punchline"): least = max(least, 0.8)  # the other one takes in the news
     if l.get("beat") == "punchline": least = max(least, 0.7)            # comic pause before the punchline
     if p.get("face") in ("shock", "angry") and l["speaker"] != p["speaker"]: least = max(least, 0.45)
+    if l.get("action") == "use": least = max(least, 0.9)                 # a sip / a bite before the line
+    if l.get("action") == "enter": least = max(least, 1.2)               # they walk in first
+    if p.get("action") == "exit": least = max(least, 1.0)                # the walk-off is seen
     return min(2.5, max(want, least))
 
 
@@ -350,6 +353,212 @@ def gesture_pose(g, d, gap, scale=1.0, slim=True):
     return P
 
 
+# ---------------------------------------------------------------------
+#  props in hand + walking (line `action` / `prop` / `to_spot`, cast `holding`)
+# ---------------------------------------------------------------------
+PROP_KINDS = ["phone", "coffee", "mug", "soda", "bottle", "fries", "burger", "pizza", "icecream", "bag", "keys", "book", "remote",
+              "paper", "receipt", "money", "flowers", "gift", "card", "popcorn", "donut"]
+USE = {"coffee": "drink", "mug": "drink", "soda": "drink", "bottle": "drink", "fries": "eat", "burger": "eat", "pizza": "eat",
+       "icecream": "eat", "popcorn": "eat", "donut": "eat", "phone": "look", "book": "look", "paper": "look", "receipt": "look",
+       "remote": "look", "card": "look", "money": "look"}
+ACTIONS = ["none", "take_out", "show", "use", "give", "put_away", "walk_to", "enter", "exit"]
+WALK = 1.25            # units per second (a stroll; the soft body is ~2.7 tall)
+OFF = 4.3              # entering / leaving people start / end this far from the stage centre (out of a 9:16 frame)
+STEP = 0.32            # walk cycle: phase per frame (one step ~10 frames)
+
+
+def _sgn(hand): return 1 if hand == "R" else -1
+
+
+def hold_arm(kind, hand, ks):
+    """the arm holding an item between actions: forearm forward at the waist (a bag simply hangs)"""
+    if kind == "bag": return None
+    s = _sgn(hand)
+    return ["ik", [round(s * 0.3 * ks, 3), round(0.34 * ks, 3)], -s]
+
+
+def action_arm(act, kind, hand, d, reach, ks):
+    """(arm spec, prop tilt) for an item action; d = side of the partner, reach = how far the partner's hand is"""
+    s = _sgn(hand); sc = lambda v: round(v * ks, 3)
+    if act == "show":                        # held out toward the partner at face height
+        return ["ik", [sc(d * 0.62), sc(0.98)], -s], 0.0
+    if act == "give":                        # arm out toward the partner (meets their hand)
+        return ["ik", [round(d * min(0.62 * ks, reach), 3), sc(0.5)], -s], 0.0
+    if act == "take":
+        return ["ik", [round(d * min(0.62 * ks, reach), 3), sc(0.5)], -s], 0.0
+    if act == "put_away":                    # down to the pocket / bag
+        return ["ik", [sc(s * 0.24), sc(0.1)], -s], 0.0
+    use = USE.get(kind, "look")
+    if use == "drink":                       # cup at the side of the mouth, tipped toward it
+        return ["ik", [sc(s * 0.36), sc(0.98)], -s], round(s * 0.9, 2)
+    if use == "eat":
+        return ["ik", [sc(s * 0.3), sc(1.0)], -s], round(s * 0.45, 2)
+    return ["ik", [sc(d * 0.2), sc(0.62)], -s], 0.0          # look at it (phone, letter…) in front of the chest
+
+
+def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print):
+    """turns `holding` / line actions into, per cast member: hand_props (items + when they are seen), blocking segments
+    (standing + walking), pose segments that win over gestures (walking, item actions) and arm poses for holding.
+    Returns (items, blocking, act_segs, hold_at, pos_at)."""
+    cast = c["cast"]; L = c["lines"]; n = len(cast); ids = [m["id"] for m in cast]
+    spots = spots or {}
+    side = {i: (1 if xs[i] >= stage[0] else -1) for i in range(n)}
+    way = {i: [] for i in range(n)}                  # (a, b, (x0, y0), (x1, y1)) walks, in time order
+    items = {i: [] for i in range(n)}                # {"kind", "hand", "a", "b", "id"}
+    act = {i: [] for i in range(n)}                  # pose segments with priority
+    open_ = {i: {} for i in range(n)}                # hand -> item being held
+    out = {i: False for i in range(n)}                # off the frame right now (not entered yet / left)
+
+    def pos(i, f):
+        p = (xs[i], ys[i])
+        for a, b, p0, p1 in way[i]:
+            if f >= b: p = p1
+            elif f >= a:
+                u = (f - a) / max(1, b - a); u = u * u * (3 - 2 * u)
+                return (p0[0] + (p1[0] - p0[0]) * u, p0[1] + (p1[1] - p0[1]) * u)
+            else: break
+        return p
+
+    def near_hand(i, f):
+        j = addressee_at(i, f)
+        d = 1 if pos(j, f)[0] > pos(i, f)[0] else -1
+        return ("R" if d > 0 else "L"), d
+
+    def addressee_at(i, f):
+        return min((j for j in range(n) if j != i), key=lambda j: abs(pos(j, f)[0] - pos(i, f)[0]))
+
+    def give_item(i, kind, hand, a, color=None):
+        it = {"kind": kind, "hand": hand, "a": a, "b": N, "id": f"{kind}{len(items[i])}"}
+        if color: it["color"] = color
+        items[i].append(it); open_[i][hand] = it; return it
+
+    def find(i, kind):
+        for h, it in open_[i].items():
+            if kind in (None, "", it["kind"]): return h, it
+        return None, None
+
+    def walk(i, a, to, speed=WALK):
+        p0 = pos(i, a); dist = math.hypot(to[0] - p0[0], to[1] - p0[1])
+        if dist < 0.05: return a
+        b = min(N + 40, a + max(int(0.8 * FPS), int(round(dist / speed * FPS))))
+        way[i].append((a, b, p0, to))
+        return b
+
+    for i, m in enumerate(cast):                    # items held from the start
+        h = m.get("holding") or {}
+        if h.get("kind") in PROP_KINDS:
+            hand = h.get("hand") or ("R" if _dir(i, xs) > 0 else "L")
+            give_item(i, h["kind"], hand, 1, h.get("color"))
+    entering = {i for i in range(n) if any(l["speaker"] == ids[i] and l.get("action") == "enter" for l in L)}
+    for i in entering:                               # out of the frame until their entrance
+        first = next(k for k, l in enumerate(L) if l["speaker"] == ids[i] and l.get("action") == "enter")
+        if any(l["speaker"] == ids[i] for l in L[:first]): continue    # they talk before: enter = walk back in later
+        start = (stage[0] + side[i] * OFF, ys[i])
+        way[i].append((0, 1, start, start)); out[i] = True
+
+    for k, (x, l) in enumerate(zip(lt, L)):
+        i = ids.index(l["speaker"]); a, b = fr(x["start"]), fr(x["end"])
+        acts = l.get("action") or "none"; kind = (l.get("prop") or "").strip().lower() or None
+        if kind and kind not in PROP_KINDS:
+            log(f"   lưu ý: câu {k + 1} đạo cụ '{kind}' chưa có, bỏ qua (có: {', '.join(PROP_KINDS)})"); kind = None
+        ks = 0.66 if kids[i] else 1.0
+        if out[i] or acts == "enter":               # entrance (also: someone who left and talks again walks back in)
+            if out[i]:
+                to = (xs[i], ys[i]); p0 = pos(i, a)
+                t0 = max(2, a - int(round(math.hypot(to[0] - p0[0], to[1] - p0[1]) / WALK * FPS)) - 4)
+                if way[i] and t0 <= way[i][-1][1]: t0 = way[i][-1][1] + 1
+                walk(i, t0, to); out[i] = False
+            if acts == "enter": acts = "none"
+        if acts == "walk_to":
+            ts = (l.get("to_spot") or "").strip()
+            j = ids.index(addressee(k)) if addressee(k) in ids else addressee_at(i, a)
+            if ts in spots: to = tuple(spots[ts]["xy"])
+            elif ts in ("left", "right"): to = (stage[0] + (-1.6 if ts == "left" else 1.6), pos(i, a)[1])
+            elif ts in ("away",): to = (pos(i, a)[0] + (1.4 if pos(i, a)[0] > pos(j, a)[0] else -1.4), pos(i, a)[1])
+            else:                                   # "partner" / empty: step up close to the person they talk to
+                pj = pos(j, a); sd = 1 if pos(i, a)[0] > pj[0] else -1
+                to = (pj[0] + sd * 1.15, pj[1])
+            for o in range(n):                      # never onto someone else
+                if o != i and abs(pos(o, a)[0] - to[0]) < MIN_GAP and abs(pos(o, a)[1] - to[1]) < 0.8:
+                    to = (pos(o, a)[0] + (MIN_GAP if to[0] >= pos(o, a)[0] else -MIN_GAP), to[1])
+            walk(i, max(2, a - 4), (round(to[0], 3), round(to[1], 3)))
+        if acts == "exit":                          # says the line, then walks off on their side
+            others = [pos(o, b)[0] for o in range(n) if o != i and not out[o]]
+            if others:                              # away from the others, never through them
+                sd = 1 if pos(i, b)[0] >= sum(others) / len(others) else -1
+            else: sd = side[i]
+            walk(i, b + 4, (stage[0] + sd * OFF, pos(i, b)[1]), speed=WALK * 1.4); out[i] = True
+        # items
+        hand, d = near_hand(i, a)
+        if acts in ("take_out", "show", "use", "give") and kind and find(i, kind)[1] is None:
+            h = hand if hand not in open_[i] else ("L" if hand == "R" else "R")
+            give_item(i, kind, h, max(1, a - 12))
+        if acts in ("show", "use", "give", "put_away"):
+            h, it = find(i, kind)
+            if it is None:
+                if acts != "put_away": log(f"   lưu ý: câu {k + 1} '{acts}' nhưng {l['speaker']} không cầm gì (ghi prop)")
+                continue
+            j = addressee_at(i, a); dj = 1 if pos(j, a)[0] > pos(i, a)[0] else -1
+            reach = max(0.2, abs(pos(j, a)[0] - pos(i, a)[0]) / 2 - 0.04)
+            if acts == "use":
+                arm, tilt = action_arm("use", it["kind"], h, dj, reach, ks)
+                seg = {"from": max(1, a - 24), "to": min(N, a + 8), "arm" + h: arm, "prop_tilt": [tilt if h == "L" else 0, tilt if h == "R" else 0]}
+                if USE.get(it["kind"]) == "look": seg = dict(seg, to=min(N, b), tilt=-0.06 * dj)
+                act[i].append(seg)
+            elif acts == "show":
+                arm, _ = action_arm("show", it["kind"], h, dj, reach, ks)
+                act[i].append({"from": max(1, a - 8), "to": min(N, b + 4), "arm" + h: arm})
+            elif acts == "put_away":
+                arm, _ = action_arm("put_away", it["kind"], h, dj, reach, ks)
+                act[i].append({"from": max(1, a - 4), "to": min(N, a + 10), "arm" + h: arm})
+                it["b"] = min(N, a + 8); open_[i].pop(h, None)
+            elif acts == "give":                    # hand it over at the end of the line; the other one takes it
+                arm, _ = action_arm("give", it["kind"], h, dj, reach, ks)
+                act[i].append({"from": max(1, b - 14), "to": min(N, b + 10), "arm" + h: arm})
+                kj = 0.66 if kids[j] else 1.0
+                hj = "R" if -dj > 0 else "L"
+                if hj in open_[j]: hj = "L" if hj == "R" else "R"
+                armj, _ = action_arm("take", it["kind"], hj, -dj, reach, kj)
+                act[j].append({"from": max(1, b - 8), "to": min(N, b + 16), "arm" + hj: armj})
+                it["b"] = min(N, b + 2); open_[i].pop(h, None)
+                give_item(j, it["kind"], hj, min(N, b + 3), it.get("color"))
+    # walking: legs step, arms swing (an item arm keeps holding), a little bob
+    for i in range(n):
+        ph = round(1.3 * i, 2)
+        for a, b, p0, p1 in way[i]:
+            if b - a < 2: continue
+            seg = {"from": max(1, a), "to": min(N, b), "legs": f"walk_legs(f * {STEP} + {ph})",
+                   "armL": ["ang", f"-0.12 - 0.32 * sin(f * {STEP} + {ph})", 0.15], "armR": ["ang", f"0.12 - 0.32 * sin(f * {STEP} + {ph})", -0.15],
+                   "body": [0, f"0.03 * abs(sin(f * {STEP} + {ph}))"]}
+            act[i].insert(0, seg)
+    blocking = {}
+    for i in range(n):
+        segs = []; f0 = 1; p = (xs[i], ys[i])
+        for a, b, p0, p1 in way[i]:
+            if b <= 1: p = p1; continue
+            if a > f0: segs.append({"from": f0, "to": a - 1, "location": [round(p[0], 3), round(p[1], 3), 0]})
+            aa = max(1, a)
+            segs.append({"from": aa, "to": min(N, b), "location": [
+                f"lerp({p0[0]:.3f}, {p1[0]:.3f}, ease((f - {a}) / {max(1, b - a)}))",
+                f"lerp({p0[1]:.3f}, {p1[1]:.3f}, ease((f - {a}) / {max(1, b - a)}))", 0]})
+            f0 = b + 1; p = p1
+            if f0 > N: break
+        if f0 <= N: segs.append({"from": f0, "to": N, "location": [round(p[0], 3), round(p[1], 3), 0]})
+        blocking[i] = {"default": {"location": [round(xs[i], 3), ys[i], 0]}, "segments": segs}
+
+    def hold_at(i, f):
+        """arm specs for the items cast member i holds at frame f"""
+        out = {}
+        for it in items[i]:
+            if it["a"] <= f <= it["b"]:
+                arm = hold_arm(it["kind"], it["hand"], 0.66 if kids[i] else 1.0)
+                if arm: out["arm" + it["hand"]] = arm
+        return out
+    hp = {i: [{"id": it["id"], "kind": it["kind"], "hand": it["hand"], "ranges": [[it["a"], it["b"]]], **({"color": it["color"]} if "color" in it else {})}
+              for it in items[i]] for i in range(n)}
+    return hp, blocking, act, hold_at, pos
+
+
 SHOT = {   # type, frame overrides
     # sizes for the soft body (head top ~2.7-3.0 with a cap/bow): never tighter than chest-up, with headroom
     "two":        ("full",    {"size": 3.15, "look_dz": 0.27, "move": "still"}),
@@ -417,6 +626,14 @@ def plan(slug, char_style=None, log=print):
     gap = max(MIN_GAP, (max(xs) - min(xs)) / max(1, n - 1))
     rnd = random.Random(sum(map(ord, slug)))
     ids = [m["id"] for m in cast]
+
+    def addressee(k):
+        """who line k is said to: the last other speaker before it, else the next one, else the nearest person"""
+        sp = c["lines"][k]["speaker"]
+        for j in list(range(k - 1, -1, -1)) + list(range(k + 1, len(c["lines"]))):
+            if c["lines"][j]["speaker"] != sp: return c["lines"][j]["speaker"]
+        return min((x for x in ids if x != sp), key=lambda o: abs(xs[ids.index(o)] - xs[ids.index(sp)]))
+    hprops, blocking, act_segs, hold_at, pos_at = plan_actions(c, lt, xs, ys, stage, (smeta or {}).get("spots"), N, fr, kids, addressee, log)
     chars = []
     idle = c.get("idle", "relaxed")
     for i, m in enumerate(cast):
@@ -450,11 +667,18 @@ def plan(slug, char_style=None, log=print):
                 pose = gesture_pose(g, dd, gap, ks) if g and g != "none" else {}
                 pose.setdefault("tilt", 0.05 * dd)               # a small lean of the head toward the partner while talking
                 segs.append({"from": max(1, a - 10), "to": min(N, b + 6), **pose})      # starts early: smoothing glides into it
+        for sg in segs:                                   # a gesture keeps the item in the hand that holds it
+            for arm, spec_ in hold_at(i, (sg["from"] + sg["to"]) // 2).items(): sg.setdefault(arm, spec_)
+        holds = []
+        for it in hprops[i]:
+            for a_, b_ in it["ranges"]:
+                arm = hold_at(i, (a_ + b_) // 2)
+                if arm: holds.append({"from": a_, "to": b_, **arm})
+        segs = act_segs[i] + segs + holds                 # the first segment that covers a frame wins
         default = gesture_pose(idle, dd, gap, ks) if idle != "relaxed" and (idle != "hold_hands" or i < 2) else {}
         if idle == "hold_hands" and n == 3 and i == 2: default = {}
         spec = {"id": m["id"], "gaze": dd, "type": "soft_child" if kids[i] else "soft", "outfit": SOFT_OUTFIT.get(m["outfit"], m["outfit"]), "loc": [round(xs[i], 3), ys[i], 0],
-                "blocking": {"default": {"location": [round(xs[i], 3), ys[i], 0]},
-                             "segments": [{"from": 1, "to": N, "location": [round(xs[i], 3), ys[i], 0]}]},
+                "blocking": blocking[i], "mouth": "soft",
                 "look": {"hair": m["hair"], "hair_color": m["hair_color"], "beard": "none", "seed": i + 1,
                          "palette": {"cloth": m["colors"]["cloth"], "cloth2": m["colors"]["cloth2"]},
                          **({"signature": m["signature"], "sig_color": m.get("sig_color") or [0.92, 0.2, 0.3]}
@@ -462,33 +686,34 @@ def plan(slug, char_style=None, log=print):
                 "head_shape": m.get("head_shape", "round"),
                 "faces": ALL_FACES, "expressions": clean, "blinks": blinks, "talk": talk,
                 "pose": {"default": default, "segments": segs, "smooth": 0.2}}
+        if hprops[i]: spec["hand_props"] = hprops[i]
         if reacts: spec["reacts"] = reacts
         if rfx: spec["reaction_fx"] = rfx
         chars.append(spec)
 
-    mid = [round((min(xs) + max(xs)) / 2, 3), y0, 0]
-
-    def addressee(k):
-        """who line k is said to: the last other speaker before it, else the next one, else the nearest person"""
-        sp = c["lines"][k]["speaker"]
-        for j in list(range(k - 1, -1, -1)) + list(range(k + 1, len(c["lines"]))):
-            if c["lines"][j]["speaker"] != sp: return c["lines"][j]["speaker"]
-        return min((x for x in ids if x != sp), key=lambda o: abs(xs[ids.index(o)] - xs[ids.index(sp)]))
+    def group_at(f):
+        """middle of the people in the frame at f (someone who has not come in yet / has left is not counted)"""
+        ps = [pos_at(i, f) for i in range(n)]
+        on = [p for p in ps if abs(p[0] - stage[0]) < OFF - 0.6] or ps
+        return [round((min(p[0] for p in on) + max(p[0] for p in on)) / 2, 3), round(sum(p[1] for p in on) / len(on), 3), 0], \
+            max(p[0] for p in on) - min(p[0] for p in on)
     shots = []
     for s in plan_shots(lt, c, N):
         kind = s["kind"]; typ, ov = SHOT[kind]
         line = c["lines"][s["line"]]
+        mid, spread = group_at((s["a"] + s["b"]) // 2)
         if kind in ("two", "wide", "both_close"): subj = mid
         elif kind == "listener": subj = addressee(s["line"])
         else: subj = line["speaker"]
         frame = dict(ov, subject=subj)
         if n == 3 and kind in ("two", "wide"): frame["size"] = ov.get("size", 3.6) * 1.25
         if kind in ("two", "wide"):                     # everyone in: the frame is 9/16 as wide as it is tall
-            frame["size"] = round(max(frame["size"], (max(xs) - min(xs) + 1.3) * 16 / 9), 2)
+            frame["size"] = round(max(frame["size"], (spread + 1.3) * 16 / 9), 2)
             if frame["size"] > 3.6: frame["y"] = -0.3          # a wider frame: keep the group low, less empty floor, more room above
         if kind == "both_close" and n == 3:              # two closest: the speaker and the one they talk to
-            j = ids.index(line["speaker"]); o = ids.index(addressee(s["line"]))
-            frame["subject"] = [round((xs[j] + xs[o]) / 2, 3), round((ys[j] + ys[o]) / 2, 3), 0]
+            j = ids.index(line["speaker"]); o = ids.index(addressee(s["line"])); fm = (s["a"] + s["b"]) // 2
+            pj, po = pos_at(j, fm), pos_at(o, fm)
+            frame["subject"] = [round((pj[0] + po[0]) / 2, 3), round((pj[1] + po[1]) / 2, 3), 0]
         if kind == "both_close" and any(kids):
             frame["look_dz"] = 0.0
         shots.append({"a": s["a"], "b": s["b"], "type": typ, "frame": frame})

@@ -1530,6 +1530,15 @@
     },
     "lean": {
      "$ref": "#/$defs/value"
+    },
+    "prop_tilt": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/value"
+     },
+     "minItems": 2,
+     "maxItems": 2,
+     "description": "tilt (rad) of the items in the left / right hand on top of keeping them upright (drinking ~0.9)"
     }
    }
   },
@@ -1824,6 +1833,72 @@
      "minimum": -1,
      "maximum": 1,
      "description": "hướng nhìn: -1 nhìn sang trái màn hình, +1 sang phải (mặt và con ngươi quay về người kia)"
+    },
+    "mouth": {
+     "enum": [
+      "classic",
+      "soft"
+     ],
+     "description": "talking mouth: classic (Shorts) or soft (dialogue: drawn D-shaped openings)"
+    },
+    "hand_props": {
+     "type": "array",
+     "description": "dialogue: flat 2D items held in a hand (core/handprops.py), shown in `ranges`",
+     "items": {
+      "type": "object",
+      "required": [
+       "id",
+       "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "kind": {
+        "enum": [
+         "phone",
+         "coffee",
+         "mug",
+         "soda",
+         "bottle",
+         "fries",
+         "burger",
+         "pizza",
+         "icecream",
+         "bag",
+         "keys",
+         "book",
+         "remote",
+         "paper",
+         "receipt",
+         "money",
+         "flowers",
+         "gift",
+         "card",
+         "popcorn",
+         "donut"
+        ]
+       },
+       "hand": {
+        "enum": [
+         "L",
+         "R"
+        ]
+       },
+       "color": {
+        "type": "array",
+        "items": {
+         "type": "number"
+        },
+        "minItems": 3,
+        "maxItems": 3
+       },
+       "ranges": {
+        "$ref": "#/$defs/ranges"
+       }
+      }
+     }
     }
    }
   },
