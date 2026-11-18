@@ -452,6 +452,10 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
     Bối cảnh mô tả → chọn có sẵn hoặc library_needs; nhân vật luôn đứng (trong xe → đứng cạnh xe ở bãi đỗ). Thử thật: 60 s, 26 câu,
     gài "gym tomorrow" → chốt "Exactly. They're YOUR fries." + đuôi "[sigh] ...I'm getting two.", bối cảnh mới `parking_lot`
     (`projects/an-gi-cung-duoc`).
+  - Thiếu bối cảnh thì Claude vẽ (mọi đường): `script_import.pick_set` (từ mô tả: xe/bãi đỗ → parking_lot, phòng khách → living_room, nhà hàng,
+    cà phê, siêu thị, công viên, lớp học, biển, văn phòng, phố, bếp, phòng tắm, gym, sân sau; không khớp → `scene_<mô tả>`) dùng bối cảnh có
+    sẵn hoặc đưa vào library_needs (brief + luật "đứng cạnh nhau"); "Nhận diện ngay" không còn đổi bối cảnh lạ thành bếp. Trang: ô Bối cảnh có
+    "+ Bối cảnh mới…" (tên + mô tả). `job_build_dialog`: bối cảnh đã chọn mà chưa có và không nằm trong library_needs cũng được thiết kế.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

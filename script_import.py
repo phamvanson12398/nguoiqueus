@@ -170,6 +170,38 @@ SIG = {"female": ["bow", "earrings", "flower"], "male": ["cap", "glasses", "bean
 SIG_COLOR = [(0.95, 0.15, 0.3), (0.1, 0.55, 0.95), (1.0, 0.7, 0.1)]
 SHAPES = ["egg", "wide", "round"]
 SETS = {"kitchen", "office", "street"}
+# place words in a scene description -> set name (used if the library has it, otherwise Claude designs it at build time)
+PLACES = [
+    (r"\bcar\b|parking|xe hơi|ô tô|trong xe|bãi đỗ|bãi xe", "parking_lot"),
+    (r"living room|couch|sofa|phòng khách|ghế sofa|tivi|\btv\b", "living_room"),
+    (r"bedroom|\bbed\b|phòng ngủ|giường", "bedroom"),
+    (r"restaurant|diner|dinner table|nhà hàng|quán ăn|bàn ăn", "restaurant"),
+    (r"caf[eé]|coffee|starbucks|quán cà phê|cà phê", "cafe"),
+    (r"supermarket|grocery|target|costco|walmart|siêu thị|cửa hàng|tạp hóa", "supermarket"),
+    (r"\bpark\b|công viên", "park"),
+    (r"classroom|school|lớp học|trường", "classroom"),
+    (r"beach|bãi biển|biển", "beach"),
+    (r"office|work|văn phòng|công ty", "office"),
+    (r"street|sidewalk|đường phố|vỉa hè|ngoài đường", "street"),
+    (r"kitchen|bếp|nấu ăn", "kitchen"),
+    (r"bathroom|phòng tắm|nhà vệ sinh", "bathroom"),
+    (r"gym|phòng tập", "gym"),
+    (r"backyard|garden|sân sau|vườn", "backyard"),
+]
+STAND = (" Bối cảnh cho video đối thoại: 2-3 người ĐỨNG cạnh nhau quay mặt về camera (phía -Y), chừa khoảng trống x -1,5..1,5 quanh "
+         "điểm diễn; nếu cảnh gốc là ngồi (trong xe, bàn ăn, sofa) thì dựng chỗ đứng cạnh xe/bàn/sofa. Ghi điểm diễn vào meta.json 'stage'.")
+
+
+def pick_set(desc, have=()):
+    """-> (set name, library_need or None) from the user's scene description"""
+    if not desc: return "kitchen", None
+    low = desc.strip().lower()
+    if low in have or low in SETS: return low, None
+    name = next((n for pat, n in PLACES if re.search(pat, low)), None)
+    if name and (name in have or name in SETS): return name, None
+    if not name:
+        name = "scene_" + re.sub(r"[^a-z0-9]+", "_", unicodedata.normalize("NFKD", low).encode("ascii", "ignore").decode())[:24].strip("_")
+    return name, {"kind": "sets", "name": name, "brief": desc.strip().rstrip(".") + "." + STAND}
 
 
 def cast_member(name, k, voices=()):
@@ -188,7 +220,7 @@ def cast_member(name, k, voices=()):
             "head_shape": SHAPES[k % len(SHAPES)], "signature": SIG[gender][k % 3], "sig_color": list(SIG_COLOR[k % 3])}
 
 
-def to_content(p, voices=(), minutes=None):
+def to_content(p, voices=(), minutes=None, have_sets=()):
     """a complete dialogue content from the parsed script, every acting choice defaulted by the tool (no Claude)"""
     if len(p["lines"]) < 2: raise ValueError("kịch bản cần ít nhất 2 câu thoại")
     if len(p["speakers"]) > 3: raise ValueError(f"tối đa 3 người nói (đang có {len(p['speakers'])}: {', '.join(p['speakers'])})")
@@ -208,10 +240,9 @@ def to_content(p, voices=(), minutes=None):
                       "pause_before": round(max(0.25, l["pause"] or 0.25), 2), "speed": l["speed"] or 1.0, "sfx": "none",
                       "react": "flinch" if beat == "twist" else "none", "beat": beat})
     words = sum(len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split()) for l in lines)
-    st = (p.get("setting") or "kitchen").strip().lower()
-    st = st if st in SETS else "kitchen"
+    st, need = pick_set(p.get("setting") or p.get("notes"), have_sets)
     return {"format": "dialog", "title": p.get("title") or lines[0]["text"][:40], "title_vi": "", "hook": (p.get("hook") or "")[:32],
             "premise_vi": p.get("notes") or "Kịch bản do bạn tự viết.", "minutes": minutes or round(words / 2.3 / 60, 2),
             "cast": cast, "setting": {"set": st, "params": {"stuck_toast": False} if st == "kitchen" else {}, "brief_vi": p.get("setting") or ""},
             "idle": p.get("idle") if p.get("idle") in ("relaxed", "hold_hands", "hands_hips", "cross_arms") else "relaxed",
-            "lines": lines, "highlight": [], "end_sfx": "none", "library_needs": []}
+            "lines": lines, "highlight": [], "end_sfx": "none", "library_needs": [need] if need else []}

@@ -986,7 +986,16 @@ function renderDialog() {
   $('#dTitle').textContent = `${c.title}${c.title_vi ? ' — ' + c.title_vi : ''}`;
   $('#dHook').value = c.hook; $('#dPremise').value = c.premise_vi || ''; $('#dHi').value = (c.highlight || []).join(', ');
   const sets = Array.from(new Set([...(st.lib_sets || []), c.setting.set]));
-  $('#dSet').innerHTML = opts(sets, c.setting.set); $('#dIdle').value = c.idle || 'relaxed';
+  $('#dSet').innerHTML = opts(sets.map(n => [n, (st.lib_sets || []).includes(n) ? n : n + ' (mới: Claude vẽ khi dựng)']).reduce((o, [k, t]) => (o[k] = t, o), {}), c.setting.set)
+    + '<option value="__new">+ Bối cảnh mới…</option>'; $('#dIdle').value = c.idle || 'relaxed';
+  $('#dSet').onchange = () => {
+    if ($('#dSet').value !== '__new') return;
+    const name = (prompt('Tên bối cảnh mới (chữ thường không dấu, vd living_room, beach_bar):') || '').trim().toLowerCase();
+    const desc = name && (prompt('Mô tả bối cảnh để Claude vẽ (vd: phòng khách nhỏ ban đêm, sofa xanh, TV đang bật, đèn vàng ấm):') || '').trim();
+    if (!/^[a-z][a-z0-9_]{1,40}$/.test(name) || !desc) { toast('Cần tên (chữ thường, số, gạch dưới) và mô tả'); $('#dSet').value = S.state.content.setting.set; return; }
+    const c2 = collectDialog(); c2.setting = {set: name, params: {}, brief_vi: desc};
+    c2.library_needs = [{kind: 'sets', name, brief: desc}];                      // one set per video
+    S.state.content = c2; renderDialog(); toast('Đã thêm bối cảnh mới: bấm Lưu, Claude sẽ vẽ khi bấm Duyệt & dựng'); };
   $('#dEnd').innerHTML = opts(['none'], 'none');      // dialogue videos: voices only, no music or sound effects
   $('#dNeeds').innerHTML = (c.library_needs || []).length ? 'Bối cảnh mới (Claude thiết kế khi bấm Duyệt & dựng): ' + c.library_needs.map(n => `<span class="chip draft" title="${esc(n.brief)}">${esc(n.name)}</span>`).join('') : '';
   $('#dCast').innerHTML = c.cast.map(dlgCastCard).join('');
@@ -1008,7 +1017,7 @@ function collectDialog() {
   const c = JSON.parse(JSON.stringify(S.state.content));
   c.hook = $('#dHook').value.trim(); c.premise_vi = $('#dPremise').value; c.idle = $('#dIdle').value; c.end_sfx = $('#dEnd').value;
   c.highlight = $('#dHi').value.split(',').map(x => x.trim()).filter(Boolean);
-  if ($('#dSet').value && $('#dSet').value !== c.setting.set) { c.setting = {set: $('#dSet').value, params: $('#dSet').value === 'kitchen' ? {stuck_toast: false} : {}, brief_vi: c.setting.brief_vi}; }
+  if ($('#dSet').value && $('#dSet').value !== '__new' && $('#dSet').value !== c.setting.set) { c.setting = {set: $('#dSet').value, params: $('#dSet').value === 'kitchen' ? {stuck_toast: false} : {}, brief_vi: c.setting.brief_vi}; }
   c.cast = $$('#dCast .dc').map((el, i) => {
     const m = Object.assign({}, c.cast[i]); const v = k => el.querySelector(`[data-k=${k}]`).value;
     for (const k of ['name', 'role', 'gender', 'age', 'body', 'hair', 'outfit', 'voice_instruct', 'voice_id']) m[k] = v(k).trim();

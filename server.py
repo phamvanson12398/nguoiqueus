@@ -321,7 +321,7 @@ def read_script(slug, text):
     import script_import
     open(os.path.join(pdir(slug), "script.txt"), "w", encoding="utf-8").write(text)
     p = script_import.parse(text)
-    draft = script_import.to_content(p, voices=tts.list_voices(), minutes=None)
+    draft = script_import.to_content(p, voices=tts.list_voices(), minutes=None, have_sets=storycheck.LibIndex().list("sets"))
     return p, draft
 
 
@@ -376,7 +376,12 @@ def job_build_dialog(job, slug, design=True, preview=True):
     c = dialog.content_of(slug); lib = storycheck.LibIndex()
     if not os.path.exists(os.path.join(pdir(slug), "words.json")) or "lines" not in (jload(os.path.join(pdir(slug), "words.json")) or {}):
         raise ValueError("chưa có giọng (bước 3: tạo giọng các câu)")
-    for need in c.get("library_needs", []):
+    needs = list(c.get("library_needs", []))
+    st_ = c["setting"]["set"]
+    if not lib.exists("sets", st_) and not any(n["name"] == st_ for n in needs):       # chosen on the page, never designed yet
+        needs.append({"kind": "sets", "name": st_, "brief": (c["setting"].get("brief_vi") or st_.replace("_", " ")) +
+                      ". Bối cảnh cho video đối thoại: 2-3 người đứng cạnh nhau quay về camera."})
+    for need in needs:
         if lib.exists(need["kind"], need["name"]): continue
         if not design: raise ValueError(f"thiếu {need['kind']}/{need['name']}")
         job.say(f"1/3 Claude thiết kế bối cảnh mới {need['name']}: {need['brief']} (vài phút)…")
