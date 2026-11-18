@@ -119,6 +119,12 @@ gài từ trước) — tối đa khoảng 1/3 số câu có action.
   - `enter` = đi vào cảnh rồi mới nói (người thứ ba xuất hiện, bố về nhà…); trước đó người này không có trên hình;
   - `exit` = nói xong bỏ đi (câu chốt kiểu "I'm getting two." rồi quay đi). Nói câu sau thì tự đi vào lại.
 - Không bắt hai người cùng đi một lúc; đi lại tối đa 2-3 lần mỗi video (máy quay đứng yên, đi nhiều sẽ ra khỏi khung).
+- **Ngồi / nằm**: `cast[].posture` = tư thế lúc mở đầu (`stand`, `sit`, `lie`); đổi giữa chừng bằng `action` `sit_down`, `lie_down`,
+  `stand_up` (làm ngay trước câu). Ngồi ở spot có `seat` của bối cảnh (sofa, mép capo xe…) — chọn spot đó trong `cast[].spot`;
+  bối cảnh không có thì tool tự đặt ghế (hai người cùng ngồi từ đầu → một sofa), nằm thì tool tự đặt giường. Người đang nằm ngồi dậy
+  thì ngồi ở mép giường. Đi (`walk_to`, `exit`) thì tool tự cho đứng dậy trước; `walk_to` tới spot có ghế thì tự ngồi xuống.
+  Dùng khi tư thế làm nên cái hài: nằm lướt điện thoại hỏi câu ngớ ngẩn lúc nửa đêm, ngồi sofa giành remote, ngồi phịch xuống khi
+  chịu thua, bật dậy khi sốc. Cảnh "trong xe" vẫn dựng đứng/ngồi cạnh xe (`car_hood` ở bãi đỗ).
 
 ## 5. Bối cảnh
 - Một bối cảnh cho cả video, chọn trong thư viện (bếp `kitchen` với `stuck_toast: false`, `office`, `street`…). Nếu không hợp thì đặt

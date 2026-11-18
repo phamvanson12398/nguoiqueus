@@ -1,0 +1,54 @@
+{
+  "kind": "prop",
+  "name": "sofa",
+  "status": "approved",
+  "title_vi": "Sofa (đối thoại)",
+  "description_vi": "Sofa nỉ có đệm ngồi, đệm lưng, tay vịn, gối vàng. Gốc ở tâm đáy, mặt ngồi z = seat_h, mép trước y = -depth/2.",
+  "dim": "3d",
+  "params": {
+    "width": {
+      "type": "number",
+      "default": 2.6,
+      "desc_vi": "dài (2 người ~2,4; 3 người ~3,4)"
+    },
+    "seat_h": {
+      "type": "number",
+      "default": 0.52,
+      "desc_vi": "cao mặt ngồi"
+    },
+    "depth": {
+      "type": "number",
+      "default": 0.9,
+      "desc_vi": "sâu"
+    },
+    "back_h": {
+      "type": "number",
+      "default": 0.62,
+      "desc_vi": "cao lưng"
+    },
+    "arm_h": {
+      "type": "number",
+      "default": 0.28,
+      "desc_vi": "cao tay vịn trên mặt ngồi"
+    },
+    "color": {
+      "type": "array",
+      "default": [
+        0.25,
+        0.45,
+        0.72
+      ],
+      "desc_vi": "màu vải"
+    },
+    "pillows": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "có gối"
+    }
+  },
+  "tags": [
+    "dialog",
+    "furniture"
+  ],
+  "seat": 0.52
+}

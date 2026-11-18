@@ -264,6 +264,14 @@
         ]
        }
       }
+     },
+     "posture": {
+      "enum": [
+       "stand",
+       "sit",
+       "lie"
+      ],
+      "description": "tư thế lúc mở đầu: stand (đứng), sit (ngồi: trên spot có ghế/sofa của bối cảnh, không có thì tool tự đặt ghế, 2+ người ngồi thì sofa), lie (nằm trên giường; tool tự đặt giường nếu bối cảnh không có)"
      }
     }
    },
@@ -482,9 +490,12 @@
        "put_away",
        "walk_to",
        "enter",
-       "exit"
+       "exit",
+       "sit_down",
+       "lie_down",
+       "stand_up"
       ],
-      "description": "việc người nói làm khi nói câu này: take_out (lấy đồ ra), show (giơ cho người kia xem), use (uống/ăn/xem điện thoại — trước câu), give (đưa cho người kia cuối câu), put_away (cất đi), walk_to (vừa nói vừa bước tới to_spot), enter (đi vào cảnh rồi nói), exit (nói xong bỏ đi)"
+      "description": "việc người nói làm khi nói câu này: take_out (lấy đồ ra), show (giơ cho người kia xem), use (uống/ăn/xem điện thoại — trước câu), give (đưa cho người kia cuối câu), put_away (cất đi), walk_to (vừa nói vừa bước tới to_spot), enter (đi vào cảnh rồi nói), exit (nói xong bỏ đi); sit_down (ngồi xuống ghế/sofa/mép giường trước câu), lie_down (nằm xuống giường), stand_up (đứng dậy); đi lại thì tool tự cho đứng dậy trước, walk_to tới spot có ghế thì tự ngồi"
      },
      "prop": {
       "enum": [

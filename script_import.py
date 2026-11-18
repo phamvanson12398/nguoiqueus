@@ -102,6 +102,9 @@ PROP_WORDS = [
     (r"flowers?|bouquet|hoa\b|bó hoa", "flowers"), (r"gift|present|quà|hộp quà", "gift"), (r"credit card|\bcard\b|thẻ", "card"),
     (r"popcorn|bỏng ngô|bắp rang", "popcorn"), (r"donut|doughnut|bánh vòng|bánh donut", "donut")]
 ACTION_WORDS = [
+    (r"lies? down|lying|lays? down|in bed|nằm", "lie_down", None),
+    (r"sits? down|sitting|takes? a seat|ngồi xuống|ngồi phịch|\bngồi\b", "sit_down", None),
+    (r"stands? up|gets? up|jumps? up|đứng dậy|đứng lên|bật dậy|ngồi dậy", "stand_up", None),
     (r"walks? (in|into)|enters?|comes? in|bước vào|đi vào|chạy vào|xuất hiện", "enter", None),
     (r"walks? (off|out|away)|leaves?|storms? off|exits?|bỏ đi|đi ra|đi mất|quay lưng đi|bước ra ngoài", "exit", None),
     (r"steps? (closer|forward|up)|walks? (over|up) to|moves? closer|approach|bước tới|bước lại gần|tiến lại|đi lại gần|lại gần", "walk_to", "partner"),
@@ -229,9 +232,11 @@ PLACES = [
     (r"gym|phòng tập", "gym"),
     (r"backyard|garden|sân sau|vườn", "backyard"),
 ]
-STAND = (" Bối cảnh cho video đối thoại: 2-3 người ĐỨNG cạnh nhau quay mặt về camera (phía -Y), chừa khoảng trống x -1,5..1,5 quanh "
-         "điểm diễn; nếu cảnh gốc là ngồi (trong xe, bàn ăn, sofa) thì dựng chỗ đứng cạnh xe/bàn/sofa. Khai báo 'stage' (x, y) và 'spots': 4-6 chỗ "
-         "đứng có tên theo đồ vật/vai trò (vd driver_door, counter, doorway, sofa_left), tọa độ sàn x, y thật trong bối cảnh, mô tả ngắn.")
+STAND = (" Bối cảnh cho video đối thoại: 2-3 người cạnh nhau quay mặt về camera (phía -Y), chừa khoảng trống x -1,5..1,5 quanh "
+         "điểm diễn. Khai báo 'stage' (x, y) và 'spots': 4-6 chỗ có tên theo đồ vật/vai trò (vd driver_door, counter, doorway, sofa_left), "
+         "tọa độ sàn x, y thật trong bối cảnh, mô tả ngắn. Có ghế/sofa/giường thì đặt chúng quay về camera và khai báo spot ngồi/nằm: "
+         "'seat' = chiều cao mặt ngồi hoặc 'bed' = chiều cao mặt nệm, xy = ngay MÉP TRƯỚC của ghế/giường (người ngồi/nằm ở đó, chân thò "
+         "ra trước); giường đặt dọc trục x. Không có thì tool tự đặt ghế/sofa/giường đơn giản.")
 
 
 def pick_set(desc, have=()):
@@ -282,6 +287,12 @@ def to_content(p, voices=(), minutes=None, have_sets=()):
                       "pause_before": round(max(0.25, l["pause"] or 0.25), 2), "speed": l["speed"] or 1.0, "sfx": "none",
                       "react": "flinch" if beat == "twist" else "none", "beat": beat,
                       **({"action": l["action"], "prop": l.get("prop") or "", "to_spot": l.get("to_spot") or ""} if l.get("action", "none") != "none" else {})})
+    for m in cast:                              # "(sitting) …" on someone's first line: they sit / lie from the start
+        first = next((l for l in lines if l["speaker"] == m["id"]), None)
+        if first and first.get("action") in ("sit_down", "lie_down"):
+            m["posture"] = "sit" if first["action"] == "sit_down" else "lie"
+            if first.get("prop"): m["holding"] = {"kind": first["prop"]}          # "(lying in bed scrolling her phone)"
+            for k_ in ("action", "prop", "to_spot"): first.pop(k_, None)
     vtags.auto_tag(lines)                       # OmniVoice emotion tags at the strong moments (~40 % of lines at most)
     words = sum(len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split()) for l in lines)
     st, need = pick_set(p.get("setting") or p.get("notes"), have_sets)

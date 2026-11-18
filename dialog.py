@@ -361,7 +361,7 @@ PROP_KINDS = ["phone", "coffee", "mug", "soda", "bottle", "fries", "burger", "pi
 USE = {"coffee": "drink", "mug": "drink", "soda": "drink", "bottle": "drink", "fries": "eat", "burger": "eat", "pizza": "eat",
        "icecream": "eat", "popcorn": "eat", "donut": "eat", "phone": "look", "book": "look", "paper": "look", "receipt": "look",
        "remote": "look", "card": "look", "money": "look"}
-ACTIONS = ["none", "take_out", "show", "use", "give", "put_away", "walk_to", "enter", "exit"]
+ACTIONS = ["none", "take_out", "show", "use", "give", "put_away", "walk_to", "enter", "exit", "sit_down", "lie_down", "stand_up"]
 WALK = 1.25            # units per second (a stroll; the soft body is ~2.7 tall)
 OFF = 4.3              # entering / leaving people start / end this far from the stage centre (out of a 9:16 frame)
 STEP = 0.32            # walk cycle: phase per frame (one step ~10 frames)
@@ -529,7 +529,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print)
             if b - a < 2: continue
             seg = {"from": max(1, a), "to": min(N, b), "legs": f"walk_legs(f * {STEP} + {ph})",
                    "armL": ["ang", f"-0.12 - 0.32 * sin(f * {STEP} + {ph})", 0.15], "armR": ["ang", f"0.12 - 0.32 * sin(f * {STEP} + {ph})", -0.15],
-                   "body": [0, f"0.03 * abs(sin(f * {STEP} + {ph}))"]}
+                   "body": [0, f"0.03 * abs(sin(f * {STEP} + {ph}))"], "rest": 0}
             act[i].insert(0, seg)
     blocking = {}
     for i in range(n):
@@ -556,7 +556,116 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print)
         return out
     hp = {i: [{"id": it["id"], "kind": it["kind"], "hand": it["hand"], "ranges": [[it["a"], it["b"]]], **({"color": it["color"]} if "color" in it else {})}
               for it in items[i]] for i in range(n)}
-    return hp, blocking, act, hold_at, pos
+    return hp, blocking, act, hold_at, pos, way
+
+
+# ---------------------------------------------------------------------
+#  sitting / lying (cast `posture`, line actions sit_down / lie_down / stand_up, set spots with `seat` / `bed`)
+# ---------------------------------------------------------------------
+POSTURES = ["stand", "sit", "lie"]
+BODY_DIMS = {False: {"hip": 0.82, "tall": 2.82}, True: {"hip": 0.52, "tall": 1.9}}     # soft / soft_child
+POSE_T = 14            # frames to sit down / lie down / get up
+STAND_LEGS = ((-0.06, 0.02), (0.06, -0.02))
+FURNITURE = {"chair": {"seat": 0.5, "depth": 0.58}, "sofa": {"seat": 0.52, "depth": 0.9}, "bed": {"seat": 0.62, "depth": 1.3}}
+
+
+def _steps(base, events, T=POSE_T):
+    """an expression: base + sum of eased steps (value changes at each event frame) -> smooth, no segments needed"""
+    out = f"{base:.3f}"; prev = base; changed = False
+    for f0, v in events:
+        if abs(v - prev) > 1e-4: out += f" + ({v - prev:.3f}) * ease((f - {f0}) / {T})"; changed = True
+        prev = v
+    return out if changed else round(base, 3)
+
+
+def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, log=print):
+    """per cast member: pose-default fields (legs/body/rest as smooth expressions of f), the furniture to put in the set,
+    posture_at(i, f) and the frame ranges spent sitting/lying."""
+    cast = c["cast"]; L = c["lines"]; n = len(cast); ids = [m["id"] for m in cast]; spots = spots or {}
+    ev = {i: [] for i in range(n)}                   # (frame, posture, seat spot name or None)
+    for i, m in enumerate(cast):
+        p0 = m.get("posture") or "stand"
+        if p0 not in POSTURES: p0 = "stand"
+        ev[i].append((1, p0, m.get("spot") if (m.get("spot") or "") in spots else None))
+    for k, (x, l) in enumerate(zip(lt, L)):
+        i = ids.index(l["speaker"]); a = fr(x["start"]); act = l.get("action") or "none"
+        if act in ("sit_down", "lie_down", "stand_up"):
+            ev[i].append((max(2, a - 18), {"sit_down": "sit", "lie_down": "lie", "stand_up": "stand"}[act], None))
+        if act == "walk_to" and (l.get("to_spot") or "") in spots and (spots[l["to_spot"]].get("seat") or spots[l["to_spot"]].get("bed")):
+            ev[i].append(("after_walk", "sit", l["to_spot"]))          # walks to the sofa / bed and sits on it
+    for i in range(n):                                # walking needs legs: get up first, sit again on arrival at a seat
+        fixed = []
+        walks = [w for w in way[i] if w[1] - w[0] >= 2]
+        for e in ev[i]:
+            if e[0] == "after_walk":
+                w = next((w for w in walks if w[1] >= 2), None)
+                if w: fixed.append((min(N, w[1] + 2), e[1], e[2]))
+            else: fixed.append(e)
+        fixed.sort(key=lambda e: e[0])
+        for a, b, _p0, _p1 in walks:
+            cur = [e for e in fixed if e[0] <= a]
+            if cur and cur[-1][1] != "stand": fixed.append((max(2, a - POSE_T - 2), "stand", None))
+        ev[i] = sorted(fixed, key=lambda e: e[0])
+
+    def posture_at(i, f):
+        p = "stand"
+        for f0, q, _s in ev[i]:
+            if f0 <= f: p = q
+        return p
+
+    furniture = []; seat_of = {}; out_ranges = {i: [] for i in range(n)}; fields = {}
+    sitters0 = [i for i in range(n) if ev[i][0][1] == "sit" and not ev[i][0][2]]
+    sofa_for = set()
+    if len(sitters0) >= 2:                            # people sitting together from the start share a sofa
+        xs_s = [xs[i] for i in sitters0]; w = max(xs_s) - min(xs_s) + 1.4
+        furniture.append({"type": "sofa", "x": (max(xs_s) + min(xs_s)) / 2, "y": max(ys[i] for i in sitters0),
+                          "params": {"width": round(max(2.2, w), 2)}})
+        sofa_for = set(sitters0)
+    for i in range(n):
+        d = dirs[i]; kd = BODY_DIMS[bool(kids[i])]
+        legs_L, legs_R, by, bx, rest = [], [], [], [], []
+        for f0, q, sp in ev[i]:
+            seat = None
+            if sp and sp in spots: seat = spots[sp].get("seat") or spots[sp].get("bed")
+            has_bed = any(fu.get("owner") == (i, "lie") for fu in furniture) or any(q_ == "lie" for _f, q_, _s in ev[i])
+            if q == "sit" and seat is None and has_bed and not sp:      # sits up on the edge of their own bed
+                if not any(fu.get("owner") == (i, "lie") for fu in furniture):
+                    furniture.append({"type": "bed", "x": xs[i] - d * 0.6, "y": ys[i], "owner": (i, "lie"), "params": {"head_side": d}})
+                seat = FURNITURE["bed"]["seat"]
+            if q != "stand" and seat is None:
+                if q == "lie" or i not in sofa_for:
+                    if not any(fu.get("owner") == (i, q) for fu in furniture):
+                        typ = "bed" if q == "lie" else "chair"
+                        fu = {"type": typ, "x": xs[i] - (d * 0.6 if typ == "bed" else 0.0), "y": ys[i], "owner": (i, q), "params": {}}
+                        if typ == "bed": fu["params"]["head_side"] = d
+                        furniture.append(fu)
+                seat = FURNITURE["bed" if q == "lie" else ("sofa" if i in sofa_for else "chair")]["seat"]
+            if q == "sit":
+                drop = seat + 0.03 - kd["hip"]
+                th = 1.45 * d
+                legs_L.append((f0, (th, -th))); legs_R.append((f0, (th * 0.92, -th * 0.92)))
+                by.append((f0, drop)); bx.append((f0, 0.0)); rest.append((f0, 0.0))
+            elif q == "lie":
+                legs_L.append((f0, STAND_LEGS[0])); legs_R.append((f0, STAND_LEGS[1]))
+                by.append((f0, seat + 0.45 * (0.7 if kids[i] else 1.0))); bx.append((f0, -d * 0.72 * kd["tall"])); rest.append((f0, -d * math.pi / 2))
+            else:
+                legs_L.append((f0, STAND_LEGS[0])); legs_R.append((f0, STAND_LEGS[1]))
+                by.append((f0, 0.0)); bx.append((f0, 0.0)); rest.append((f0, 0.0))
+        if all(q == "stand" for _f, q, _s in ev[i]): fields[i] = {}; continue
+        b0 = lambda lst, j=None: (lst[0][1] if j is None else lst[0][1][j])
+        fields[i] = {
+            "legs": [[_steps(b0(legs_L, 0), [(f, v[0]) for f, v in legs_L[1:]]), _steps(b0(legs_L, 1), [(f, v[1]) for f, v in legs_L[1:]])],
+                     [_steps(b0(legs_R, 0), [(f, v[0]) for f, v in legs_R[1:]]), _steps(b0(legs_R, 1), [(f, v[1]) for f, v in legs_R[1:]])]],
+            "body": [_steps(b0(bx), bx[1:]), _steps(b0(by), by[1:])],
+            "rest": _steps(b0(rest), rest[1:])}
+        cur = None
+        for f0, q, _s in ev[i] + [(N + 1, "end", None)]:
+            if cur and cur[1] != "stand": out_ranges[i].append((cur[0], f0 - 1))
+            cur = (f0, q)
+    for fu in furniture:                                 # just behind the person (their legs show in front of the seat)
+        dep = FURNITURE[fu["type"]]["depth"]
+        fu["loc"] = [round(fu["x"], 3), round(fu["y"] + dep / 2 + 0.05, 3), 0]
+    return fields, furniture, posture_at, out_ranges
 
 
 SHOT = {   # type, frame overrides
@@ -633,7 +742,14 @@ def plan(slug, char_style=None, log=print):
         for j in list(range(k - 1, -1, -1)) + list(range(k + 1, len(c["lines"]))):
             if c["lines"][j]["speaker"] != sp: return c["lines"][j]["speaker"]
         return min((x for x in ids if x != sp), key=lambda o: abs(xs[ids.index(o)] - xs[ids.index(sp)]))
-    hprops, blocking, act_segs, hold_at, pos_at = plan_actions(c, lt, xs, ys, stage, (smeta or {}).get("spots"), N, fr, kids, addressee, log)
+    hprops, blocking, act_segs, hold_at, pos_at, ways = plan_actions(c, lt, xs, ys, stage, (smeta or {}).get("spots"), N, fr, kids, addressee, log)
+    dirs = [_dir(i, xs) for i in range(n)]
+    pfields, furniture, posture_at, seated = plan_postures(c, lt, xs, ys, ways, (smeta or {}).get("spots"), N, fr, kids, dirs, log)
+    for i in range(n):                                   # sitting / lying on purpose: the builder must not "unstick" them from the seat
+        for sg in blocking[i]["segments"]:
+            loc = sg["location"]
+            if all(isinstance(v, (int, float)) for v in loc) and any(a_ <= sg["to"] and b_ >= sg["from"] for a_, b_ in seated[i]):
+                sg["note"] = "seated"
     chars = []
     idle = c.get("idle", "relaxed")
     for i, m in enumerate(cast):
@@ -677,6 +793,7 @@ def plan(slug, char_style=None, log=print):
         segs = act_segs[i] + segs + holds                 # the first segment that covers a frame wins
         default = gesture_pose(idle, dd, gap, ks) if idle != "relaxed" and (idle != "hold_hands" or i < 2) else {}
         if idle == "hold_hands" and n == 3 and i == 2: default = {}
+        default = dict(default, **pfields[i])              # sitting / lying: legs, body height, lying rotation as smooth f-expressions
         spec = {"id": m["id"], "gaze": dd, "type": "soft_child" if kids[i] else "soft", "outfit": SOFT_OUTFIT.get(m["outfit"], m["outfit"]), "loc": [round(xs[i], 3), ys[i], 0],
                 "blocking": blocking[i], "mouth": "soft",
                 "look": {"hair": m["hair"], "hair_color": m["hair_color"], "beard": "none", "seed": i + 1,
@@ -701,7 +818,11 @@ def plan(slug, char_style=None, log=print):
     for s in plan_shots(lt, c, N):
         kind = s["kind"]; typ, ov = SHOT[kind]
         line = c["lines"][s["line"]]
-        mid, spread = group_at((s["a"] + s["b"]) // 2)
+        fm = (s["a"] + s["b"]) // 2
+        mid, spread = group_at(fm)
+        on = [i for i in range(n) if abs(pos_at(i, fm)[0] - stage[0]) < OFF - 0.6]
+        pst = {i: posture_at(i, fm) for i in on}
+        if any(q == "lie" for q in pst.values()): spread += 1.8
         if kind in ("two", "wide", "both_close"): subj = mid
         elif kind == "listener": subj = addressee(s["line"])
         else: subj = line["speaker"]
@@ -716,13 +837,23 @@ def plan(slug, char_style=None, log=print):
             frame["subject"] = [round((pj[0] + po[0]) / 2, 3), round((pj[1] + po[1]) / 2, 3), 0]
         if kind == "both_close" and any(kids):
             frame["look_dz"] = 0.0
+        if isinstance(subj, str):                         # one person: frame them where their head really is
+            j = ids.index(subj); q = posture_at(j, fm); kd = BODY_DIMS[bool(kids[j])]
+            if q == "sit": frame["look_dz"] = round(frame.get("look_dz", 0) - (kd["hip"] - FURNITURE["chair"]["seat"]), 3)
+            elif q == "lie":
+                frame["look_dz"] = round(frame.get("look_dz", 0) - 0.55 * kd["tall"], 3); frame["size"] = max(frame.get("size", 3.0), 3.4)
+        elif pst:
+            if any(q == "lie" for q in pst.values()): frame["look_dz"] = round(frame.get("look_dz", 0) - 0.7, 3)
+            elif any(q == "sit" for q in pst.values()): frame["look_dz"] = round(frame.get("look_dz", 0) - 0.15, 3)
         shots.append({"a": s["a"], "b": s["b"], "type": typ, "frame": frame})
     words = [[w[0], w[1]] for w in wj["words"]]
     st = {
         "meta": {"title": c["title"], "slug": slug, "fps": FPS, "frames": N, "seed": 7, "voice": "voice.wav", "output": "out.mp4",
                  "samples": 32, "aspect": "9:16", "char_style": "2d" if style == "2d_grey" else style,
                  **({"char_tone": "grey"} if style == "2d_grey" else {}), "dialog": True, "fast_build": True},
-        "sets": [{"id": "stage", "type": set_name, "params": params}],
+        "sets": [{"id": "stage", "type": set_name, "params": params,
+                  **({"props": [{"id": f"furn{k}_{fu['type']}", "type": fu["type"], "params": fu["params"], "loc": fu["loc"]}
+                                for k, fu in enumerate(furniture)]} if furniture else {})}],
         "camera": {"rig": "long", "shots": shots, "hand": 0.0},          # locked-off camera, no shake (cuts only)
         "chars": chars,
         "words": words,
@@ -732,7 +863,8 @@ def plan(slug, char_style=None, log=print):
     errs = storycheck.check_story(st, lib)
     if errs: raise ValueError("story.json lỗi: " + "; ".join(errs[:6]))
     _w(os.path.join(d, "story.json"), st)
-    log(f"story.json: {N} khung ({N / FPS:.1f} s), {len(shots)} cú máy, {len(chars)} nhân vật, bối cảnh {set_name}, nhân vật {style}.")
+    log(f"story.json: {N} khung ({N / FPS:.1f} s), {len(shots)} cú máy, {len(chars)} nhân vật, bối cảnh {set_name}, nhân vật {style}."
+        + (f" Đồ nội thất thêm: {', '.join(fu['type'] for fu in furniture)}." if furniture else ""))
     return st
 
 

@@ -1539,6 +1539,10 @@
      "minItems": 2,
      "maxItems": 2,
      "description": "tilt (rad) of the items in the left / right hand on top of keeping them upright (drinking ~0.9)"
+    },
+    "rest": {
+     "$ref": "#/$defs/value",
+     "description": "body rotation (rad) for lying down; unlike lean the head does not follow it"
     }
    }
   },

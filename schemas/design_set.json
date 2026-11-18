@@ -105,7 +105,7 @@
   },
   "spots": {
    "type": "object",
-   "description": "chỗ đứng có tên cho nhân vật (video đối thoại): tên -> {xy: [x, y] trên sàn, desc_vi}; người đứng quay về camera (-Y), chỗ trống bán kính 0,5, không lọt vào đồ vật",
+   "description": "chỗ đứng có tên cho nhân vật (video đối thoại): tên -> {xy: [x, y] trên sàn, desc_vi}; người đứng quay về camera (-Y), chỗ trống bán kính 0,5, không lọt vào đồ vật; spot ngồi/nằm khai báo thêm seat hoặc bed (chiều cao mặt ngồi / mặt nệm), xy là chỗ mép trước của ghế/giường nơi người ngồi",
    "additionalProperties": {
     "type": "object",
     "required": [
@@ -124,6 +124,14 @@
      },
      "desc_vi": {
       "type": "string"
+     },
+     "seat": {
+      "type": "number",
+      "description": "chỗ này là ghế/sofa/mép xe: chiều cao mặt ngồi (m), nhân vật ngồi được ở đây"
+     },
+     "bed": {
+      "type": "number",
+      "description": "chỗ này là giường: chiều cao mặt nệm (m), nhân vật nằm được (thân dọc theo trục x, ~2,8 dài)"
      }
     }
    }

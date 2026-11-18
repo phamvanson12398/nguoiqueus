@@ -235,6 +235,14 @@
         4.2
       ],
       "desc_vi": "cạnh chỗ xe đẩy, bên trái"
+    },
+    "car_hood": {
+      "xy": [
+        -1.1,
+        5.12
+      ],
+      "seat": 1.05,
+      "desc_vi": "ngồi trên mép nắp capo (mũi xe bên trái), chân đung đưa"
     }
   }
 }

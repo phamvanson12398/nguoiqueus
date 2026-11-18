@@ -1019,6 +1019,7 @@ def check_dialog(x, minutes=None):
         e.append(f"chỉ {nt}/{nl} câu có thẻ cảm xúc OmniVoice: thêm cho khoảng 30-45 % số câu ở chỗ cảm xúc mạnh (DIALOG_RULES mục 2)")
     if nt > max(3, round(nl * 0.6)): e.append(f"{nt}/{nl} câu có thẻ cảm xúc: quá dày, giữ khoảng 30-45 %")
     held = {c["id"]: {(c.get("holding") or {}).get("kind")} - {None} for c in x["cast"]}
+    posture = {c["id"]: c.get("posture") or "stand" for c in x["cast"]}
     for k, l in enumerate(x["lines"]):                     # props in hand / walking make sense in order
         a, pr, who = l.get("action", "none"), l.get("prop") or "", l["speaker"]
         if a in ("take_out", "show", "give") and not pr: e.append(f"lines[{k}] action {a} cần prop (đồ vật gì)")
@@ -1026,6 +1027,11 @@ def check_dialog(x, minutes=None):
         if a == "use" and not pr and not held.get(who): e.append(f"lines[{k}] action use nhưng {who} không cầm gì (ghi prop hoặc holding)")
         if a == "give":
             held.setdefault(who, set()).discard(pr)
+        if a in ("sit_down", "lie_down", "stand_up"):
+            cur = posture.get(who, "stand"); want = {"sit_down": "sit", "lie_down": "lie", "stand_up": "stand"}[a]
+            if cur == want: e.append(f"lines[{k}] action {a} nhưng {who} đã {'đứng' if want == 'stand' else 'ngồi' if want == 'sit' else 'nằm'} sẵn")
+            posture[who] = want
+        if a in ("walk_to", "exit", "enter"): posture[who] = "stand"
         if a == "walk_to" and not l.get("to_spot"): e.append(f"lines[{k}] walk_to cần to_spot (spot của bối cảnh, partner, away, left, right)")
     acts = sum(1 for l in x["lines"] if l.get("action", "none") != "none")
     if acts > max(4, len(x["lines"]) // 3): e.append(f"{acts} câu có action: quá nhiều, chỉ giữ những động tác phục vụ cái hài (tối đa ~1/3 số câu)")

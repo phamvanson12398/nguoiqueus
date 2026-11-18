@@ -1,0 +1,62 @@
+{
+  "kind": "prop",
+  "name": "bed",
+  "status": "approved",
+  "title_vi": "Giường (đối thoại)",
+  "description_vi": "Giường đơn/đôi nhìn dọc từ phía trước: khung gỗ, nệm trắng, chăn, gối và đầu giường ở head_side. Gốc ở tâm đáy, mặt nệm z = top_h.",
+  "dim": "3d",
+  "params": {
+    "length": {
+      "type": "number",
+      "default": 2.9,
+      "desc_vi": "dài (theo trục x)"
+    },
+    "depth": {
+      "type": "number",
+      "default": 1.3,
+      "desc_vi": "rộng (theo trục y)"
+    },
+    "top_h": {
+      "type": "number",
+      "default": 0.62,
+      "desc_vi": "cao mặt nệm"
+    },
+    "head_side": {
+      "type": "number",
+      "default": -1,
+      "desc_vi": "đầu giường: -1 trái, 1 phải"
+    },
+    "frame_color": {
+      "type": "array",
+      "default": [
+        0.55,
+        0.34,
+        0.18
+      ],
+      "desc_vi": "màu gỗ"
+    },
+    "sheet": {
+      "type": "array",
+      "default": [
+        0.95,
+        0.95,
+        0.98
+      ],
+      "desc_vi": "màu ga/gối"
+    },
+    "blanket": {
+      "type": "array",
+      "default": [
+        0.35,
+        0.55,
+        0.85
+      ],
+      "desc_vi": "màu chăn"
+    }
+  },
+  "tags": [
+    "dialog",
+    "furniture"
+  ],
+  "bed": 0.62
+}

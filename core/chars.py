@@ -139,7 +139,7 @@ def _soft(c, key, target, k, wrap=False):
 
 
 def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02), head_tilt=0.0, body=(0, 0), breath=True, lean=0.0,
-              smooth=0.0, prop_tilt=(0.0, 0.0)):
+              smooth=0.0, prop_tilt=(0.0, 0.0), rest=0.0):
     """arm specs: ('ang', a1, a2) or ('ik', (x, y), bend) in torso coords.
     V2: forearms drag behind fast upper-arm moves (follow-through), reactions add squash/stretch, head lags the body.
     smooth (0 = off, ~0.15-0.3): gestures and head moves glide in and out, arms drift a little at rest (dialogue videos)."""
@@ -169,7 +169,7 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
     b = (1 + (0.014 * math.sin(t * 2.4 + len(c.name)) if breath else 0)) * sy
     sway = 0.02 * noise1(t * 0.8, len(c.name))                      # idle weight shift
     c.body.scale = (1 / math.sqrt(b), b, 1); c.body.location = (body[0], body[1] + dy, 0)
-    c.body.rotation_euler = (0, 0, lean + rlean + sway)
+    c.body.rotation_euler = (0, 0, lean + rlean + sway + rest)          # rest: lying down (the head does not lag it)
     timing.key(c.body, "scale", f); timing.key(c.body, "location", f); timing.key(c.body, "rotation_euler", f)
     lag = getattr(c, "lag_tilt", 0.0)
     c.lag_tilt = lag + 0.35 * (-(lean + rlean) * 0.6 - lag)                # head follows the lean a few frames late

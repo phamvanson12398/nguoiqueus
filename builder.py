@@ -30,7 +30,7 @@ from storycheck import LibIndex
 LIB_DIR = os.path.join(ROOT, "library")
 ANIM_PROPS = ("location", "rotation_euler", "scale")
 HEAD_SHAPES = {"round": (1.0, 1.0), "egg": (0.92, 1.1), "wide": (1.13, 0.92), "tall": (0.86, 1.17)}
-POSE_FIELDS = ("armL", "armR", "legs", "tilt", "body", "lean", "prop_tilt")
+POSE_FIELDS = ("armL", "armR", "legs", "tilt", "body", "lean", "prop_tilt", "rest")
 
 
 class StoryError(Exception):
@@ -323,7 +323,8 @@ class Builder:
                         head_tilt=self.env.val(spec.get("tilt", 0.0), ns, w),
                         body=tuple(self.env.val(spec.get("body", [0, 0]), ns, w)),
                         lean=self.env.val(spec.get("lean", 0.0), ns, w), smooth=float(P.get("smooth", 0.0)),
-                        **({"prop_tilt": tuple(self.env.val(spec["prop_tilt"], ns, w))} if "prop_tilt" in spec else {}))
+                        **({"prop_tilt": tuple(self.env.val(spec["prop_tilt"], ns, w))} if "prop_tilt" in spec else {}),
+                        **({"rest": self.env.val(spec["rest"], ns, w)} if "rest" in spec else {}))
         for e in cs.get("fx", []):
             if e["type"] == "steam": fx.bake_steam_frame(c, f, e.get("ranges", []))
             elif e["type"] == "drips": fx.bake_drips_frame(c, f, e.get("from", 1))
@@ -693,6 +694,7 @@ class Builder:
         for k, sg in enumerate(out["segments"]):
             loc = sg.get("location")
             if not (isinstance(loc, list) and len(loc) == 3 and all(isinstance(v, (int, float)) for v in loc)) or loc[2] < -5: continue
+            if sg.get("note") == "seated": continue           # sitting / lying on furniture on purpose (dialogue)
             f = (int(sg.get("from", 1)) + int(sg.get("to", sg.get("from", 1)))) // 2
             ctx.sc.frame_set(max(1, min(ctx.N, f)))
             P = Vector(loc); trees = self.set_trees(P, hz, mine, 4.0)

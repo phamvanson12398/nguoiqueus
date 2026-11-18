@@ -908,7 +908,8 @@ const D_PROPS = {'': '—', phone: 'điện thoại', coffee: 'cà phê', mug: '
   burger: 'burger', pizza: 'pizza', icecream: 'kem', bag: 'túi', keys: 'chìa khóa', book: 'sách', remote: 'điều khiển', paper: 'tờ giấy',
   receipt: 'hóa đơn', money: 'tiền', flowers: 'hoa', gift: 'hộp quà', card: 'thẻ', popcorn: 'bỏng ngô', donut: 'bánh donut'};
 const D_ACT = {none: '—', take_out: 'lấy đồ ra', show: 'giơ cho xem', use: 'uống/ăn/xem (trước câu)', give: 'đưa cho người kia',
-  put_away: 'cất đi', walk_to: 'bước tới…', enter: 'đi vào cảnh', exit: 'nói xong bỏ đi'};
+  put_away: 'cất đi', walk_to: 'bước tới…', enter: 'đi vào cảnh', exit: 'nói xong bỏ đi',
+  sit_down: 'ngồi xuống', lie_down: 'nằm xuống', stand_up: 'đứng dậy'};
 const D_GEST_VI = {none: '—', point: 'chỉ tay', hands_hips: 'chống nạnh', cross_arms: 'khoanh tay', shrug: 'nhún vai', wave: 'vẫy', hold_hands: 'nắm tay',
   think: 'suy nghĩ', fist: 'giơ nắm đấm', hands_up: 'giơ hai tay', open_arms: 'dang tay', facepalm: 'ôm đầu'};
 const D_SHOT = {auto: 'tự chọn', two: 'hai người', speaker: 'cận người nói', listener: 'cận người nghe', both_close: 'cận hai mặt (chốt)', wide: 'toàn cảnh'};
@@ -987,6 +988,7 @@ function dlgCastCard(m, i) {
       <input type="color" data-k="sig_color" value="${rgb2hex(m.sig_color || [0.92, 0.2, 0.3])}" title="Màu món nhận diện"></div>
     <label class="muted" style="display:block;margin-top:6px">Chỗ đứng <select data-k="spot">${opts(Object.assign({'': 'tool tự xếp theo vai', left: 'bên trái', center: 'giữa', right: 'bên phải'},
         Object.fromEntries(Object.entries(S.state.set_spots || {}).map(([k, d]) => [k, k + ' — ' + d]))), m.spot || '')}</select></label>
+    <label class="muted" style="display:block;margin-top:6px">Tư thế lúc đầu <select data-k="posture">${opts({stand: 'đứng', sit: 'ngồi (ghế/sofa/mép xe)', lie: 'nằm (giường)'}, m.posture || 'stand')}</select></label>
     <label class="muted" style="display:block;margin-top:6px">Cầm sẵn từ đầu <select data-k="holding">${opts(D_PROPS, (m.holding || {}).kind || '')}</select></label>
     <label class="muted" style="display:block;margin-top:6px">Giọng (OmniVoice): <input type="text" data-k="voice_instruct" value="${esc(m.voice_instruct)}" style="width:100%"></label>
     <label class="muted">Mã giọng trong thư viện <input type="text" data-k="voice_id" value="${esc(m.voice_id)}" style="width:150px"></label>
@@ -1038,6 +1040,7 @@ function collectDialog() {
     m.hair_color = hex2rgb(v('hair_color')); m.colors = {cloth: hex2rgb(v('cloth')), cloth2: hex2rgb(v('cloth2'))};
     m.head_shape = v('head_shape'); m.signature = v('signature'); m.sig_color = hex2rgb(v('sig_color'));
     if (v('spot')) m.spot = v('spot'); else delete m.spot;
+    if (v('posture') && v('posture') !== 'stand') m.posture = v('posture'); else delete m.posture;
     if (v('holding')) m.holding = Object.assign({}, m.holding || {}, {kind: v('holding')}); else delete m.holding;
     return m;
   });
