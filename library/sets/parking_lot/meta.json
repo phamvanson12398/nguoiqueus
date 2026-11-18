@@ -1,0 +1,199 @@
+{
+  "kind": "set",
+  "name": "parking_lot",
+  "title_vi": "Bãi đỗ xe siêu thị Mỹ lúc chạng vạng",
+  "description_vi": "Bãi đỗ xe siêu thị kiểu Mỹ lúc 7 giờ tối, mở về phía -Y. Điểm diễn ở (0, 4) có khoảng trống x -2,4..2,4. Ngay sau lưng nhân vật là xe hatchback đỏ nhìn ngang (đầu xe về -X, cửa tài xế quay ra camera ở khoảng x 0,15, cửa sổ sáng mờ). Cửa tài xế là phần riêng, mở được. Mặt nhựa có vân, kẻ vạch ô đỗ trắng và vạch qua đường trước cửa hàng. Hai dãy xe khác đỗ ở y 15 và y 23. Có 6 cột đèn bãi đỗ với đèn spot thật, ánh vàng natri, và hai bồn cây có cây che khung ở hai bên xe. Ở xa (y 31-42) là mặt tiền siêu thị: cửa kính sáng vàng, mái hiên xanh, biển chữ 3D 'MARKET' phát sáng, khu để xe đẩy, thêm một xe đẩy bị bỏ lại giữa bãi. Phía sau cùng là phông trời hình cung bán kính 95 với dải màu chạng vạng cam, hồng rồi tím, mặt trời lặn, hàng cây bóng đen. sky=night cho trời đêm có sao và trăng, sky=day cho trời xanh.",
+  "params": {
+    "origin": {
+      "type": "array",
+      "default": [
+        0,
+        0
+      ],
+      "desc_vi": "Vị trí [x, y] của bối cảnh; điểm diễn nằm ở origin + (0, 4)"
+    },
+    "car_color": {
+      "type": "array",
+      "default": [
+        0.8,
+        0.06,
+        0.05
+      ],
+      "desc_vi": "Màu xe hatchback chính (linear, nên đậm)"
+    },
+    "sky": {
+      "type": "string",
+      "default": "dusk",
+      "enum": [
+        "dusk",
+        "night",
+        "day"
+      ],
+      "desc_vi": "Phông trời: chạng vạng cam tím / đêm có sao, trăng / ban ngày"
+    },
+    "lamps_on": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Đèn cột, biển hiệu và đèn hắt cửa hàng có sáng không"
+    },
+    "lamp_light": {
+      "type": "number",
+      "default": 900,
+      "desc_vi": "Công suất (W) mỗi đèn spot cột; 0 = chỉ có mặt đèn phát sáng, không chiếu ra bãi"
+    },
+    "door_open": {
+      "type": "number",
+      "default": 0,
+      "desc_vi": "Góc mở cửa tài xế (độ). Story xoay phần car_door theo rotation Z âm để mở"
+    },
+    "window_glow": {
+      "type": "array",
+      "default": [
+        0.34,
+        0.3,
+        0.46
+      ],
+      "desc_vi": "Màu sáng mờ của kính xe chính"
+    },
+    "sign_text": {
+      "type": "string",
+      "default": "MARKET",
+      "desc_vi": "Chữ biển hiệu siêu thị (không dùng thương hiệu thật)"
+    },
+    "store_color": {
+      "type": "array",
+      "default": [
+        0.82,
+        0.66,
+        0.48
+      ],
+      "desc_vi": "Màu tường siêu thị"
+    },
+    "store_accent": {
+      "type": "array",
+      "default": [
+        0.05,
+        0.4,
+        0.2
+      ],
+      "desc_vi": "Màu nhấn của siêu thị (khối cửa, mái hiên)"
+    },
+    "far_cars": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "Có các xe đỗ ở hai dãy xa hay không"
+    },
+    "seed": {
+      "type": "number",
+      "default": 5,
+      "desc_vi": "Seed cho hàng cây xa và sao (dùng Random riêng)"
+    }
+  },
+  "parts": [
+    "car",
+    "car_door",
+    "car_glass",
+    "lamps",
+    "sign",
+    "cart",
+    "store_glass"
+  ],
+  "space": "Điểm diễn ở (0, 4) cộng origin; nhân vật quay mặt về -Y. Khoảng trống: x −2,4..2,4, y −3..4,9. Xe hatchback đỏ ngay sau lưng: thân xe ở y 5,2, nóc cao 2,15, trải x −1,95..3,15. Bồn cây có cây ở x −5,5 và 6,0 làm khung hai bên. Camera đặt ở khoảng y −4..−6, cao 1,4-1,7 (ngang ngực), nhìn +Y về phía (0, 4, 1,3). Lens 30-40 thấy trọn xe và một phần siêu thị phía sau; ngẩng nhẹ lên sẽ thấy biển MARKET và trời cam tím. Cận mặt: hạ máy, lens 50+, lúc đó cửa sổ xe sáng mờ làm nền mềm. Toàn cảnh rộng: đặt máy ở (0, −12, 3,5), nhìn (0, 18, 2), thấy cả bãi, các cột đèn và mặt tiền. Muốn xoay cung thì giữ trong ±60°, vì phông trời chỉ phủ từ 2° đến 178° phía +Y.",
+  "anchors": {
+    "stage": "Điểm diễn chính (0, 4)",
+    "left": "Vị trí người bên trái khi có 2 người (−0,9, 4)",
+    "right": "Vị trí người bên phải khi có 2 người (0,9, 4)",
+    "left3": "Người ngoài cùng bên trái khi có 3 người (−1,4, 4)",
+    "right3": "Người ngoài cùng bên phải khi có 3 người (1,4, 4)",
+    "car": "Hông xe chính, phía camera, z 1,2",
+    "car_door": "Cửa tài xế (mặt ngoài), z 1,1",
+    "car_window": "Cửa sổ trước sáng mờ, z 1,65",
+    "cart": "Xe đẩy bị bỏ lại ở (−4,2, 9,2)",
+    "lamp": "Đầu cột đèn gần nhất bên trái, z khoảng 8,3",
+    "store_door": "Cửa kính siêu thị, z 1,9",
+    "sign": "Biển chữ MARKET, z 6,75",
+    "store": "Tâm mặt tiền siêu thị",
+    "tree_left": "Tán cây bồn trái",
+    "tree_right": "Tán cây bồn phải"
+  },
+  "views": [
+    {
+      "pos": [
+        0,
+        -5.5,
+        1.6
+      ],
+      "look": [
+        0.2,
+        5,
+        1.4
+      ],
+      "lens": 32
+    },
+    {
+      "pos": [
+        0,
+        -14,
+        4
+      ],
+      "look": [
+        0,
+        18,
+        2.5
+      ],
+      "lens": 28
+    },
+    {
+      "pos": [
+        -1.2,
+        -2.5,
+        1.5
+      ],
+      "look": [
+        -0.2,
+        5.2,
+        1.5
+      ],
+      "lens": 50
+    },
+    {
+      "pos": [
+        -9,
+        -3,
+        2.5
+      ],
+      "look": [
+        0.6,
+        6,
+        1.2
+      ],
+      "lens": 30
+    }
+  ],
+  "tags": [
+    "set",
+    "outdoor",
+    "parking_lot",
+    "supermarket",
+    "dusk",
+    "night",
+    "car",
+    "modern",
+    "usa",
+    "dialog"
+  ],
+  "notes_vi": "Mình chưa chạy file này trong Blender. Cần dựng thử bằng `tools/thumbs.py --views` và xem ảnh trước khi duyệt.\n\n- **Trời:** bối cảnh không đổi world của story. Phông trời cam tím là một bức cung phát sáng bán kính 95. Ánh môi trường và mặt trời vẫn lấy từ `world` của story. Để ánh sáng khớp với lúc chạng vạng, story nên đặt:\n  - `\"world\": {\"sky\": [[1.0,0.5,0.25],[0.55,0.3,0.55],[0.12,0.08,0.3]], \"sky_strength\": 0.6, \"sun\": {\"energy\": 1.4, \"color\": [1.0,0.55,0.3], \"rot_deg\": [80,0,-130]}}`\n  - Đêm: sky tối, energy khoảng 0,3.\n  - Nếu giữ trời ngày mặc định thì nhân vật và xe sẽ sáng như ban trưa.\n- **Bật đèn giữa video:** đặt `lamps_on: true`, rồi dùng visibility track trên phần `lamps` (ẩn từ đầu, hiện ở khung X). Phần này gồm mặt đèn phát sáng và đèn spot thật. Mặt đèn xám lúc tắt luôn có sẵn phía trên.\n- **Mở cửa xe:** track xoay phần `car_door` theo rotation Z âm (−70° là mở rộng về phía camera). Cửa nằm ở x khoảng −0,45..1,05 so với origin, nhân vật đứng ở bên trái thì vướng cửa khi mở.\n- **Chi phí dựng:** khoảng 14 xe (1 xe chính và 13 xe xa), mỗi xe khoảng 20-30 object. Nếu dựng chậm thì đặt `far_cars: false`.\n- **Bóng đổ:** phông trời, hàng cây xa, mặt trời và sao không đổ bóng, không có viền.\n- **Chữ biển hiệu:** chữ dài hơn 7 ký tự sẽ tự co lại.",
+  "status": "draft",
+  "brief_vi": "Bãi đỗ xe siêu thị kiểu Mỹ lúc chạng vạng (7 giờ tối, trời cam tím, đèn cột bắt đầu sáng). Mở về phía -Y để camera đứng nhìn vào, có khoảng trống ở giữa quanh (0, 4) cho hai nhân vật đứng. Ngay sau lưng nhân vật là một chiếc xe con hatchback màu nổi (nhìn ngang, cửa tài xế sát khoảng diễn, cửa sổ sáng mờ). Nền xa: mặt tiền siêu thị chung chung, cửa kính sáng vàng, biển hiệu chữ 3D không thương hiệu (vd 'MARKET'), vài xe đẩy hàng, cột đèn bãi đỗ, vạch kẻ ô đỗ trắng trên mặt nhựa, vài xe khác ở xa, bồn cây. Tham số: origin, car_color, sky (dusk|night|day), lamps_on. Bối cảnh cho video đối thoại: 2-3 người đứng cạnh nhau quay mặt về camera (phía -Y), chừa khoảng trống x -1,5..1,5 quanh điểm diễn; ghi điểm diễn vào meta.json 'stage': [x, y].",
+  "designed_by": "claude_bridge",
+  "updated": "2026-11-18T09:38:46",
+  "review": {
+    "score": 7,
+    "summary_vi": "Nhìn qua là nhận ra ngay bãi đỗ xe siêu thị Mỹ lúc chạng vạng: trời chuyển từ cam sang tím, mặt tiền siêu thị xanh có cửa kính sáng vàng và biển MARKET, có xe hatchback đỏ, hàng xe đỗ, cột đèn, bồn cây và vạch kẻ ô trắng. Tỉ lệ và màu sắc hợp phong cách, đồ vật đều đứng đúng trên mặt đất.",
+    "problems": [
+      "Ảnh view0 không chụp từ góc gợi ý (máy đứng chếch bên phải, nhìn chéo), nên nửa dưới là mặt nhựa trống và chưa thấy khoảng diễn từ phía -Y. Trong video, camera của story sẽ đóng khung lại.",
+      "Mặt đèn phát sáng nằm ở mặt dưới đầu đèn nên gần như không thấy từ góc thấp, và mặt nhựa chưa rõ vũng sáng của đèn spot. Đèn 'bắt đầu sáng' nên tinh tế vẫn chấp nhận được.",
+      "Biển MARKET bị cây che một phần ở góc này. Ở góc chính diện từ -Y thì không bị che."
+    ]
+  }
+}

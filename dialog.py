@@ -290,7 +290,7 @@ SHOT = {   # type, frame overrides
     "speaker":    ("medium",  {"size": 3.0, "look_dz": 0.3, "move": "still"}),
     "listener":   ("medium",  {"size": 2.65, "look_dz": 0.45, "move": "still"}),
     "both_close": ("medium",  {"size": 3.5, "look_dz": 0.3, "move": "still"}),
-    "wide":       ("wide",    {"size": 6.4, "move": "still"}),
+    "wide":       ("wide",    {"size": 4.6, "look_dz": 0.4, "move": "still"}),
 }
 
 
