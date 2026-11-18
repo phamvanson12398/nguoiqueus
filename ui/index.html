@@ -147,6 +147,18 @@ small.err{color:var(--bad)}
       <div class="row" style="margin-bottom:8px"><h2 style="margin:0;flex:1;font-size:15px">Chuỗi máy <span class="muted" style="font-weight:400">(kéo ☰ để đổi thứ tự)</span></h2><button id="btnAddSeq">+ Thêm chuỗi</button></div>
       <div id="seqList"></div>
     </div>
+    <div id="scriptBox" class="panel hidden">
+      <div class="row"><h2 style="margin:0;flex:1">Tự viết kịch bản</h2><span class="muted" id="scriptInfo"></span></div>
+      <p class="muted" style="margin:6px 0">Mỗi câu một dòng, dạng <code>Tên: lời thoại</code>. Ghi chú diễn xuất trong ngoặc: <code>(angry)</code>,
+        <code>*laughs*</code>, <code>(nhún vai)</code>, <code>(long pause)</code>, <code>[sigh]</code>… Dòng đầu có thể ghi <code>Title:</code>,
+        <code>Hook:</code>, <code>Setting: kitchen</code>. Viết tiếng Việt cũng được: Claude dịch sang tiếng Anh Mỹ tự nhiên.</p>
+      <textarea id="scriptIn" rows="10" placeholder="Title: The Thermostat War&#10;Setting: kitchen&#10;&#10;Ben: Mia. Who touched the thermostat?&#10;Mia (innocent): Not me, babe.&#10;Ben (angry): It was on seventy-four!&#10;Mia: *laughs* Weird. Maybe it's the house settling.&#10;(long pause)&#10;Mia: [sigh] Okay... sit down. It's been fake since 2019.&#10;Ben: ...But I could feel the difference."></textarea>
+      <div class="row" style="margin-top:8px">
+        <button id="scriptLocal" class="blue" title="Không tốn lượt Claude: tool tự chọn nhân vật, mặt và cử chỉ theo ghi chú trong ngoặc">Nhận diện ngay</button>
+        <button id="scriptClaude" class="primary" title="Giữ nguyên từng chữ; Claude điền mặt, phản ứng, cử chỉ, nhịp nghỉ, máy quay, bản dịch (khoảng 1 phút)">Nhận diện + Claude thêm diễn xuất</button>
+        <label class="muted"><input type="checkbox" id="scriptTr"> Dịch sang tiếng Anh (tự bật khi kịch bản có tiếng Việt)</label>
+      </div>
+    </div>
     <div id="dlgBox" class="hidden">
       <div class="panel">
         <div class="row"><h2 id="dTitle" style="margin:0;flex:1"></h2><span id="dWords" class="muted"></span>
@@ -535,6 +547,9 @@ function renderContent() {
   $('#minutes').value = (st.settings || {}).minutes || 1; updateEst();
   $('#contentBox').classList.toggle('hidden', !c || st.format === 'dialog');
   $('#dlgBox').classList.toggle('hidden', !c || st.format !== 'dialog');
+  $('#scriptBox').classList.toggle('hidden', st.format !== 'dialog');
+  if (st.format === 'dialog' && S.scriptFor !== S.slug) { S.scriptFor = S.slug;
+    api(P('/script')).then(r => { if (!$('#scriptIn').value.trim() || r.text) $('#scriptIn').value = r.text || ''; }).catch(() => {}); }
   $('#btnWrite').nextElementSibling.textContent = st.format === 'dialog' ? 'Claude viết lời thoại tiếng Anh (kèm bản dịch), nhân vật, giọng, mặt và cử chỉ từng câu.' : 'Claude viết lời đọc tiếng Anh, bản dịch Việt và bảng chuỗi máy.';
   if (st.format === 'dialog') return;
   $('#histSel').innerHTML = '<option value="">Lịch sử phiên bản…</option>' + st.history.filter(h => h.startsWith('content_')).map(h => `<option>${esc(h)}</option>`).join('');
@@ -1064,6 +1079,15 @@ function renderDialogVoice(st) {
   const pl = $('#dVoicePlayer'); pl.classList.toggle('hidden', !st.has_voice);
   if (st.has_voice) pl.src = P('/file/voice.wav') + '?t=' + ((st.words || {}).duration || 0);
 }
+$('#scriptLocal').onclick = async () => {
+  if (S.state.content && !confirm('Thay kịch bản hiện tại bằng kịch bản bạn dán? Bản cũ vẫn giữ trong lịch sử.')) return;
+  try { const r = await api(P('/script'), {body: {text: $('#scriptIn').value, mode: 'local', translate: $('#scriptTr').checked}});
+    $('#scriptInfo').textContent = `${r.lines} câu · ${r.speakers.join(', ')}` + (r.warnings.length ? ' · ' + r.warnings.join('; ') : '');
+    toast(`Đã nhận diện ${r.lines} câu: kiểm tra thẻ nhân vật và từng câu bên dưới`); await loadProject(); }
+  catch (e) { toast(e.message, 8000); } };
+$('#scriptClaude').onclick = () => {
+  if (S.state.content && !confirm('Thay kịch bản hiện tại bằng kịch bản bạn dán? Bản cũ vẫn giữ trong lịch sử.')) return;
+  run(P('/script'), {text: $('#scriptIn').value, mode: 'claude', translate: $('#scriptTr').checked}, 'Nhận diện kịch bản'); };
 $('#dAud').onclick = () => run(P('/dialog/auditions'), {}, 'Tạo giọng thử');
 $('#dSpeak').onclick = () => run(P('/dialog/speak'), {}, 'Tạo giọng các câu');
 $('#dTakes').onchange = async () => { await api(P('/settings'), {body: {voice_takes: +$('#dTakes').value}}); toast('Áp dụng cho các câu đọc lần tới'); };

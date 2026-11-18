@@ -1,0 +1,7 @@
+Tiêu đề: Bài tập về nhà
+Mẹ: Con làm bài tập chưa?
+Con (ngập ngừng): Dạ... con làm rồi ạ.
+Mẹ (nghi ngờ): Thật không? Đưa mẹ xem.
+Con: Con làm trong đầu rồi mẹ ạ.
+Mẹ (tức): Thế thì in cái đầu ra đây cho mẹ!
+Con (nhún vai): Máy in hết mực rồi mẹ.

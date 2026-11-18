@@ -316,6 +316,26 @@ def job_rewrite(job, slug, sid, request):
     return {"id": sid}
 
 
+def read_script(slug, text):
+    """parse the user's own script, keep the text next to the project; -> (parsed, draft content)"""
+    import script_import
+    open(os.path.join(pdir(slug), "script.txt"), "w", encoding="utf-8").write(text)
+    p = script_import.parse(text)
+    draft = script_import.to_content(p, voices=tts.list_voices(), minutes=None)
+    return p, draft
+
+
+def job_import_script(job, slug, text, translate):
+    p, draft = read_script(slug, text)
+    job.say(f"Đọc kịch bản: {len(p['lines'])} câu, người nói {', '.join(p['speakers'])}" + (" (tiếng Việt → dịch sang tiếng Anh)" if translate else ""))
+    for w in p["warnings"]: job.say("   lưu ý: " + w)
+    job.say("Claude thêm diễn xuất (mặt, phản ứng, cử chỉ, nhịp nghỉ, máy quay, bản dịch), giữ " + ("ý từng câu…" if translate else "nguyên từng chữ…"))
+    data = bridge.import_script(slug, p, draft, translate=translate)
+    save_settings(slug, format="dialog", minutes=data["minutes"])
+    job.say(f"Xong: {len(data['lines'])} câu, {data['word_count']} từ, nhân vật {', '.join(c['name'] for c in data['cast'])}, bối cảnh {data['setting']['set']}.")
+    return {"lines": len(data["lines"])}
+
+
 def job_rewrite_dialog(job, slug, a, b, request):
     job.say(f"Claude viết lại câu {a + 1}-{b + 1}: {request}")
     r = bridge.rewrite_dialog(slug, a, b, request)
@@ -1012,6 +1032,23 @@ class Handler(BaseHTTPRequestHandler):
                 if probs: raise ValueError("; ".join(probs[:4]))
                 bridge._save_versioned(slug, "content.json", bridge.dialog_fill(c))
                 return self.send_json({"ok": True, "word_count": c["word_count"]})
+            if act == ["script"] and method == "GET":
+                f = os.path.join(d, "script.txt")
+                return self.send_json({"text": open(f, encoding="utf-8").read() if os.path.exists(f) else ""})
+            if act == ["script"] and method == "POST":             # the user's own dialogue script
+                b = self.jbody(); text = (b.get("text") or "").strip()
+                if len(text) < 10: raise ValueError("dán kịch bản vào ô trước (mỗi câu một dòng, dạng 'Tên: lời thoại')")
+                import script_import
+                p = script_import.parse(text)
+                translate = bool(b.get("translate")) or p["vietnamese"]
+                if b.get("mode") == "claude":
+                    return self.send_json(start_job("import_script", slug, job_import_script, slug, text, translate).to_json())
+                if p["vietnamese"]:
+                    raise ValueError("kịch bản có tiếng Việt: giọng đọc cần tiếng Anh, bấm 'Nhận diện + Claude thêm diễn xuất' để Claude dịch sang tiếng Anh tự nhiên")
+                p, draft = read_script(slug, text)
+                bridge._save_versioned(slug, "content.json", bridge.dialog_fill(draft))
+                save_settings(slug, format="dialog", minutes=draft["minutes"])
+                return self.send_json({"ok": True, "lines": len(draft["lines"]), "speakers": p["speakers"], "warnings": p["warnings"]})
             if act == ["content", "rewrite_lines"]:
                 b = self.jbody()
                 return self.send_json(start_job("rewrite_dialog", slug, job_rewrite_dialog, slug, int(b["a"]), int(b["b"]), b["request"]).to_json())

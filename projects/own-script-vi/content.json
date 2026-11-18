@@ -1,0 +1,196 @@
+{
+  "format": "dialog",
+  "title": "Homework",
+  "title_vi": "Bài tập về nhà",
+  "hook": "Kid logic is undefeated",
+  "premise_vi": "Mẹ hỏi con làm bài tập chưa; con bảo đã làm \"trong đầu\". Mẹ bắt in cái đầu ra, con tỉnh bơ đáp máy in hết mực.",
+  "minutes": 0.3,
+  "cast": [
+    {
+      "id": "me",
+      "name": "Mẹ",
+      "role": "mom",
+      "gender": "female",
+      "age": "middle-aged",
+      "body": "adult",
+      "voice_id": "demo_mom",
+      "voice_instruct": "female, middle-aged, moderate pitch, american accent",
+      "hair": "tied",
+      "hair_color": [
+        0.08,
+        0.05,
+        0.03
+      ],
+      "outfit": "home_apron",
+      "colors": {
+        "cloth": [
+          0.05,
+          0.5,
+          0.45
+        ],
+        "cloth2": [
+          0.95,
+          0.35,
+          0.3
+        ]
+      },
+      "personality_vi": "Bà mẹ Mỹ sắc sảo, nghi ngờ mọi câu 'con làm rồi', kiên nhẫn có giới hạn.",
+      "head_shape": "egg",
+      "signature": "earrings",
+      "sig_color": [
+        0.95,
+        0.12,
+        0.25
+      ]
+    },
+    {
+      "id": "con",
+      "name": "Con",
+      "role": "son",
+      "gender": "male",
+      "age": "child",
+      "body": "child",
+      "voice_id": "demo_leo",
+      "voice_instruct": "male, child, high pitch, american accent",
+      "hair": "short",
+      "hair_color": [
+        0.35,
+        0.18,
+        0.06
+      ],
+      "outfit": "kid_tee",
+      "colors": {
+        "cloth": [
+          0.98,
+          0.45,
+          0.05
+        ],
+        "cloth2": [
+          0.05,
+          0.15,
+          0.45
+        ]
+      },
+      "personality_vi": "Cậu bé lém lỉnh, lười nhưng nhanh trí, chối bằng logic trẻ con với vẻ mặt tỉnh bơ.",
+      "head_shape": "wide",
+      "signature": "ahoge",
+      "sig_color": [
+        1,
+        0.82,
+        0.05
+      ]
+    }
+  ],
+  "setting": {
+    "set": "kitchen",
+    "params": {
+      "stuck_toast": false
+    },
+    "brief_vi": "Bếp Mỹ ban ngày, mẹ và con đứng cạnh quầy bếp sau giờ học."
+  },
+  "idle": "relaxed",
+  "lines": [
+    {
+      "speaker": "me",
+      "text": "Hey, buddy. Did you do your homework?",
+      "text_vi": "Con làm bài tập chưa?",
+      "face": "neutral",
+      "listener_face": "worried",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "two",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "con",
+      "text": "Uh... yeah. Yep. I did it.",
+      "text_vi": "Dạ... con làm rồi ạ.",
+      "face": "worried",
+      "listener_face": "side_eye",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.7,
+      "speed": 0.9,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "me",
+      "text": "Oh, really? Okay. Show me.",
+      "text_vi": "Thật không? Đưa mẹ xem.",
+      "face": "side_eye",
+      "listener_face": "worried",
+      "gesture": "hands_hips",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.3,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "con",
+      "text": "I did it... in my head, Mom.",
+      "text_vi": "Con làm trong đầu rồi mẹ ạ.",
+      "face": "smug_closed",
+      "listener_face": "annoyed",
+      "gesture": "think",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.5,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "me",
+      "text": "Then PRINT your head out for me!",
+      "text_vi": "Thế thì in cái đầu ra đây cho mẹ!",
+      "face": "angry",
+      "listener_face": "shock",
+      "gesture": "point",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.25,
+      "speed": 1.12,
+      "sfx": "none",
+      "react": "flinch",
+      "beat": "twist"
+    },
+    {
+      "speaker": "con",
+      "text": "Printer's out of ink, Mom.",
+      "text_vi": "Máy in hết mực rồi mẹ.",
+      "face": "neutral",
+      "listener_face": "annoyed",
+      "gesture": "shrug",
+      "listener_gesture": "facepalm",
+      "shot": "both_close",
+      "pause_before": 1,
+      "speed": 0.95,
+      "sfx": "none",
+      "react": "none",
+      "beat": "punchline"
+    }
+  ],
+  "highlight": [
+    "homework",
+    "head",
+    "PRINT",
+    "ink"
+  ],
+  "end_sfx": "none",
+  "library_needs": [],
+  "vo_en": "Hey, buddy. Did you do your homework? Uh... yeah. Yep. I did it. Oh, really? Okay. Show me. I did it... in my head, Mom. Then PRINT your head out for me! Printer's out of ink, Mom.",
+  "vo_vi": "Con làm bài tập chưa? Dạ... con làm rồi ạ. Thật không? Đưa mẹ xem. Con làm trong đầu rồi mẹ ạ. Thế thì in cái đầu ra đây cho mẹ! Máy in hết mực rồi mẹ.",
+  "word_count": 37,
+  "sequences": []
+}

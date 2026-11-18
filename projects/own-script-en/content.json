@@ -1,0 +1,196 @@
+{
+  "format": "dialog",
+  "title": "The Thermostat War",
+  "title_vi": "Cuộc chiến cái máy chỉnh nhiệt",
+  "hook": "When he guards the thermostat",
+  "premise_vi": "Ben nổi điên vì ai đó đã chỉnh máy điều nhiệt khỏi mức 74 độ, Mia tỉnh bơ chối. Cú đảo: cái máy chỉnh nhiệt là đồ giả từ năm 2019, vậy mà Ben vẫn khăng khăng \"cảm thấy khác\".",
+  "minutes": 0.3,
+  "cast": [
+    {
+      "id": "ben",
+      "name": "Ben",
+      "role": "husband",
+      "gender": "male",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "demo_ben",
+      "voice_instruct": "male, young adult, low pitch, american accent",
+      "hair": "short",
+      "hair_color": [
+        0.06,
+        0.05,
+        0.04
+      ],
+      "outfit": "casual_tee",
+      "colors": {
+        "cloth": [
+          0.85,
+          0.2,
+          0.1
+        ],
+        "cloth2": [
+          0.1,
+          0.18,
+          0.4
+        ]
+      },
+      "personality_vi": "Nóng tính, coi máy chỉnh nhiệt là lãnh thổ riêng, tự tin tuyệt đối vào cảm giác của mình.",
+      "head_shape": "egg",
+      "signature": "cap",
+      "sig_color": [
+        0.98,
+        0.75,
+        0.05
+      ]
+    },
+    {
+      "id": "mia",
+      "name": "Mia",
+      "role": "wife",
+      "gender": "female",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "demo_mia",
+      "voice_instruct": "female, young adult, high pitch, american accent",
+      "hair": "tied",
+      "hair_color": [
+        0.35,
+        0.12,
+        0.04
+      ],
+      "outfit": "casual_dress",
+      "colors": {
+        "cloth": [
+          0.05,
+          0.55,
+          0.6
+        ],
+        "cloth2": [
+          0.95,
+          0.9,
+          0.75
+        ]
+      },
+      "personality_vi": "Tỉnh bơ, lém lỉnh, giữ bí mật lâu năm và rất bình thản khi bị tra hỏi.",
+      "head_shape": "wide",
+      "signature": "earrings",
+      "sig_color": [
+        0.98,
+        0.2,
+        0.6
+      ]
+    }
+  ],
+  "setting": {
+    "set": "kitchen",
+    "params": {
+      "stuck_toast": false
+    },
+    "brief_vi": "Bếp Mỹ ban ngày, không có bánh mì dính trên đèn; hai vợ chồng đứng giữa bếp."
+  },
+  "idle": "relaxed",
+  "lines": [
+    {
+      "speaker": "ben",
+      "text": "Mia. Who touched the thermostat?",
+      "text_vi": "Mia. Ai đã đụng vào máy chỉnh nhiệt?",
+      "face": "side_eye",
+      "listener_face": "happy",
+      "gesture": "cross_arms",
+      "listener_gesture": "none",
+      "shot": "two",
+      "pause_before": 0.2,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "mia",
+      "text": "Not me, babe.",
+      "text_vi": "Không phải em đâu, anh yêu.",
+      "face": "happy",
+      "listener_face": "side_eye",
+      "gesture": "shrug",
+      "listener_gesture": "cross_arms",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1.05,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "ben",
+      "text": "It was on seventy-four! Seventy-four, Mia!",
+      "text_vi": "Nó đang để 74 độ! 74 độ đấy, Mia!",
+      "face": "angry",
+      "listener_face": "smirk",
+      "gesture": "point",
+      "listener_gesture": "none",
+      "shot": "speaker",
+      "pause_before": 0.15,
+      "speed": 1.12,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "[laughter] Weird. Maybe it's the house settling.",
+      "text_vi": "[cười] Lạ nhỉ. Chắc tại nhà bị lún thôi.",
+      "face": "laugh",
+      "listener_face": "annoyed",
+      "gesture": "none",
+      "listener_gesture": "hands_hips",
+      "shot": "listener",
+      "pause_before": 0.25,
+      "speed": 1,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "[sigh] Okay... sit down. It's been fake since 2019.",
+      "text_vi": "[thở dài] Được rồi... ngồi xuống đi. Nó là đồ giả từ năm 2019 rồi.",
+      "face": "annoyed",
+      "listener_face": "shock",
+      "gesture": "open_arms",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 1.2,
+      "speed": 0.92,
+      "sfx": "none",
+      "react": "flinch",
+      "beat": "twist"
+    },
+    {
+      "speaker": "ben",
+      "text": "...But I could feel the difference.",
+      "text_vi": "...Nhưng anh cảm thấy rõ là khác mà.",
+      "face": "sad",
+      "listener_face": "side_eye",
+      "gesture": "none",
+      "listener_gesture": "facepalm",
+      "shot": "both_close",
+      "pause_before": 1.3,
+      "speed": 0.9,
+      "sfx": "none",
+      "react": "none",
+      "beat": "punchline"
+    }
+  ],
+  "highlight": [
+    "thermostat",
+    "seventy-four",
+    "fake",
+    "difference"
+  ],
+  "end_sfx": "none",
+  "library_needs": [],
+  "vo_en": "Mia. Who touched the thermostat? Not me, babe. It was on seventy-four! Seventy-four, Mia! [laughter] Weird. Maybe it's the house settling. [sigh] Okay... sit down. It's been fake since 2019. ...But I could feel the difference.",
+  "vo_vi": "Mia. Ai đã đụng vào máy chỉnh nhiệt? Không phải em đâu, anh yêu. Nó đang để 74 độ! 74 độ đấy, Mia! [cười] Lạ nhỉ. Chắc tại nhà bị lún thôi. [thở dài] Được rồi... ngồi xuống đi. Nó là đồ giả từ năm 2019 rồi. ...Nhưng anh cảm thấy rõ là khác mà.",
+  "word_count": 34,
+  "sequences": []
+}

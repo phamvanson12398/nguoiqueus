@@ -1,0 +1,191 @@
+{
+  "format": "dialog",
+  "title": "The Thermostat War",
+  "title_vi": "",
+  "hook": "",
+  "premise_vi": "Kịch bản do bạn tự viết.",
+  "minutes": 0.25,
+  "cast": [
+    {
+      "id": "ben",
+      "name": "Ben",
+      "role": "boyfriend",
+      "gender": "male",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "ben_voice",
+      "voice_instruct": "male, young adult, low pitch, american accent",
+      "hair": "short",
+      "hair_color": [
+        0.06,
+        0.05,
+        0.04
+      ],
+      "outfit": "casual_tee",
+      "colors": {
+        "cloth": [
+          0.85,
+          0.2,
+          0.35
+        ],
+        "cloth2": [
+          0.98,
+          0.8,
+          0.2
+        ]
+      },
+      "personality_vi": "",
+      "head_shape": "egg",
+      "signature": "cap",
+      "sig_color": [
+        0.95,
+        0.15,
+        0.3
+      ]
+    },
+    {
+      "id": "mia",
+      "name": "Mia",
+      "role": "girlfriend",
+      "gender": "female",
+      "age": "young adult",
+      "body": "adult",
+      "voice_id": "mia_voice",
+      "voice_instruct": "female, young adult, high pitch, american accent",
+      "hair": "tied",
+      "hair_color": [
+        0.06,
+        0.05,
+        0.04
+      ],
+      "outfit": "casual_dress",
+      "colors": {
+        "cloth": [
+          0.15,
+          0.45,
+          0.85
+        ],
+        "cloth2": [
+          0.12,
+          0.2,
+          0.45
+        ]
+      },
+      "personality_vi": "",
+      "head_shape": "wide",
+      "signature": "earrings",
+      "sig_color": [
+        0.1,
+        0.55,
+        0.95
+      ]
+    }
+  ],
+  "setting": {
+    "set": "kitchen",
+    "params": {
+      "stuck_toast": false
+    },
+    "brief_vi": "kitchen"
+  },
+  "idle": "relaxed",
+  "lines": [
+    {
+      "speaker": "ben",
+      "text": "Mia. Who touched the thermostat?",
+      "text_vi": "",
+      "face": "neutral",
+      "listener_face": "neutral",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "mia",
+      "text": "Not me, babe.",
+      "text_vi": "",
+      "face": "happy",
+      "listener_face": "neutral",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1.05,
+      "sfx": "none",
+      "react": "none",
+      "beat": "setup"
+    },
+    {
+      "speaker": "ben",
+      "text": "It was on seventy-four! Seventy-four, Mia!",
+      "text_vi": "",
+      "face": "angry",
+      "listener_face": "shock",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1.12,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "[laughter] Weird. Maybe it's the house settling.",
+      "text_vi": "",
+      "face": "laugh",
+      "listener_face": "neutral",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "build"
+    },
+    {
+      "speaker": "mia",
+      "text": "[sigh] Okay... sit down. It's been fake since 2019.",
+      "text_vi": "",
+      "face": "annoyed",
+      "listener_face": "shock",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 1.2,
+      "speed": 0.92,
+      "sfx": "none",
+      "react": "flinch",
+      "beat": "twist"
+    },
+    {
+      "speaker": "ben",
+      "text": "...But I could feel the difference.",
+      "text_vi": "",
+      "face": "smirk",
+      "listener_face": "shock",
+      "gesture": "none",
+      "listener_gesture": "none",
+      "shot": "auto",
+      "pause_before": 0.25,
+      "speed": 1.0,
+      "sfx": "none",
+      "react": "none",
+      "beat": "punchline"
+    }
+  ],
+  "highlight": [],
+  "end_sfx": "none",
+  "library_needs": [],
+  "vo_en": "Mia. Who touched the thermostat? Not me, babe. It was on seventy-four! Seventy-four, Mia! [laughter] Weird. Maybe it's the house settling. [sigh] Okay... sit down. It's been fake since 2019. ...But I could feel the difference.",
+  "vo_vi": "     ",
+  "word_count": 34,
+  "sequences": []
+}

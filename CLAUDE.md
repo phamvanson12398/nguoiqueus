@@ -436,6 +436,15 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - Nhịp: `dialog.pause_for` giữ khoảng lặng tối thiểu theo nhịp (cùng người nói tiếp 0,4 s; sau cú đảo/chốt 0,8 s; trước câu chốt 0,7 s;
     đáp lại câu sốc/giận 0,45 s), còn lại theo `pause_before`. DIALOG_RULES: ngừng trong câu bằng "...", ",", "—"; cãi nhau dồn, thú nhận
     ngập ngừng, im 1-1,5 s sau tiết lộ. us-comedy-test: 48,0 → 50,5 s. Fingerprint demo-v3 + toast: giống hệt. Ảnh: `docs/img/dialog_v5.jpg`.
+- Tự viết kịch bản (người dùng dán kịch bản của mình, tool nhận diện): `script_import.py` — `parse` (header Title/Hook/Setting/Idle,
+  "Tên:" / "TÊN -" / "[Tên]", gộp tên khác hoa thường, dòng không tên = nối câu trước, ghi chú đứng riêng một dòng áp cho câu sau,
+  không có tên nào = A/B lần lượt; ghi chú trong ( ) * * [ ] tiếng Anh/Việt → mặt, cử chỉ, khoảng lặng, tốc độ, thẻ [laughter]/[sigh];
+  phát hiện tiếng Việt) và `to_content` (tool tự chọn vai/giới tính/tuổi/thân theo tên và từ xưng hô Mom/Dad/Mẹ/Con…, giọng thư viện trùng
+  tên, màu, dáng đầu, món nhận diện, beat). Server `POST /projects/<slug>/script` mode `local` (ngay, không Claude; tiếng Việt bị từ chối)
+  hoặc `claude` (`bridge.import_script`: giữ nguyên từng chữ — kiểm `_bare` từng câu, đúng người nói, đúng số câu — hoặc dịch sang tiếng
+  Anh Mỹ khi có tiếng Việt, `text_vi` = nguyên văn); lưu `script.txt`. Trang: ô "Tự viết kịch bản" ở bước 2 (đối thoại). Thử thật:
+  `projects/own-script-en` (27 s, giữ nguyên 6 câu, thêm mặt/cử chỉ/nhịp), `projects/own-script-vi` (27 s, dịch "Thế thì in cái đầu ra đây
+  cho mẹ!" → "Then PRINT your head out for me!").
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
