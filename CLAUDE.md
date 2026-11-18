@@ -445,6 +445,13 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   Anh Mỹ khi có tiếng Việt, `text_vi` = nguyên văn); lưu `script.txt`. Trang: ô "Tự viết kịch bản" ở bước 2 (đối thoại). Thử thật:
   `projects/own-script-en` (27 s, giữ nguyên 6 câu, thêm mặt/cử chỉ/nhịp), `projects/own-script-vi` (27 s, dịch "Thế thì in cái đầu ra đây
   cho mẹ!" → "Then PRINT your head out for me!").
+  - Kịch bản thật của người dùng ("Ăn gì cũng được", 25 câu tiếng Việt): parse thêm tiêu đề trong ngoặc kép ở dòng đầu, đoạn mô tả trước
+    lời thoại (`notes`), câu chỉ có hành động ("Jake: (quay sang nhìn chằm chằm)") = nhịp im lặng `silent_before` (pause ≥ 1,3 s, mặt/cử
+    chỉ người đó khi nghe câu sau, cú máy cận người nghe); cue hít sâu/nhìn chằm chằm/lẩm bẩm/nghĩ. Chế độ thứ ba `improve` ("Dịch & làm hay
+    hơn"): giữ nhân vật/tình huống/ý cú chốt, gọt chữ, ±30 % số câu, text tiếng Anh, text_vi dịch câu mới, tóm tắt thay đổi trong premise.
+    Bối cảnh mô tả → chọn có sẵn hoặc library_needs; nhân vật luôn đứng (trong xe → đứng cạnh xe ở bãi đỗ). Thử thật: 60 s, 26 câu,
+    gài "gym tomorrow" → chốt "Exactly. They're YOUR fries." + đuôi "[sigh] ...I'm getting two.", bối cảnh mới `parking_lot`
+    (`projects/an-gi-cung-duoc`).
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

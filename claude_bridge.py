@@ -1066,19 +1066,26 @@ def write_dialog(slug, idea, minutes=0.75, model=None):
     return data
 
 
+VI_RE = re.compile(r"[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]", re.I)
+
+
 def _bare(t):
     """compare lines without OmniVoice tags, case, spacing and quote style"""
     t = re.sub(r"\[[^\]]*\]", " ", t).replace("’", "'").replace("“", '"').replace("”", '"')
     return re.sub(r"\s+", " ", t).strip().lower()
 
 
-def import_script(slug, parsed, draft, translate=False, model=None):
+def import_script(slug, parsed, draft, translate=False, model=None, improve=False):
     """the user's own script: keep every word (or translate it to natural American English when it is Vietnamese),
     Claude only adds the acting: faces, reactions, gestures, shots, pauses, speed, beats, Vietnamese translation, cast looks/voices"""
-    keep = not translate
+    keep = not translate and not improve
     prompt = ("Người dùng TỰ VIẾT kịch bản đối thoại dưới đây. Tool đã tách người nói và ghi chú diễn xuất, kèm một bản nháp content "
               "do tool tự đoán (draft). Hãy trả về content hoàn chỉnh theo DIALOG_RULES.md:\n"
-              + ("- GIỮ NGUYÊN TỪNG CHỮ của mỗi câu thoại (`text`), đúng thứ tự, đúng người nói, không thêm/bớt/gộp/tách câu. "
+              + ("- LÀM HAY HƠN (người dùng yêu cầu): viết lại bằng tiếng Anh Mỹ nói tự nhiên, hài kiểu sitcom Mỹ (mục 2b): giữ nhân vật, "
+                 "tình huống, mạch chuyện và ý cú chốt/câu đuôi của người dùng; được gọt chữ, gộp hoặc bỏ câu thừa, thêm 1-3 câu nếu làm "
+                 "nhịp hài tốt hơn (tổng số câu trong khoảng ±30 %), làm câu chốt ngắn và sắc hơn, thêm callback nếu hợp; mỗi câu `text_vi` là "
+                 "bản dịch tiếng Việt của câu MỚI. Ghi tóm tắt các thay đổi chính vào premise_vi (sau tình huống).\n" if improve else
+                 "- GIỮ NGUYÊN TỪNG CHỮ của mỗi câu thoại (`text`), đúng thứ tự, đúng người nói, không thêm/bớt/gộp/tách câu. "
                  "Chỉ được thêm thẻ OmniVoice ([laughter], [sigh]…) ở đầu câu nếu ghi chú của người dùng gợi ý.\n" if keep else
                  "- Kịch bản viết tiếng Việt: dịch từng câu sang tiếng Anh Mỹ nói tự nhiên, buồn cười như sitcom (mục 2b), giữ đúng ý, thứ tự, "
                  "người nói và số câu; `text_vi` là nguyên văn câu tiếng Việt của người dùng.\n") +
@@ -1086,6 +1093,11 @@ def import_script(slug, parsed, draft, translate=False, model=None):
               "listener_gesture, react, shot, pause_before (nhịp theo cảm xúc), speed, beat; text_vi là bản dịch tiếng Việt (nếu giữ tiếng Anh).\n"
               "- Cast: giữ tên người dùng đặt; chọn vai, giới tính, tuổi, thân, tóc, áo, màu, head_shape, signature, voice_instruct hợp vai; "
               "giữ voice_id của draft nếu giọng đó đã có trong thư viện.\n"
+              "- Câu có `silent_before` = trước câu đó có một nhịp im lặng: người `who` làm hành động `action` (vd nhìn chằm chằm); "
+              "thể hiện bằng pause_before 1-1,5 s, shot listener hoặc both_close, listener_face/gesture của người đó.\n"
+              "- Bối cảnh: `setting`/`notes` của người dùng là MÔ TẢ cảnh; chọn bối cảnh có sẵn hợp nhất, nếu không có thì đặt tên mới "
+              "(snake_case) và đưa vào library_needs kèm brief. Nhân vật của tool LUÔN ĐỨNG cạnh nhau quay về camera (không ngồi được): "
+              "cảnh trong xe thì đổi thành đứng cạnh xe ở bãi đỗ, cảnh bàn ăn thì đứng cạnh bàn…, giữ đúng tinh thần cảnh.\n"
               "- title/hook/premise/setting: theo header của người dùng nếu có, không thì tự đặt. sfx, end_sfx luôn none; library_needs rỗng "
               "trừ khi bối cảnh người dùng ghi chưa có trong thư viện.\n\n"
               f"Kịch bản đã tách:\n{json.dumps(parsed, ensure_ascii=False)}\n\nDraft:\n{json.dumps(draft, ensure_ascii=False)}\n"
@@ -1096,6 +1108,14 @@ def import_script(slug, parsed, draft, translate=False, model=None):
     def check(x):
         e = check_dialog(x) + check_dialog_look(x)
         e = [m for m in e if "từ" not in m or "lines[" in m]            # the user's length is the user's choice
+        if improve:                                                     # rewritten: same people, about the same length
+            known = {w.lower() for w, _ in want}
+            for c in x["cast"]:
+                if c["name"].lower() not in known and len(x["cast"]) > len(known): e.append(f"nhân vật {c['name']} không có trong kịch bản của người dùng")
+            if not 0.6 * len(want) <= len(x["lines"]) <= 1.4 * len(want) + 1:
+                e.append(f"giữ số câu gần với kịch bản gốc ({len(want)} câu, đang {len(x['lines'])})")
+            if any(VI_RE.search(l["text"]) for l in x["lines"]): e.append("text phải là tiếng Anh (text_vi mới là tiếng Việt)")
+            return e
         if len(x["lines"]) != len(want): return e + [f"phải có đúng {len(want)} câu như kịch bản của người dùng (đang {len(x['lines'])})"]
         cid = {c["id"]: c["name"] for c in x["cast"]}
         for k, (l, (who, txt)) in enumerate(zip(x["lines"], want)):

@@ -325,12 +325,14 @@ def read_script(slug, text):
     return p, draft
 
 
-def job_import_script(job, slug, text, translate):
+def job_import_script(job, slug, text, translate, improve=False):
     p, draft = read_script(slug, text)
     job.say(f"Đọc kịch bản: {len(p['lines'])} câu, người nói {', '.join(p['speakers'])}" + (" (tiếng Việt → dịch sang tiếng Anh)" if translate else ""))
     for w in p["warnings"]: job.say("   lưu ý: " + w)
-    job.say("Claude thêm diễn xuất (mặt, phản ứng, cử chỉ, nhịp nghỉ, máy quay, bản dịch), giữ " + ("ý từng câu…" if translate else "nguyên từng chữ…"))
-    data = bridge.import_script(slug, p, draft, translate=translate)
+    job.say("Claude " + ("dịch, làm hay hơn và thêm diễn xuất…" if improve else
+                         "thêm diễn xuất (mặt, phản ứng, cử chỉ, nhịp nghỉ, máy quay, bản dịch), giữ " + ("ý từng câu…" if translate else "nguyên từng chữ…")))
+    data = bridge.import_script(slug, p, draft, translate=translate, improve=improve)
+    if data.get("library_needs"): job.say("   Bối cảnh mới (Claude thiết kế khi bấm Duyệt & dựng): " + ", ".join(n["name"] for n in data["library_needs"]))
     save_settings(slug, format="dialog", minutes=data["minutes"])
     job.say(f"Xong: {len(data['lines'])} câu, {data['word_count']} từ, nhân vật {', '.join(c['name'] for c in data['cast'])}, bối cảnh {data['setting']['set']}.")
     return {"lines": len(data["lines"])}
@@ -1041,8 +1043,8 @@ class Handler(BaseHTTPRequestHandler):
                 import script_import
                 p = script_import.parse(text)
                 translate = bool(b.get("translate")) or p["vietnamese"]
-                if b.get("mode") == "claude":
-                    return self.send_json(start_job("import_script", slug, job_import_script, slug, text, translate).to_json())
+                if b.get("mode") in ("claude", "improve"):
+                    return self.send_json(start_job("import_script", slug, job_import_script, slug, text, translate, b.get("mode") == "improve").to_json())
                 if p["vietnamese"]:
                     raise ValueError("kịch bản có tiếng Việt: giọng đọc cần tiếng Anh, bấm 'Nhận diện + Claude thêm diễn xuất' để Claude dịch sang tiếng Anh tự nhiên")
                 p, draft = read_script(slug, text)

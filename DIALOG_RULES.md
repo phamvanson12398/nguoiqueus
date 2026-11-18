@@ -83,4 +83,5 @@ Người xem chính là khán giả Mỹ: viết như sitcom/sketch Mỹ, ngư�
 ## 5. Bối cảnh
 - Một bối cảnh cho cả video, chọn trong thư viện (bếp `kitchen` với `stuck_toast: false`, `office`, `street`…). Nếu không hợp thì đặt
   tên mới (living_room, bedroom, restaurant, car_front_seats, supermarket…) và đưa vào `library_needs` (tối đa 1 món mới).
-- Nhân vật đứng giữa bối cảnh, quay mặt về camera như phim hoạt hình 2D; không đi lại.
+- Nhân vật đứng giữa bối cảnh, quay mặt về camera như phim hoạt hình 2D; không đi lại, không ngồi. Cảnh trong xe → đứng cạnh xe ở bãi đỗ;
+  bàn ăn → đứng cạnh bàn; giường/sofa → đứng trước giường/sofa.

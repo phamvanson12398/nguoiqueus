@@ -29,7 +29,9 @@ HEADERS = {"title": "title", "tiêu đề": "title", "tieu de": "title", "hook":
 # cue word -> (face, gesture, tag, extra pause, speed)
 CUES = [
     (r"laugh|giggl|chuckl|cười lớn|cười to|bật cười|haha", ("laugh", None, "[laughter]", 0, None)),
-    (r"sigh|thở dài", ("annoyed", None, "[sigh]", 0, 0.92)),
+    (r"sigh|deep breath|thở dài|hít sâu|hít một hơi", ("annoyed", None, "[sigh]", 0, 0.92)),
+    (r"stare|glare|deadpan look|nhìn chằm chằm|lườm|trừng", ("annoyed", None, None, 0, None)),
+    (r"mutter|grumbl|lẩm bẩm|càu nhàu", ("grumpy", None, None, 0, 0.95)),
     (r"furious|angry|mad\b|yell|shout|giận|tức|hét|quát|cáu", ("angry", None, None, 0, 1.12)),
     (r"shock|surpris|gasp|stunned|sốc|ngạc nhiên|bất ngờ|há hốc", ("shock", None, "[surprise-oh]", 0, 1.05)),
     (r"\bsad\b|cry|sob|tear|buồn|khóc|tủi", ("sad", None, None, 0, 0.9)),
@@ -50,7 +52,7 @@ CUES = [
     (r"facepalm|head in hands|ôm đầu|vỗ trán", (None, "facepalm", None, 0, None)),
     (r"wave|vẫy", (None, "wave", None, 0, None)),
     (r"hold(s|ing)? hands|nắm tay", (None, "hold_hands", None, 0, None)),
-    (r"think|ponder|suy nghĩ|nghĩ ngợi", ("focus", "think", None, 0, None)),
+    (r"think|ponder|suy nghĩ|nghĩ ngợi|\bnghĩ\b", ("focus", "think", None, 0, None)),
     (r"fist|giơ nắm đấm", (None, "fist", None, 0, None)),
     (r"hands up|surrender|giơ tay", (None, "hands_up", None, 0, None)),
     (r"open arms|dang tay|ôm", (None, "open_arms", None, 0, None)),
@@ -106,6 +108,8 @@ def parse(text):
         m = re.match(r"^\s*([A-Za-zÀ-ỹ ]{2,12})\s*:\s*(.+)$", s)
         if m and m.group(1).strip().lower() in HEADERS and not lines:
             head[HEADERS[m.group(1).strip().lower()]] = m.group(2).strip(); continue
+        if not named and not lines and not head.get("title") and re.fullmatch(r"[“\"'«].{2,80}[”\"'»]", s):
+            head["title"] = s.strip('“”"\'«» '); continue
         m = SPEAKER_RE.match(s)
         if m and (m.group("b") or m.group("n")) and len((m.group("b") or m.group("n")).split()) <= 3 and m.group("t") is not None:
             name = (m.group("b") or m.group("n")).strip()
@@ -119,6 +123,8 @@ def parse(text):
             pending.append(s)                                 # a stage direction on its own line: goes with the NEXT line
         elif lines and named:
             lines[-1]["raw"] += " " + s                       # continuation of the previous line
+        elif not named and lines == [] and (len(s) > 60 or s.endswith((".", "!", "?"))) and ":" not in s[:25]:
+            head["notes"] = (head.get("notes", "") + " " + s).strip()       # a paragraph before the dialogue: scene notes
         else:
             lines.append({"name": None, "raw": s})
     if lines and not named:                                    # no names: two people taking turns
@@ -128,7 +134,7 @@ def parse(text):
         first = next(l["name"] for l in lines if l["name"])
         for l in lines:
             if l["name"] is None: l["name"] = first; warnings.append(f"Dòng đầu không có tên người nói: gán cho {first}")
-    out = []; names = []
+    out = []; names = []; silent = None
     for k, l in enumerate(lines):
         cues = re.findall(r"\(([^)]*)\)|\*([^*]+)\*|\[([^\]]+)\]", l["raw"])
         cue_txt = [a or b or c for a, b, c in cues]
@@ -138,16 +144,24 @@ def parse(text):
         face, gesture, tags, pause, speed = _apply_cues(cue_txt)
         tags = [f"[{t.strip()}]" for t in keep_tags] + [t for t in tags if t.strip("[]") not in keep_tags]
         if not body:
-            if out and out[-1]["speaker_name"] == l["name"]:         # a cue alone on its line: belongs to that person's last line
+            if cue_txt:                                               # silent beat: "Jake: (stares at her)"
+                silent = {"who": l["name"], "cues": cue_txt, "face": face, "gesture": gesture}
                 continue
-            warnings.append(f"Dòng {k + 1} chỉ có ghi chú, không có lời: bỏ qua"); continue
+            warnings.append(f"Dòng {k + 1} trống: bỏ qua"); continue
         if l["name"] not in names: names.append(l["name"])
-        out.append({"speaker_name": l["name"], "text": (" ".join(tags) + " " + body).strip() if tags else body, "face": face,
-                    "gesture": gesture, "pause": pause, "speed": speed, "cues": cue_txt})
+        entry = {"speaker_name": l["name"], "text": (" ".join(tags) + " " + body).strip() if tags else body, "face": face,
+                 "gesture": gesture, "pause": pause, "speed": speed, "cues": cue_txt}
+        if silent:                                                    # the silent beat before this line
+            entry["pause"] = max(entry["pause"], 1.3)
+            entry["silent_before"] = {"who": silent["who"], "action": "; ".join(silent["cues"])}
+            if silent["who"] != l["name"]:
+                entry["listener_face"] = silent["face"] or "annoyed"; entry["listener_gesture"] = silent["gesture"]
+            silent = None
+        out.append(entry)
     if len(names) > 3: warnings.append(f"Có {len(names)} người nói ({', '.join(names)}): video đối thoại chỉ nhận tối đa 3 người")
     if len(out) < 2: warnings.append("Kịch bản cần ít nhất 2 câu thoại")
     vi = bool(VI_CHARS.search(" ".join(l["text"] for l in out)))
-    return {"title": head.get("title"), "hook": head.get("hook"), "setting": head.get("setting"), "idle": head.get("idle"),
+    return {"title": head.get("title"), "hook": head.get("hook"), "setting": head.get("setting"), "idle": head.get("idle"), "notes": head.get("notes"),
             "speakers": names, "lines": out, "warnings": warnings, "vietnamese": vi}
 
 
@@ -187,16 +201,17 @@ def to_content(p, voices=(), minutes=None):
         beat = "punchline" if k == n - 1 else "twist" if k == n - 2 and n > 4 else "setup" if k < 2 else "build"
         face = l["face"] or ("smirk" if beat == "punchline" else "neutral")
         nxt = p["lines"][k + 1] if k + 1 < n else None
-        listener = "shock" if face in ("angry",) or beat in ("twist", "punchline") else "side_eye" if face in ("smirk", "smug_closed") else "neutral"
+        listener = l.get("listener_face") or ("shock" if face in ("angry",) or beat in ("twist", "punchline") else "side_eye" if face in ("smirk", "smug_closed") else "neutral")
         lines.append({"speaker": ids[l["speaker_name"]], "text": l["text"], "text_vi": "", "face": face, "listener_face": listener,
-                      "gesture": l["gesture"] or "none", "listener_gesture": "none", "shot": "auto",
+                      "gesture": l["gesture"] or "none", "listener_gesture": l.get("listener_gesture") or "none",
+                      "shot": "listener" if l.get("silent_before") else "auto",
                       "pause_before": round(max(0.25, l["pause"] or 0.25), 2), "speed": l["speed"] or 1.0, "sfx": "none",
                       "react": "flinch" if beat == "twist" else "none", "beat": beat})
     words = sum(len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split()) for l in lines)
     st = (p.get("setting") or "kitchen").strip().lower()
     st = st if st in SETS else "kitchen"
     return {"format": "dialog", "title": p.get("title") or lines[0]["text"][:40], "title_vi": "", "hook": (p.get("hook") or "")[:32],
-            "premise_vi": "Kịch bản do bạn tự viết.", "minutes": minutes or round(words / 2.3 / 60, 2),
+            "premise_vi": p.get("notes") or "Kịch bản do bạn tự viết.", "minutes": minutes or round(words / 2.3 / 60, 2),
             "cast": cast, "setting": {"set": st, "params": {"stuck_toast": False} if st == "kitchen" else {}, "brief_vi": p.get("setting") or ""},
             "idle": p.get("idle") if p.get("idle") in ("relaxed", "hold_hands", "hands_hips", "cross_arms") else "relaxed",
             "lines": lines, "highlight": [], "end_sfx": "none", "library_needs": []}

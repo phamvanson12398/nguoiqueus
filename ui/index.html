@@ -155,7 +155,8 @@ small.err{color:var(--bad)}
       <textarea id="scriptIn" rows="10" placeholder="Title: The Thermostat War&#10;Setting: kitchen&#10;&#10;Ben: Mia. Who touched the thermostat?&#10;Mia (innocent): Not me, babe.&#10;Ben (angry): It was on seventy-four!&#10;Mia: *laughs* Weird. Maybe it's the house settling.&#10;(long pause)&#10;Mia: [sigh] Okay... sit down. It's been fake since 2019.&#10;Ben: ...But I could feel the difference."></textarea>
       <div class="row" style="margin-top:8px">
         <button id="scriptLocal" class="blue" title="Không tốn lượt Claude: tool tự chọn nhân vật, mặt và cử chỉ theo ghi chú trong ngoặc">Nhận diện ngay</button>
-        <button id="scriptClaude" class="primary" title="Giữ nguyên từng chữ; Claude điền mặt, phản ứng, cử chỉ, nhịp nghỉ, máy quay, bản dịch (khoảng 1 phút)">Nhận diện + Claude thêm diễn xuất</button>
+        <button id="scriptClaude" class="primary" title="Giữ nguyên từng chữ (tiếng Việt thì dịch sát ý); Claude điền mặt, phản ứng, cử chỉ, nhịp nghỉ, máy quay, bản dịch (khoảng 1 phút)">Nhận diện + Claude thêm diễn xuất</button>
+        <button id="scriptImprove" class="primary" title="Giữ nhân vật, tình huống, cú chốt; Claude gọt câu, làm hài kiểu Mỹ hơn, dịch sang tiếng Anh nếu cần, rồi thêm diễn xuất">Dịch &amp; làm hay hơn</button>
         <label class="muted"><input type="checkbox" id="scriptTr"> Dịch sang tiếng Anh (tự bật khi kịch bản có tiếng Việt)</label>
       </div>
     </div>
@@ -1085,6 +1086,9 @@ $('#scriptLocal').onclick = async () => {
     $('#scriptInfo').textContent = `${r.lines} câu · ${r.speakers.join(', ')}` + (r.warnings.length ? ' · ' + r.warnings.join('; ') : '');
     toast(`Đã nhận diện ${r.lines} câu: kiểm tra thẻ nhân vật và từng câu bên dưới`); await loadProject(); }
   catch (e) { toast(e.message, 8000); } };
+$('#scriptImprove').onclick = () => {
+  if (S.state.content && !confirm('Thay kịch bản hiện tại bằng bản Claude làm hay hơn? Bản cũ vẫn giữ trong lịch sử.')) return;
+  run(P('/script'), {text: $('#scriptIn').value, mode: 'improve', translate: true}, 'Dịch & làm hay hơn'); };
 $('#scriptClaude').onclick = () => {
   if (S.state.content && !confirm('Thay kịch bản hiện tại bằng kịch bản bạn dán? Bản cũ vẫn giữ trong lịch sử.')) return;
   run(P('/script'), {text: $('#scriptIn').value, mode: 'claude', translate: $('#scriptTr').checked}, 'Nhận diện kịch bản'); };

@@ -33,7 +33,9 @@ Bấm "+ Dự án mới" rồi gõ **3** (hoặc chọn "Đối thoại hài" �
    vài câu rồi "Viết lại câu đã chọn" → Lưu.
    **Tự viết kịch bản**: dán vào ô "Tự viết kịch bản" (mỗi câu một dòng `Tên: lời thoại`, ghi chú trong ngoặc như `(angry)`, `*laughs*`,
    `(nhún vai)`, `(long pause)`) → "Nhận diện ngay" (không tốn lượt Claude) hoặc "Nhận diện + Claude thêm diễn xuất" (giữ nguyên từng chữ,
-   thêm mặt/cử chỉ/nhịp/bản dịch; viết tiếng Việt thì Claude dịch sang tiếng Anh Mỹ). Không cần bước Ý tưởng.
+   thêm mặt/cử chỉ/nhịp/bản dịch; viết tiếng Việt thì Claude dịch sang tiếng Anh Mỹ) hoặc "Dịch & làm hay hơn" (Claude gọt câu cho hài
+   kiểu Mỹ, giữ nhân vật, tình huống và cú chốt). Dòng đầu trong ngoặc kép là tiêu đề, "Bối cảnh: …" là mô tả cảnh (chưa có thì Claude
+   thiết kế), câu chỉ có hành động như "Jake: (nhìn chằm chằm)" thành một nhịp im lặng. Không cần bước Ý tưởng.
 3. **Giọng đọc** (OmniVoice, cài một lần bằng `tools\install_omnivoice.bat`, cần card NVIDIA):
    "Tạo giọng thử" → nghe 3 giọng của mỗi nhân vật → **Chọn** (hoặc tải giọng thật của bạn 3-10 giây) → "Tạo giọng các câu & ghép".
    Câu nào chưa hay: ↻ đọc lại, hoặc tải bản tự thu của câu đó. Sửa chữ một câu thì chỉ câu đó được đọc lại.
