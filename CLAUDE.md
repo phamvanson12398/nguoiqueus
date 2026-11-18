@@ -499,7 +499,13 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   dậy thì ngồi mép giường; đi thì tự đứng dậy trước; walk_to tới spot có ghế thì tự ngồi. Đoạn blocking đang ngồi có `note: seated` (unstick bỏ qua).
   Cú máy theo tư thế lúc giữa cú (look_dz hạ khi ngồi/nằm). Nhập kịch bản: "(nằm…)", "(ngồi…)", "(đứng dậy)"; câu đầu của một người có ngồi/nằm
   → tư thế lúc đầu (+ đồ đang cầm). Design brief bối cảnh đòi khai báo spot ngồi/nằm. Thử `projects/posture-test` (bếp, 2D xám): `CAMERA OK`.
-  Ảnh: `docs/img/dialog_posture.jpg`. Còn để ý: người nằm hơi lơ lửng trên mép giường; nằm thì cả mặt xoay ngang.
+  Ảnh: `docs/img/dialog_posture.jpg`.
+  - Nằm giường (người dùng: "góc quay từ cuối giường lên, nằm như bình thường, đắp chăn"): bỏ kiểu xoay ngang. `props/bed` `along: "y"`
+    (dọc trục máy, đầu giường ở xa, gối, chăn tới mép cuộn `roll_y`); người nằm đứng thẳng trong nệm, đầu hạ xuống gối (đầu ở mặt nệm + 0,62),
+    chăn che từ cổ trở xuống; ngồi dậy trong giường = đầu ở mặt nệm + 1,12. `plan_beds`: nằm từ đầu ≥ 2 người → một giường đôi, đứng cách
+    0,95, người khác đứng ngoài mép giường; nằm giữa chừng → giường cạnh người đó, đi vào giường trước câu; `stand_up` khi đang ở giường
+    → đứng dậy rồi bước ra phía trống. Cú máy người trên giường `height: high`, nhắm mặt trên gối. Đồ cầm khi nằm: tay lên cằm, nghiêng
+    nhẹ để vẽ trước mặt. Ảnh: `docs/img/dialog_bed.jpg`.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

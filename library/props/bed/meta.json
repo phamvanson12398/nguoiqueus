@@ -3,7 +3,7 @@
   "name": "bed",
   "status": "approved",
   "title_vi": "Giường (đối thoại)",
-  "description_vi": "Giường đơn/đôi nhìn dọc từ phía trước: khung gỗ, nệm trắng, chăn, gối và đầu giường ở head_side. Gốc ở tâm đáy, mặt nệm z = top_h.",
+  "description_vi": "Giường đơn/đôi nhìn dọc từ phía trước: khung gỗ, nệm trắng, chăn, gối và đầu giường ở head_side. Gốc ở tâm đáy, mặt nệm z = top_h. along = y: giường dọc, chăn đắp tới mép cuộn, người nằm chỉ ló đầu lên gối.",
   "dim": "3d",
   "params": {
     "length": {
@@ -52,6 +52,21 @@
         0.85
       ],
       "desc_vi": "màu chăn"
+    },
+    "along": {
+      "type": "string",
+      "default": "x",
+      "desc_vi": "x = giường nằm ngang trước camera; y = giường dọc, đầu giường ở xa (cảnh nằm trong video đối thoại, máy nhìn từ cuối giường)"
+    },
+    "width": {
+      "type": "number",
+      "default": 1.5,
+      "desc_vi": "rộng khi along = y (đơn 1,5; đôi 2,1: hai gối)"
+    },
+    "roll_y": {
+      "type": "number",
+      "default": 0.95,
+      "desc_vi": "along = y: mép chăn cuộn cách đầu giường bao xa (chỗ cằm người nằm)"
     }
   },
   "tags": [

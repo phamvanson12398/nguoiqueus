@@ -42,8 +42,7 @@
     0.12,
     0.1
    ],
-   "spot": "driver_door",
-   "posture": "sit"
+   "posture": "lie"
   },
   {
    "id": "emily",
@@ -81,7 +80,6 @@
     0.75,
     0.05
    ],
-   "spot": "passenger_side",
    "posture": "lie",
    "holding": {
     "kind": "phone"
@@ -155,8 +153,7 @@
    "speed": 1,
    "sfx": "none",
    "react": "none",
-   "beat": "build",
-   "action": "sit_down"
+   "beat": "build"
   },
   {
    "speaker": "jake",
@@ -338,8 +335,7 @@
    "speed": 1.15,
    "sfx": "none",
    "react": "none",
-   "beat": "build",
-   "action": "stand_up"
+   "beat": "build"
   },
   {
    "speaker": "jake",
@@ -354,7 +350,8 @@
    "speed": 1,
    "sfx": "none",
    "react": "none",
-   "beat": "build"
+   "beat": "build",
+   "action": "lie_down"
   },
   {
    "speaker": "emily",

@@ -396,7 +396,7 @@ def action_arm(act, kind, hand, d, reach, ks):
     return ["ik", [sc(d * 0.2), sc(0.62)], -s], 0.0          # look at it (phone, letter…) in front of the chest
 
 
-def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print):
+def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print, beds=None, inbed0=()):
     """turns `holding` / line actions into, per cast member: hand_props (items + when they are seen), blocking segments
     (standing + walking), pose segments that win over gestures (walking, item actions) and arm poses for holding.
     Returns (items, blocking, act_segs, hold_at, pos_at)."""
@@ -408,6 +408,8 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print)
     act = {i: [] for i in range(n)}                  # pose segments with priority
     open_ = {i: {} for i in range(n)}                # hand -> item being held
     out = {i: False for i in range(n)}                # off the frame right now (not entered yet / left)
+    beds = beds or {}; inbed = {i: i in inbed0 for i in range(n)}
+    state = {"posture": lambda i, f: "stand"}         # set by plan() once postures are planned (items held in bed)
 
     def pos(i, f):
         p = (xs[i], ys[i])
@@ -482,6 +484,16 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print)
                 if o != i and abs(pos(o, a)[0] - to[0]) < MIN_GAP and abs(pos(o, a)[1] - to[1]) < 0.8:
                     to = (pos(o, a)[0] + (MIN_GAP if to[0] >= pos(o, a)[0] else -MIN_GAP), to[1])
             walk(i, max(2, a - 4), (round(to[0], 3), round(to[1], 3)))
+        if acts == "lie_down" and i in beds and not inbed[i]:      # walks to the bed first, then lies down (posture: a - 18)
+            to = (beds[i]["x"], beds[i]["y"]); p0 = pos(i, a)
+            dur = max(int(0.8 * FPS), int(round(math.hypot(to[0] - p0[0], to[1] - p0[1]) / WALK * FPS)))
+            walk(i, max(2, a - 24 - dur), to)
+        if acts == "lie_down": inbed[i] = True
+        if acts == "stand_up" and inbed[i]:         # gets up, then steps out of the bed on the free side
+            others = [pos(o, a)[0] for o in range(n) if o != i]
+            sd = -1 if others and sum(others) / len(others) > pos(i, a)[0] else 1
+            bx = beds[i]["x"] if i in beds else pos(i, a)[0]
+            walk(i, a - 2, (round(bx + sd * 1.35, 3), round(pos(i, a)[1] - 0.5, 3))); inbed[i] = False
         if acts == "exit":                          # says the line, then walks off on their side
             others = [pos(o, b)[0] for o in range(n) if o != i and not out[o]]
             if others:                              # away from the others, never through them
@@ -552,8 +564,17 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print)
         for it in items[i]:
             if it["a"] <= f <= it["b"]:
                 arm = hold_arm(it["kind"], it["hand"], 0.66 if kids[i] else 1.0)
+                if state["posture"](i, f) == "lie" or (state["posture"](i, f) == "sit" and inbed_at(i, f)):
+                    s_ = _sgn(it["hand"]); k_ = 0.66 if kids[i] else 1.0       # in bed: held up by the face, above the blanket
+                    arm = ["ik", [round(s_ * 0.5 * k_, 3), round(1.18 * k_, 3)], -s_]   # by the chin, lifted in front of the face
                 if arm: out["arm" + it["hand"]] = arm
+                if state["posture"](i, f) == "lie" or (state["posture"](i, f) == "sit" and inbed_at(i, f)):
+                    t_ = round(-_sgn(it["hand"]) * 0.35, 2)                   # a small tilt = drawn in front of the heads
+                    out["prop_tilt"] = [t_, 0] if it["hand"] == "L" else [0, t_]
         return out
+    def inbed_at(i, f):
+        return state.get("inbed", lambda i, f: False)(i, f)
+    hold_at.state = state
     hp = {i: [{"id": it["id"], "kind": it["kind"], "hand": it["hand"], "ranges": [[it["a"], it["b"]]], **({"color": it["color"]} if "color" in it else {})}
               for it in items[i]] for i in range(n)}
     return hp, blocking, act, hold_at, pos, way
@@ -563,7 +584,9 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print)
 #  sitting / lying (cast `posture`, line actions sit_down / lie_down / stand_up, set spots with `seat` / `bed`)
 # ---------------------------------------------------------------------
 POSTURES = ["stand", "sit", "lie"]
-BODY_DIMS = {False: {"hip": 0.82, "tall": 2.82}, True: {"hip": 0.52, "tall": 1.9}}     # soft / soft_child
+BODY_DIMS = {False: {"hip": 0.82, "tall": 2.82, "head": 2.08}, True: {"hip": 0.52, "tall": 1.9, "head": 1.44}}   # soft / soft_child
+BED_LEN = 2.9          # bed (along y) length; the sleeper's spot is BED_HEAD from its head end
+BED_HEAD = 0.55
 POSE_T = 14            # frames to sit down / lie down / get up
 STAND_LEGS = ((-0.06, 0.02), (0.06, -0.02))
 FURNITURE = {"chair": {"seat": 0.5, "depth": 0.58}, "sofa": {"seat": 0.52, "depth": 0.9}, "bed": {"seat": 0.62, "depth": 1.3}}
@@ -578,7 +601,7 @@ def _steps(base, events, T=POSE_T):
     return out if changed else round(base, 3)
 
 
-def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, log=print):
+def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), log=print):
     """per cast member: pose-default fields (legs/body/rest as smooth expressions of f), the furniture to put in the set,
     posture_at(i, f) and the frame ranges spent sitting/lying."""
     cast = c["cast"]; L = c["lines"]; n = len(cast); ids = [m["id"] for m in cast]; spots = spots or {}
@@ -613,7 +636,7 @@ def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, log=print):
             if f0 <= f: p = q
         return p
 
-    furniture = []; seat_of = {}; out_ranges = {i: [] for i in range(n)}; fields = {}
+    furniture = []; out_ranges = {i: [] for i in range(n)}; fields = {}
     sitters0 = [i for i in range(n) if ev[i][0][1] == "sit" and not ev[i][0][2]]
     sofa_for = set()
     if len(sitters0) >= 2:                            # people sitting together from the start share a sofa
@@ -621,51 +644,75 @@ def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, log=print):
         furniture.append({"type": "sofa", "x": (max(xs_s) + min(xs_s)) / 2, "y": max(ys[i] for i in sitters0),
                           "params": {"width": round(max(2.2, w), 2)}})
         sofa_for = set(sitters0)
+    for b in beds_list:                               # beds seen from their foot, head end at the sleeper's spot
+        furniture.append({"type": "bed", "x": b["x"], "y": b["y"], "params": {"along": "y", "width": b["width"]}})
     for i in range(n):
-        d = dirs[i]; kd = BODY_DIMS[bool(kids[i])]
-        legs_L, legs_R, by, bx, rest = [], [], [], [], []
+        kd = BODY_DIMS[bool(kids[i])]; d = dirs[i]
+        legs_L, legs_R, by = [], [], []
+        inbed = False
         for f0, q, sp in ev[i]:
             seat = None
             if sp and sp in spots: seat = spots[sp].get("seat") or spots[sp].get("bed")
-            has_bed = any(fu.get("owner") == (i, "lie") for fu in furniture) or any(q_ == "lie" for _f, q_, _s in ev[i])
-            if q == "sit" and seat is None and has_bed and not sp:      # sits up on the edge of their own bed
-                if not any(fu.get("owner") == (i, "lie") for fu in furniture):
-                    furniture.append({"type": "bed", "x": xs[i] - d * 0.6, "y": ys[i], "owner": (i, "lie"), "params": {"head_side": d}})
-                seat = FURNITURE["bed"]["seat"]
-            if q != "stand" and seat is None:
-                if q == "lie" or i not in sofa_for:
-                    if not any(fu.get("owner") == (i, q) for fu in furniture):
-                        typ = "bed" if q == "lie" else "chair"
-                        fu = {"type": typ, "x": xs[i] - (d * 0.6 if typ == "bed" else 0.0), "y": ys[i], "owner": (i, q), "params": {}}
-                        if typ == "bed": fu["params"]["head_side"] = d
-                        furniture.append(fu)
-                seat = FURNITURE["bed" if q == "lie" else ("sofa" if i in sofa_for else "chair")]["seat"]
+            if q == "lie": inbed = True
+            elif q == "stand": inbed = False
+            if q == "lie" or (q == "sit" and inbed):  # in bed: head on the pillow / sitting up, the blanket covers the rest
+                top = seat if seat else FURNITURE["bed"]["seat"]
+                lift = (0.62 if q == "lie" else 1.12) * (0.75 if kids[i] else 1.0)
+                legs_L.append((f0, STAND_LEGS[0])); legs_R.append((f0, STAND_LEGS[1]))
+                by.append((f0, round(top + lift - kd["head"], 3)))
+                continue
+            if q == "sit" and seat is None:
+                if i not in sofa_for and not any(fu.get("owner") == (i, "sit") for fu in furniture):
+                    furniture.append({"type": "chair", "x": xs[i], "y": ys[i], "owner": (i, "sit"), "params": {}})
+                seat = FURNITURE["sofa" if i in sofa_for else "chair"]["seat"]
             if q == "sit":
-                drop = seat + 0.03 - kd["hip"]
                 th = 1.45 * d
                 legs_L.append((f0, (th, -th))); legs_R.append((f0, (th * 0.92, -th * 0.92)))
-                by.append((f0, drop)); bx.append((f0, 0.0)); rest.append((f0, 0.0))
-            elif q == "lie":
-                legs_L.append((f0, STAND_LEGS[0])); legs_R.append((f0, STAND_LEGS[1]))
-                by.append((f0, seat + 0.45 * (0.7 if kids[i] else 1.0))); bx.append((f0, -d * 0.72 * kd["tall"])); rest.append((f0, -d * math.pi / 2))
+                by.append((f0, round(seat + 0.03 - kd["hip"], 3)))
             else:
-                legs_L.append((f0, STAND_LEGS[0])); legs_R.append((f0, STAND_LEGS[1]))
-                by.append((f0, 0.0)); bx.append((f0, 0.0)); rest.append((f0, 0.0))
+                legs_L.append((f0, STAND_LEGS[0])); legs_R.append((f0, STAND_LEGS[1])); by.append((f0, 0.0))
         if all(q == "stand" for _f, q, _s in ev[i]): fields[i] = {}; continue
         b0 = lambda lst, j=None: (lst[0][1] if j is None else lst[0][1][j])
         fields[i] = {
             "legs": [[_steps(b0(legs_L, 0), [(f, v[0]) for f, v in legs_L[1:]]), _steps(b0(legs_L, 1), [(f, v[1]) for f, v in legs_L[1:]])],
                      [_steps(b0(legs_R, 0), [(f, v[0]) for f, v in legs_R[1:]]), _steps(b0(legs_R, 1), [(f, v[1]) for f, v in legs_R[1:]])]],
-            "body": [_steps(b0(bx), bx[1:]), _steps(b0(by), by[1:])],
-            "rest": _steps(b0(rest), rest[1:])}
+            "body": [0, _steps(b0(by), by[1:])]}
         cur = None
         for f0, q, _s in ev[i] + [(N + 1, "end", None)]:
             if cur and cur[1] != "stand": out_ranges[i].append((cur[0], f0 - 1))
             cur = (f0, q)
-    for fu in furniture:                                 # just behind the person (their legs show in front of the seat)
-        dep = FURNITURE[fu["type"]]["depth"]
-        fu["loc"] = [round(fu["x"], 3), round(fu["y"] + dep / 2 + 0.05, 3), 0]
+    for fu in furniture:
+        if fu["type"] == "bed":                          # head end just behind the sleeper, the foot toward the camera
+            fu["loc"] = [round(fu["x"], 3), round(fu["y"] + BED_HEAD - BED_LEN / 2, 3), 0]
+        else:                                            # just behind the person (their legs show in front of the seat)
+            fu["loc"] = [round(fu["x"], 3), round(fu["y"] + FURNITURE[fu["type"]]["depth"] / 2 + 0.05, 3), 0]
     return fields, furniture, posture_at, out_ranges
+
+
+def plan_beds(c, xs, ys, dirs, kids, log=print):
+    """who sleeps where: everyone lying at some point gets a bed seen from its foot (head end at their spot);
+    people lying from the start share one double bed side by side. Changes xs of those sharing; returns
+    (beds {i: {x, y}}, bed list, set of people in bed at the start)."""
+    cast = c["cast"]; n = len(cast); ids = [m["id"] for m in cast]
+    lie0 = [i for i, m in enumerate(cast) if m.get("posture") == "lie"]
+    later = [i for i in range(n) if i not in lie0 and any(l["speaker"] == ids[i] and l.get("action") == "lie_down" for l in c["lines"])]
+    beds, blist = {}, []
+    if len(lie0) >= 2:                                # a couple in bed: one double bed, side by side
+        cx = sum(xs[i] for i in lie0) / len(lie0); y = max(ys[i] for i in lie0)
+        order = sorted(lie0, key=lambda i: xs[i]); w = 0.95 * (len(order) - 1) + 1.2
+        for k, i in enumerate(order):
+            xs[i] = round(cx - 0.95 * (len(order) - 1) / 2 + 0.95 * k, 3); ys[i] = y; beds[i] = {"x": xs[i], "y": y}
+        blist.append({"x": cx, "y": y, "width": round(max(2.1, w), 2)})
+        others = [i for i in range(n) if i not in lie0]
+        for i in others:                                 # the others stand clear of the bed
+            sd = 1 if xs[i] >= cx else -1
+            xs[i] = round(cx + sd * max(abs(xs[i] - cx), blist[-1]["width"] / 2 + 0.75), 3)
+    elif lie0:
+        i = lie0[0]; beds[i] = {"x": xs[i], "y": ys[i]}; blist.append({"x": xs[i], "y": ys[i], "width": 1.5})
+    for i in later:                                    # lies down later: their bed is beside them, away from the others
+        bx = round(xs[i] - dirs[i] * 1.6, 3)
+        beds[i] = {"x": bx, "y": ys[i]}; blist.append({"x": bx, "y": ys[i], "width": 1.5})
+    return beds, blist, set(lie0)
 
 
 SHOT = {   # type, frame overrides
@@ -742,9 +789,22 @@ def plan(slug, char_style=None, log=print):
         for j in list(range(k - 1, -1, -1)) + list(range(k + 1, len(c["lines"]))):
             if c["lines"][j]["speaker"] != sp: return c["lines"][j]["speaker"]
         return min((x for x in ids if x != sp), key=lambda o: abs(xs[ids.index(o)] - xs[ids.index(sp)]))
-    hprops, blocking, act_segs, hold_at, pos_at, ways = plan_actions(c, lt, xs, ys, stage, (smeta or {}).get("spots"), N, fr, kids, addressee, log)
     dirs = [_dir(i, xs) for i in range(n)]
-    pfields, furniture, posture_at, seated = plan_postures(c, lt, xs, ys, ways, (smeta or {}).get("spots"), N, fr, kids, dirs, log)
+    beds, bed_list, inbed0 = plan_beds(c, xs, ys, dirs, kids, log)
+    dirs = [_dir(i, xs) for i in range(n)]
+    hprops, blocking, act_segs, hold_at, pos_at, ways = plan_actions(c, lt, xs, ys, stage, (smeta or {}).get("spots"), N, fr, kids, addressee, log,
+                                                                     beds=beds, inbed0=inbed0)
+    pfields, furniture, posture_at, seated = plan_postures(c, lt, xs, ys, ways, (smeta or {}).get("spots"), N, fr, kids, dirs, bed_list, log)
+
+    def inbed_at(i, f):
+        """lying, or sitting up after lying (the last non-stand posture before f started in bed)"""
+        q = posture_at(i, f)
+        if q == "lie": return True
+        if q != "sit": return False
+        g = f
+        while g > 1 and posture_at(i, g) == "sit": g -= 8
+        return posture_at(i, g) == "lie"
+    hold_at.state["posture"] = posture_at; hold_at.state["inbed"] = inbed_at
     for i in range(n):                                   # sitting / lying on purpose: the builder must not "unstick" them from the seat
         for sg in blocking[i]["segments"]:
             loc = sg["location"]
@@ -787,9 +847,13 @@ def plan(slug, char_style=None, log=print):
             for arm, spec_ in hold_at(i, (sg["from"] + sg["to"]) // 2).items(): sg.setdefault(arm, spec_)
         holds = []
         for it in hprops[i]:
-            for a_, b_ in it["ranges"]:
-                arm = hold_at(i, (a_ + b_) // 2)
-                if arm: holds.append({"from": a_, "to": b_, **arm})
+            for a_, b_ in it["ranges"]:                    # split where the holding pose changes (lying in bed holds it up by the face)
+                f_ = a_
+                while f_ <= b_:
+                    arm = hold_at(i, f_); g_ = f_
+                    while g_ + 1 <= b_ and hold_at(i, g_ + 1) == arm: g_ += 1
+                    if arm: holds.append({"from": f_, "to": g_, **arm})
+                    f_ = g_ + 1
         segs = act_segs[i] + segs + holds                 # the first segment that covers a frame wins
         default = gesture_pose(idle, dd, gap, ks) if idle != "relaxed" and (idle != "hold_hands" or i < 2) else {}
         if idle == "hold_hands" and n == 3 and i == 2: default = {}
@@ -822,7 +886,7 @@ def plan(slug, char_style=None, log=print):
         mid, spread = group_at(fm)
         on = [i for i in range(n) if abs(pos_at(i, fm)[0] - stage[0]) < OFF - 0.6]
         pst = {i: posture_at(i, fm) for i in on}
-        if any(q == "lie" for q in pst.values()): spread += 0.8
+        lying = any(q == "lie" for q in pst.values())
         if kind in ("two", "wide", "both_close"): subj = mid
         elif kind == "listener": subj = addressee(s["line"])
         else: subj = line["speaker"]
@@ -839,11 +903,14 @@ def plan(slug, char_style=None, log=print):
             frame["look_dz"] = 0.0
         if isinstance(subj, str):                         # one person: frame them where their head really is
             j = ids.index(subj); q = posture_at(j, fm); kd = BODY_DIMS[bool(kids[j])]
-            if q == "sit": frame["look_dz"] = round(frame.get("look_dz", 0) - (kd["hip"] - FURNITURE["chair"]["seat"]), 3)
-            elif q == "lie":
-                frame["look_dz"] = round(frame.get("look_dz", 0) - 0.3 * kd["tall"], 3); frame["size"] = max(frame.get("size", 3.0), 3.2)
+            inb = inbed_at(j, fm)
+            if q == "lie" or (q == "sit" and inb):          # in bed: from the foot of the bed, a little above, on the face on the pillow
+                head = FURNITURE["bed"]["seat"] + (0.62 if q == "lie" else 1.12) * (0.75 if kids[j] else 1.0)
+                frame["look_dz"] = round(frame.get("look_dz", 0) - (kd["head"] - head) + 0.3, 3); frame["height"] = "high"
+                frame["size"] = 3.2
+            elif q == "sit": frame["look_dz"] = round(frame.get("look_dz", 0) - (kd["hip"] - FURNITURE["chair"]["seat"]), 3)
         elif pst:
-            if any(q == "lie" for q in pst.values()): frame["look_dz"] = round(frame.get("look_dz", 0) - 0.3, 3)
+            if lying: frame["look_dz"] = round(frame.get("look_dz", 0) - 0.45, 3); frame["height"] = "high"
             elif any(q == "sit" for q in pst.values()): frame["look_dz"] = round(frame.get("look_dz", 0) - 0.15, 3)
         shots.append({"a": s["a"], "b": s["b"], "type": typ, "frame": frame})
     words = [[w[0], w[1]] for w in wj["words"]]

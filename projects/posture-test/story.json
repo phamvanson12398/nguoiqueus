@@ -23,24 +23,15 @@
    },
    "props": [
     {
-     "id": "furn0_chair",
-     "type": "chair",
-     "params": {},
-     "loc": [
-      -0.6,
-      4.64,
-      0
-     ]
-    },
-    {
-     "id": "furn1_bed",
+     "id": "furn0_bed",
      "type": "bed",
      "params": {
-      "head_side": -1
+      "along": "y",
+      "width": 2.15
      },
      "loc": [
-      1.2,
-      5.0,
+      0.0,
+      3.4,
       0
      ]
     }
@@ -55,15 +46,16 @@
     "b": 106,
     "type": "wide",
     "frame": {
-     "size": 5.87,
-     "look_dz": 0.1,
+     "size": 4.6,
+     "look_dz": -0.05,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
      ],
-     "y": -0.3
+     "y": -0.3,
+     "height": "high"
     }
    },
    {
@@ -72,9 +64,10 @@
     "type": "medium",
     "frame": {
      "size": 3.2,
-     "look_dz": -0.546,
+     "look_dz": -0.24,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -82,15 +75,16 @@
     "b": 274,
     "type": "full",
     "frame": {
-     "size": 4.44,
-     "look_dz": 0.12,
+     "size": 4.0,
+     "look_dz": -0.18,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
      ],
-     "y": -0.3
+     "y": -0.3,
+     "height": "high"
     }
    },
    {
@@ -98,10 +92,11 @@
     "b": 333,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": -0.02,
+     "size": 3.2,
+     "look_dz": -0.24,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "height": "high"
     }
    },
    {
@@ -109,10 +104,11 @@
     "b": 440,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": -0.02,
+     "size": 3.2,
+     "look_dz": -0.24,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -120,15 +116,16 @@
     "b": 494,
     "type": "full",
     "frame": {
-     "size": 4.44,
-     "look_dz": 0.12,
+     "size": 4.0,
+     "look_dz": -0.18,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
      ],
-     "y": -0.3
+     "y": -0.3,
+     "height": "high"
     }
    },
    {
@@ -147,10 +144,11 @@
     "b": 652,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": -0.02,
+     "size": 3.2,
+     "look_dz": -0.24,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -191,10 +189,11 @@
     "b": 956,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": -0.02,
+     "size": 3.2,
+     "look_dz": 0.26,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -213,10 +212,11 @@
     "b": 1124,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": 0.26,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -224,10 +224,11 @@
     "b": 1186,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": -0.24,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "height": "high"
     }
    },
    {
@@ -235,10 +236,11 @@
     "b": 1326,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": 0.26,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -246,10 +248,11 @@
     "b": 1358,
     "type": "medium",
     "frame": {
-     "size": 2.65,
-     "look_dz": 0.45,
+     "size": 3.2,
+     "look_dz": -0.09,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "height": "high"
     }
    },
    {
@@ -257,10 +260,11 @@
     "b": 1513,
     "type": "medium",
     "frame": {
-     "size": 2.65,
-     "look_dz": 0.45,
+     "size": 3.2,
+     "look_dz": 0.41,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -268,10 +272,11 @@
     "b": 1610,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": 0.26,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -279,10 +284,11 @@
     "b": 1675,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": -0.24,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "height": "high"
     }
    },
    {
@@ -290,10 +296,11 @@
     "b": 1751,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": 0.26,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "height": "high"
     }
    },
    {
@@ -301,15 +308,16 @@
     "b": 1858,
     "type": "full",
     "frame": {
-     "size": 4.44,
-     "look_dz": 0.27,
+     "size": 4.0,
+     "look_dz": -0.18,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
      ],
-     "y": -0.3
+     "y": -0.3,
+     "height": "high"
     }
    },
    {
@@ -318,13 +326,14 @@
     "type": "medium",
     "frame": {
      "size": 3.5,
-     "look_dz": 0.3,
+     "look_dz": -0.15,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
-     ]
+     ],
+     "height": "high"
     }
    },
    {
@@ -332,10 +341,11 @@
     "b": 2037,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": -0.24,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "height": "high"
     }
    }
   ],
@@ -348,14 +358,14 @@
    "type": "soft",
    "outfit": "soft_hoodie",
    "loc": [
-    -0.6,
+    -0.475,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      -0.6,
+      -0.475,
       4.3,
       0
      ]
@@ -363,9 +373,46 @@
     "segments": [
      {
       "from": 1,
+      "to": 495,
+      "location": [
+       -0.475,
+       4.3,
+       0
+      ],
+      "note": "seated"
+     },
+     {
+      "from": 496,
+      "to": 531,
+      "location": [
+       "lerp(-0.475, -1.825, ease((f - 496) / 35))",
+       "lerp(4.300, 3.800, ease((f - 496) / 35))",
+       0
+      ]
+     },
+     {
+      "from": 532,
+      "to": 1068,
+      "location": [
+       -1.825,
+       3.8,
+       0
+      ]
+     },
+     {
+      "from": 1069,
+      "to": 1104,
+      "location": [
+       "lerp(-1.825, -0.475, ease((f - 1069) / 35))",
+       "lerp(3.800, 4.300, ease((f - 1069) / 35))",
+       0
+      ]
+     },
+     {
+      "from": 1105,
       "to": 2037,
       "location": [
-       -0.6,
+       -0.475,
        4.3,
        0
       ],
@@ -571,21 +618,60 @@
     "default": {
      "legs": [
       [
-       "1.450 + (-1.510) * ease((f - 480) / 14)",
-       "-1.450 + (1.470) * ease((f - 480) / 14)"
+       -0.06,
+       0.02
       ],
       [
-       "1.334 + (-1.274) * ease((f - 480) / 14)",
-       "-1.334 + (1.314) * ease((f - 480) / 14)"
+       0.06,
+       -0.02
       ]
      ],
      "body": [
-      0.0,
-      "-0.290 + (0.290) * ease((f - 480) / 14)"
-     ],
-     "rest": 0.0
+      0,
+      "-0.840 + (0.840) * ease((f - 480) / 14) + (-0.840) * ease((f - 1110) / 14)"
+     ]
     },
     "segments": [
+     {
+      "from": 1069,
+      "to": 1104,
+      "legs": "walk_legs(f * 0.32 + 0.0)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 0.0))"
+      ],
+      "rest": 0
+     },
+     {
+      "from": 496,
+      "to": 531,
+      "legs": "walk_legs(f * 0.32 + 0.0)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 0.0))"
+      ],
+      "rest": 0
+     },
      {
       "from": 1,
       "to": 107,
@@ -830,14 +916,14 @@
    "type": "soft",
    "outfit": "soft_dress",
    "loc": [
-    0.6,
+    0.475,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      0.6,
+      0.475,
       4.3,
       0
      ]
@@ -847,7 +933,7 @@
       "from": 1,
       "to": 2037,
       "location": [
-       0.6,
+       0.475,
        4.3,
        0
       ],
@@ -1066,19 +1152,18 @@
     "default": {
      "legs": [
       [
-       "-0.060 + (-1.390) * ease((f - 177) / 14) + (1.390) * ease((f - 1044) / 14)",
-       "0.020 + (1.430) * ease((f - 177) / 14) + (-1.430) * ease((f - 1044) / 14)"
+       -0.06,
+       0.02
       ],
       [
-       "0.060 + (-1.394) * ease((f - 177) / 14) + (1.394) * ease((f - 1044) / 14)",
-       "-0.020 + (1.354) * ease((f - 177) / 14) + (-1.354) * ease((f - 1044) / 14)"
+       0.06,
+       -0.02
       ]
      ],
      "body": [
-      "2.030 + (-2.030) * ease((f - 177) / 14)",
-      "1.070 + (-1.240) * ease((f - 177) / 14) + (0.170) * ease((f - 1044) / 14)"
-     ],
-     "rest": "1.571 + (-1.571) * ease((f - 177) / 14)"
+      0,
+      "-0.840 + (0.500) * ease((f - 703) / 14)"
+     ]
     },
     "segments": [
      {
@@ -1100,7 +1185,11 @@
        ],
        1
       ],
-      "tilt": -0.1
+      "tilt": -0.1,
+      "prop_tilt": [
+       0.35,
+       0
+      ]
      },
      {
       "from": 185,
@@ -1109,10 +1198,14 @@
       "armL": [
        "ik",
        [
-        -0.3,
-        0.34
+        -0.5,
+        1.18
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      },
      {
@@ -1122,10 +1215,14 @@
       "armL": [
        "ik",
        [
-        -0.3,
-        0.34
+        -0.5,
+        1.18
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      },
      {
@@ -1135,10 +1232,14 @@
       "armL": [
        "ik",
        [
-        -0.3,
-        0.34
+        -0.5,
+        1.18
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      },
      {
@@ -1148,10 +1249,14 @@
       "armL": [
        "ik",
        [
-        -0.3,
-        0.34
+        -0.5,
+        1.18
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      },
      {
@@ -1173,7 +1278,11 @@
        ],
        1
       ],
-      "tilt": -0.1
+      "tilt": -0.1,
+      "prop_tilt": [
+       0.35,
+       0
+      ]
      },
      {
       "from": 787,
@@ -1193,6 +1302,10 @@
         0.48
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      },
      {
@@ -1214,7 +1327,11 @@
        ],
        -1
       ],
-      "tilt": -0.05
+      "tilt": -0.05,
+      "prop_tilt": [
+       0.35,
+       0
+      ]
      },
      {
       "from": 1052,
@@ -1235,7 +1352,11 @@
        ],
        -1
       ],
-      "tilt": -0.05
+      "tilt": -0.05,
+      "prop_tilt": [
+       0.35,
+       0
+      ]
      },
      {
       "from": 1180,
@@ -1256,7 +1377,11 @@
        ],
        -1
       ],
-      "tilt": 0.08
+      "tilt": 0.08,
+      "prop_tilt": [
+       0.35,
+       0
+      ]
      },
      {
       "from": 1320,
@@ -1265,10 +1390,14 @@
       "armL": [
        "ik",
        [
-        -0.3,
-        0.34
+        -0.5,
+        1.18
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      },
      {
@@ -1290,7 +1419,11 @@
        ],
        1
       ],
-      "tilt": -0.1
+      "tilt": -0.1,
+      "prop_tilt": [
+       0.35,
+       0
+      ]
      },
      {
       "from": 1669,
@@ -1299,10 +1432,14 @@
       "armL": [
        "ik",
        [
-        -0.3,
-        0.34
+        -0.5,
+        1.18
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      },
      {
@@ -1312,10 +1449,14 @@
       "armL": [
        "ik",
        [
-        -0.3,
-        0.34
+        -0.5,
+        1.18
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      },
      {
@@ -1324,10 +1465,14 @@
       "armL": [
        "ik",
        [
-        -0.3,
-        0.34
+        -0.5,
+        1.18
        ],
        1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
       ]
      }
     ],
