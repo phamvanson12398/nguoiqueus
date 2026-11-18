@@ -122,7 +122,7 @@ gài từ trước) — tối đa khoảng 1/3 số câu có action.
 - **Ngồi / nằm**: `cast[].posture` = tư thế lúc mở đầu (`stand`, `sit`, `lie`); đổi giữa chừng bằng `action` `sit_down`, `lie_down`,
   `stand_up` (làm ngay trước câu). Ngồi ở spot có `seat` của bối cảnh (sofa, mép capo xe…) — chọn spot đó trong `cast[].spot`;
   bối cảnh không có thì tool tự đặt ghế (hai người cùng ngồi từ đầu → một sofa), nằm thì tool tự đặt giường (nhìn từ cuối giường,
-  đắp chăn tới cổ; hai người nằm từ đầu → chung giường đôi). Người đang nằm ngồi dậy thì ngồi dựa đầu giường, vẫn đắp chăn. Đi (`walk_to`, `exit`) thì tool tự cho đứng dậy trước; `walk_to` tới spot có ghế thì tự ngồi xuống.
+  ngả lưng trên gối dựng, chăn đắp ngang bụng; hai người nằm từ đầu → chung giường đôi). Người đang nằm ngồi dậy thì ngồi thẳng, vẫn đắp chăn. Đi (`walk_to`, `exit`) thì tool tự cho đứng dậy trước; `walk_to` tới spot có ghế thì tự ngồi xuống.
   Dùng khi tư thế làm nên cái hài: nằm lướt điện thoại hỏi câu ngớ ngẩn lúc nửa đêm, ngồi sofa giành remote, ngồi phịch xuống khi
   chịu thua, bật dậy khi sốc. Cảnh "trong xe" vẫn dựng đứng/ngồi cạnh xe (`car_hood` ở bãi đỗ).
 

@@ -60,13 +60,18 @@
     },
     "width": {
       "type": "number",
-      "default": 1.5,
-      "desc_vi": "rộng khi along = y (đơn 1,5; đôi 2,1: hai gối)"
+      "default": 1.9,
+      "desc_vi": "rộng khi along = y (đơn 1,9; đôi ~3,2: mỗi người một gối dựng)"
     },
     "roll_y": {
       "type": "number",
       "default": 0.95,
-      "desc_vi": "along = y: mép chăn cuộn cách đầu giường bao xa (chỗ cằm người nằm)"
+      "desc_vi": "along = y: mép chăn cuộn cách đầu giường bao xa (ngang bụng người nằm)"
+    },
+    "length_y": {
+      "type": "number",
+      "default": 3.4,
+      "desc_vi": "dài khi along = y"
     }
   },
   "tags": [

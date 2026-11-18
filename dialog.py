@@ -450,6 +450,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
         h = m.get("holding") or {}
         if h.get("kind") in PROP_KINDS:
             hand = h.get("hand") or ("R" if _dir(i, xs) > 0 else "L")
+            if not h.get("hand") and i in inbed0: hand = "L" if hand == "R" else "R"     # in bed: the outer hand (not over the partner)
             give_item(i, h["kind"], hand, 1, h.get("color"))
     entering = {i for i in range(n) if any(l["speaker"] == ids[i] and l.get("action") == "enter" for l in L)}
     for i in entering:                               # out of the frame until their entrance
@@ -493,7 +494,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
             others = [pos(o, a)[0] for o in range(n) if o != i]
             sd = -1 if others and sum(others) / len(others) > pos(i, a)[0] else 1
             bx = beds[i]["x"] if i in beds else pos(i, a)[0]
-            walk(i, a - 2, (round(bx + sd * 1.35, 3), round(pos(i, a)[1] - 0.5, 3))); inbed[i] = False
+            walk(i, a - 2, (round(bx + sd * 1.6, 3), round(pos(i, a)[1] - 0.5, 3))); inbed[i] = False
         if acts == "exit":                          # says the line, then walks off on their side
             others = [pos(o, b)[0] for o in range(n) if o != i and not out[o]]
             if others:                              # away from the others, never through them
@@ -585,8 +586,10 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
 # ---------------------------------------------------------------------
 POSTURES = ["stand", "sit", "lie"]
 BODY_DIMS = {False: {"hip": 0.82, "tall": 2.82, "head": 2.08}, True: {"hip": 0.52, "tall": 1.9, "head": 1.44}}   # soft / soft_child
-BED_LEN = 2.9          # bed (along y) length; the sleeper's spot is BED_HEAD from its head end
+BED_LEN = 3.4          # bed (along y) length; the sleeper's spot is BED_HEAD from its head end
 BED_HEAD = 0.55
+BED_GAP = 1.7         # two sleepers side by side: big round heads must not overlap
+IN_BED = {"lie": 1.0, "sit": 1.3}    # head centre above the mattress: reclined on the propped pillow / sitting up
 POSE_T = 14            # frames to sit down / lie down / get up
 STAND_LEGS = ((-0.06, 0.02), (0.06, -0.02))
 FURNITURE = {"chair": {"seat": 0.5, "depth": 0.58}, "sofa": {"seat": 0.52, "depth": 0.9}, "bed": {"seat": 0.62, "depth": 1.3}}
@@ -657,7 +660,7 @@ def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), lo
             elif q == "stand": inbed = False
             if q == "lie" or (q == "sit" and inbed):  # in bed: head on the pillow / sitting up, the blanket covers the rest
                 top = seat if seat else FURNITURE["bed"]["seat"]
-                lift = (0.62 if q == "lie" else 1.12) * (0.75 if kids[i] else 1.0)
+                lift = (IN_BED["lie"] if q == "lie" else IN_BED["sit"]) * (0.75 if kids[i] else 1.0)
                 legs_L.append((f0, STAND_LEGS[0])); legs_R.append((f0, STAND_LEGS[1]))
                 by.append((f0, round(top + lift - kd["head"], 3)))
                 continue
@@ -699,19 +702,19 @@ def plan_beds(c, xs, ys, dirs, kids, log=print):
     beds, blist = {}, []
     if len(lie0) >= 2:                                # a couple in bed: one double bed, side by side
         cx = sum(xs[i] for i in lie0) / len(lie0); y = max(ys[i] for i in lie0)
-        order = sorted(lie0, key=lambda i: xs[i]); w = 0.95 * (len(order) - 1) + 1.2
+        order = sorted(lie0, key=lambda i: xs[i]); w = BED_GAP * (len(order) - 1) + 1.75
         for k, i in enumerate(order):
-            xs[i] = round(cx - 0.95 * (len(order) - 1) / 2 + 0.95 * k, 3); ys[i] = y; beds[i] = {"x": xs[i], "y": y}
-        blist.append({"x": cx, "y": y, "width": round(max(2.1, w), 2)})
+            xs[i] = round(cx - BED_GAP * (len(order) - 1) / 2 + BED_GAP * k, 3); ys[i] = y; beds[i] = {"x": xs[i], "y": y}
+        blist.append({"x": cx, "y": y, "width": round(w, 2)})
         others = [i for i in range(n) if i not in lie0]
         for i in others:                                 # the others stand clear of the bed
             sd = 1 if xs[i] >= cx else -1
             xs[i] = round(cx + sd * max(abs(xs[i] - cx), blist[-1]["width"] / 2 + 0.75), 3)
     elif lie0:
-        i = lie0[0]; beds[i] = {"x": xs[i], "y": ys[i]}; blist.append({"x": xs[i], "y": ys[i], "width": 1.5})
+        i = lie0[0]; beds[i] = {"x": xs[i], "y": ys[i]}; blist.append({"x": xs[i], "y": ys[i], "width": 1.9})
     for i in later:                                    # lies down later: their bed is beside them, away from the others
-        bx = round(xs[i] - dirs[i] * 1.6, 3)
-        beds[i] = {"x": bx, "y": ys[i]}; blist.append({"x": bx, "y": ys[i], "width": 1.5})
+        bx = round(xs[i] - dirs[i] * 1.9, 3)
+        beds[i] = {"x": bx, "y": ys[i]}; blist.append({"x": bx, "y": ys[i], "width": 1.9})
     return beds, blist, set(lie0)
 
 
@@ -905,7 +908,7 @@ def plan(slug, char_style=None, log=print):
             j = ids.index(subj); q = posture_at(j, fm); kd = BODY_DIMS[bool(kids[j])]
             inb = inbed_at(j, fm)
             if q == "lie" or (q == "sit" and inb):          # in bed: from the foot of the bed, a little above, on the face on the pillow
-                head = FURNITURE["bed"]["seat"] + (0.62 if q == "lie" else 1.12) * (0.75 if kids[j] else 1.0)
+                head = FURNITURE["bed"]["seat"] + (IN_BED["lie"] if q == "lie" else IN_BED["sit"]) * (0.75 if kids[j] else 1.0)
                 frame["look_dz"] = round(frame.get("look_dz", 0) - (kd["head"] - head) + 0.3, 3); frame["height"] = "high"
                 frame["size"] = 3.2
             elif q == "sit": frame["look_dz"] = round(frame.get("look_dz", 0) - (kd["hip"] - FURNITURE["chair"]["seat"]), 3)

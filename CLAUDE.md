@@ -506,6 +506,9 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
     0,95, người khác đứng ngoài mép giường; nằm giữa chừng → giường cạnh người đó, đi vào giường trước câu; `stand_up` khi đang ở giường
     → đứng dậy rồi bước ra phía trống. Cú máy người trên giường `height: high`, nhắm mặt trên gối. Đồ cầm khi nằm: tay lên cằm, nghiêng
     nhẹ để vẽ trước mặt. Ảnh: `docs/img/dialog_bed.jpg`.
+  - Góp ý tiếp ("giường to ra, căn lại đầu, chăn đắp thấp nửa người"): giường dọc dài 3,4, đơn rộng 1,9, đôi 1,7·(n−1)+1,75; mỗi người một
+    gối dựng vào đầu giường (cao 0,78); đầu ở mặt nệm + 1,0 (ngả lên gối) / + 1,3 (ngồi dậy) nên thấy trọn đầu, vai, tay; chăn cuộn ngang
+    bụng (mặt chăn + 0,2); hai người nằm cách 1,7 (đầu không chạm); đồ cầm khi nằm từ đầu dùng tay phía ngoài (không che mặt người kia).
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
