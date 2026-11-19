@@ -31,14 +31,15 @@
     "b": 84,
     "type": "full",
     "frame": {
-     "size": 3.15,
+     "size": 5.16,
      "look_dz": 0.27,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
-     ]
+     ],
+     "y": -0.3
     }
    },
    {
@@ -49,7 +50,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "mia"
+     "subject": "mia",
+     "x": -0.471
     }
    },
    {
@@ -60,7 +62,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.471
     }
    },
    {
@@ -68,14 +71,15 @@
     "b": 285,
     "type": "full",
     "frame": {
-     "size": 3.15,
+     "size": 5.16,
      "look_dz": 0.27,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
-     ]
+     ],
+     "y": -0.3
     }
    },
    {
@@ -86,7 +90,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.471
     }
    },
    {
@@ -97,7 +102,8 @@
      "size": 2.65,
      "look_dz": 0.45,
      "move": "still",
-     "subject": "mia"
+     "subject": "mia",
+     "x": -0.354
     }
    },
    {
@@ -108,7 +114,8 @@
      "size": 2.65,
      "look_dz": 0.45,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.354
     }
    },
    {
@@ -119,7 +126,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.471
     }
    },
    {
@@ -127,14 +135,15 @@
     "b": 644,
     "type": "full",
     "frame": {
-     "size": 3.15,
+     "size": 5.16,
      "look_dz": 0.27,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
-     ]
+     ],
+     "y": -0.3
     }
    },
    {
@@ -145,7 +154,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.471
     }
    },
    {
@@ -156,7 +166,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "mia"
+     "subject": "mia",
+     "x": -0.471
     }
    },
    {
@@ -167,7 +178,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.471
     }
    },
    {
@@ -175,14 +187,15 @@
     "b": 964,
     "type": "full",
     "frame": {
-     "size": 3.15,
+     "size": 5.16,
      "look_dz": 0.27,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
-     ]
+     ],
+     "y": -0.3
     }
    },
    {
@@ -193,7 +206,8 @@
      "size": 2.65,
      "look_dz": 0.45,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.354
     }
    },
    {
@@ -204,7 +218,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.471
     }
    },
    {
@@ -215,7 +230,8 @@
      "size": 2.65,
      "look_dz": 0.45,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.354
     }
    },
    {
@@ -226,7 +242,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "ben"
+     "subject": "ben",
+     "x": 0.471
     }
    },
    {
@@ -234,7 +251,7 @@
     "b": 1388,
     "type": "medium",
     "frame": {
-     "size": 3.5,
+     "size": 4.89,
      "look_dz": 0.3,
      "move": "still",
      "subject": [
@@ -249,14 +266,15 @@
     "b": 1514,
     "type": "full",
     "frame": {
-     "size": 3.15,
+     "size": 5.16,
      "look_dz": 0.27,
      "move": "still",
      "subject": [
       0.0,
       4.3,
       0
-     ]
+     ],
+     "y": -0.3
     }
    }
   ],
@@ -269,14 +287,14 @@
    "type": "soft",
    "outfit": "soft_hoodie",
    "loc": [
-    -0.63,
+    -0.8,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      -0.63,
+      -0.8,
       4.3,
       0
      ]
@@ -286,13 +304,14 @@
       "from": 1,
       "to": 1514,
       "location": [
-       -0.63,
+       -0.8,
        4.3,
        0
       ]
      }
     ]
    },
+   "mouth": "soft",
    "look": {
     "hair": "short",
     "hair_color": [
@@ -467,8 +486,7 @@
         0.22
        ],
        -1
-      ],
-      "tilt": 0.05
+      ]
      },
      {
       "from": 113,
@@ -480,8 +498,7 @@
         0.82
        ],
        -1
-      ],
-      "tilt": 0.05
+      ]
      },
      {
       "from": 279,
@@ -501,8 +518,7 @@
         0.86
        ],
        1
-      ],
-      "tilt": 0.05
+      ]
      },
      {
       "from": 499,
@@ -522,13 +538,11 @@
         0.48
        ],
        1
-      ],
-      "tilt": 0.05
+      ]
      },
      {
       "from": 638,
-      "to": 692,
-      "tilt": 0.05
+      "to": 692
      },
      {
       "from": 750,
@@ -540,8 +554,7 @@
         "1.05 + 0.05 * sin(f * 1.4)"
        ],
        1
-      ],
-      "tilt": 0.05
+      ]
      },
      {
       "from": 881,
@@ -549,7 +562,7 @@
       "armR": [
        "ik",
        [
-        0.6,
+        0.77,
         0.2
        ],
        1
@@ -557,8 +570,7 @@
      },
      {
       "from": 1045,
-      "to": 1122,
-      "tilt": 0.05
+      "to": 1122
      },
      {
       "from": 1282,
@@ -578,16 +590,15 @@
         1.42
        ],
        -1
-      ],
-      "tilt": 0.05
+      ]
      },
      {
       "from": 1382,
-      "to": 1476,
-      "tilt": 0.05
+      "to": 1476
      }
     ],
-    "smooth": 0.2
+    "smooth": 0.2,
+    "calm": true
    },
    "reacts": [
     [
@@ -610,14 +621,14 @@
    "type": "soft",
    "outfit": "soft_cardigan",
    "loc": [
-    0.63,
+    0.8,
     4.3,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      0.63,
+      0.8,
       4.3,
       0
      ]
@@ -627,13 +638,14 @@
       "from": 1,
       "to": 1514,
       "location": [
-       0.63,
+       0.8,
        4.3,
        0
       ]
      }
     ]
    },
+   "mouth": "soft",
    "look": {
     "hair": "long",
     "hair_color": [
@@ -791,8 +803,7 @@
     "segments": [
      {
       "from": 78,
-      "to": 122,
-      "tilt": -0.05
+      "to": 122
      },
      {
       "from": 211,
@@ -817,13 +828,11 @@
      },
      {
       "from": 440,
-      "to": 506,
-      "tilt": -0.05
+      "to": 506
      },
      {
       "from": 593,
-      "to": 642,
-      "tilt": -0.05
+      "to": 642
      },
      {
       "from": 683,
@@ -852,25 +861,23 @@
       "armL": [
        "ik",
        [
-        -0.6,
+        -0.77,
         0.2
        ],
        -1
-      ],
-      "tilt": -0.05
+      ]
      },
      {
       "from": 1130,
-      "to": 1274,
-      "tilt": -0.05
+      "to": 1274
      },
      {
       "from": 1319,
-      "to": 1374,
-      "tilt": -0.05
+      "to": 1374
      }
     ],
-    "smooth": 0.2
+    "smooth": 0.2,
+    "calm": true
    }
   }
  ],
@@ -1305,7 +1312,8 @@
   ]
  ],
  "captions": {
-  "style": "word"
+  "style": "word",
+  "y": -0.3
  },
  "sound": {
   "auto": {

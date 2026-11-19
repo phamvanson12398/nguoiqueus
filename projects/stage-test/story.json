@@ -97,6 +97,7 @@
      "look_dz": 0.14,
      "move": "still",
      "subject": "jake",
+     "x": -0.353,
      "height": "high"
     }
    },
@@ -109,12 +110,13 @@
      "look_dz": 0.14,
      "move": "still",
      "subject": "emily",
+     "x": 0.353,
      "height": "high"
     }
    },
    {
     "a": 208,
-    "b": 246,
+    "b": 333,
     "type": "full",
     "frame": {
      "size": 5.33,
@@ -126,30 +128,6 @@
       0
      ],
      "y": -0.3,
-     "height": "high"
-    }
-   },
-   {
-    "a": 247,
-    "b": 293,
-    "type": "medium",
-    "frame": {
-     "size": 3.2,
-     "look_dz": 0.14,
-     "move": "still",
-     "subject": "emily",
-     "height": "high"
-    }
-   },
-   {
-    "a": 294,
-    "b": 333,
-    "type": "medium",
-    "frame": {
-     "size": 3.2,
-     "look_dz": 0.14,
-     "move": "still",
-     "subject": "jake",
      "height": "high"
     }
    },
@@ -173,6 +151,7 @@
      "look_dz": 0.14,
      "move": "still",
      "subject": "emily",
+     "x": -0.5,
      "height": "high"
     }
    },
@@ -231,7 +210,7 @@
     "b": 662,
     "type": "medium",
     "frame": {
-     "size": 3.5,
+     "size": 4.62,
      "look_dz": -0.15,
      "move": "still",
      "subject": [
@@ -269,7 +248,7 @@
     "b": 760,
     "type": "medium",
     "frame": {
-     "size": 3.5,
+     "size": 4.62,
      "look_dz": -0.15,
      "move": "still",
      "subject": [
@@ -1151,7 +1130,8 @@
   ]
  ],
  "captions": {
-  "style": "word"
+  "style": "word",
+  "y": -0.3
  },
  "sound": {
   "auto": {

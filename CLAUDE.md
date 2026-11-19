@@ -572,6 +572,16 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
     3 giọng thử, chọn bản `expressiveness` cao nhất) → speak → build (+ soát) → render tùy chọn. Một luồng chạy lần lượt, việc của mục
     hiện trên dự án đó; hết lượt Claude hoặc hủy → dừng hàng đợi; Làm lại/▲▼/xóa. Studio khởi động lại thì mục đang chạy về "chờ". Thử: 2 kịch bản (giọng giả) tự chạy tới xem trước, có Claude dàn dựng; ảnh `docs/img/dialog_queue.jpg`.
   - Lỗi cũ tìm thấy: content đã dàn dựng có `staging_vi` mà schema không có → bấm Lưu bị từ chối (đã thêm vào schema).
+- Người dùng gửi video thật "When she says I don't care" (66 s, 576x1024, −13,3 LUFS) và chọn sửa mục 3-8:
+  - Cận một người sạch: người đứng cạnh bị đẩy ra khỏi khung (`frame.x` lệch chủ thể về phía người kia, tính theo khoảng cách và
+    bán kính đầu nhìn thấy ~0,85, tối đa 0,5; framing x > 0 = chủ thể bên phải). Trước đây nửa mặt người kia lòi ở mép.
+  - Đứng xa hơn: `MIN_GAP` 1,1 → 1,6; `pair_gap` cặp đôi 1,6, gia đình 1,62, bạn 1,7, sếp/hàng xóm 1,9, cạnh trẻ con 1,4 (đầu chạm nhau,
+    vành mũ đè mặt). Cận hai mặt nới theo khoảng cách.
+  - Nhịp: chuỗi ≥ 3 câu ngắn (< 1,7 s) đổi người liên tục → giữ một cú hai người (không cận qua cận lại); trước câu chốt im ≥ 1,0 s.
+  - Phụ đề word ở y −0,3 (~65 % chiều cao, tránh chữ/nút của TikTok/Reels), `settings.caption_y` để chỉnh.
+  - `parking_lot`: xe mặc định xanh xám dịu (đỏ chiếm nửa khung, át mặt nhân vật); thumb mới.
+  - `projects/an-gi-cung-duoc`: Claude dàn dựng (Jake cầm túi đồ, lấy điện thoại đặt DoorDash, giơ màn hình, cất; cuối lấy khoai tây,
+    đưa Emily, Emily ăn). Ảnh: `docs/img/dialog_feedback_v6.jpg`. Mục 1 (render 100 %) và 2 (rút ngắn) để người dùng làm.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

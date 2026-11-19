@@ -49,6 +49,10 @@ def pdir(slug): return os.path.join(PROJECTS, slug)
 def is_dialog(content): return bool(content) and content.get("format") == "dialog"
 
 
+def settings_of(slug):
+    return _j(os.path.join(pdir(slug), "settings.json"), {}) or {}
+
+
 def content_of(slug):
     c = _j(os.path.join(pdir(slug), "content.json"))
     if not is_dialog(c): raise ValueError("dự án này không phải video đối thoại (content.format != dialog)")
@@ -186,7 +190,7 @@ def pause_for(L, k):
     least = 0.25
     if l["speaker"] == p["speaker"]: least = 0.4                       # same person, next sentence: a breath
     if p.get("beat") in ("twist", "punchline"): least = max(least, 0.8)  # the other one takes in the news
-    if l.get("beat") == "punchline": least = max(least, 0.7)            # comic pause before the punchline
+    if l.get("beat") == "punchline": least = max(least, 1.0)            # comic pause before the punchline: let it land
     if p.get("face") in ("shock", "angry") and l["speaker"] != p["speaker"]: least = max(least, 0.45)
     if l.get("action") == "use": least = max(least, 0.9)                 # a sip / a bite before the line
     if l.get("action") == "enter": least = max(least, 1.2)               # they walk in first
@@ -248,17 +252,18 @@ def _dir(i, xs):
 
 ROMANCE = {"husband", "wife", "boyfriend", "girlfriend"}
 FAMILY = {"dad", "mom", "son", "daughter", "grandma", "grandpa"}
-MIN_GAP = 1.1          # big soft heads (r ~0.61, a child's ~0.53) must not overlap
+MIN_GAP = 1.6          # big soft heads (r ~0.61, a child's ~0.53) must not overlap, not even touch
 
 
 def pair_gap(a, b):
     """how far apart two people stand, from who they are to each other"""
     ra, rb = a.get("role"), b.get("role")
-    if "child" in (a.get("body"), b.get("body")): return 1.12               # a child's head is smaller: stand closer
-    if ra in ROMANCE and rb in ROMANCE: return 1.2                       # a couple: close (holding hands reaches)
-    if ra in FAMILY and rb in FAMILY: return 1.28
-    if "boss" in (ra, rb) or "neighbor" in (ra, rb): return 1.6          # work / not close: keep a polite distance
-    return 1.35                                                          # friends
+    # heads look ~1.5 wide on screen (head_scale 1.22, the nearer one bigger) + a cap brim / bow: below ~1.6 they touch
+    if "child" in (a.get("body"), b.get("body")): return 1.4                # a child's head is smaller: stand closer
+    if ra in ROMANCE and rb in ROMANCE: return 1.6                       # a couple: close, a hand's width between the heads
+    if ra in FAMILY and rb in FAMILY: return 1.62
+    if "boss" in (ra, rb) or "neighbor" in (ra, rb): return 1.9          # work / not close: keep a polite distance
+    return 1.7                                                           # friends
 
 
 def place_cast(cast, lines, stage, spots=None, log=print):
@@ -1005,7 +1010,17 @@ def plan_shots(lines_t, content, N):
             elif k % 4 == 3: kind = "two"                         # re-establish now and then
             else: kind = "speaker"
         a = 1 if k == 0 else max(2, int(round(lt["start"] * FPS)) + 1 - PRE)
-        out.append({"a": a, "kind": kind, "line": k, "speaker": l["speaker"]})
+        out.append({"a": a, "kind": kind, "line": k, "speaker": l["speaker"], "auto": (l.get("shot") or "auto") == "auto"})
+    # quick volleys (3+ short lines, speakers taking turns): one two-shot holds them, both faces react; no ping-pong of close-ups
+    quick = [(lt["end"] - lt["start"]) < 1.7 for lt in lines_t]
+    k = 0
+    while k < len(out):
+        j = k
+        while j + 1 < len(out) and quick[j + 1] and quick[j] and L[j + 1]["speaker"] != L[j]["speaker"]: j += 1
+        if j - k + 1 >= 3:
+            for q in range(k, j + 1):
+                if out[q]["auto"] and out[q]["kind"] == "speaker" and L[q].get("beat") not in ("twist", "punchline"): out[q]["kind"] = "two"
+        k = j + 1
     # a line too short for its own shot stays in the previous shot; the same framing twice in a row is one shot
     merged = []
     for i, s in enumerate(out):
@@ -1307,12 +1322,23 @@ def plan(slug, char_style=None, log=print):
         if kind in ("two", "wide"):                     # everyone in: the frame is 9/16 as wide as it is tall
             frame["size"] = round(max(frame["size"], (spread + 1.3) * 16 / 9), 2)
             if frame["size"] > 3.6: frame["y"] = -0.3          # a wider frame: keep the group low, less empty floor, more room above
+        if kind == "both_close":                         # both heads whole, a little room at the sides
+            frame["size"] = round(max(frame["size"], (min(spread, 2.2) + 1.15) * 16 / 9), 2)
         if kind == "both_close" and n == 3:              # two closest: the speaker and the one they talk to
             j = ids.index(line["speaker"]); o = ids.index(addressee(s["line"])); fm = (s["a"] + s["b"]) // 2
             pj, po = pos_at(j, fm), pos_at(o, fm)
             frame["subject"] = [round((pj[0] + po[0]) / 2, 3), round((pj[1] + po[1]) / 2, 3), 0]
         if kind == "both_close" and any(kids):
             frame["look_dz"] = 0.0
+        if isinstance(subj, str) and kind in ("speaker", "listener"):      # clean single: whoever is beside them is pushed out
+            j = ids.index(subj); pj = pos_at(j, fm)
+            near = [pos_at(o, fm)[0] - pj[0] for o in on if o != j and abs(pos_at(o, fm)[0] - pj[0]) < 2.6]
+            if near and (all(dx > 0 for dx in near) or all(dx < 0 for dx in near)):
+                side = 1 if near[0] > 0 else -1; gap = min(abs(dx) for dx in near)
+                half = frame["size"] * 9 / 16 / 2                     # half the frame width at the subject
+                # subject slides toward the neighbour's side until the neighbour's head (seen r ~0.85 with head_scale + perspective) is out
+                need = (half - (gap - 0.85)) / half + 0.36
+                if need > 0: frame["x"] = round(side * min(0.5, need), 3)     # framing x > 0 = subject right of centre
         if isinstance(subj, str):                         # one person: frame them where their head really is
             j = ids.index(subj); q = posture_at(j, fm); kd = BODY_DIMS[bool(kids[j])]
             inb = inbed_at(j, fm)
@@ -1340,7 +1366,7 @@ def plan(slug, char_style=None, log=print):
         "camera": {"rig": "long", "shots": shots, "hand": 0.0},          # locked-off camera, no shake (cuts only)
         "chars": chars,
         "words": words,
-        "captions": {"style": "word"},                    # one plain yellow word at a time, like the reference videos
+        "captions": {"style": "word", "y": float(settings_of(slug).get("caption_y", -0.3))},   # one yellow word at a time, ~65 % down: clear of app UI
         "sound": {"auto": {"enabled": False}},             # voices only: no music, no sound effects
     }
     if lights: st["lights"] = [[int(f), v] for f, v in lights]

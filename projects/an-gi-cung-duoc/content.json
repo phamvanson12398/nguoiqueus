@@ -42,7 +42,11 @@
         0.12,
         0.1
       ],
-      "spot": "driver_door"
+      "spot": "driver_door",
+      "posture": "stand",
+      "holding": {
+        "kind": "bag"
+      }
     },
     {
       "id": "emily",
@@ -80,7 +84,8 @@
         0.75,
         0.05
       ],
-      "spot": "passenger_side"
+      "spot": "passenger_side",
+      "posture": "stand"
     }
   ],
   "setting": {
@@ -313,7 +318,21 @@
       "speed": 1,
       "sfx": "none",
       "react": "none",
-      "beat": "build"
+      "beat": "build",
+      "steps": [
+        {
+          "who": "jake",
+          "do": "take_out",
+          "prop": "phone",
+          "when": "before"
+        },
+        {
+          "who": "jake",
+          "do": "use",
+          "prop": "phone",
+          "when": "during"
+        }
+      ]
     },
     {
       "speaker": "emily",
@@ -343,7 +362,16 @@
       "speed": 1,
       "sfx": "none",
       "react": "none",
-      "beat": "build"
+      "beat": "build",
+      "steps": [
+        {
+          "who": "jake",
+          "do": "show",
+          "prop": "phone",
+          "to": "emily",
+          "when": "during"
+        }
+      ]
     },
     {
       "speaker": "emily",
@@ -373,7 +401,15 @@
       "speed": 1,
       "sfx": "none",
       "react": "none",
-      "beat": "twist"
+      "beat": "twist",
+      "steps": [
+        {
+          "who": "jake",
+          "do": "put_away",
+          "prop": "phone",
+          "when": "before"
+        }
+      ]
     },
     {
       "speaker": "jake",
@@ -448,7 +484,15 @@
       "speed": 1,
       "sfx": "none",
       "react": "none",
-      "beat": "twist"
+      "beat": "twist",
+      "steps": [
+        {
+          "who": "jake",
+          "do": "take_out",
+          "prop": "fries",
+          "when": "before"
+        }
+      ]
     },
     {
       "speaker": "emily",
@@ -463,7 +507,16 @@
       "speed": 0.95,
       "sfx": "none",
       "react": "flinch",
-      "beat": "punchline"
+      "beat": "punchline",
+      "steps": [
+        {
+          "who": "jake",
+          "do": "give",
+          "prop": "fries",
+          "to": "emily",
+          "when": "during"
+        }
+      ]
     },
     {
       "speaker": "jake",
@@ -478,7 +531,15 @@
       "speed": 0.9,
       "sfx": "none",
       "react": "none",
-      "beat": "tag"
+      "beat": "tag",
+      "steps": [
+        {
+          "who": "emily",
+          "do": "use",
+          "prop": "fries",
+          "when": "during"
+        }
+      ]
     }
   ],
   "highlight": [
@@ -496,6 +557,9 @@
       "brief": "Bãi đỗ xe siêu thị kiểu Mỹ lúc chạng vạng (7 giờ tối, trời cam tím, đèn cột bắt đầu sáng). Mở về phía -Y để camera đứng nhìn vào, có khoảng trống ở giữa quanh (0, 4) cho hai nhân vật đứng. Ngay sau lưng nhân vật là một chiếc xe con hatchback màu nổi (nhìn ngang, cửa tài xế sát khoảng diễn, cửa sổ sáng mờ). Nền xa: mặt tiền siêu thị chung chung, cửa kính sáng vàng, biển hiệu chữ 3D không thương hiệu (vd 'MARKET'), vài xe đẩy hàng, cột đèn bãi đỗ, vạch kẻ ô đỗ trắng trên mặt nhựa, vài xe khác ở xa, bồn cây. Tham số: origin, car_color, sky (dusk|night|day), lamps_on."
     }
   ],
+  "objects": [],
+  "staged": true,
+  "staging_vi": "Toàn bộ video quay ở bãi đỗ xe, không đổi cảnh, không cần thêm đồ vật mới. Jake đứng ở cửa tài xế, tay cầm túi đồ siêu thị từ đầu. Đây là chỗ gài sẵn cho cú khoai tây ở cuối. Emily đứng phía sau xe bên trái.\n- Từ câu 1 đến câu 14 không có bước di chuyển. Lúc Emily từ chối, cô khoanh tay hoặc chỉ tay. Mấy động tác này đặt bằng gesture của từng câu (cross_arms ở câu 4, 6, 8, 12; point ở câu 10, 14). Như vậy cả hai vẫn đứng yên, cảnh không bị loạn.\n- Câu 15: trước câu, Jake rút điện thoại ra, rồi vừa nói \"DoorDash. Taco Bell.\" vừa bấm.\n- Câu 17: Jake giơ màn hình về phía Emily như đe dọa: \"Got a better idea?\".\n- Câu 19: Emily vừa nghĩ ra In-N-Out thì Jake cất điện thoại, chuẩn bị nhìn chằm chằm. Nhịp im lặng này nằm sẵn trong kịch bản.\n- Câu 24: trước câu, Jake lấy gói khoai tây chiên ra từ túi đồ.\n- Câu 25: trong lúc Emily nói \"They're YOUR fries.\", Jake đưa gói khoai và Emily cầm lấy luôn.\n- Câu 26: Emily ăn khoai ngon lành trong lúc Jake thở dài \"...I'm getting two.\" Đây là cú chốt bằng hình.\n\nMỗi lúc chỉ có một người làm động tác, và chỉ có 6 bước ở 6 câu.",
   "vo_en": "Okay, babe. Dinner. What do you want? I don't care. Whatever. Chipotle? We literally had Chipotle on Tuesday. Okay... Olive Garden? Too heavy. I have the gym tomorrow. Sushi? Hmm... not feeling it. Thai? Your Pad Thai place? On a Friday? That's a forty-five minute wait. [sigh] Okay. You pick. I told you. I don't care. Babe, you just vetoed four restaurants. That's not 'I don't care.' Then pick something reasonable! Fine. DoorDash. Taco Bell. Ordering it. Taco Bell?! Are you serious? Got a better idea? ...Ooh. What about burgers? In-N-Out by our place? What? First thing I said in the car... 'In-N-Out?' And you said, 'Eh, we'll see.' Okay, but now it's MY idea. Let's go. Next time, I'm recording you. Oh, and get extra fries, babe. Wait. I thought you had the gym tomorrow? Exactly. They're YOUR fries. [sigh] ...I'm getting two.",
   "vo_vi": "Rồi, em yêu. Bữa tối. Em muốn ăn gì? Sao cũng được. Gì cũng được. Chipotle nhé? Mình vừa ăn Chipotle hôm thứ Ba mà. Ừ... Olive Garden? Nặng bụng lắm. Mai em còn đi tập. Sushi? Hừm... không có hứng. Đồ Thái? Quán Pad Thai em thích đó? Tối thứ Sáu á? Chờ bốn lăm phút luôn đó. [thở dài] Được rồi. Em chọn đi. Em nói rồi mà. Gì cũng được. Em ơi, em vừa gạt bốn quán rồi. Vậy đâu phải 'gì cũng được'. Thì anh chọn chỗ nào hợp lý đi! Được. DoorDash. Taco Bell. Đặt luôn. Taco Bell á?! Anh nghiêm túc hả? Em có ý nào hay hơn không? ...Ồ. Hay ăn burger đi? Quán In-N-Out gần nhà ấy? Gì? Câu đầu tiên anh nói lúc lên xe... 'In-N-Out không?' Rồi em bảo 'Ờ, để xem.' Ừ, nhưng giờ là ý của EM. Đi thôi. Lần sau anh ghi âm em lại. À, gọi thêm khoai tây nha anh. Khoan. Em bảo mai đi tập mà? Thì đó. Khoai của ANH mà, em ăn ké thôi. [thở dài] ...Thôi gọi hai phần.",
   "word_count": 142,

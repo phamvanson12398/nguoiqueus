@@ -29,7 +29,7 @@
     "b": 106,
     "type": "wide",
     "frame": {
-     "size": 4.71,
+     "size": 5.16,
      "look_dz": 0.4,
      "move": "still",
      "subject": [
@@ -48,7 +48,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "x": 0.471
     }
    },
    {
@@ -64,18 +65,30 @@
    },
    {
     "a": 235,
-    "b": 273,
+    "b": 274,
     "type": "full",
     "frame": {
      "size": 4.0,
      "look_dz": 0.27,
      "move": "still",
      "subject": [
-      -0.725,
+      -0.85,
       4.375,
       0
      ],
      "y": -0.3
+    }
+   },
+   {
+    "a": 275,
+    "b": 297,
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake",
+     "x": -0.5
     }
    },
    {
@@ -86,19 +99,8 @@
      "move": "still",
      "subject": "jake"
     },
-    "a": 274,
-    "b": 302
-   },
-   {
-    "a": 303,
-    "b": 333,
-    "type": "medium",
-    "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
-     "move": "still",
-     "subject": "jake"
-    }
+    "a": 298,
+    "b": 333
    },
    {
     "a": 334,
@@ -108,7 +110,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "x": 0.471
     }
    },
    {
@@ -120,7 +123,7 @@
      "look_dz": 0.27,
      "move": "still",
      "subject": [
-      -0.351,
+      -0.225,
       4.575,
       0
      ],
@@ -141,12 +144,17 @@
    {
     "a": 501,
     "b": 549,
-    "type": "medium",
+    "type": "full",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 4.09,
+     "look_dz": 0.27,
      "move": "still",
-     "subject": "jake"
+     "subject": [
+      -0.225,
+      4.575,
+      0
+     ],
+     "y": -0.3
     }
    },
    {
@@ -157,7 +165,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "x": 0.471
     }
    },
    {
@@ -168,7 +177,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "x": -0.471
     }
    },
    {
@@ -177,7 +187,7 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "jake"
+     "subject": "emily"
     },
     "a": 721,
     "b": 759
@@ -190,7 +200,8 @@
      "size": 2.65,
      "look_dz": 0.45,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "x": -0.354
     }
    },
    {
@@ -201,7 +212,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "x": -0.471
     }
    },
    {
@@ -212,7 +224,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "x": 0.471
     }
    },
    {
@@ -223,7 +236,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "x": -0.471
     }
    },
    {
@@ -245,7 +259,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "x": -0.471
     }
    },
    {
@@ -256,7 +271,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "x": 0.471
     }
    },
    {
@@ -267,7 +283,8 @@
      "size": 2.65,
      "look_dz": 0.45,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "x": -0.354
     }
    },
    {
@@ -278,7 +295,8 @@
      "size": 2.65,
      "look_dz": 0.45,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "x": 0.354
     }
    },
    {
@@ -289,7 +307,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "x": 0.471
     }
    },
    {
@@ -300,7 +319,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "x": -0.471
     }
    },
    {
@@ -311,7 +331,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "emily"
+     "subject": "emily",
+     "x": 0.471
     }
    },
    {
@@ -319,7 +340,7 @@
     "b": 1858,
     "type": "full",
     "frame": {
-     "size": 4.71,
+     "size": 5.16,
      "look_dz": 0.27,
      "move": "still",
      "subject": [
@@ -335,7 +356,7 @@
     "b": 1942,
     "type": "medium",
     "frame": {
-     "size": 3.5,
+     "size": 4.89,
      "look_dz": 0.3,
      "move": "still",
      "subject": [
@@ -353,7 +374,8 @@
      "size": 3.0,
      "look_dz": 0.3,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "x": -0.471
     }
    }
   ],
@@ -366,14 +388,14 @@
    "type": "soft",
    "outfit": "soft_hoodie",
    "loc": [
-    0.15,
+    0.275,
     4.6,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      0.15,
+      0.275,
       4.6,
       0
      ]
@@ -383,7 +405,7 @@
       "from": 1,
       "to": 167,
       "location": [
-       0.15,
+       0.275,
        4.6,
        0
       ]
@@ -392,7 +414,7 @@
       "from": 168,
       "to": 192,
       "location": [
-       "lerp(0.150, -0.250, ease((f - 168) / 24))",
+       "lerp(0.275, -0.375, ease((f - 168) / 24))",
        "lerp(4.600, 4.350, ease((f - 168) / 24))",
        0
       ]
@@ -401,7 +423,7 @@
       "from": 193,
       "to": 235,
       "location": [
-       -0.25,
+       -0.375,
        4.35,
        0
       ]
@@ -410,16 +432,52 @@
       "from": 236,
       "to": 260,
       "location": [
-       "lerp(-0.250, 0.150, ease((f - 236) / 24))",
+       "lerp(-0.375, 0.275, ease((f - 236) / 24))",
        "lerp(4.350, 4.600, ease((f - 236) / 24))",
        0
       ]
      },
      {
       "from": 261,
+      "to": 277,
+      "location": [
+       0.275,
+       4.6,
+       0
+      ]
+     },
+     {
+      "from": 278,
+      "to": 302,
+      "location": [
+       "lerp(0.275, -0.075, ease((f - 278) / 24))",
+       "lerp(4.600, 4.350, ease((f - 278) / 24))",
+       0
+      ]
+     },
+     {
+      "from": 303,
+      "to": 327,
+      "location": [
+       -0.075,
+       4.35,
+       0
+      ]
+     },
+     {
+      "from": 328,
+      "to": 352,
+      "location": [
+       "lerp(-0.075, 0.275, ease((f - 328) / 24))",
+       "lerp(4.350, 4.600, ease((f - 328) / 24))",
+       0
+      ]
+     },
+     {
+      "from": 353,
       "to": 2037,
       "location": [
-       0.15,
+       0.275,
        4.6,
        0
       ]
@@ -623,6 +681,46 @@
     "default": {},
     "segments": [
      {
+      "from": 328,
+      "to": 352,
+      "legs": "walk_legs(f * 0.32 + 0.0)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 0.0))"
+      ],
+      "rest": 0
+     },
+     {
+      "from": 278,
+      "to": 302,
+      "legs": "walk_legs(f * 0.32 + 0.0)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 0.0))"
+      ],
+      "rest": 0
+     },
+     {
       "from": 236,
       "to": 260,
       "legs": "walk_legs(f * 0.32 + 0.0)",
@@ -683,12 +781,12 @@
       ]
      },
      {
-      "from": 278,
-      "to": 300,
+      "from": 302,
+      "to": 324,
       "armL": [
        "ik",
        [
-        -0.675,
+        -0.625,
         0.82
        ],
        1
@@ -939,14 +1037,14 @@
    "type": "soft",
    "outfit": "soft_dress",
    "loc": [
-    -1.2,
+    -1.325,
     4.4,
     0
    ],
    "blocking": {
     "default": {
      "location": [
-      -1.2,
+      -1.325,
       4.4,
       0
      ]
@@ -956,7 +1054,7 @@
       "from": 1,
       "to": 443,
       "location": [
-       -1.2,
+       -1.325,
        4.4,
        0
       ]
@@ -965,7 +1063,7 @@
       "from": 444,
       "to": 468,
       "location": [
-       "lerp(-1.200, -0.850, ease((f - 444) / 24))",
+       "lerp(-1.325, -0.725, ease((f - 444) / 24))",
        "lerp(4.400, 4.550, ease((f - 444) / 24))",
        0
       ]
@@ -974,7 +1072,7 @@
       "from": 469,
       "to": 501,
       "location": [
-       -0.85,
+       -0.725,
        4.55,
        0
       ]
@@ -983,7 +1081,7 @@
       "from": 502,
       "to": 526,
       "location": [
-       "lerp(-0.850, -1.200, ease((f - 502) / 24))",
+       "lerp(-0.725, -1.325, ease((f - 502) / 24))",
        "lerp(4.550, 4.400, ease((f - 502) / 24))",
        0
       ]
@@ -992,7 +1090,7 @@
       "from": 527,
       "to": 2037,
       "location": [
-       -1.2,
+       -1.325,
        4.4,
        0
       ]
@@ -1269,12 +1367,12 @@
       ]
      },
      {
-      "from": 280,
-      "to": 300,
+      "from": 304,
+      "to": 324,
       "armR": [
        "ik",
        [
-        0.675,
+        0.625,
         0.82
        ],
        -1
@@ -2124,7 +2222,8 @@
   ]
  ],
  "captions": {
-  "style": "word"
+  "style": "word",
+  "y": -0.3
  },
  "sound": {
   "auto": {
@@ -2137,12 +2236,12 @@
    "a": 735,
    "b": 743,
    "from": [
-    -0.7,
+    -0.825,
     3.5,
     1.9
    ],
    "to": [
-    -0.05,
+    0.075,
     3.5,
     2.05
    ],
