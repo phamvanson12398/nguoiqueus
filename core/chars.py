@@ -262,7 +262,10 @@ def add_soft_mouth(c, ey):
     """dialogue mouth: a few drawn openings swapped on twos (no squashed outline); dark inside, a white
     upper-teeth band, a small tongue when wide open, ink rim"""
     g = empty(c.name + "_talk", c.head, (0.1 * getattr(c, "gaze", 0.0), 0, 0.14))
-    shape(g, c.name + "_talk_patch", ellipse(0, ey - 0.19, 0.2, 0.13, 24), c.skin, 0, outline=0)
+    shape(g, c.name + "_talk_patch", ellipse(0, ey - 0.2, 0.18, 0.12, 24), c.skin, 0, outline=0)
+    import re as _re                                     # the face's own mouth (smile, teeth, tongue) is hidden while talking
+    c.face_mouths = sorted({o.name for gk in getattr(c, "F", {}).values() for o in gk.children_recursive
+                            if _re.search(r"_(m|t|tg|tm|tt[-0-9.]+)(_ol)?$", o.name)})
     c.talk_patch = c.name + "_talk_patch"          # by name: the 3D conversion replaces the curve
     inside = flat("mouth_in", (0.28, 0.04, 0.07))
     c.talk_levels = []
@@ -291,6 +294,23 @@ def add_talk_mouth(c, ey=-0.02, style="classic"):
     c.talk = g; c.talk_piv = piv
 
 
+def _hide_while(names, ranges):
+    """hide objects during frame ranges on top of their existing visibility keys (the expression's mouth while talking)"""
+    for nm in names:
+        o = bpy.data.objects.get(nm)
+        if o is None: continue
+        for prop in ("hide_render", "hide_viewport"):
+            fc = next((f for f in timing.fcurves_of(o) if f.data_path == prop), None)
+            for a, b in ranges:
+                after = fc.evaluate(b + 1) > 0.5 if fc else getattr(o, prop)
+                if fc:
+                    for kp in reversed(list(fc.keyframe_points)):
+                        if a <= kp.co[0] <= b + 1: fc.keyframe_points.remove(kp)
+                setattr(o, prop, True); o.keyframe_insert(prop, frame=a)
+                setattr(o, prop, after); o.keyframe_insert(prop, frame=b + 1)
+                fc = fc or next((f for f in timing.fcurves_of(o) if f.data_path == prop), None)
+
+
 def bake_talk(c, ranges, amp):
     if getattr(c, "talk_levels", None):              # soft mouth: pick an opening on twos from the smoothed voice level
         vis_track(bpy.data.objects[c.talk_patch], ranges)
@@ -307,6 +327,7 @@ def bake_talk(c, ranges, amp):
                 if rng and f == rng[-1][1] + 1: rng[-1][1] = f
                 else: rng.append([f, f])
             vis_track(lvo, [tuple(r) for r in rng])
+        _hide_while(getattr(c, "face_mouths", []), ranges)
         return
     vis_track(c.talk, ranges)
     for f in range(1, ctx.N + 1):

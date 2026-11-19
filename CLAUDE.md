@@ -542,6 +542,10 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
     theo câu nối lại sau đó. walk_to/enter/exit vẫn đi bộ (đất trống).
   - `pose.calm` (đối thoại): không đung đưa thân, không lắc đầu/nghiêng đầu theo lời, tay không trôi; bỏ nghiêng đầu mặc định khi nói.
     Shorts cũ không đổi (calm mặc định tắt). Thử lại `projects/stage-test`: `CAMERA OK`, ảnh `docs/img/dialog_stage.jpg`.
+  - Lỗi miệng (người dùng gửi ảnh: hai góc đỏ ló ra cạnh miệng khi cười và nói): miếng da che miệng hẹp hơn miệng của nét mặt
+    (happy/laugh/smirk/blush/wink…). Giờ `add_soft_mouth` ghi tên các mảnh miệng của mọi nét mặt (`…_m/_t/_tg/_tm/_tt…` + `_ol`) và
+    `bake_talk` → `_hide_while` ẩn chúng đúng các đoạn đang nói (chèn vào khóa hiện/ẩn sẵn có của nét mặt, khôi phục giá trị sau đoạn).
+    Kiểm 14 nét mặt + cảnh thật: chỉ còn miệng nói chữ D.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
