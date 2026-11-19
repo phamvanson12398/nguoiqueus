@@ -289,7 +289,7 @@
       "listener_face": "annoyed",
       "gesture": "none",
       "listener_gesture": "none",
-      "shot": "both_close",
+      "shot": "two",
       "pause_before": 0.3,
       "speed": 1.0,
       "sfx": "none",
@@ -334,7 +334,7 @@
     {
       "id": "tv",
       "type": "tv",
-      "near": "left",
+      "near": "crosswalk",
       "state": "off"
     }
   ],

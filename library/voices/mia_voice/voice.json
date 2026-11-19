@@ -1,0 +1,13 @@
+{
+ "instruct": "female, young adult, high pitch, american accent",
+ "sample_text": "Hey! Did you just eat my last slice of pizza? It was right here, and now it's gone. Unbelievable.",
+ "source": "design",
+ "name": "Mia",
+ "role": "girlfriend",
+ "gender": "female",
+ "age": "young adult",
+ "status": "approved",
+ "created": "2026-11-19",
+ "ref_text": "Hey! Did you just eat my last slice of pizza? It was right here, and now it's gone. Unbelievable.",
+ "picked": 2
+}

@@ -76,5 +76,48 @@
    }
   ],
   "time": "2026-11-19 07:30:53"
+ },
+ {
+  "score": 6,
+  "summary_vi": "Cảnh 1 (bếp, nằm giường) ổn: đủ đầu và mặt, các cú cận đúng người, nét mặt hợp lời thoại, đèn tắt có màu đêm. Cảnh 2 (phố) có hai lỗi lớn. Ở câu chốt 11, khung 300 chỉ thấy Emily, còn Jake ở ngoài khung. Ở khoảng lặng cuối, khung 363, Jake đứng đè lên Emily (đi bật TV mà TV lại nằm ngay sau chỗ Emily đứng). Lỗi nhỏ: Jake đứng sát cây đèn ở khung 350; Jake đứng lọt khung tủ lạnh suốt câu 8-9.",
+  "problems": [
+   {
+    "scene": 2,
+    "frame": 300,
+    "what_vi": "Câu chốt 11 (both_close) chỉ thấy Emily cười, không thấy Jake nên mất phản ứng 'annoyed' của người nghe."
+   },
+   {
+    "scene": 2,
+    "frame": 363,
+    "what_vi": "Jake đi tới TV (đặt bên trái, ngay sau Emily) rồi đứng chồng lên Emily: đầu Emily ló sau đầu Jake."
+   },
+   {
+    "scene": 2,
+    "frame": 175,
+    "what_vi": "Jake đứng lọt trong khung tủ lạnh, trông như đứng trong tủ (nhẹ)."
+   },
+   {
+    "scene": 1,
+    "frame": 350,
+    "what_vi": "Jake đứng ngay trên chân cây đèn, cột đèn chạy sau thân; Emily bị cắt nửa ở mép phải (nhẹ)."
+   }
+  ],
+  "fixes": [
+   {
+    "target": "object",
+    "id": "tv",
+    "field": "near",
+    "value": "crosswalk",
+    "why_vi": "TV đang nằm ngay sau chỗ Emily đứng nên Jake đi bật TV thì đè lên cô. Dời TV ra phía vạch qua đường để Jake có chỗ đứng riêng."
+   },
+   {
+    "target": "line",
+    "n": 11,
+    "field": "shot",
+    "value": "two",
+    "why_vi": "Cú both_close ở khung 300 bị hụt Jake (anh ấy đứng xa ở tủ lạnh/TV). Dùng cú hai người để câu chốt thấy cả Emily cười lẫn Jake cáu."
+   }
+  ],
+  "time": "2026-11-19 07:35:43"
  }
 ]
