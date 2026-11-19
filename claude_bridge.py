@@ -1032,6 +1032,7 @@ def check_dialog(x, minutes=None):
             if cur == want: e.append(f"lines[{k}] action {a} nhưng {who} đã {'đứng' if want == 'stand' else 'ngồi' if want == 'sit' else 'nằm'} sẵn")
             posture[who] = want
         if a in ("walk_to", "exit", "enter"): posture[who] = "stand"
+        if a == "errand" and not l.get("to_spot"): e.append(f"lines[{k}] errand cần to_spot (đi tới đâu)")
         if a == "walk_to" and not l.get("to_spot"): e.append(f"lines[{k}] walk_to cần to_spot (spot của bối cảnh, partner, away, left, right)")
     acts = sum(1 for l in x["lines"] if l.get("action", "none") != "none")
     if acts > max(4, len(x["lines"]) // 3): e.append(f"{acts} câu có action: quá nhiều, chỉ giữ những động tác phục vụ cái hài (tối đa ~1/3 số câu)")

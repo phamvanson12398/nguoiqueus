@@ -1,0 +1,48 @@
+{
+  "kind": "prop",
+  "name": "floor_lamp",
+  "status": "approved",
+  "title_vi": "Đèn cây (đối thoại)",
+  "dim": "3d",
+  "description_vi": "Đèn cây đứng: đế, cột, chụp đèn. Hai chụp đổi bằng visibility: <tên>_shade_on (sáng ấm) và <tên>_shade_off (tắt). Dùng khi nhân vật đi tắt/bật đèn. Gốc ở tâm đáy.",
+  "params": {
+    "height": {
+      "type": "number",
+      "default": 2.3,
+      "desc_vi": "cao"
+    },
+    "shade": {
+      "type": "array",
+      "default": [
+        0.98,
+        0.86,
+        0.55
+      ],
+      "desc_vi": "màu chụp đèn"
+    },
+    "metal": {
+      "type": "array",
+      "default": [
+        0.18,
+        0.18,
+        0.2
+      ],
+      "desc_vi": "màu cột/đế"
+    },
+    "on": {
+      "type": "boolean",
+      "default": true,
+      "desc_vi": "bật lúc đầu"
+    }
+  },
+  "parts": [
+    "shade_on",
+    "shade_off",
+    "cord"
+  ],
+  "tags": [
+    "dialog",
+    "furniture",
+    "light"
+  ]
+}

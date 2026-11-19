@@ -34,6 +34,18 @@
       3.15,
       0
      ]
+    },
+    {
+     "id": "lamp",
+     "type": "floor_lamp",
+     "params": {
+      "on": true
+     },
+     "loc": [
+      -3.35,
+      4.55,
+      0
+     ]
     }
    ]
   }
@@ -133,10 +145,11 @@
     "b": 549,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": 0.14,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "height": "high"
     }
    },
    {
@@ -178,10 +191,11 @@
     "b": 894,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": 0.14,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "height": "high"
     }
    },
    {
@@ -190,7 +204,7 @@
     "type": "medium",
     "frame": {
      "size": 3.2,
-     "look_dz": 0.44,
+     "look_dz": 0.14,
      "move": "still",
      "subject": "emily",
      "height": "high"
@@ -201,10 +215,11 @@
     "b": 1058,
     "type": "medium",
     "frame": {
-     "size": 3.0,
-     "look_dz": 0.3,
+     "size": 3.2,
+     "look_dz": 0.14,
      "move": "still",
-     "subject": "jake"
+     "subject": "jake",
+     "height": "high"
     }
    },
    {
@@ -213,7 +228,7 @@
     "type": "medium",
     "frame": {
      "size": 3.2,
-     "look_dz": 0.44,
+     "look_dz": 0.14,
      "move": "still",
      "subject": "emily",
      "height": "high"
@@ -237,7 +252,7 @@
     "type": "medium",
     "frame": {
      "size": 3.2,
-     "look_dz": 0.44,
+     "look_dz": 0.14,
      "move": "still",
      "subject": "emily",
      "height": "high"
@@ -261,7 +276,7 @@
     "type": "medium",
     "frame": {
      "size": 3.2,
-     "look_dz": 0.59,
+     "look_dz": 0.29,
      "move": "still",
      "subject": "emily",
      "height": "high"
@@ -272,11 +287,10 @@
     "b": 1610,
     "type": "medium",
     "frame": {
-     "size": 3.2,
-     "look_dz": 0.44,
+     "size": 3.0,
+     "look_dz": 0.3,
      "move": "still",
-     "subject": "emily",
-     "height": "high"
+     "subject": "emily"
     }
    },
    {
@@ -296,11 +310,10 @@
     "b": 1751,
     "type": "medium",
     "frame": {
-     "size": 3.2,
-     "look_dz": 0.44,
+     "size": 3.0,
+     "look_dz": 0.3,
      "move": "still",
-     "subject": "emily",
-     "height": "high"
+     "subject": "emily"
     }
    },
    {
@@ -373,7 +386,7 @@
     "segments": [
      {
       "from": 1,
-      "to": 495,
+      "to": 679,
       "location": [
        -0.85,
        4.3,
@@ -382,34 +395,34 @@
       "note": "seated"
      },
      {
-      "from": 496,
-      "to": 536,
+      "from": 680,
+      "to": 725,
       "location": [
-       "lerp(-0.850, -2.450, ease((f - 496) / 40))",
-       "lerp(4.300, 3.800, ease((f - 496) / 40))",
+       "lerp(-0.850, -2.730, ease((f - 680) / 45))",
+       "lerp(4.300, 4.200, ease((f - 680) / 45))",
        0
       ]
      },
      {
-      "from": 537,
-      "to": 1063,
+      "from": 726,
+      "to": 744,
       "location": [
-       -2.45,
-       3.8,
+       -2.73,
+       4.2,
        0
       ]
      },
      {
-      "from": 1064,
-      "to": 1104,
+      "from": 745,
+      "to": 790,
       "location": [
-       "lerp(-2.450, -0.850, ease((f - 1064) / 40))",
-       "lerp(3.800, 4.300, ease((f - 1064) / 40))",
+       "lerp(-2.730, -0.850, ease((f - 745) / 45))",
+       "lerp(4.200, 4.300, ease((f - 745) / 45))",
        0
       ]
      },
      {
-      "from": 1105,
+      "from": 791,
       "to": 2037,
       "location": [
        -0.85,
@@ -628,13 +641,13 @@
      ],
      "body": [
       0,
-      "-0.460 + (0.460) * ease((f - 480) / 14) + (-0.460) * ease((f - 1110) / 14)"
+      "-0.460 + (0.460) * ease((f - 664) / 14) + (-0.460) * ease((f - 792) / 14)"
      ]
     },
     "segments": [
      {
-      "from": 1064,
-      "to": 1104,
+      "from": 745,
+      "to": 790,
       "legs": "walk_legs(f * 0.32 + 0.0)",
       "armL": [
        "ang",
@@ -653,8 +666,8 @@
       "rest": 0
      },
      {
-      "from": 496,
-      "to": 536,
+      "from": 680,
+      "to": 725,
       "legs": "walk_legs(f * 0.32 + 0.0)",
       "armL": [
        "ang",
@@ -671,6 +684,18 @@
        "0.03 * abs(sin(f * 0.32 + 0.0))"
       ],
       "rest": 0
+     },
+     {
+      "from": 726,
+      "to": 743,
+      "armL": [
+       "ik",
+       [
+        -0.6,
+        0.95
+       ],
+       1
+      ]
      },
      {
       "from": 1,
@@ -931,6 +956,43 @@
     "segments": [
      {
       "from": 1,
+      "to": 1540,
+      "location": [
+       0.85,
+       4.3,
+       0
+      ],
+      "note": "seated"
+     },
+     {
+      "from": 1541,
+      "to": 1627,
+      "location": [
+       "lerp(0.850, -2.730, ease((f - 1541) / 86))",
+       "lerp(4.300, 4.200, ease((f - 1541) / 86))",
+       0
+      ]
+     },
+     {
+      "from": 1628,
+      "to": 1646,
+      "location": [
+       -2.73,
+       4.2,
+       0
+      ]
+     },
+     {
+      "from": 1647,
+      "to": 1733,
+      "location": [
+       "lerp(-2.730, 0.850, ease((f - 1647) / 86))",
+       "lerp(4.200, 4.300, ease((f - 1647) / 86))",
+       0
+      ]
+     },
+     {
+      "from": 1734,
       "to": 2037,
       "location": [
        0.85,
@@ -1162,10 +1224,62 @@
      ],
      "body": [
       0,
-      "-0.460 + (0.300) * ease((f - 703) / 14)"
+      "-0.460 + (0.460) * ease((f - 1525) / 14) + (-0.460) * ease((f - 1735) / 14)"
      ]
     },
     "segments": [
+     {
+      "from": 1647,
+      "to": 1733,
+      "legs": "walk_legs(f * 0.32 + 1.3)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 1.3)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 1.3)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 1.3))"
+      ],
+      "rest": 0
+     },
+     {
+      "from": 1541,
+      "to": 1627,
+      "legs": "walk_legs(f * 0.32 + 1.3)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 1.3)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 1.3)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 1.3))"
+      ],
+      "rest": 0
+     },
+     {
+      "from": 1628,
+      "to": 1645,
+      "armL": [
+       "ik",
+       [
+        -0.6,
+        0.95
+       ],
+       1
+      ]
+     },
      {
       "from": 100,
       "to": 166,
@@ -1419,11 +1533,7 @@
        ],
        1
       ],
-      "tilt": -0.1,
-      "prop_tilt": [
-       0,
-       -0.35
-      ]
+      "tilt": -0.1
      },
      {
       "from": 1669,
@@ -1432,14 +1542,10 @@
       "armR": [
        "ik",
        [
-        0.5,
-        1.18
+        0.3,
+        0.34
        ],
        -1
-      ],
-      "prop_tilt": [
-       0,
-       -0.35
       ]
      },
      {
@@ -1461,6 +1567,34 @@
      },
      {
       "from": 1,
+      "to": 1524,
+      "armR": [
+       "ik",
+       [
+        0.5,
+        1.18
+       ],
+       -1
+      ],
+      "prop_tilt": [
+       0,
+       -0.35
+      ]
+     },
+     {
+      "from": 1525,
+      "to": 1734,
+      "armR": [
+       "ik",
+       [
+        0.3,
+        0.34
+       ],
+       -1
+      ]
+     },
+     {
+      "from": 1735,
       "to": 2037,
       "armR": [
        "ik",
@@ -2079,5 +2213,33 @@
   "auto": {
    "enabled": false
   }
+ },
+ "lights": [
+  [
+   736,
+   "off"
+  ],
+  [
+   1638,
+   "on"
+  ]
+ ],
+ "visibility": {
+  "lamp_shade_on": [
+   [
+    1,
+    735
+   ],
+   [
+    1638,
+    2037
+   ]
+  ],
+  "lamp_shade_off": [
+   [
+    736,
+    1637
+   ]
+  ]
  }
 }

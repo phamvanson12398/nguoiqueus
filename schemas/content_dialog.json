@@ -493,9 +493,12 @@
        "exit",
        "sit_down",
        "lie_down",
-       "stand_up"
+       "stand_up",
+       "lights_off",
+       "lights_on",
+       "errand"
       ],
-      "description": "việc người nói làm khi nói câu này: take_out (lấy đồ ra), show (giơ cho người kia xem), use (uống/ăn/xem điện thoại — trước câu), give (đưa cho người kia cuối câu), put_away (cất đi), walk_to (vừa nói vừa bước tới to_spot), enter (đi vào cảnh rồi nói), exit (nói xong bỏ đi); sit_down (ngồi xuống ghế/sofa/mép giường trước câu), lie_down (nằm xuống giường), stand_up (đứng dậy); đi lại thì tool tự cho đứng dậy trước, walk_to tới spot có ghế thì tự ngồi"
+      "description": "việc người nói làm khi nói câu này: take_out (lấy đồ ra), show (giơ cho người kia xem), use (uống/ăn/xem điện thoại — trước câu), give (đưa cho người kia cuối câu), put_away (cất đi), walk_to (vừa nói vừa bước tới to_spot), enter (đi vào cảnh rồi nói), exit (nói xong bỏ đi); sit_down (ngồi xuống ghế/sofa/mép giường trước câu), lie_down (nằm xuống giường), stand_up (đứng dậy); đi lại thì tool tự cho đứng dậy trước, walk_to tới spot có ghế thì tự ngồi; lights_off / lights_on (người nói đứng dậy — ra khỏi giường nếu đang nằm —, đi tới đèn/công tắc, bấm: đèn tắt/bật thật, cả phòng tối/sáng; rồi quay về đúng chỗ và tư thế cũ, vd nằm lại giường), errand (đi tới to_spot làm gì đó rồi quay về)"
      },
      "prop": {
       "enum": [

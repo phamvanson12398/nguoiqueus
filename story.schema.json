@@ -1187,6 +1187,26 @@
      }
     }
    }
+  },
+  "lights": {
+   "type": "array",
+   "description": "dialogue: [[frame, 'on'|'off']] — the room light switched; 'off' = night grade from that frame (captions stay bright)",
+   "items": {
+    "type": "array",
+    "prefixItems": [
+     {
+      "type": "integer"
+     },
+     {
+      "enum": [
+       "on",
+       "off"
+      ]
+     }
+    ],
+    "minItems": 2,
+    "maxItems": 2
+   }
   }
  },
  "$defs": {

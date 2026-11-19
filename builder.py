@@ -888,7 +888,10 @@ class Builder:
             outfits.to_template_collection(coll, troot, loc)
         if any("grade" in sh for sh in st["camera"].get("shots", [])):
             fx_long.grade(st["camera"]["shots"])
-        if self.dof_on:                       # DOF would blur captions/cards near the lens: render them in an overlay scene
+        lights = st.get("lights")                  # dialogue: someone switches the light off/on -> the whole room goes night/day
+        if lights:
+            fx_long.grade([{"a": 1, "grade": "day"}] + [{"a": max(1, int(f)), "grade": "night" if v == "off" else "day"} for f, v in lights])
+        if self.dof_on or lights:                 # DOF would blur captions/cards, a night grade would darken them: draw them in an overlay
             overlay.make_overlay([cap_root, cards_root], samples=max(4, meta.get("samples", 32) // 4))
 
         self.build_sound()

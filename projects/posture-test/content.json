@@ -228,8 +228,7 @@
    "speed": 1.05,
    "sfx": "none",
    "react": "none",
-   "beat": "build",
-   "action": "stand_up"
+   "beat": "build"
   },
   {
    "speaker": "emily",
@@ -259,7 +258,8 @@
    "speed": 0.92,
    "sfx": "none",
    "react": "none",
-   "beat": "build"
+   "beat": "build",
+   "action": "lights_off"
   },
   {
    "speaker": "emily",
@@ -274,8 +274,7 @@
    "speed": 1,
    "sfx": "none",
    "react": "none",
-   "beat": "build",
-   "action": "sit_down"
+   "beat": "build"
   },
   {
    "speaker": "jake",
@@ -350,8 +349,7 @@
    "speed": 1,
    "sfx": "none",
    "react": "none",
-   "beat": "build",
-   "action": "lie_down"
+   "beat": "build"
   },
   {
    "speaker": "emily",
@@ -411,7 +409,8 @@
    "speed": 1.05,
    "sfx": "none",
    "react": "none",
-   "beat": "build"
+   "beat": "build",
+   "action": "lights_on"
   },
   {
    "speaker": "jake",

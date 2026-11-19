@@ -222,7 +222,8 @@ def assemble(slug, log=print):
         words += ws
         pieces.append(x); t += dur
         lines.append({"n": k + 1, "speaker": l["speaker"], "start": round(a, 3), "end": round(t, 3), "text": txt})
-    pieces.append(np.zeros(int(round(TAIL * tts.SR)), np.float32)); t += TAIL
+    tail = 7.0 if c["lines"][-1].get("action") in ERRANDS else TAIL      # the errand (out of bed, light, back) finishes on screen
+    pieces.append(np.zeros(int(round(tail * tts.SR)), np.float32)); t += tail
     y = np.concatenate(pieces)
     pk = float(np.abs(y).max()) or 1.0
     y = y * min(4.0, 0.89 / pk)                    # peaks at -1 dBFS (OmniVoice lines come out at different levels)
@@ -361,7 +362,9 @@ PROP_KINDS = ["phone", "coffee", "mug", "soda", "bottle", "fries", "burger", "pi
 USE = {"coffee": "drink", "mug": "drink", "soda": "drink", "bottle": "drink", "fries": "eat", "burger": "eat", "pizza": "eat",
        "icecream": "eat", "popcorn": "eat", "donut": "eat", "phone": "look", "book": "look", "paper": "look", "receipt": "look",
        "remote": "look", "card": "look", "money": "look"}
-ACTIONS = ["none", "take_out", "show", "use", "give", "put_away", "walk_to", "enter", "exit", "sit_down", "lie_down", "stand_up"]
+ACTIONS = ["none", "take_out", "show", "use", "give", "put_away", "walk_to", "enter", "exit", "sit_down", "lie_down", "stand_up",
+           "lights_off", "lights_on", "errand"]
+ERRANDS = ("lights_off", "lights_on", "errand")    # get up, walk there, do it, come back to the same place and posture
 WALK = 1.25            # units per second (a stroll; the soft body is ~2.7 tall)
 OFF = 4.3              # entering / leaving people start / end this far from the stage centre (out of a 9:16 frame)
 STEP = 0.32            # walk cycle: phase per frame (one step ~10 frames)
@@ -409,6 +412,8 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
     open_ = {i: {} for i in range(n)}                # hand -> item being held
     out = {i: False for i in range(n)}                # off the frame right now (not entered yet / left)
     beds = beds or {}; inbed = {i: i in inbed0 for i in range(n)}
+    cur_post = {i: (cast[i].get("posture") or "stand") for i in range(n)}
+    lamp = None; lights = []; extra_post = {i: [] for i in range(n)}
     state = {"posture": lambda i, f: "stand"}         # set by plan() once postures are planned (items held in bed)
 
     def pos(i, f):
@@ -490,6 +495,30 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
             dur = max(int(0.8 * FPS), int(round(math.hypot(to[0] - p0[0], to[1] - p0[1]) / WALK * FPS)))
             walk(i, max(2, a - 24 - dur), to)
         if acts == "lie_down": inbed[i] = True
+        if acts in ERRANDS:                         # e.g. "Fine..." -> gets out of bed, switches the light off, back to bed
+            p_home = pos(i, a); was_in = inbed[i]; post = cur_post[i]
+            others = [pos(o, a)[0] for o in range(n) if o != i]
+            sd = 1 if not others or p_home[0] >= sum(others) / len(others) else -1
+            ts = (l.get("to_spot") or "").strip()
+            sw = ts if ts in spots else next((k for k in ("light_switch", "lamp", "switch") if k in spots and acts != "errand"), None)
+            if sw:
+                target = tuple(spots[sw]["xy"]); reach_side = 1 if target[0] >= p_home[0] else -1
+            elif acts == "errand":
+                target = (round(p_home[0] + sd * 2.4, 3), round(p_home[1] - 0.3, 3)); reach_side = sd
+            else:
+                if lamp is None:
+                    lamp = {"x": round(p_home[0] + sd * 2.5, 3), "y": round(p_home[1] + 0.25, 3)}
+                reach_side = 1 if lamp["x"] >= p_home[0] else -1
+                target = (round(lamp["x"] - reach_side * 0.62, 3), round(lamp["y"] - 0.35, 3))
+            t0 = min(N, a + 6 + (POSE_T + 4 if post != "stand" else 0))       # gets up first (posture planner puts "stand" before the walk)
+            b1 = walk(i, t0, target)
+            hand = "R" if reach_side > 0 else "L"
+            act[i].append({"from": b1 + 1, "to": min(N, b1 + 18), "arm" + hand: ["ik", [round(reach_side * 0.6, 3), 0.95], -reach_side]})
+            if acts != "errand": lights.append((min(N, b1 + 11), "off" if acts == "lights_off" else "on"))
+            b2 = walk(i, min(N, b1 + 20), (round(p_home[0], 3), round(p_home[1], 3)))
+            if post != "stand": extra_post[i].append((min(N, b2 + 2), post))   # back into bed / onto the sofa
+            inbed[i] = was_in
+        if acts in ("sit_down", "lie_down", "stand_up"): cur_post[i] = {"sit_down": "sit", "lie_down": "lie", "stand_up": "stand"}[acts]
         if acts == "stand_up" and inbed[i]:         # gets up, then steps out of the bed on the free side
             others = [pos(o, a)[0] for o in range(n) if o != i]
             sd = -1 if others and sum(others) / len(others) > pos(i, a)[0] else 1
@@ -578,6 +607,8 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
     hold_at.state = state
     hp = {i: [{"id": it["id"], "kind": it["kind"], "hand": it["hand"], "ranges": [[it["a"], it["b"]]], **({"color": it["color"]} if "color" in it else {})}
               for it in items[i]] for i in range(n)}
+    if lights and lights[0][1] == "on": lights.insert(0, (1, "off"))        # switched on: it was dark before
+    plan_actions.extras = {"lamp": lamp, "lights": lights, "post": extra_post}
     return hp, blocking, act, hold_at, pos, way
 
 
@@ -604,7 +635,7 @@ def _steps(base, events, T=POSE_T):
     return out if changed else round(base, 3)
 
 
-def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), log=print):
+def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), log=print, extra=None):
     """per cast member: pose-default fields (legs/body/rest as smooth expressions of f), the furniture to put in the set,
     posture_at(i, f) and the frame ranges spent sitting/lying."""
     cast = c["cast"]; L = c["lines"]; n = len(cast); ids = [m["id"] for m in cast]; spots = spots or {}
@@ -619,6 +650,8 @@ def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), lo
             ev[i].append((max(2, a - 18), {"sit_down": "sit", "lie_down": "lie", "stand_up": "stand"}[act], None))
         if act == "walk_to" and (l.get("to_spot") or "") in spots and (spots[l["to_spot"]].get("seat") or spots[l["to_spot"]].get("bed")):
             ev[i].append(("after_walk", "sit", l["to_spot"]))          # walks to the sofa / bed and sits on it
+    for i, evs in (extra or {}).items():               # back from an errand: lies / sits down again
+        for f0, q in evs: ev[i].append((f0, q, None))
     for i in range(n):                                # walking needs legs: get up first, sit again on arrival at a seat
         fixed = []
         walks = [w for w in way[i] if w[1] - w[0] >= 2]
@@ -629,7 +662,7 @@ def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), lo
             else: fixed.append(e)
         fixed.sort(key=lambda e: e[0])
         for a, b, _p0, _p1 in walks:
-            cur = [e for e in fixed if e[0] <= a]
+            cur = sorted([e for e in fixed if e[0] <= a], key=lambda e: e[0])
             if cur and cur[-1][1] != "stand": fixed.append((max(2, a - POSE_T - 2), "stand", None))
         ev[i] = sorted(fixed, key=lambda e: e[0])
 
@@ -797,7 +830,10 @@ def plan(slug, char_style=None, log=print):
     dirs = [_dir(i, xs) for i in range(n)]
     hprops, blocking, act_segs, hold_at, pos_at, ways = plan_actions(c, lt, xs, ys, stage, (smeta or {}).get("spots"), N, fr, kids, addressee, log,
                                                                      beds=beds, inbed0=inbed0)
-    pfields, furniture, posture_at, seated = plan_postures(c, lt, xs, ys, ways, (smeta or {}).get("spots"), N, fr, kids, dirs, bed_list, log)
+    ex = plan_actions.extras
+    pfields, furniture, posture_at, seated = plan_postures(c, lt, xs, ys, ways, (smeta or {}).get("spots"), N, fr, kids, dirs, bed_list, log,
+                                                           extra=ex["post"])
+    lamp, lights = ex["lamp"], ex["lights"]
 
     def inbed_at(i, f):
         """lying, or sitting up after lying (the last non-stand posture before f started in bed)"""
@@ -923,13 +959,29 @@ def plan(slug, char_style=None, log=print):
                  **({"char_tone": "grey"} if style == "2d_grey" else {}), "dialog": True, "fast_build": True},
         "sets": [{"id": "stage", "type": set_name, "params": params,
                   **({"props": [{"id": f"furn{k}_{fu['type']}", "type": fu["type"], "params": fu["params"], "loc": fu["loc"]}
-                                for k, fu in enumerate(furniture)]} if furniture else {})}],
+                                for k, fu in enumerate(furniture)]
+                                + ([{"id": "lamp", "type": "floor_lamp", "params": {"on": not (lights and lights[0][1] == "off" and lights[0][0] <= 1)},
+                                     "loc": [lamp["x"], lamp["y"], 0]}] if lamp else [])} if (furniture or lamp) else {})}],
         "camera": {"rig": "long", "shots": shots, "hand": 0.0},          # locked-off camera, no shake (cuts only)
         "chars": chars,
         "words": words,
         "captions": {"style": "word"},                    # one plain yellow word at a time, like the reference videos
         "sound": {"auto": {"enabled": False}},             # voices only: no music, no sound effects
     }
+    if lights:
+        st["lights"] = [[int(f), v] for f, v in lights]
+        if lamp:                                           # the lamp's shade glows while the light is on
+            on, cur, f0 = [], None, 1
+            for f, v in [(1, "off" if lights[0][0] <= 1 and lights[0][1] == "off" else "on")] + [tuple(x) for x in lights]:
+                if cur == "on" and f > f0: on.append([f0, f - 1])
+                cur, f0 = v, f
+            if cur == "on": on.append([f0, N])
+            off = []; g = 1
+            for a_, b_ in on:
+                if a_ > g: off.append([g, a_ - 1])
+                g = b_ + 1
+            if g <= N: off.append([g, N])
+            st["visibility"] = {"lamp_shade_on": on or [[0, 0]], "lamp_shade_off": off or [[0, 0]]}
     errs = storycheck.check_story(st, lib)
     if errs: raise ValueError("story.json lỗi: " + "; ".join(errs[:6]))
     _w(os.path.join(d, "story.json"), st)

@@ -102,6 +102,8 @@ PROP_WORDS = [
     (r"flowers?|bouquet|hoa\b|bó hoa", "flowers"), (r"gift|present|quà|hộp quà", "gift"), (r"credit card|\bcard\b|thẻ", "card"),
     (r"popcorn|bỏng ngô|bắp rang", "popcorn"), (r"donut|doughnut|bánh vòng|bánh donut", "donut")]
 ACTION_WORDS = [
+    (r"(turns?|switch(es)?|flips?) (off|out) the lights?|lights? off|kills? the lights?|tắt (đèn|điện)", "lights_off", None),
+    (r"(turns?|switch(es)?|flips?) on the lights?|lights? on|bật (đèn|điện)", "lights_on", None),
     (r"lies? down|lying|lays? down|in bed|nằm", "lie_down", None),
     (r"sits? down|sitting|takes? a seat|ngồi xuống|ngồi phịch|\bngồi\b", "sit_down", None),
     (r"stands? up|gets? up|jumps? up|đứng dậy|đứng lên|bật dậy|ngồi dậy", "stand_up", None),

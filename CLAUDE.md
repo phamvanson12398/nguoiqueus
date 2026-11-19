@@ -509,6 +509,14 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - Góp ý tiếp ("giường to ra, căn lại đầu, chăn đắp thấp nửa người"): giường dọc dài 3,4, đơn rộng 1,9, đôi 1,7·(n−1)+1,75; mỗi người một
     gối dựng vào đầu giường (cao 0,78); đầu ở mặt nệm + 1,0 (ngả lên gối) / + 1,3 (ngồi dậy) nên thấy trọn đầu, vai, tay; chăn cuộn ngang
     bụng (mặt chăn + 0,2); hai người nằm cách 1,7 (đầu không chạm); đồ cầm khi nằm từ đầu dùng tay phía ngoài (không che mặt người kia).
+- Đi làm việc rồi quay về (người dùng: "đang ngủ, bạn gái nhờ ra tắt điện thì ra tắt, đèn phải tắt, xong về giường nằm"): action `lights_off`,
+  `lights_on`, `errand` (+ `to_spot`). `plan_actions`: người nói ra khỏi giường/đứng dậy (posture planner tự chèn "stand" trước đường đi),
+  đi tới spot `light_switch`/`lamp`/`switch` của bối cảnh hoặc `props/floor_lamp` tool tự đặt (phía không có ai, cách 2,5), với tay 18 khung,
+  bấm ở khung thứ 11 → story `lights` [[f, "off"|"on"]], đi về đúng chỗ cũ, tư thế cũ (`extra` cho plan_postures: nằm/ngồi lại).
+  Builder: `lights` → `fx_long.grade` (day/night, đổi tức thì) + phụ đề/thẻ vẽ ở lớp phủ (`overlay.make_overlay`) nên không tối theo;
+  chụp đèn đổi `lamp_shade_on/off` bằng `visibility`. lights_on đầu tiên → lúc đầu phòng tối. Errand ở câu cuối → đuôi video 7 s.
+  Nhập kịch bản: "(đi tắt đèn)", "(bật điện)", "(turns off the light)". Thử `projects/posture-test`: Jake tắt đèn rồi nằm lại,
+  Emily bật đèn; `CAMERA OK`. Ảnh: `docs/img/dialog_lights.jpg`.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

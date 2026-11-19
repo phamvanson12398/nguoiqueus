@@ -125,6 +125,11 @@ gài từ trước) — tối đa khoảng 1/3 số câu có action.
   ngả lưng trên gối dựng, chăn đắp ngang bụng; hai người nằm từ đầu → chung giường đôi). Người đang nằm ngồi dậy thì ngồi thẳng, vẫn đắp chăn. Đi (`walk_to`, `exit`) thì tool tự cho đứng dậy trước; `walk_to` tới spot có ghế thì tự ngồi xuống.
   Dùng khi tư thế làm nên cái hài: nằm lướt điện thoại hỏi câu ngớ ngẩn lúc nửa đêm, ngồi sofa giành remote, ngồi phịch xuống khi
   chịu thua, bật dậy khi sốc. Cảnh "trong xe" vẫn dựng đứng/ngồi cạnh xe (`car_hood` ở bãi đỗ).
+- **Đi làm việc rồi quay về**: `lights_off` / `lights_on` (người nói câu đó ra khỏi giường/đứng dậy, đi tới đèn — bối cảnh không có
+  công tắc thì tool đặt đèn cây —, với tay bấm: đèn tắt/bật thật, cả phòng tối/sáng; rồi về đúng chỗ, nằm/ngồi lại như cũ). `errand` +
+  `to_spot` = đi tới chỗ đó, làm gì đó, quay về. Hội thoại vẫn tiếp tục trong lúc người đó đi (6-8 s): câu sau có thể là người kia
+  nói vọng theo, hoặc người đi càu nhàu khi đang đi. Ví dụ: "Babe, can you get the light?" → "[sigh] Every. Single. Night." (lights_off)
+  → "...Now I can't see my phone." (cú chốt).
 
 ## 5. Bối cảnh
 - Một bối cảnh cho cả video, chọn trong thư viện (bếp `kitchen` với `stuck_toast: false`, `office`, `street`…). Nếu không hợp thì đặt
