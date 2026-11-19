@@ -21,7 +21,7 @@ parse(text) -> {"title", "hook", "setting", "idle", "speakers": [...], "lines": 
                  "warnings": [...], "vietnamese": bool}
 to_content(parsed, voices=(), minutes=None) -> a complete content.json (defaults chosen by the tool, no Claude)
 """
-import re, unicodedata
+import json, re, unicodedata
 import vtags
 
 HEADERS = {"title": "title", "tiêu đề": "title", "tieu de": "title", "hook": "hook", "tagline": "hook", "dòng chữ": "hook",
@@ -95,7 +95,7 @@ def _slug(name):
 PROP_WORDS = [
     (r"phone|điện thoại|đt\b|smartphone|iphone", "phone"), (r"coffee|cà phê|cafe|latte|starbucks", "coffee"),
     (r"\bmug\b|\btea\b|\btrà\b|cốc|tách", "mug"), (r"soda|\bcoke\b|\bcan\b|lon\b|nước ngọt", "soda"),
-    (r"bottle|water|chai|nước suối|\bwine\b|rượu", "bottle"), (r"fries|khoai|chips", "fries"), (r"burger|bánh mì kẹp|hamburger", "burger"),
+    (r"bottle|water|chai|nước suối|\bwine\b|rượu", "bottle"), (r"pillow|\bgối\b|cái gối", "pillow"), (r"fries|khoai|chips", "fries"), (r"burger|bánh mì kẹp|hamburger", "burger"),
     (r"pizza", "pizza"), (r"ice ?cream|kem\b", "icecream"), (r"\bbag\b|túi|shopping", "bag"), (r"keys?\b|chìa khóa|chìa khoá", "keys"),
     (r"\bbook\b|sách|quyển", "book"), (r"remote|điều khiển|remote control", "remote"), (r"receipt|hóa đơn|hoá đơn|bill\b", "receipt"),
     (r"letter|paper|note\b|tờ giấy|lá thư|thư\b|giấy", "paper"), (r"money|cash|dollars?|tiền", "money"),
@@ -104,6 +104,11 @@ PROP_WORDS = [
 ACTION_WORDS = [
     (r"(turns?|switch(es)?|flips?) (off|out) the lights?|lights? off|kills? the lights?|tắt (đèn|điện)", "lights_off", None),
     (r"(turns?|switch(es)?|flips?) on the lights?|lights? on|bật (đèn|điện)", "lights_on", None),
+    (r"\bhugs?\b|hugging|embrace|\bôm\b|ôm chầm", "hug", None),
+    (r"high.?fives?|đập tay", "high_five", None),
+    (r"pinch(es)? (his|her|their)? ?cheeks?|véo má|nhéo má", "pinch_cheek", None),
+    (r"throws?|tosses?|chucks?|\bném\b|quăng|chọi", "throw", None),
+    (r"falls? (over|down|backwards?)|trips?|faints?|\bngã\b|té|vấp|ngất|xỉu", "fall_over", None),
     (r"lies? down|lying|lays? down|in bed|nằm", "lie_down", None),
     (r"sits? down|sitting|takes? a seat|ngồi xuống|ngồi phịch|\bngồi\b", "sit_down", None),
     (r"stands? up|gets? up|jumps? up|đứng dậy|đứng lên|bật dậy|ngồi dậy", "stand_up", None),
@@ -254,6 +259,12 @@ def pick_set(desc, have=()):
 
 
 def cast_member(name, k, voices=()):
+    import cast_lib
+    saved = cast_lib.get(name)
+    if saved:                                   # a channel character: their saved look, voice and personality
+        m = {k_: json.loads(json.dumps(v)) for k_, v in saved.items() if k_ not in ("id", "aliases")}
+        m.update(id=_slug(name), name=name if not name.isupper() else name.title())
+        return m
     low = name.lower(); key = low.split()[0]
     role, gender, age, body = ROLE_WORDS.get(key, (None, None, "young adult", "adult"))
     if gender is None: gender = "female" if key in FEMALE or key.endswith(("a", "ie", "y")) and key not in {"tony", "andy", "jay", "ray"} else "male"

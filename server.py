@@ -975,6 +975,11 @@ class Handler(BaseHTTPRequestHandler):
 
     do_PUT = do_POST
 
+    def do_DELETE(self):
+        try: self.route("DELETE")
+        except ValueError as e: self.send_json({"error": str(e)}, 400)
+        except Exception as e: log_error(); self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
+
     def route(self, method):
         self._jb = None                                # one handler serves several requests on a keep-alive connection
         u = urlparse(self.path); path = unquote(u.path); q = parse_qs(u.query)
@@ -1191,6 +1196,15 @@ class Handler(BaseHTTPRequestHandler):
             if act[:1] == ["file"]:
                 return self.send_file(self.safe_join(d, "/".join(act[1:])))
 
+        if api == ["cast"] and method == "GET":                           # channel characters
+            import cast_lib
+            return self.send_json({"cast": cast_lib.list_cast()})
+        if api == ["cast"] and method == "POST":
+            import cast_lib
+            return self.send_json({"ok": True, "member": cast_lib.save(self.jbody()["member"])})
+        if len(api) == 2 and api[0] == "cast" and method == "DELETE":
+            import cast_lib
+            return self.send_json({"ok": cast_lib.delete(api[1])})
         if api == ["voices"]:
             return self.send_json({"voices": tts.list_voices(), "tts": tts.status()})
         if api == ["voices", "settings"] and method == "POST":           # python.exe that has OmniVoice (this machine only)

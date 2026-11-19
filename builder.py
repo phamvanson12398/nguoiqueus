@@ -795,6 +795,16 @@ class Builder:
             self.build_char(cs)
         for k, cr in enumerate(st.get("crowds", [])):
             self.build_crowd(cr, k)
+        for k, fl in enumerate(st.get("flights", [])):          # dialogue: a thrown item flying along an arc (pillow at the head)
+            try: g = handprops.make_free(f"flight{k}_{fl['kind']}", fl["kind"], fl.get("color"))
+            except ValueError as e: raise StoryError(f"flights[{k}]: {e}")
+            a, b = int(fl["a"]), int(fl["b"]); p0, p1 = fl["from"], fl["to"]; h = float(fl.get("arc", 0.6))
+            for f in range(a, b + 1):
+                u = (f - a) / max(1, b - a)
+                g.location = (p0[0] + (p1[0] - p0[0]) * u, p0[1] + (p1[1] - p0[1]) * u, p0[2] + (p1[2] - p0[2]) * u + 4 * h * u * (1 - u))
+                g.rotation_euler = (math.pi / 2, -float(fl.get("spin", 9.0)) * u, 0)
+                g.keyframe_insert("location", frame=f); g.keyframe_insert("rotation_euler", frame=f)
+            self.outfit_vis.append((g, [(a, b)]))
         for c in self.chars.values():
             fx.add_reaction_fx(c)
         for cs in self.char_specs:

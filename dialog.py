@@ -357,13 +357,14 @@ def gesture_pose(g, d, gap, scale=1.0, slim=True):
 # ---------------------------------------------------------------------
 #  props in hand + walking (line `action` / `prop` / `to_spot`, cast `holding`)
 # ---------------------------------------------------------------------
-PROP_KINDS = ["phone", "coffee", "mug", "soda", "bottle", "fries", "burger", "pizza", "icecream", "bag", "keys", "book", "remote",
+PROP_KINDS = ["pillow", "phone", "coffee", "mug", "soda", "bottle", "fries", "burger", "pizza", "icecream", "bag", "keys", "book", "remote",
               "paper", "receipt", "money", "flowers", "gift", "card", "popcorn", "donut"]
 USE = {"coffee": "drink", "mug": "drink", "soda": "drink", "bottle": "drink", "fries": "eat", "burger": "eat", "pizza": "eat",
        "icecream": "eat", "popcorn": "eat", "donut": "eat", "phone": "look", "book": "look", "paper": "look", "receipt": "look",
        "remote": "look", "card": "look", "money": "look"}
 ACTIONS = ["none", "take_out", "show", "use", "give", "put_away", "walk_to", "enter", "exit", "sit_down", "lie_down", "stand_up",
-           "lights_off", "lights_on", "errand"]
+           "lights_off", "lights_on", "errand", "hug", "high_five", "pinch_cheek", "throw", "fall_over"]
+DUO = ("hug", "high_five", "pinch_cheek", "throw", "fall_over")   # moves with the other person (or a fall)
 ERRANDS = ("lights_off", "lights_on", "errand")    # get up, walk there, do it, come back to the same place and posture
 STAGING_DOC = """Động tác tool làm được (mỗi bước: who, do, + object/state/prop/to_spot, when = before|during|after, back):
 - interact: đi tới đồ vật `object` (id trong objects), với tay, đổi nó sang `state` (bật/tắt TV, mở/đóng tủ lạnh, mở cửa, tắt đèn…),
@@ -375,6 +376,9 @@ STAGING_DOC = """Động tác tool làm được (mỗi bước: who, do, + obje
   exit (bỏ đi khỏi cảnh).
 - sit_down / lie_down / stand_up: ngồi xuống (ghế/sofa/mép giường), nằm xuống giường (đắp chăn), đứng dậy / ra khỏi giường.
 - take_out / show / use / give / put_away + prop: lấy đồ ra, giơ cho xem, dùng (uống/ăn/xem màn hình), đưa cho người kia, cất đi.
+- Hai người với nhau (`to` = id người kia, trống = người đang nói chuyện cùng): hug (lại gần ôm nhau ~1,3 s rồi về chỗ),
+  high_five (đập tay), pinch_cheek (véo má, người kia giật mình), throw + prop (mặc định pillow: lấy đà ném trúng đầu người kia,
+  họ giật mình), fall_over (ngã ngửa rồi tự dậy — vấp, sốc quá, giả chết).
 Nguyên tắc: chỉ dàn dựng điều kịch bản ngụ ý hoặc làm cú hài rõ hơn bằng hình (người kia vừa đi tắt đèn vừa càu nhàu, mở tủ lạnh
 đúng lúc nói "I'm not hungry"); không bày việc vô nghĩa; mỗi lúc thường chỉ MỘT người di chuyển; việc mất 4-8 s nên đặt ở câu
 mà các câu sau vẫn nói tiếp được (người kia nói vọng theo); hành động của người NGHE là bước có who = người đó; giữ đúng logic
@@ -431,6 +435,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
     beds = beds or {}; inbed = {i: i in inbed0 for i in range(n)}
     cur_post = {i: (cast[i].get("posture") or "stand") for i in range(n)}
     lights = []; extra_post = {i: [] for i in range(n)}; obj_states = []
+    reacts_x = {i: [] for i in range(n)}; flights = []
     objs = {o["id"]: dict(o) for o in (objects or [])}       # things in the set people can use (placed by plan())
     state = {"posture": lambda i, f: "stand"}         # set by plan() once postures are planned (items held in bed)
 
@@ -491,6 +496,59 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
         if any(l["speaker"] == ids[i] for l in L[:first]): continue    # they talk before: enter = walk back in later
         start = (stage[0] + side[i] * OFF, ys[i])
         way[i].append((0, 1, start, start)); out[i] = True
+
+    def duo(k, l, i, acts, kind, a, b):
+        """hug / high five / pinch a cheek / throw something at someone / fall over"""
+        to = (l.get("to") or l.get("object") or "").strip()
+        j = ids.index(to) if to in ids else addressee_at(i, a)
+        t = min(N, max(a, busy[i] + 2))
+        pi, pj = pos(i, t), pos(j, t); d = 1 if pj[0] > pi[0] else -1
+        hi, hj = ("R" if d > 0 else "L"), ("L" if d > 0 else "R")
+        ks, kj = (0.66 if kids[i] else 1.0), (0.66 if kids[j] else 1.0)
+        bi, bj = -_sgn(hi), -_sgn(hj)
+        if acts == "fall_over":                       # slips and falls on their back (away from the other), then gets up
+            act[i].append({"from": t, "to": min(N, t + 56),
+                           "rest": f"{d * 1.45:.2f} * ease((f - {t}) / 7) - ({d * 1.45:.2f}) * ease((f - {t + 42}) / 12)",
+                           "armL": ["ang", -2.2, 0.4], "armR": ["ang", 2.2, -0.4], "legs": [[0.5 * d, -0.2], [0.8 * d, -0.4]]})
+            busy[i] = max(busy[i], t + 56); moments.append((t, min(N, t + 56), i, "cut", None)); return
+        if acts == "throw":                           # wind up, let go, it flies at the other one's head
+            item = kind or "pillow"
+            h, it = find(i, item)
+            if it is None:
+                h = hi if hi not in open_[i] else ("L" if hi == "R" else "R"); it = give_item(i, item, h, max(1, t - 10))
+            sh = _sgn(h)
+            act[i].append({"from": t, "to": t + 10, "arm" + h: ["ik", [round(-d * 0.25 * ks, 3), round(1.35 * ks, 3)], -sh]})
+            act[i].append({"from": t + 11, "to": t + 22, "arm" + h: ["ik", [round(d * 0.62 * ks, 3), round(1.05 * ks, 3)], -sh]})
+            rel = t + 14; it["b"] = rel; open_[i].pop(h, None)
+            hit = rel + max(8, int(abs(pj[0] - pi[0]) * 5))
+            fy = round(min(pi[1], pj[1]) - 0.9, 3)        # in front of both (their flat layers stand ~0.5 toward the camera)
+            flights.append({"kind": item, "a": rel, "b": hit, "from": [round(pi[0] + d * 0.5, 3), fy, 1.9 * ks],
+                            "to": [round(pj[0] - d * 0.2, 3), fy, 2.05 * kj], "arc": 0.5})
+            reacts_x[j].append([min(N, hit), "flinch"]); busy[i] = max(busy[i], t + 24)
+            moments.append((t, min(N, hit + 16), j if abs(pj[0] - pi[0]) < 1.6 else i, "cut", None)); return
+        gap = {"hug": 0.95, "high_five": 1.25, "pinch_cheek": 1.0}[acts]
+        p_home = pi
+        b1 = t
+        if abs(pj[0] - pi[0]) > gap + 0.15:           # steps up to the other one first
+            b1 = walk(i, t, (round(pj[0] - d * gap, 3), round(pj[1] - 0.05, 3)))
+        if acts == "hug":                             # both hug for ~1.3 s
+            act[i].append({"from": b1, "to": b1 + 40, "arm" + hi: ["ik", [round(d * 0.55 * ks, 3), round(0.8 * ks, 3)], bi],
+                           "arm" + ("L" if hi == "R" else "R"): ["ik", [round(d * 0.3 * ks, 3), round(0.95 * ks, 3)], -bi]})
+            act[j].append({"from": b1 + 2, "to": b1 + 40, "arm" + hj: ["ik", [round(-d * 0.55 * kj, 3), round(0.8 * kj, 3)], bj],
+                           "arm" + ("L" if hj == "R" else "R"): ["ik", [round(-d * 0.3 * kj, 3), round(0.95 * kj, 3)], -bj]})
+            end = b1 + 42
+        elif acts == "high_five":                     # near hands meet between them at chest height (a raised hand hides behind the big head)
+            half = round(max(0.45, min(0.7, abs(pos(j, b1)[0] - pos(i, b1)[0]) / 2)), 3)
+            act[i].append({"from": b1, "to": b1 + 22, "arm" + hi: ["ik", [round(d * half * ks, 3), round(0.82 * ks, 3)], bi]})
+            act[j].append({"from": b1 + 2, "to": b1 + 22, "arm" + hj: ["ik", [round(-d * half * kj, 3), round(0.82 * kj, 3)], bj]})
+            end = b1 + 24
+        else:                                         # pinch_cheek: reaches to the other one's face, they flinch
+            act[i].append({"from": b1, "to": b1 + 30, "arm" + hi: ["ik", [round(d * 0.66 * ks, 3), round(1.15 * ks, 3)], bi]})
+            reacts_x[j].append([min(N, b1 + 8), "flinch"])
+            end = b1 + 32
+        busy[i] = max(busy[i], end); busy[j] = max(busy[j], end)
+        moments.append((max(1, b1 - 4), min(N, end), i, "cut", None))
+        if abs(pos(i, end)[0] - p_home[0]) > 0.1: walk(i, end + 2, p_home)
 
     def do(k, l, i, acts, kind, a, b, is_step=False):
         """one action of cast member i at line k (a, b = the line's frames, or the step's moment)"""
@@ -570,6 +628,9 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
             else:
                 inbed[i] = False; cur_post[i] = "stand"; busy[i] = max(busy[i], t_cut + 30)
                 moments.append((t_cut, min(N, t_cut + 33), i, "away", target))
+        if acts in DUO:
+            duo(k, l, i, acts, kind, a, b)
+            return
         if acts in ("sit_down", "lie_down", "stand_up"): cur_post[i] = {"sit_down": "sit", "lie_down": "lie", "stand_up": "stand"}[acts]
         if acts == "stand_up" and inbed[i]:         # cut: already up, standing beside the bed on the free side
             others = [pos(o, a)[0] for o in range(n) if o != i]
@@ -686,7 +747,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
     if any(o_["states"].get(o_.get("state0") or "", {}).get("room") == "night" for o_ in objs.values()):
         lights.insert(0, (1, "off"))                     # a light that starts switched off: the room starts dark
     plan_actions.extras = {"objects": objs, "obj_states": sorted(obj_states), "lights": lights, "post": extra_post,
-                           "moments": moments, "instant": instant, "busy_end": max([0] + list(busy.values()) + [f_ for e_ in extra_post.values() for f_, _q in e_])}
+                           "moments": moments, "instant": instant, "reacts": reacts_x, "flights": flights, "busy_end": max([0] + list(busy.values()) + [f_ for e_ in extra_post.values() for f_, _q in e_])}
     return hp, blocking, act, hold_at, pos, way
 
 
@@ -1080,6 +1141,8 @@ def plan(slug, char_style=None, log=print):
                 "faces": ALL_FACES, "expressions": clean, "blinks": blinks, "talk": talk,
                 "pose": {"default": default, "segments": segs, "smooth": 0.2, "calm": True}}
         if hprops[i]: spec["hand_props"] = hprops[i]
+        for r_ in pex["reacts"].get(i, []):                  # hugged / pinched / hit by a pillow
+            reacts.append(r_); rfx.append(r_[0])
         if reacts: spec["reacts"] = reacts
         if rfx: spec["reaction_fx"] = rfx
         chars.append(spec)
@@ -1144,6 +1207,7 @@ def plan(slug, char_style=None, log=print):
         "sound": {"auto": {"enabled": False}},             # voices only: no music, no sound effects
     }
     if lights: st["lights"] = [[int(f), v] for f, v in lights]
+    if pex["flights"]: st["flights"] = pex["flights"]
     vis = object_visibility(objs, pex["obj_states"], N)
     if vis: st["visibility"] = vis
     errs = storycheck.check_story(st, lib)

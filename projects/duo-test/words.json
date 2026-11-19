@@ -1,0 +1,865 @@
+{
+ "words": [
+  [
+   0.35,
+   "Okay,"
+  ],
+  [
+   0.99,
+   "babe."
+  ],
+  [
+   1.57,
+   "Dinner."
+  ],
+  [
+   2.35,
+   "What"
+  ],
+  [
+   2.6,
+   "do"
+  ],
+  [
+   2.84,
+   "you"
+  ],
+  [
+   3.09,
+   "want?"
+  ],
+  [
+   3.63,
+   "I"
+  ],
+  [
+   3.88,
+   "don't"
+  ],
+  [
+   4.12,
+   "care."
+  ],
+  [
+   4.77,
+   "Whatever."
+  ],
+  [
+   5.56,
+   "Chipotle?"
+  ],
+  [
+   6.45,
+   "We"
+  ],
+  [
+   6.66,
+   "literally"
+  ],
+  [
+   7.49,
+   "had"
+  ],
+  [
+   7.7,
+   "Chipotle"
+  ],
+  [
+   8.32,
+   "on"
+  ],
+  [
+   8.53,
+   "Tuesday."
+  ],
+  [
+   9.24,
+   "Okay..."
+  ],
+  [
+   10.08,
+   "Olive"
+  ],
+  [
+   10.51,
+   "Garden?"
+  ],
+  [
+   11.2,
+   "Too"
+  ],
+  [
+   11.42,
+   "heavy."
+  ],
+  [
+   12.26,
+   "I"
+  ],
+  [
+   12.48,
+   "have"
+  ],
+  [
+   12.7,
+   "the"
+  ],
+  [
+   12.92,
+   "gym"
+  ],
+  [
+   13.15,
+   "tomorrow."
+  ],
+  [
+   14.06,
+   "Sushi?"
+  ],
+  [
+   14.76,
+   "Hmm..."
+  ],
+  [
+   15.42,
+   "not"
+  ],
+  [
+   15.65,
+   "feeling"
+  ],
+  [
+   16.1,
+   "it."
+  ],
+  [
+   16.58,
+   "Thai?"
+  ],
+  [
+   17.2,
+   "Your"
+  ],
+  [
+   17.44,
+   "Pad"
+  ],
+  [
+   17.67,
+   "Thai"
+  ],
+  [
+   17.91,
+   "place?"
+  ],
+  [
+   18.4,
+   "On"
+  ],
+  [
+   18.61,
+   "a"
+  ],
+  [
+   18.82,
+   "Friday?"
+  ],
+  [
+   19.62,
+   "That's"
+  ],
+  [
+   19.82,
+   "a"
+  ],
+  [
+   20.02,
+   "forty-five"
+  ],
+  [
+   20.63,
+   "minute"
+  ],
+  [
+   21.03,
+   "wait."
+  ],
+  [
+   21.83,
+   "Okay."
+  ],
+  [
+   23.23,
+   "You"
+  ],
+  [
+   23.49,
+   "pick."
+  ],
+  [
+   24.0,
+   "I"
+  ],
+  [
+   24.25,
+   "told"
+  ],
+  [
+   24.49,
+   "you."
+  ],
+  [
+   25.14,
+   "I"
+  ],
+  [
+   25.39,
+   "don't"
+  ],
+  [
+   25.64,
+   "care."
+  ],
+  [
+   26.19,
+   "Babe,"
+  ],
+  [
+   26.65,
+   "you"
+  ],
+  [
+   26.84,
+   "just"
+  ],
+  [
+   27.03,
+   "vetoed"
+  ],
+  [
+   27.41,
+   "four"
+  ],
+  [
+   27.6,
+   "restaurants."
+  ],
+  [
+   28.55,
+   "That's"
+  ],
+  [
+   28.77,
+   "not"
+  ],
+  [
+   28.99,
+   "'I"
+  ],
+  [
+   29.21,
+   "don't"
+  ],
+  [
+   29.43,
+   "care.'"
+  ],
+  [
+   29.9,
+   "Then"
+  ],
+  [
+   30.08,
+   "pick"
+  ],
+  [
+   30.26,
+   "something"
+  ],
+  [
+   30.81,
+   "reasonable!"
+  ],
+  [
+   31.98,
+   "Fine."
+  ],
+  [
+   32.6,
+   "DoorDash."
+  ],
+  [
+   33.36,
+   "Taco"
+  ],
+  [
+   33.73,
+   "Bell."
+  ],
+  [
+   34.32,
+   "Ordering"
+  ],
+  [
+   34.92,
+   "it."
+  ],
+  [
+   35.37,
+   "Taco"
+  ],
+  [
+   35.76,
+   "Bell?!"
+  ],
+  [
+   36.29,
+   "Are"
+  ],
+  [
+   36.49,
+   "you"
+  ],
+  [
+   36.7,
+   "serious?"
+  ],
+  [
+   37.56,
+   "Got"
+  ],
+  [
+   37.77,
+   "a"
+  ],
+  [
+   37.99,
+   "better"
+  ],
+  [
+   38.41,
+   "idea?"
+  ],
+  [
+   39.64,
+   "Ooh."
+  ],
+  [
+   40.3,
+   "What"
+  ],
+  [
+   40.53,
+   "about"
+  ],
+  [
+   40.98,
+   "burgers?"
+  ],
+  [
+   41.86,
+   "In-N-Out"
+  ],
+  [
+   42.32,
+   "by"
+  ],
+  [
+   42.54,
+   "our"
+  ],
+  [
+   42.77,
+   "place?"
+  ],
+  [
+   44.3,
+   "What?"
+  ],
+  [
+   45.38,
+   "First"
+  ],
+  [
+   45.62,
+   "thing"
+  ],
+  [
+   45.86,
+   "I"
+  ],
+  [
+   46.1,
+   "said"
+  ],
+  [
+   46.34,
+   "in"
+  ],
+  [
+   46.58,
+   "the"
+  ],
+  [
+   46.82,
+   "car..."
+  ],
+  [
+   47.46,
+   "'In-N-Out?'"
+  ],
+  [
+   47.89,
+   "And"
+  ],
+  [
+   48.11,
+   "you"
+  ],
+  [
+   48.32,
+   "said,"
+  ],
+  [
+   48.8,
+   "'Eh,"
+  ],
+  [
+   49.24,
+   "we'll"
+  ],
+  [
+   49.48,
+   "see.'"
+  ],
+  [
+   50.53,
+   "Okay,"
+  ],
+  [
+   51.19,
+   "but"
+  ],
+  [
+   51.4,
+   "now"
+  ],
+  [
+   51.6,
+   "it's"
+  ],
+  [
+   51.81,
+   "MY"
+  ],
+  [
+   52.02,
+   "idea."
+  ],
+  [
+   52.81,
+   "Let's"
+  ],
+  [
+   53.04,
+   "go."
+  ],
+  [
+   53.77,
+   "Next"
+  ],
+  [
+   54.01,
+   "time,"
+  ],
+  [
+   54.53,
+   "I'm"
+  ],
+  [
+   54.75,
+   "recording"
+  ],
+  [
+   55.43,
+   "you."
+  ],
+  [
+   55.95,
+   "Oh,"
+  ],
+  [
+   56.43,
+   "and"
+  ],
+  [
+   56.64,
+   "get"
+  ],
+  [
+   56.85,
+   "extra"
+  ],
+  [
+   57.28,
+   "fries,"
+  ],
+  [
+   57.75,
+   "babe."
+  ],
+  [
+   58.46,
+   "Wait."
+  ],
+  [
+   59.1,
+   "I"
+  ],
+  [
+   59.33,
+   "thought"
+  ],
+  [
+   59.55,
+   "you"
+  ],
+  [
+   59.78,
+   "had"
+  ],
+  [
+   60.0,
+   "the"
+  ],
+  [
+   60.23,
+   "gym"
+  ],
+  [
+   60.45,
+   "tomorrow?"
+  ],
+  [
+   62.03,
+   "Exactly."
+  ],
+  [
+   63.05,
+   "They're"
+  ],
+  [
+   63.31,
+   "YOUR"
+  ],
+  [
+   63.56,
+   "fries."
+  ],
+  [
+   64.82,
+   "I'm"
+  ],
+  [
+   65.21,
+   "getting"
+  ],
+  [
+   65.99,
+   "two."
+  ]
+ ],
+ "segments": [
+  [
+   0.35,
+   3.33
+  ],
+  [
+   3.63,
+   5.31
+  ],
+  [
+   5.56,
+   6.2
+  ],
+  [
+   6.45,
+   8.94
+  ],
+  [
+   9.24,
+   10.95
+  ],
+  [
+   11.2,
+   13.81
+  ],
+  [
+   14.06,
+   14.46
+  ],
+  [
+   14.76,
+   16.33
+  ],
+  [
+   16.58,
+   18.15
+  ],
+  [
+   18.4,
+   21.23
+  ],
+  [
+   21.83,
+   23.75
+  ],
+  [
+   24.0,
+   25.89
+  ],
+  [
+   26.19,
+   29.65
+  ],
+  [
+   29.9,
+   31.53
+  ],
+  [
+   31.98,
+   35.12
+  ],
+  [
+   35.37,
+   37.11
+  ],
+  [
+   37.56,
+   38.84
+  ],
+  [
+   39.64,
+   43.0
+  ],
+  [
+   44.3,
+   44.58
+  ],
+  [
+   45.38,
+   49.73
+  ],
+  [
+   50.53,
+   53.27
+  ],
+  [
+   53.77,
+   55.65
+  ],
+  [
+   55.95,
+   57.96
+  ],
+  [
+   58.46,
+   61.13
+  ],
+  [
+   62.03,
+   63.82
+  ],
+  [
+   64.82,
+   66.38
+  ]
+ ],
+ "duration": 67.88,
+ "frames": 2037,
+ "word_count": 142,
+ "lines": [
+  {
+   "n": 1,
+   "speaker": "jake",
+   "start": 0.35,
+   "end": 3.33,
+   "text": "Okay, babe. Dinner. What do you want?"
+  },
+  {
+   "n": 2,
+   "speaker": "emily",
+   "start": 3.63,
+   "end": 5.31,
+   "text": "I don't care. Whatever."
+  },
+  {
+   "n": 3,
+   "speaker": "jake",
+   "start": 5.56,
+   "end": 6.2,
+   "text": "Chipotle?"
+  },
+  {
+   "n": 4,
+   "speaker": "emily",
+   "start": 6.45,
+   "end": 8.94,
+   "text": "We literally had Chipotle on Tuesday."
+  },
+  {
+   "n": 5,
+   "speaker": "jake",
+   "start": 9.24,
+   "end": 10.95,
+   "text": "Okay... Olive Garden?"
+  },
+  {
+   "n": 6,
+   "speaker": "emily",
+   "start": 11.2,
+   "end": 13.81,
+   "text": "Too heavy. I have the gym tomorrow."
+  },
+  {
+   "n": 7,
+   "speaker": "jake",
+   "start": 14.06,
+   "end": 14.46,
+   "text": "Sushi?"
+  },
+  {
+   "n": 8,
+   "speaker": "emily",
+   "start": 14.76,
+   "end": 16.33,
+   "text": "Hmm... not feeling it."
+  },
+  {
+   "n": 9,
+   "speaker": "jake",
+   "start": 16.58,
+   "end": 18.15,
+   "text": "Thai? Your Pad Thai place?"
+  },
+  {
+   "n": 10,
+   "speaker": "emily",
+   "start": 18.4,
+   "end": 21.23,
+   "text": "On a Friday? That's a forty-five minute wait."
+  },
+  {
+   "n": 11,
+   "speaker": "jake",
+   "start": 21.83,
+   "end": 23.75,
+   "text": "Okay. You pick."
+  },
+  {
+   "n": 12,
+   "speaker": "emily",
+   "start": 24.0,
+   "end": 25.89,
+   "text": "I told you. I don't care."
+  },
+  {
+   "n": 13,
+   "speaker": "jake",
+   "start": 26.19,
+   "end": 29.65,
+   "text": "Babe, you just vetoed four restaurants. That's not 'I don't care.'"
+  },
+  {
+   "n": 14,
+   "speaker": "emily",
+   "start": 29.9,
+   "end": 31.53,
+   "text": "Then pick something reasonable!"
+  },
+  {
+   "n": 15,
+   "speaker": "jake",
+   "start": 31.98,
+   "end": 35.12,
+   "text": "Fine. DoorDash. Taco Bell. Ordering it."
+  },
+  {
+   "n": 16,
+   "speaker": "emily",
+   "start": 35.37,
+   "end": 37.11,
+   "text": "Taco Bell?! Are you serious?"
+  },
+  {
+   "n": 17,
+   "speaker": "jake",
+   "start": 37.56,
+   "end": 38.84,
+   "text": "Got a better idea?"
+  },
+  {
+   "n": 18,
+   "speaker": "emily",
+   "start": 39.64,
+   "end": 43.0,
+   "text": "...Ooh. What about burgers? In-N-Out by our place?"
+  },
+  {
+   "n": 19,
+   "speaker": "emily",
+   "start": 44.3,
+   "end": 44.58,
+   "text": "What?"
+  },
+  {
+   "n": 20,
+   "speaker": "jake",
+   "start": 45.38,
+   "end": 49.73,
+   "text": "First thing I said in the car... 'In-N-Out?' And you said, 'Eh, we'll see.'"
+  },
+  {
+   "n": 21,
+   "speaker": "emily",
+   "start": 50.53,
+   "end": 53.27,
+   "text": "Okay, but now it's MY idea. Let's go."
+  },
+  {
+   "n": 22,
+   "speaker": "jake",
+   "start": 53.77,
+   "end": 55.65,
+   "text": "Next time, I'm recording you."
+  },
+  {
+   "n": 23,
+   "speaker": "emily",
+   "start": 55.95,
+   "end": 57.96,
+   "text": "Oh, and get extra fries, babe."
+  },
+  {
+   "n": 24,
+   "speaker": "jake",
+   "start": 58.46,
+   "end": 61.13,
+   "text": "Wait. I thought you had the gym tomorrow?"
+  },
+  {
+   "n": 25,
+   "speaker": "emily",
+   "start": 62.03,
+   "end": 63.82,
+   "text": "Exactly. They're YOUR fries."
+  },
+  {
+   "n": 26,
+   "speaker": "jake",
+   "start": 64.82,
+   "end": 66.38,
+   "text": "...I'm getting two."
+  }
+ ]
+}

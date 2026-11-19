@@ -28,6 +28,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 if ROOT not in sys.path: sys.path.insert(0, ROOT)
 from jsonval import validate
 import vtags
+import cast_lib
 import storycheck
 
 LOG_DIR = os.path.join(ROOT, "logs")
@@ -989,7 +990,7 @@ def dialog_ideas(slug, topic=None, count=10, model=None):
               + (f", xoay quanh: {topic}." if topic else " (cặp đôi, vợ chồng, gia đình, bạn bè).")
               + " Nghĩ 25-30 ý rồi lọc, chỉ giữ ý 8/10 trở lên: tình huống ai cũng gặp, cú đảo bất ngờ mà hợp lý, câu chốt ngắn."
               + " Mỗi ý: tiêu đề tiếng Anh, tiêu đề Việt, dòng chữ hook trên đầu video, tình huống, quan hệ, cú đảo, câu chốt (tiếng Anh), bối cảnh."
-              + f"\nBối cảnh có sẵn: {_dialog_sets_text()}" + dialog_rules())
+              + f"\nBối cảnh có sẵn: {_dialog_sets_text()}\n" + cast_lib.prompt_text() + dialog_rules())
     data, info = call("dialog_ideas", prompt, load_schema("dialog_ideas"), project=slug, model=model)
     _save_versioned(slug, "ideas.json", data)
     return data
@@ -1083,11 +1084,12 @@ def write_dialog(slug, idea, minutes=0.75, model=None):
               + lessons_note() +
               f"Độ dài: {minutes} phút ≈ {words} từ thoại tiếng Anh (±20 %), khoảng {n_lines} câu. Theo DIALOG_RULES.md bên dưới: "
               "hài kiểu Mỹ (mục 2b), nhân vật đơn giản nhưng lạ mắt (head_shape + một signature có màu, mục 4).\n"
-              f"Giọng đã có trong thư viện (dùng lại nếu hợp vai): {_voices_text()}\n"
+              f"Giọng đã có trong thư viện (dùng lại nếu hợp vai): {_voices_text()}\n" + cast_lib.prompt_text() +
               f"Bối cảnh có sẵn: {_dialog_sets_text()}" + dialog_rules())
     data, info = call("write_dialog", prompt, load_schema("content_dialog"), project=slug, model=model,
                       check=lambda x: check_dialog(x, minutes) + check_dialog_look(x))
     data["minutes"] = minutes
+    cast_lib.apply(data)                                  # channel characters keep their saved look and voice
     _save_versioned(slug, "content.json", dialog_fill(data))
     return data
 
@@ -1152,6 +1154,7 @@ def import_script(slug, parsed, draft, translate=False, model=None, improve=Fals
             if not keep and _bare(l.get("text_vi", "")) != _bare(txt): e.append(f"lines[{k}].text_vi phải là nguyên văn: {txt!r}")
         return e
     data, info = call("write_dialog", prompt, load_schema("content_dialog"), project=slug, model=model, check=check)
+    cast_lib.apply(data)
     _save_versioned(slug, "content.json", dialog_fill(data))
     return data
 

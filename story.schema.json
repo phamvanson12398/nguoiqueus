@@ -1207,6 +1207,62 @@
     "minItems": 2,
     "maxItems": 2
    }
+  },
+  "flights": {
+   "type": "array",
+   "description": "dialogue: thrown items (hand-prop drawings) flying along an arc from -> to between frames a..b",
+   "items": {
+    "type": "object",
+    "required": [
+     "kind",
+     "a",
+     "b",
+     "from",
+     "to"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "kind": {
+      "type": "string"
+     },
+     "a": {
+      "type": "integer"
+     },
+     "b": {
+      "type": "integer"
+     },
+     "from": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+     },
+     "to": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+     },
+     "arc": {
+      "type": "number"
+     },
+     "spin": {
+      "type": "number"
+     },
+     "color": {
+      "type": "array",
+      "items": {
+       "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+     }
+    }
+   }
   }
  },
  "$defs": {
@@ -1885,6 +1941,7 @@
        },
        "kind": {
         "enum": [
+         "pillow",
          "phone",
          "coffee",
          "mug",

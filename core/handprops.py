@@ -162,13 +162,28 @@ def _donut(g, n, col):
     shape(g, n + "_hole", ellipse(0, 0.1, 0.035, 0.03, 16), _m("donut_hole", (0.55, 0.55, 0.55)), -0.024, 0.015)
 
 
-KINDS = {"phone": _phone, "coffee": _coffee, "mug": _mug, "soda": _soda, "bottle": _bottle, "fries": _fries, "burger": _burger,
+def _pillow(g, n, col):
+    shape(g, n + "_p", rrect(0, 0.1, 0.42, 0.28, 0.1), _m("pillow", col or (0.95, 0.95, 0.98)), -0.03, OL)
+    stroke(g, n + "_seam", [(-0.16, 0.1), (0.16, 0.1)], 0.01, -0.025, m=_m("pillow_seam", (0.78, 0.8, 0.86)))
+
+
+KINDS = {"pillow": _pillow, "phone": _phone, "coffee": _coffee, "mug": _mug, "soda": _soda, "bottle": _bottle, "fries": _fries, "burger": _burger,
          "pizza": _pizza, "icecream": _icecream, "bag": _bag, "keys": _keys, "book": _book, "remote": _remote, "paper": _paper,
          "receipt": _receipt, "money": _money, "flowers": _flowers, "gift": _gift, "card": _card, "popcorn": _popcorn, "donut": _donut}
 # how an item is eaten/drunk/used (dialog.py picks the action pose from this)
 USE = {"coffee": "drink", "mug": "drink", "soda": "drink", "bottle": "drink", "fries": "eat", "burger": "eat", "pizza": "eat",
        "icecream": "eat", "popcorn": "eat", "donut": "eat", "phone": "look_at", "book": "look_at", "paper": "look_at", "receipt": "look_at",
        "remote": "point_remote"}
+
+
+def make_free(name, kind, color=None):
+    """a thrown item: the same flat drawing in a free group facing the camera (-Y), animated by the builder"""
+    import math
+    if kind not in KINDS: raise ValueError(f"hand prop kind {kind!r} ({', '.join(sorted(KINDS))})")
+    g = empty(name)
+    g.rotation_euler = (math.pi / 2, 0, 0); g.scale = (SCALE,) * 3
+    KINDS[kind](g, name, tuple(color) if color else None)
+    return g
 
 
 def make(c, pid, kind, side, color=None):

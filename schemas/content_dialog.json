@@ -254,7 +254,8 @@
          "gift",
          "card",
          "popcorn",
-         "donut"
+         "donut",
+         "pillow"
         ]
        },
        "hand": {
@@ -497,9 +498,14 @@
        "lights_off",
        "lights_on",
        "errand",
-       "interact"
+       "interact",
+       "hug",
+       "high_five",
+       "pinch_cheek",
+       "throw",
+       "fall_over"
       ],
-      "description": "việc người nói làm khi nói câu này: take_out (lấy đồ ra), show (giơ cho người kia xem), use (uống/ăn/xem điện thoại — trước câu), give (đưa cho người kia cuối câu), put_away (cất đi), walk_to (vừa nói vừa bước tới to_spot), enter (đi vào cảnh rồi nói), exit (nói xong bỏ đi); sit_down (ngồi xuống ghế/sofa/mép giường trước câu), lie_down (nằm xuống giường), stand_up (đứng dậy); đi lại thì tool tự cho đứng dậy trước, walk_to tới spot có ghế thì tự ngồi; lights_off / lights_on (người nói đứng dậy — ra khỏi giường nếu đang nằm —, đi tới đèn/công tắc, bấm: đèn tắt/bật thật, cả phòng tối/sáng; rồi quay về đúng chỗ và tư thế cũ, vd nằm lại giường), errand (đi tới to_spot làm gì đó rồi quay về)"
+      "description": "việc người nói làm khi nói câu này: take_out (lấy đồ ra), show (giơ cho người kia xem), use (uống/ăn/xem điện thoại — trước câu), give (đưa cho người kia cuối câu), put_away (cất đi), walk_to (vừa nói vừa bước tới to_spot), enter (đi vào cảnh rồi nói), exit (nói xong bỏ đi); sit_down (ngồi xuống ghế/sofa/mép giường trước câu), lie_down (nằm xuống giường), stand_up (đứng dậy); đi lại thì tool tự cho đứng dậy trước, walk_to tới spot có ghế thì tự ngồi; lights_off / lights_on (người nói đứng dậy — ra khỏi giường nếu đang nằm —, đi tới đèn/công tắc, bấm: đèn tắt/bật thật, cả phòng tối/sáng; rồi quay về đúng chỗ và tư thế cũ, vd nằm lại giường), errand (đi tới to_spot làm gì đó rồi quay về); hug (lại ôm người kia), high_five (đập tay), pinch_cheek (véo má người kia), throw (ném prop — mặc định gối — vào đầu người kia), fall_over (ngã ngửa rồi tự dậy)"
      },
      "prop": {
       "enum": [
@@ -524,7 +530,8 @@
        "gift",
        "card",
        "popcorn",
-       "donut"
+       "donut",
+       "pillow"
       ],
       "description": "đồ vật trong tay cho action (để trống nếu không cần)"
      },
@@ -562,7 +569,12 @@
           "lights_off",
           "lights_on",
           "errand",
-          "interact"
+          "interact",
+          "hug",
+          "high_five",
+          "pinch_cheek",
+          "throw",
+          "fall_over"
          ],
          "description": "interact = đi tới đồ vật `object`, đổi nó sang `state` (bật TV, mở tủ lạnh, đóng cửa, tắt đèn…), rồi quay về (back); các việc khác như ô action"
         },
@@ -576,7 +588,7 @@
         },
         "prop": {
          "type": "string",
-         "description": "đồ cầm tay (take_out/show/use/give/put_away)"
+         "description": "đồ cầm tay (take_out/show/use/give/put_away/throw)"
         },
         "to_spot": {
          "type": "string"
@@ -592,6 +604,10 @@
         "back": {
          "type": "boolean",
          "description": "interact/errand: xong thì về chỗ cũ, tư thế cũ (mặc định true)"
+        },
+        "to": {
+         "type": "string",
+         "description": "id người nhận động tác (hug/high_five/pinch_cheek/throw); trống = người đang nói chuyện cùng"
         }
        }
       },
