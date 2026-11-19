@@ -55,6 +55,53 @@
   },
   "notes_vi": {
    "type": "string"
+  },
+  "states": {
+   "type": "object",
+   "description": "đồ vật tương tác: trạng thái -> {show: [hậu tố phần], hide: [hậu tố phần], room: night|day (tùy chọn)}",
+   "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "show": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "hide": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "room": {
+      "enum": [
+       "night",
+       "day"
+      ]
+     }
+    }
+   }
+  },
+  "use": {
+   "type": "object",
+   "additionalProperties": false,
+   "description": "chỗ người đứng để dùng đồ vật",
+   "properties": {
+    "side": {
+     "enum": [
+      "front",
+      "auto"
+     ]
+    },
+    "dist": {
+     "type": "number"
+    },
+    "reach_h": {
+     "type": "number"
+    }
+   }
   }
  },
  "required": [

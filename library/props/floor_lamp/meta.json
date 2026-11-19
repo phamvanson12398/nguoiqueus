@@ -44,5 +44,30 @@
     "dialog",
     "furniture",
     "light"
-  ]
+  ],
+  "states": {
+    "on": {
+      "show": [
+        "shade_on"
+      ],
+      "hide": [
+        "shade_off"
+      ],
+      "room": "day"
+    },
+    "off": {
+      "show": [
+        "shade_off"
+      ],
+      "hide": [
+        "shade_on"
+      ],
+      "room": "night"
+    }
+  },
+  "use": {
+    "side": "auto",
+    "dist": 0.62,
+    "reach_h": 0.95
+  }
 }

@@ -380,6 +380,16 @@ def job_build_dialog(job, slug, design=True, preview=True):
     c = dialog.content_of(slug); lib = storycheck.LibIndex()
     if not os.path.exists(os.path.join(pdir(slug), "words.json")) or "lines" not in (jload(os.path.join(pdir(slug), "words.json")) or {}):
         raise ValueError("chưa có giọng (bước 3: tạo giọng các câu)")
+    stg = (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("auto_stage", True)
+    if design and stg and not c.get("staged"):           # Claude stages the actions once (who gets up, opens what, comes back)
+        job.say("0/3 Claude dàn dựng hành động theo kịch bản (ai làm gì, với đồ vật nào; khoảng 1 phút)…")
+        try:
+            r = bridge.stage_dialog(slug)
+            job.say(f"   -> {r['steps']} bước. {r['notes_vi']}" + (f" Đồ vật mới cần vẽ: {', '.join(r['needs'])}." if r["needs"] else ""))
+            c = dialog.content_of(slug)
+        except Exception as e:
+            if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}")
+            job.say(f"   (bỏ qua dàn dựng: {e})")
     needs = list(c.get("library_needs", []))
     st_ = c["setting"]["set"]
     if not lib.exists("sets", st_) and not any(n["name"] == st_ for n in needs):       # chosen on the page, never designed yet
@@ -388,11 +398,13 @@ def job_build_dialog(job, slug, design=True, preview=True):
     for need in needs:
         if lib.exists(need["kind"], need["name"]): continue
         if not design: raise ValueError(f"thiếu {need['kind']}/{need['name']}")
-        job.say(f"1/3 Claude thiết kế bối cảnh mới {need['name']}: {need['brief']} (vài phút)…")
+        what = "bối cảnh" if need["kind"] == "sets" else "đồ vật"
+        job.say(f"1/3 Claude thiết kế {what} mới {need['name']}: {need['brief'][:160]} (vài phút)…")
+        brief = need["brief"] + (" Bối cảnh cho video đối thoại: 2-3 người đứng cạnh nhau quay mặt về camera "
+                                 "(phía -Y), chừa khoảng trống x -1,5..1,5 quanh điểm diễn; khai báo 'stage' [x, y] và 'spots' (4-6 chỗ đứng có tên "
+                                 "theo đồ vật/vai trò, tọa độ sàn thật, mô tả)." if need["kind"] == "sets" else "")
         try:
-            r = bridge.design_item(need["kind"], need["name"], need["brief"] + " Bối cảnh cho video đối thoại: 2-3 người đứng cạnh nhau quay mặt về camera "
-                                   "(phía -Y), chừa khoảng trống x -1,5..1,5 quanh điểm diễn; khai báo 'stage' [x, y] và 'spots' (4-6 chỗ đứng có tên "
-                                   "theo đồ vật/vai trò, tọa độ sàn thật, mô tả).")
+            r = bridge.design_item(need["kind"], need["name"], brief)
         except Exception as e:
             if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}")
             raise
@@ -408,6 +420,14 @@ def job_build_dialog(job, slug, design=True, preview=True):
     for l in warns[:10]: job.say("   " + l)
     job.say("Xong: xem ảnh rồi bấm Render. Muốn đổi máy quay một câu: sửa ô 'Máy quay' của câu đó ở bước 2 rồi dựng lại (vài giây, không tốn lượt Claude).")
     return {"frames": st["meta"]["frames"], "warnings": warns}
+
+
+def job_stage(job, slug, request=""):
+    """Claude stages the dialogue again (button on the page): steps, objects, new interactive things to design"""
+    job.say("Claude đọc kịch bản và dàn dựng hành động…")
+    r = bridge.stage_dialog(slug, request)
+    job.say(f"{r['steps']} bước. {r['notes_vi']}" + (f" Đồ vật mới (Claude vẽ khi bấm Duyệt & dựng): {', '.join(r['needs'])}." if r["needs"] else ""))
+    return {"steps": r["steps"], "needs": r["needs"]}
 
 
 def job_align(job, slug):
@@ -1069,6 +1089,8 @@ class Handler(BaseHTTPRequestHandler):
                 n = vtags.auto_tag(c["lines"])
                 if n: bridge._save_versioned(slug, "content.json", bridge.dialog_fill({k: v for k, v in c.items() if k not in bridge.DIALOG_DERIVED}))
                 return self.send_json({"ok": True, "added": n, "tagged": sum(1 for l in c["lines"] if vtags.tags_in(l["text"])), "lines": len(c["lines"])})
+            if act == ["content", "stage"] and method == "POST":
+                return self.send_json(start_job("stage", slug, job_stage, slug, (self.jbody().get("request") or "").strip()).to_json())
             if act == ["content", "rewrite_lines"]:
                 b = self.jbody()
                 return self.send_json(start_job("rewrite_dialog", slug, job_rewrite_dialog, slug, int(b["a"]), int(b["b"]), b["request"]).to_json())

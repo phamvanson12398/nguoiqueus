@@ -496,7 +496,8 @@
        "stand_up",
        "lights_off",
        "lights_on",
-       "errand"
+       "errand",
+       "interact"
       ],
       "description": "việc người nói làm khi nói câu này: take_out (lấy đồ ra), show (giơ cho người kia xem), use (uống/ăn/xem điện thoại — trước câu), give (đưa cho người kia cuối câu), put_away (cất đi), walk_to (vừa nói vừa bước tới to_spot), enter (đi vào cảnh rồi nói), exit (nói xong bỏ đi); sit_down (ngồi xuống ghế/sofa/mép giường trước câu), lie_down (nằm xuống giường), stand_up (đứng dậy); đi lại thì tool tự cho đứng dậy trước, walk_to tới spot có ghế thì tự ngồi; lights_off / lights_on (người nói đứng dậy — ra khỏi giường nếu đang nằm —, đi tới đèn/công tắc, bấm: đèn tắt/bật thật, cả phòng tối/sáng; rồi quay về đúng chỗ và tư thế cũ, vd nằm lại giường), errand (đi tới to_spot làm gì đó rồi quay về)"
      },
@@ -530,6 +531,77 @@
      "to_spot": {
       "type": "string",
       "description": "walk_to: tên spot của bối cảnh, left/right, away (lùi ra), partner (lại gần người kia)"
+     },
+     "steps": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "who",
+        "do"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "who": {
+         "type": "string",
+         "description": "id trong cast (người nói hoặc người nghe)"
+        },
+        "do": {
+         "enum": [
+          "take_out",
+          "show",
+          "use",
+          "give",
+          "put_away",
+          "walk_to",
+          "enter",
+          "exit",
+          "sit_down",
+          "lie_down",
+          "stand_up",
+          "lights_off",
+          "lights_on",
+          "errand",
+          "interact"
+         ],
+         "description": "interact = đi tới đồ vật `object`, đổi nó sang `state` (bật TV, mở tủ lạnh, đóng cửa, tắt đèn…), rồi quay về (back); các việc khác như ô action"
+        },
+        "object": {
+         "type": "string",
+         "description": "id một đồ vật trong `objects` (interact)"
+        },
+        "state": {
+         "type": "string",
+         "description": "trạng thái mới của đồ vật (theo `states` của nó trong thư viện)"
+        },
+        "prop": {
+         "type": "string",
+         "description": "đồ cầm tay (take_out/show/use/give/put_away)"
+        },
+        "to_spot": {
+         "type": "string"
+        },
+        "when": {
+         "enum": [
+          "before",
+          "during",
+          "after"
+         ],
+         "description": "trước câu (~1 s), trong lúc nói, hay sau khi câu xong"
+        },
+        "back": {
+         "type": "boolean",
+         "description": "interact/errand: xong thì về chỗ cũ, tư thế cũ (mặc định true)"
+        }
+       }
+      },
+      "description": "hành động dàn dựng của câu này (nhiều người, nhiều bước); tool chuyển thành chuyển động"
+     },
+     "object": {
+      "type": "string"
+     },
+     "state": {
+      "type": "string"
      }
     }
    },
@@ -590,6 +662,41 @@
     }
    },
    "description": "chỉ bối cảnh chưa có trong thư viện (tối đa 1)"
+  },
+  "objects": {
+   "type": "array",
+   "description": "đồ vật trong cảnh mà nhân vật dùng được (TV, tủ lạnh, cửa, đèn…): type = props có `states` trong thư viện (hoặc đưa vào library_needs để Claude thiết kế kèm states)",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "type"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "type": {
+      "type": "string"
+     },
+     "near": {
+      "type": "string",
+      "description": "tên spot của bối cảnh, id một người, hoặc left / right / behind"
+     },
+     "state": {
+      "type": "string",
+      "description": "trạng thái lúc đầu"
+     },
+     "params": {
+      "type": "object"
+     }
+    }
+   }
+  },
+  "staged": {
+   "type": "boolean",
+   "description": "đã được Claude dàn dựng (steps/objects) — tool không tự dàn dựng lại"
   }
  }
 }

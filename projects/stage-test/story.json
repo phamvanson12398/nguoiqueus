@@ -1,0 +1,1293 @@
+{
+ "meta": {
+  "title": "Just One More Thing",
+  "slug": "stage-test",
+  "fps": 30,
+  "frames": 942,
+  "seed": 7,
+  "voice": "voice.wav",
+  "output": "out.mp4",
+  "samples": 32,
+  "aspect": "9:16",
+  "char_style": "2d",
+  "char_tone": "grey",
+  "dialog": true,
+  "fast_build": true
+ },
+ "sets": [
+  {
+   "id": "stage",
+   "type": "kitchen",
+   "params": {
+    "stuck_toast": false
+   },
+   "props": [
+    {
+     "id": "furn0_bed",
+     "type": "bed",
+     "params": {
+      "along": "y",
+      "width": 3.45
+     },
+     "loc": [
+      0.0,
+      3.15,
+      0
+     ]
+    },
+    {
+     "id": "lamp",
+     "type": "floor_lamp",
+     "params": {},
+     "loc": [
+      -2.55,
+      4.6,
+      0
+     ]
+    },
+    {
+     "id": "fridge",
+     "type": "fridge",
+     "params": {},
+     "loc": [
+      2.5,
+      4.9,
+      0
+     ]
+    },
+    {
+     "id": "tv",
+     "type": "tv",
+     "params": {},
+     "loc": [
+      -2.3,
+      4.9,
+      0
+     ]
+    }
+   ]
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "shots": [
+   {
+    "a": 1,
+    "b": 61,
+    "type": "full",
+    "frame": {
+     "size": 5.33,
+     "look_dz": -0.18,
+     "move": "still",
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ],
+     "y": -0.3,
+     "height": "high"
+    }
+   },
+   {
+    "a": 62,
+    "b": 111,
+    "type": "medium",
+    "frame": {
+     "size": 3.2,
+     "look_dz": 0.14,
+     "move": "still",
+     "subject": "jake",
+     "height": "high"
+    }
+   },
+   {
+    "a": 112,
+    "b": 207,
+    "type": "medium",
+    "frame": {
+     "size": 3.2,
+     "look_dz": 0.14,
+     "move": "still",
+     "subject": "emily",
+     "height": "high"
+    }
+   },
+   {
+    "a": 208,
+    "b": 246,
+    "type": "full",
+    "frame": {
+     "size": 5.33,
+     "look_dz": -0.18,
+     "move": "still",
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ],
+     "y": -0.3,
+     "height": "high"
+    }
+   },
+   {
+    "a": 247,
+    "b": 293,
+    "type": "medium",
+    "frame": {
+     "size": 3.2,
+     "look_dz": 0.14,
+     "move": "still",
+     "subject": "emily",
+     "height": "high"
+    }
+   },
+   {
+    "a": 294,
+    "b": 327,
+    "type": "medium",
+    "frame": {
+     "size": 3.2,
+     "look_dz": 0.14,
+     "move": "still",
+     "subject": "jake",
+     "height": "high"
+    }
+   },
+   {
+    "a": 328,
+    "b": 351,
+    "type": "medium",
+    "frame": {
+     "size": 3.2,
+     "look_dz": 0.14,
+     "move": "still",
+     "subject": "emily",
+     "height": "high"
+    }
+   },
+   {
+    "type": "wide",
+    "frame": {
+     "size": 8.5,
+     "look_dz": 0.4,
+     "move": "still",
+     "subject": [
+      -0.54,
+      4.25,
+      0
+     ],
+     "y": -0.3
+    },
+    "a": 352,
+    "b": 404
+   },
+   {
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    },
+    "a": 405,
+    "b": 450
+   },
+   {
+    "type": "wide",
+    "frame": {
+     "size": 6.49,
+     "look_dz": 0.4,
+     "move": "still",
+     "subject": [
+      1.675,
+      4.15,
+      0
+     ],
+     "y": -0.3
+    },
+    "a": 451,
+    "b": 542
+   },
+   {
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    },
+    "a": 543,
+    "b": 594
+   },
+   {
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    },
+    "a": 595,
+    "b": 643
+   },
+   {
+    "a": 644,
+    "b": 662,
+    "type": "medium",
+    "frame": {
+     "size": 3.5,
+     "look_dz": -0.15,
+     "move": "still",
+     "subject": [
+      -1.345,
+      4.112,
+      0
+     ],
+     "height": "high"
+    }
+   },
+   {
+    "type": "wide",
+    "frame": {
+     "size": 9.16,
+     "look_dz": 0.4,
+     "move": "still",
+     "subject": [
+      -0.725,
+      3.9,
+      0
+     ],
+     "y": -0.3
+    },
+    "a": 663,
+    "b": 763
+   },
+   {
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    },
+    "a": 764,
+    "b": 812
+   },
+   {
+    "a": 813,
+    "b": 942,
+    "type": "medium",
+    "frame": {
+     "size": 3.5,
+     "look_dz": -0.15,
+     "move": "still",
+     "subject": [
+      -1.345,
+      4.112,
+      0
+     ],
+     "height": "high"
+    }
+   }
+  ],
+  "hand": 0.0
+ },
+ "chars": [
+  {
+   "id": "jake",
+   "gaze": -1,
+   "type": "soft",
+   "outfit": "soft_hoodie",
+   "loc": [
+    0.85,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      0.85,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 351,
+      "location": [
+       0.85,
+       4.3,
+       0
+      ],
+      "note": "seated"
+     },
+     {
+      "from": 352,
+      "to": 419,
+      "location": [
+       "lerp(0.850, -1.930, ease((f - 352) / 67))",
+       "lerp(4.300, 4.250, ease((f - 352) / 67))",
+       0
+      ]
+     },
+     {
+      "from": 420,
+      "to": 450,
+      "location": [
+       -1.93,
+       4.25,
+       0
+      ]
+     },
+     {
+      "from": 451,
+      "to": 557,
+      "location": [
+       "lerp(-1.930, 2.500, ease((f - 451) / 106))",
+       "lerp(4.250, 4.150, ease((f - 451) / 106))",
+       0
+      ]
+     },
+     {
+      "from": 558,
+      "to": 662,
+      "location": [
+       2.5,
+       4.15,
+       0
+      ]
+     },
+     {
+      "from": 663,
+      "to": 778,
+      "location": [
+       "lerp(2.500, -2.300, ease((f - 663) / 115))",
+       "lerp(4.150, 3.900, ease((f - 663) / 115))",
+       0
+      ]
+     },
+     {
+      "from": 779,
+      "to": 800,
+      "location": [
+       -2.3,
+       3.9,
+       0
+      ]
+     },
+     {
+      "from": 801,
+      "to": 877,
+      "location": [
+       "lerp(-2.300, 0.850, ease((f - 801) / 76))",
+       "lerp(3.900, 4.300, ease((f - 801) / 76))",
+       0
+      ]
+     },
+     {
+      "from": 878,
+      "to": 942,
+      "location": [
+       0.85,
+       4.3,
+       0
+      ],
+      "note": "seated"
+     }
+    ]
+   },
+   "mouth": "soft",
+   "look": {
+    "hair": "short",
+    "hair_color": [
+     0.1,
+     0.06,
+     0.03
+    ],
+    "beard": "none",
+    "seed": 1,
+    "palette": {
+     "cloth": [
+      0.85,
+      0.2,
+      0.08
+     ],
+     "cloth2": [
+      0.05,
+      0.08,
+      0.25
+     ]
+    },
+    "signature": "cap",
+    "sig_color": [
+     0.95,
+     0.12,
+     0.1
+    ]
+   },
+   "head_shape": "egg",
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     65,
+     "annoyed"
+    ],
+    [
+     119,
+     "neutral"
+    ],
+    [
+     211,
+     "annoyed"
+    ],
+    [
+     254,
+     "neutral"
+    ],
+    [
+     297,
+     "grumpy"
+    ],
+    [
+     335,
+     "neutral"
+    ],
+    [
+     403,
+     "smirk"
+    ],
+    [
+     473,
+     "neutral"
+    ],
+    [
+     514,
+     "shock"
+    ],
+    [
+     577,
+     "neutral"
+    ]
+   ],
+   "blinks": [
+    42,
+    117,
+    211,
+    299,
+    415,
+    513,
+    605,
+    737,
+    818,
+    909
+   ],
+   "talk": [
+    [
+     65,
+     106
+    ],
+    [
+     211,
+     241
+    ],
+    [
+     297,
+     322
+    ],
+    [
+     403,
+     460
+    ],
+    [
+     514,
+     549
+    ]
+   ],
+   "pose": {
+    "default": {
+     "legs": [
+      [
+       -0.06,
+       0.02
+      ],
+      [
+       0.06,
+       -0.02
+      ]
+     ],
+     "body": [
+      0,
+      "-0.460 + (0.460) * ease((f - 336) / 14) + (-0.460) * ease((f - 879) / 14)"
+     ]
+    },
+    "segments": [
+     {
+      "from": 801,
+      "to": 877,
+      "legs": "walk_legs(f * 0.32 + 0.0)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 0.0))"
+      ],
+      "rest": 0
+     },
+     {
+      "from": 663,
+      "to": 778,
+      "legs": "walk_legs(f * 0.32 + 0.0)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 0.0))"
+      ],
+      "rest": 0
+     },
+     {
+      "from": 451,
+      "to": 557,
+      "legs": "walk_legs(f * 0.32 + 0.0)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 0.0))"
+      ],
+      "rest": 0
+     },
+     {
+      "from": 352,
+      "to": 419,
+      "legs": "walk_legs(f * 0.32 + 0.0)",
+      "armL": [
+       "ang",
+       "-0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       0.15
+      ],
+      "armR": [
+       "ang",
+       "0.12 - 0.32 * sin(f * 0.32 + 0.0)",
+       -0.15
+      ],
+      "body": [
+       0,
+       "0.03 * abs(sin(f * 0.32 + 0.0))"
+      ],
+      "rest": 0
+     },
+     {
+      "from": 420,
+      "to": 437,
+      "armL": [
+       "ik",
+       [
+        -0.6,
+        0.95
+       ],
+       1
+      ]
+     },
+     {
+      "from": 558,
+      "to": 575,
+      "armR": [
+       "ik",
+       [
+        0.25,
+        1.0
+       ],
+       -1
+      ]
+     },
+     {
+      "from": 610,
+      "to": 627,
+      "armR": [
+       "ik",
+       [
+        0.25,
+        1.0
+       ],
+       -1
+      ]
+     },
+     {
+      "from": 779,
+      "to": 796,
+      "armL": [
+       "ik",
+       [
+        -0.25,
+        0.75
+       ],
+       1
+      ]
+     },
+     {
+      "from": 907,
+      "to": 931,
+      "armL": [
+       "ik",
+       [
+        -0.62,
+        0.5
+       ],
+       1
+      ]
+     },
+     {
+      "from": 55,
+      "to": 112,
+      "tilt": -0.05
+     },
+     {
+      "from": 201,
+      "to": 247,
+      "tilt": -0.05
+     },
+     {
+      "from": 287,
+      "to": 328,
+      "tilt": -0.05
+     },
+     {
+      "from": 393,
+      "to": 466,
+      "tilt": -0.05
+     },
+     {
+      "from": 504,
+      "to": 555,
+      "tilt": -0.05
+     },
+     {
+      "from": 571,
+      "to": 878,
+      "armL": [
+       "ik",
+       [
+        -0.3,
+        0.34
+       ],
+       1
+      ]
+     },
+     {
+      "from": 879,
+      "to": 923,
+      "armL": [
+       "ik",
+       [
+        -0.5,
+        1.18
+       ],
+       1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
+      ]
+     }
+    ],
+    "smooth": 0.2
+   },
+   "hand_props": [
+    {
+     "id": "bottle0",
+     "kind": "bottle",
+     "hand": "L",
+     "ranges": [
+      [
+       571,
+       923
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "emily",
+   "gaze": 1,
+   "type": "soft",
+   "outfit": "soft_dress",
+   "loc": [
+    -0.85,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      -0.85,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 942,
+      "location": [
+       -0.85,
+       4.3,
+       0
+      ],
+      "note": "seated"
+     }
+    ]
+   },
+   "mouth": "soft",
+   "look": {
+    "hair": "tied",
+    "hair_color": [
+     0.35,
+     0.15,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 2,
+    "palette": {
+     "cloth": [
+      0.1,
+      0.5,
+      0.75
+     ],
+     "cloth2": [
+      0.9,
+      0.85,
+      0.75
+     ]
+    },
+    "signature": "earrings",
+    "sig_color": [
+     0.98,
+     0.75,
+     0.05
+    ]
+   },
+   "head_shape": "wide",
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     115,
+     "worried"
+    ],
+    [
+     215,
+     "neutral"
+    ],
+    [
+     250,
+     "love"
+    ],
+    [
+     301,
+     "neutral"
+    ],
+    [
+     331,
+     "happy"
+    ],
+    [
+     407,
+     "neutral"
+    ],
+    [
+     573,
+     "laugh"
+    ]
+   ],
+   "blinks": [
+    38,
+    148,
+    233,
+    342,
+    434,
+    552,
+    632,
+    738,
+    810,
+    900
+   ],
+   "talk": [
+    [
+     11,
+     56
+    ],
+    [
+     115,
+     202
+    ],
+    [
+     250,
+     288
+    ],
+    [
+     331,
+     394
+    ],
+    [
+     469,
+     505
+    ],
+    [
+     573,
+     651
+    ]
+   ],
+   "pose": {
+    "default": {
+     "legs": [
+      [
+       -0.06,
+       0.02
+      ],
+      [
+       0.06,
+       -0.02
+      ]
+     ],
+     "body": [
+      0,
+      -0.46
+     ]
+    },
+    "segments": [
+     {
+      "from": 913,
+      "to": 937,
+      "armR": [
+       "ik",
+       [
+        0.62,
+        0.5
+       ],
+       -1
+      ]
+     },
+     {
+      "from": 1,
+      "to": 62,
+      "tilt": 0.05
+     },
+     {
+      "from": 105,
+      "to": 208,
+      "tilt": 0.05
+     },
+     {
+      "from": 240,
+      "to": 294,
+      "tilt": 0.05
+     },
+     {
+      "from": 321,
+      "to": 400,
+      "tilt": 0.05
+     },
+     {
+      "from": 459,
+      "to": 511,
+      "tilt": 0.05
+     },
+     {
+      "from": 563,
+      "to": 657,
+      "tilt": 0.05
+     },
+     {
+      "from": 924,
+      "to": 942,
+      "armR": [
+       "ik",
+       [
+        0.5,
+        1.18
+       ],
+       -1
+      ],
+      "prop_tilt": [
+       0,
+       -0.35
+      ]
+     }
+    ],
+    "smooth": 0.2
+   },
+   "hand_props": [
+    {
+     "id": "bottle0",
+     "kind": "bottle",
+     "hand": "R",
+     "ranges": [
+      [
+       924,
+       942
+      ]
+     ]
+    }
+   ]
+  }
+ ],
+ "words": [
+  [
+   0.35,
+   "Babe..."
+  ],
+  [
+   0.95,
+   "are"
+  ],
+  [
+   1.17,
+   "you"
+  ],
+  [
+   1.39,
+   "asleep?"
+  ],
+  [
+   2.14,
+   "Not"
+  ],
+  [
+   2.48,
+   "anymore."
+  ],
+  [
+   3.81,
+   "Can"
+  ],
+  [
+   4.06,
+   "you"
+  ],
+  [
+   4.3,
+   "turn"
+  ],
+  [
+   4.55,
+   "off"
+  ],
+  [
+   4.8,
+   "the"
+  ],
+  [
+   5.04,
+   "light?"
+  ],
+  [
+   5.69,
+   "It's"
+  ],
+  [
+   5.94,
+   "in"
+  ],
+  [
+   6.19,
+   "my"
+  ],
+  [
+   6.44,
+   "eyes."
+  ],
+  [
+   6.99,
+   "It's"
+  ],
+  [
+   7.24,
+   "on"
+  ],
+  [
+   7.5,
+   "YOUR"
+  ],
+  [
+   7.75,
+   "side."
+  ],
+  [
+   8.3,
+   "But"
+  ],
+  [
+   8.56,
+   "you're"
+  ],
+  [
+   8.81,
+   "the"
+  ],
+  [
+   9.07,
+   "strong"
+  ],
+  [
+   9.32,
+   "one."
+  ],
+  [
+   9.88,
+   "Fine."
+  ],
+  [
+   10.99,
+   "And"
+  ],
+  [
+   11.23,
+   "grab"
+  ],
+  [
+   11.46,
+   "me"
+  ],
+  [
+   11.7,
+   "a"
+  ],
+  [
+   11.93,
+   "water"
+  ],
+  [
+   12.4,
+   "from"
+  ],
+  [
+   12.64,
+   "the"
+  ],
+  [
+   12.87,
+   "fridge?"
+  ],
+  [
+   13.41,
+   "Anything"
+  ],
+  [
+   14.01,
+   "else,"
+  ],
+  [
+   14.47,
+   "your"
+  ],
+  [
+   14.68,
+   "majesty?"
+  ],
+  [
+   15.6,
+   "Turn"
+  ],
+  [
+   15.84,
+   "the"
+  ],
+  [
+   16.08,
+   "TV"
+  ],
+  [
+   16.33,
+   "off"
+  ],
+  [
+   16.57,
+   "too."
+  ],
+  [
+   17.11,
+   "It's"
+  ],
+  [
+   17.34,
+   "not"
+  ],
+  [
+   17.58,
+   "even"
+  ],
+  [
+   18.05,
+   "on!"
+  ],
+  [
+   19.08,
+   "Then"
+  ],
+  [
+   19.44,
+   "turn"
+  ],
+  [
+   19.8,
+   "it"
+  ],
+  [
+   20.16,
+   "on."
+  ],
+  [
+   20.92,
+   "I"
+  ],
+  [
+   21.17,
+   "can't"
+  ],
+  [
+   21.43,
+   "sleep."
+  ]
+ ],
+ "captions": {
+  "style": "word"
+ },
+ "sound": {
+  "auto": {
+   "enabled": false
+  }
+ },
+ "lights": [
+  [
+   430,
+   "off"
+  ]
+ ],
+ "visibility": {
+  "lamp_shade_off": [
+   [
+    430,
+    942
+   ]
+  ],
+  "lamp_shade_on": [
+   [
+    1,
+    429
+   ]
+  ],
+  "fridge_door_closed": [
+   [
+    1,
+    567
+   ],
+   [
+    620,
+    942
+   ]
+  ],
+  "fridge_door_closed_handle": [
+   [
+    1,
+    567
+   ],
+   [
+    620,
+    942
+   ]
+  ],
+  "fridge_door_open": [
+   [
+    568,
+    619
+   ]
+  ],
+  "tv_screen_off": [
+   [
+    1,
+    788
+   ]
+  ],
+  "tv_screen_on": [
+   [
+    789,
+    942
+   ]
+  ],
+  "tv_screen_on_pic": [
+   [
+    789,
+    942
+   ]
+  ]
+ }
+}

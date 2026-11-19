@@ -46,6 +46,8 @@ Bấm "+ Dự án mới" rồi gõ **3** (hoặc chọn "Đối thoại hài" �
    Bối cảnh không có ghế/giường thì tool tự đặt ghế, sofa hoặc giường; ở bãi đỗ xe có chỗ ngồi trên capo (`car_hood`).
    **Đi làm việc rồi quay về**: hành động "đi tắt đèn / đi bật đèn rồi quay về" (đèn tắt thật, phòng tối; xong về giường nằm lại)
    và "đi tới chỗ… rồi quay về" (ghi chỗ ở ô "Tới chỗ"). Kịch bản tự viết: ghi `(đi tắt đèn)`, `(bật điện)`.
+   **Claude tự dàn dựng**: khi bấm Duyệt & dựng, Claude đọc kịch bản và tự quyết định ai làm gì với đồ vật nào (dậy tắt đèn, mở tủ lạnh,
+   bật TV, đưa đồ, về giường nằm…); đồ vật chưa có thì Claude vẽ thêm. Nút "🎬 Claude dàn dựng" để làm lại hoặc kèm yêu cầu riêng.
 3. **Giọng đọc** (OmniVoice, cài một lần bằng `tools\install_omnivoice.bat`, cần card NVIDIA):
    "Tạo giọng thử" → nghe 3 giọng của mỗi nhân vật → **Chọn** (hoặc tải giọng thật của bạn 3-10 giây) → "Tạo giọng các câu & ghép".
    Câu nào chưa hay: ↻ đọc lại, hoặc tải bản tự thu của câu đó. Sửa chữ một câu thì chỉ câu đó được đọc lại.

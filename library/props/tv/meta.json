@@ -1,0 +1,67 @@
+{
+  "kind": "prop",
+  "name": "tv",
+  "status": "approved",
+  "title_vi": "TV trên kệ (có bật/tắt)",
+  "description_vi": "TV màn hình phẳng trên kệ gỗ thấp. Trạng thái: on (màn hình sáng có hình), off (màn đen).",
+  "dim": "3d",
+  "params": {
+    "width": {
+      "type": "number",
+      "default": 1.9,
+      "desc_vi": "rộng màn hình"
+    },
+    "cabinet": {
+      "type": "array",
+      "default": [
+        0.45,
+        0.3,
+        0.2
+      ],
+      "desc_vi": "màu kệ"
+    },
+    "frame": {
+      "type": "array",
+      "default": [
+        0.08,
+        0.08,
+        0.09
+      ],
+      "desc_vi": "màu viền"
+    }
+  },
+  "states": {
+    "off": {
+      "show": [
+        "screen_off"
+      ],
+      "hide": [
+        "screen_on",
+        "screen_on_pic"
+      ]
+    },
+    "on": {
+      "show": [
+        "screen_on",
+        "screen_on_pic"
+      ],
+      "hide": [
+        "screen_off"
+      ]
+    }
+  },
+  "use": {
+    "side": "front",
+    "dist": 1.0,
+    "reach_h": 0.75
+  },
+  "parts": [
+    "screen_on",
+    "screen_off",
+    "cabinet"
+  ],
+  "tags": [
+    "dialog",
+    "interactive"
+  ]
+}

@@ -131,6 +131,10 @@ gài từ trước) — tối đa khoảng 1/3 số câu có action.
   nói vọng theo, hoặc người đi càu nhàu khi đang đi. Ví dụ: "Babe, can you get the light?" → "[sigh] Every. Single. Night." (lights_off)
   → "...Now I can't see my phone." (cú chốt).
 
+## 4d. Dàn dựng
+Sau khi có kịch bản, tool gọi Claude dàn dựng (`steps` từng câu, `objects`): xem `dialog.STAGING_DOC`. Khi viết kịch bản, cứ viết
+tình huống có hành động tự nhiên (nhờ tắt đèn, lấy đồ trong tủ lạnh, bật TV…), phần chuyển động để bước dàn dựng lo.
+
 ## 5. Bối cảnh
 - Một bối cảnh cho cả video, chọn trong thư viện (bếp `kitchen` với `stuck_toast: false`, `office`, `street`…). Nếu không hợp thì đặt
   tên mới (living_room, bedroom, restaurant, car_front_seats, supermarket…) và đưa vào `library_needs` (tối đa 1 món mới).

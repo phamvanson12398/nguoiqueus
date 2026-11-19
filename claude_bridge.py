@@ -462,7 +462,7 @@ def _write_item(kind, name, data, brief, status="draft", review=None):
     d = os.path.join(LIB, kind, name); os.makedirs(d, exist_ok=True)
     open(os.path.join(d, "build.py"), "w", encoding="utf-8").write(data["build_py"].rstrip() + "\n")
     meta = {"kind": kind[:-1], "name": name, "title_vi": data["title_vi"], "description_vi": data["description_vi"]}
-    for k in ("dim", "params", "parts", "space", "anchors", "views", "tags", "notes_vi", "stage", "spots"):
+    for k in ("dim", "params", "parts", "space", "anchors", "views", "tags", "notes_vi", "stage", "spots", "states", "use"):
         if k in data: meta[k] = data[k]
     meta.update(status=status, brief_vi=brief, designed_by="claude_bridge",
                 updated=datetime.datetime.now().isoformat(timespec="seconds"))
@@ -1170,6 +1170,106 @@ def rewrite_dialog(slug, a, b, request, model=None):
     content["lines"][a:b + 1] = data["lines"]
     _save_versioned(slug, "content.json", dialog_fill(content))
     return {"content": content, "explain_vi": data["explain_vi"]}
+
+
+def _interactive_props():
+    """library props with states (TV, fridge, door, lamp…): name -> {title, states, use}"""
+    cat = storycheck.LibIndex()
+    out = {}
+    lib = os.path.join(ROOT, "library", "props")
+    for n in sorted(os.listdir(lib)) if os.path.isdir(lib) else []:
+        mp = os.path.join(lib, n, "meta.json")
+        if not os.path.exists(mp): continue
+        try: m = json.load(open(mp, encoding="utf-8"))
+        except Exception: continue
+        if m.get("states"): out[n] = {"title_vi": m.get("title_vi", ""), "states": list(m["states"]), "use": m.get("use", {})}
+    return out
+
+
+def stage_dialog(slug, request="", model=None):
+    """Claude as stage director: reads the script and decides who does what with what (get up, open the fridge, switch the TV on,
+    hand over the phone, lie back down…), as steps the tool turns into movement; new interactive things go to library_needs."""
+    import dialog as D
+    d = _project_dir(slug); content = json.load(open(os.path.join(d, "content.json"), encoding="utf-8"))
+    script = ""
+    sp = os.path.join(d, "script.txt")
+    if os.path.exists(sp): script = open(sp, encoding="utf-8").read()[:6000]
+    lib = storycheck.LibIndex(); set_name = content["setting"]["set"]
+    smeta = (lib.meta("sets", set_name) if lib.exists("sets", set_name) and hasattr(lib, "meta") else {}) or {}
+    inter = _interactive_props()
+    lines = [{"n": k + 1, "speaker": l["speaker"], "text": l["text"], "text_vi": l.get("text_vi", ""), "face": l.get("face"),
+              **({"action": l["action"], "prop": l.get("prop"), "to_spot": l.get("to_spot")} if l.get("action", "none") != "none" else {})}
+             for k, l in enumerate(content["lines"])]
+    cast = [{k: m.get(k) for k in ("id", "name", "role", "body", "posture", "holding", "spot") if m.get(k) is not None} for m in content["cast"]]
+    prompt = ("Bạn là đạo diễn dàn dựng cho video đối thoại hài 9:16 (nhân vật hoạt hình, máy quay đứng yên). Đọc kịch bản và quyết định "
+              "AI LÀM GÌ, VỚI CÁI GÌ, LÚC NÀO để cảnh sống động và đúng logic vật lý (đang nằm thì phải dậy mới đi được; xong việc thì quay về). "
+              "Tool có sẵn các động tác ghép được — bạn chỉ ra bước, tool tự làm chuyển động:\n"
+              + D.STAGING_DOC +
+              f"\nBối cảnh: {set_name} — {content['setting'].get('brief_vi', '')}\nChỗ trong bối cảnh (spots): "
+              f"{json.dumps(smeta.get('spots', {}), ensure_ascii=False)}\n"
+              f"Đồ vật tương tác có sẵn trong thư viện (dùng được trong objects): {json.dumps(inter, ensure_ascii=False)}\n"
+              f"Đồ cầm tay (prop): {', '.join(D.PROP_KINDS)}\n"
+              f"Nhân vật: {json.dumps(cast, ensure_ascii=False)}\n"
+              f"Mô tả cảnh: {content.get('premise_vi', '')}\n"
+              + (f"Kịch bản gốc của người dùng (ghi chú trong ngoặc là chỉ dẫn diễn xuất):\n{script}\n" if script else "")
+              + f"Các câu thoại: {json.dumps(lines, ensure_ascii=False)}\n"
+              + (f"Yêu cầu thêm của người dùng: {request}\n" if request else "")
+              + "Trả: objects (đồ vật đặt trong cảnh mà người ta dùng), cast (tư thế lúc đầu/đồ cầm sẵn nếu cần), lines (chỉ các câu có bước, "
+                "mỗi câu một danh sách steps), library_needs (đồ vật tương tác chưa có: tên, mô tả để vẽ, danh sách trạng thái), notes_vi.")
+    ids = [m["id"] for m in content["cast"]]
+
+    def check(x):
+        e = []
+        need = {nd["name"]: nd for nd in x["library_needs"]}
+        oids = {}
+        for o in x["objects"]:
+            if o["type"] in inter: oids[o["id"]] = inter[o["type"]]["states"]
+            elif o["type"] in need: oids[o["id"]] = need[o["type"]]["states"]
+            else: e.append(f"objects '{o['id']}': type '{o['type']}' không có trong thư viện và không có trong library_needs")
+            if o.get("state") and o["id"] in oids and o["state"] not in oids[o["id"]]: e.append(f"objects '{o['id']}': state '{o['state']}' không có")
+        for m in x["cast"]:
+            if m["id"] not in ids: e.append(f"cast '{m['id']}' không có (có: {ids})")
+        for ln in x["lines"]:
+            if not 1 <= ln["n"] <= len(content["lines"]): e.append(f"lines n={ln['n']} ngoài khoảng 1..{len(content['lines'])}"); continue
+            for st in ln["steps"]:
+                if st["who"] not in ids: e.append(f"câu {ln['n']}: who '{st['who']}' không có")
+                if st["do"] == "interact":
+                    if st.get("object") not in oids: e.append(f"câu {ln['n']}: interact cần object là id trong objects (có: {list(oids)})")
+                    elif st.get("state") and st["state"] not in oids[st["object"]]: e.append(f"câu {ln['n']}: '{st['object']}' không có state '{st['state']}' ({oids[st['object']]})")
+                    elif not st.get("state"): e.append(f"câu {ln['n']}: interact cần state")
+                if st["do"] in ("take_out", "show", "give") and st.get("prop") not in D.PROP_KINDS: e.append(f"câu {ln['n']}: {st['do']} cần prop hợp lệ")
+                if st["do"] in ("walk_to", "errand") and not st.get("to_spot"): e.append(f"câu {ln['n']}: {st['do']} cần to_spot")
+        n_steps = sum(len(ln["steps"]) for ln in x["lines"])
+        if n_steps > max(6, len(content["lines"])): e.append(f"{n_steps} bước là quá nhiều cho {len(content['lines'])} câu: chỉ giữ hành động có ý nghĩa")
+        return e
+    data, info = call("stage_dialog", prompt, load_schema("dialog_stage"), project=slug, model=model, check=check)
+    for m in data["cast"]:
+        cm = next(c_ for c_ in content["cast"] if c_["id"] == m["id"])
+        if m.get("posture"): cm["posture"] = m["posture"]
+        if m.get("holding"): cm["holding"] = {"kind": m["holding"]}
+        elif m.get("holding") == "": cm.pop("holding", None)
+        if m.get("spot"): cm["spot"] = m["spot"]
+    for l in content["lines"]: l.pop("steps", None)
+    for ln in data["lines"]:
+        content["lines"][ln["n"] - 1]["steps"] = ln["steps"]
+    content["objects"] = data["objects"]
+    needs = [n_ for n_ in content.get("library_needs", []) if n_.get("kind") != "props" or n_["name"] not in {x_["name"] for x_ in data["library_needs"]}]
+    for nd in data["library_needs"]:
+        needs.append({"kind": "props", "name": nd["name"], "brief": nd["brief"] + STATE_BRIEF.format(states=", ".join(nd["states"]),
+                                                                                                    side=nd.get("use_side", "front")),
+                      "states": nd["states"]})
+    content["library_needs"] = needs
+    content["staged"] = True
+    content["staging_vi"] = data["notes_vi"]
+    _save_versioned(slug, "content.json", dialog_fill({k: v for k, v in content.items() if k not in DIALOG_DERIVED}))
+    return {"content": content, "notes_vi": data["notes_vi"], "steps": sum(len(ln["steps"]) for ln in data["lines"]),
+            "needs": [nd["name"] for nd in data["library_needs"]]}
+
+
+STATE_BRIEF = (" ĐỒ VẬT TƯƠNG TÁC cho video đối thoại (nhân vật đi tới dùng nó): khai báo meta 'states' với ĐÚNG các trạng thái: {states}. "
+               "Mỗi trạng thái = {{\"show\": [hậu tố phần], \"hide\": [hậu tố phần]}} (phần con tên <name>_<hậu tố>, nhóm bằng group3d nếu "
+               "nhiều mảnh, KHÔNG gắn parent cho mảnh đặt bằng tọa độ tuyệt đối); nếu trạng thái làm cả phòng tối/sáng (đèn) thêm \"room\": \"night\"/\"day\". "
+               "Khai báo 'use': {{\"side\": \"{side}\", \"dist\": khoảng cách người đứng, \"reach_h\": độ cao tay với}}. Mặt trước quay về -Y.")
 
 
 def check_long_content(x, minutes):

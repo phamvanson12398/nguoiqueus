@@ -1,0 +1,217 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "required": [
+  "objects",
+  "cast",
+  "lines",
+  "library_needs",
+  "notes_vi"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "objects": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "type"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "type": {
+      "type": "string"
+     },
+     "near": {
+      "type": "string",
+      "description": "tên spot của bối cảnh, id một người, hoặc left / right / behind"
+     },
+     "state": {
+      "type": "string",
+      "description": "trạng thái lúc đầu"
+     },
+     "params": {
+      "type": "object"
+     }
+    }
+   }
+  },
+  "cast": {
+   "type": "array",
+   "description": "tư thế lúc đầu và đồ cầm sẵn của từng người (chỉ ghi người cần đổi)",
+   "items": {
+    "type": "object",
+    "required": [
+     "id"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "posture": {
+      "enum": [
+       "stand",
+       "sit",
+       "lie"
+      ]
+     },
+     "holding": {
+      "enum": [
+       "",
+       "phone",
+       "coffee",
+       "mug",
+       "soda",
+       "bottle",
+       "fries",
+       "burger",
+       "pizza",
+       "icecream",
+       "bag",
+       "keys",
+       "book",
+       "remote",
+       "paper",
+       "receipt",
+       "money",
+       "flowers",
+       "gift",
+       "card",
+       "popcorn",
+       "donut"
+      ]
+     },
+     "spot": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "lines": {
+   "type": "array",
+   "description": "chỉ các câu có hành động; n = số thứ tự câu (đếm từ 1)",
+   "items": {
+    "type": "object",
+    "required": [
+     "n",
+     "steps"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "n": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "steps": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "who",
+        "do"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "who": {
+         "type": "string",
+         "description": "id trong cast (người nói hoặc người nghe)"
+        },
+        "do": {
+         "enum": [
+          "take_out",
+          "show",
+          "use",
+          "give",
+          "put_away",
+          "walk_to",
+          "enter",
+          "exit",
+          "sit_down",
+          "lie_down",
+          "stand_up",
+          "lights_off",
+          "lights_on",
+          "errand",
+          "interact"
+         ],
+         "description": "interact = đi tới đồ vật `object`, đổi nó sang `state` (bật TV, mở tủ lạnh, đóng cửa, tắt đèn…), rồi quay về (back); các việc khác như ô action"
+        },
+        "object": {
+         "type": "string",
+         "description": "id một đồ vật trong `objects` (interact)"
+        },
+        "state": {
+         "type": "string",
+         "description": "trạng thái mới của đồ vật (theo `states` của nó trong thư viện)"
+        },
+        "prop": {
+         "type": "string",
+         "description": "đồ cầm tay (take_out/show/use/give/put_away)"
+        },
+        "to_spot": {
+         "type": "string"
+        },
+        "when": {
+         "enum": [
+          "before",
+          "during",
+          "after"
+         ],
+         "description": "trước câu (~1 s), trong lúc nói, hay sau khi câu xong"
+        },
+        "back": {
+         "type": "boolean",
+         "description": "interact/errand: xong thì về chỗ cũ, tư thế cũ (mặc định true)"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "library_needs": {
+   "type": "array",
+   "description": "đồ vật tương tác chưa có trong thư viện (Claude thiết kế sau): name, brief, states",
+   "items": {
+    "type": "object",
+    "required": [
+     "name",
+     "brief",
+     "states"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,40}$"
+     },
+     "brief": {
+      "type": "string"
+     },
+     "states": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "minItems": 2
+     },
+     "use_side": {
+      "enum": [
+       "front",
+       "auto"
+      ]
+     }
+    }
+   }
+  },
+  "notes_vi": {
+   "type": "string",
+   "description": "tóm tắt dàn dựng bằng tiếng Việt (ai làm gì, ở câu nào)"
+  }
+ }
+}

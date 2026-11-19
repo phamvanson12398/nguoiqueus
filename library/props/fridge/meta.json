@@ -1,0 +1,62 @@
+{
+  "kind": "prop",
+  "name": "fridge",
+  "status": "approved",
+  "title_vi": "Tủ lạnh (mở/đóng)",
+  "description_vi": "Tủ lạnh trắng. Trạng thái: closed, open (cửa mở sang phải, trong sáng đèn, có kệ và đồ ăn).",
+  "dim": "3d",
+  "params": {
+    "height": {
+      "type": "number",
+      "default": 2.5,
+      "desc_vi": "cao"
+    },
+    "width": {
+      "type": "number",
+      "default": 1.1,
+      "desc_vi": "rộng"
+    },
+    "color": {
+      "type": "array",
+      "default": [
+        0.85,
+        0.92,
+        0.95
+      ],
+      "desc_vi": "màu"
+    }
+  },
+  "states": {
+    "closed": {
+      "show": [
+        "door_closed",
+        "door_closed_handle"
+      ],
+      "hide": [
+        "door_open"
+      ]
+    },
+    "open": {
+      "show": [
+        "door_open"
+      ],
+      "hide": [
+        "door_closed",
+        "door_closed_handle"
+      ]
+    }
+  },
+  "use": {
+    "side": "front",
+    "dist": 0.75,
+    "reach_h": 1.0
+  },
+  "parts": [
+    "door_closed",
+    "door_open"
+  ],
+  "tags": [
+    "dialog",
+    "interactive"
+  ]
+}

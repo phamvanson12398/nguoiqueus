@@ -173,12 +173,14 @@ small.err{color:var(--bad)}
           <div><label class="muted">Tình huống + cú đảo</label><textarea id="dPremise" rows="2"></textarea></div>
           <div><label class="muted">Chữ nhấn trong phụ đề (phẩy)</label><input type="text" id="dHi" style="width:100%"></div>
         </div>
+        <div id="dStageNote" class="muted" style="margin-top:6px;font-size:13px"></div>
         <div id="dNeeds" style="margin-top:6px"></div>
       </div>
       <div class="panel"><h2>Nhân vật</h2><div id="dCast" class="grid"></div></div>
       <div class="row" style="margin-bottom:8px"><h2 style="margin:0;flex:1;font-size:15px">Lời thoại</h2>
         <input type="text" id="dRwReq" placeholder="Yêu cầu viết lại các câu đã đánh dấu ☑ (vd: cú chốt bất ngờ hơn)…" style="width:420px;max-width:100%">
         <button id="dRw">Viết lại câu đã chọn</button><button id="dAdd">+ Thêm câu</button>
+        <button id="dStage" title="Claude đọc kịch bản và quyết định ai làm gì với đồ vật nào (dậy đi tắt đèn, mở tủ lạnh, bật TV, đưa đồ…), đồ vật thiếu thì vẽ thêm khi dựng">🎬 Claude dàn dựng</button>
         <button id="dTags" title="Tool tự thêm thẻ cảm xúc OmniVoice ([laughter], [sigh], [surprise-wa]…) ở chỗ cảm xúc mạnh, khoảng 1 thẻ mỗi 2-3 câu">😮 Thêm thẻ cảm xúc</button></div>
       <div id="dLines"></div>
     </div>
@@ -909,7 +911,7 @@ const D_PROPS = {'': '—', phone: 'điện thoại', coffee: 'cà phê', mug: '
   receipt: 'hóa đơn', money: 'tiền', flowers: 'hoa', gift: 'hộp quà', card: 'thẻ', popcorn: 'bỏng ngô', donut: 'bánh donut'};
 const D_ACT = {none: '—', take_out: 'lấy đồ ra', show: 'giơ cho xem', use: 'uống/ăn/xem (trước câu)', give: 'đưa cho người kia',
   put_away: 'cất đi', walk_to: 'bước tới…', enter: 'đi vào cảnh', exit: 'nói xong bỏ đi',
-  sit_down: 'ngồi xuống', lie_down: 'nằm xuống', stand_up: 'đứng dậy',
+  sit_down: 'ngồi xuống', lie_down: 'nằm xuống', stand_up: 'đứng dậy', interact: 'dùng đồ vật',
   lights_off: 'đi tắt đèn rồi quay về', lights_on: 'đi bật đèn rồi quay về', errand: 'đi tới chỗ… rồi quay về'};
 const D_GEST_VI = {none: '—', point: 'chỉ tay', hands_hips: 'chống nạnh', cross_arms: 'khoanh tay', shrug: 'nhún vai', wave: 'vẫy', hold_hands: 'nắm tay',
   think: 'suy nghĩ', fist: 'giơ nắm đấm', hands_up: 'giơ hai tay', open_arms: 'dang tay', facepalm: 'ôm đầu'};
@@ -969,7 +971,9 @@ function dlgLineCard(l, i, cast) {
       <div class="row" style="gap:8px;grid-column:1/-1" title="Đồ vật trong tay và đi lại (người nói làm ở câu này)">
         ${sel('action', D_ACT, 'Hành động ', l.action || 'none')} ${sel('prop', D_PROPS, 'Đồ vật ', l.prop || '')}
         <label>Tới chỗ <input type="text" data-k="to_spot" value="${esc(l.to_spot || '')}" placeholder="partner / away / tên spot" style="width:140px"></label>
-      </div></div></div>`;
+      </div>
+      ${(l.steps || []).length ? `<div class="full muted" style="font-size:12.5px">🎬 ${l.steps.map(st => esc(`${st.who}: ${D_ACT[st.do] || st.do}${st.object ? ' ' + st.object : ''}${st.state ? ' → ' + st.state : ''}${st.prop ? ' (' + st.prop + ')' : ''}${st.to_spot ? ' → ' + st.to_spot : ''}${st.when && st.when !== 'during' ? ' [' + st.when + ']' : ''}`)).join(' · ')}</div>` : ''}
+      </div></div>`;
 }
 function dlgCastCard(m, i) {
   return `<div class="card dc" data-i="${i}">
@@ -1014,6 +1018,7 @@ function renderDialog() {
     c2.library_needs = [{kind: 'sets', name, brief: desc}];                      // one set per video
     S.state.content = c2; renderDialog(); toast('Đã thêm bối cảnh mới: bấm Lưu, Claude sẽ vẽ khi bấm Duyệt & dựng'); };
   $('#dEnd').innerHTML = opts(['none'], 'none');      // dialogue videos: voices only, no music or sound effects
+  $('#dStageNote').innerHTML = c.staging_vi ? `🎬 <b>Dàn dựng:</b> ${esc(c.staging_vi)}` + ((c.objects || []).length ? ` · Đồ vật: ${c.objects.map(o => esc(o.id + ' (' + o.type + ')')).join(', ')}` : '') : '';
   $('#dNeeds').innerHTML = (c.library_needs || []).length ? 'Bối cảnh mới (Claude thiết kế khi bấm Duyệt & dựng): ' + c.library_needs.map(n => `<span class="chip draft" title="${esc(n.brief)}">${esc(n.name)}</span>`).join('') : '';
   $('#dCast').innerHTML = c.cast.map(dlgCastCard).join('');
   $('#dLines').innerHTML = c.lines.map((l, i) => dlgLineCard(l, i, c.cast)).join('');
@@ -1050,6 +1055,8 @@ function collectDialog() {
     l.pause_before = parseFloat(l.pause_before) || 0; l.speed = parseFloat(l.speed) || 1;
     if (!l.action || l.action === 'none') { delete l.action; delete l.prop; delete l.to_spot; }
     else { if (!l.prop) delete l.prop; if (!l.to_spot) delete l.to_spot; }
+    const orig = (c.lines || [])[+el.dataset.i] || {};            // staged steps are kept with their line (moved / edited lines too)
+    for (const k of ['steps', 'object', 'state']) if (orig[k] !== undefined && l[k] === undefined) l[k] = orig[k];
     return l;
   });
   return c;
@@ -1063,6 +1070,12 @@ $('#dAdd').onclick = () => { const c = collectDialog(); const last = c.lines[c.l
   c.lines.push({speaker: other, text: '', text_vi: '', face: 'neutral', listener_face: 'neutral', gesture: 'none', listener_gesture: 'none', shot: 'auto',
                 pause_before: 0.25, speed: 1.0, sfx: 'none', react: 'none', beat: 'build'});
   S.state.content = c; renderDialog(); toast('Đã thêm câu (nhớ bấm Lưu)'); };
+$('#dStage').onclick = async () => {
+  const req = prompt('Claude sẽ dàn dựng lại hành động cho cả kịch bản. Yêu cầu thêm (để trống cũng được):', '') ;
+  if (req === null) return;
+  try { await saveDialog(true); } catch (e) { return toast(e.message, 7000); }
+  run(P('/content/stage'), {request: req}, 'Claude dàn dựng hành động');
+};
 $('#dTags').onclick = async () => {
   try { await saveDialog(true); const r = await api(P('/content/autotag'), {body: {}}); await loadProject();
         toast(r.added ? `Đã thêm ${r.added} thẻ cảm xúc (${r.tagged}/${r.lines} câu có thẻ). Bấm "Tạo giọng các câu" để đọc lại các câu đó.` : `Không thêm thẻ nào (${r.tagged}/${r.lines} câu đã có thẻ)`, 6000); }

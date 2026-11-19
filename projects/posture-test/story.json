@@ -38,9 +38,7 @@
     {
      "id": "lamp",
      "type": "floor_lamp",
-     "params": {
-      "on": true
-     },
+     "params": {},
      "loc": [
       -3.35,
       4.55,
@@ -2225,6 +2223,12 @@
   ]
  ],
  "visibility": {
+  "lamp_shade_off": [
+   [
+    736,
+    1637
+   ]
+  ],
   "lamp_shade_on": [
    [
     1,
@@ -2233,12 +2237,6 @@
    [
     1638,
     2037
-   ]
-  ],
-  "lamp_shade_off": [
-   [
-    736,
-    1637
    ]
   ]
  }

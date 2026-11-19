@@ -517,6 +517,24 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   chụp đèn đổi `lamp_shade_on/off` bằng `visibility`. lights_on đầu tiên → lúc đầu phòng tối. Errand ở câu cuối → đuôi video 7 s.
   Nhập kịch bản: "(đi tắt đèn)", "(bật điện)", "(turns off the light)". Thử `projects/posture-test`: Jake tắt đèn rồi nằm lại,
   Emily bật đèn; `CAMERA OK`. Ảnh: `docs/img/dialog_lights.jpg`.
+- Tool tự suy luận hành động cho mọi loại content (người dùng: "nhiều loại content, tool tự suy luận ra và làm thêm được không"):
+  - Claude là đạo diễn dàn dựng: `bridge.stage_dialog` (schema `dialog_stage`, `dialog.STAGING_DOC`) đọc kịch bản + script.txt gốc + spots +
+    đồ vật tương tác trong thư viện → `objects` (đồ đặt trong cảnh, `near` spot/người/left/right/behind, trạng thái đầu), `cast` posture/holding,
+    `lines[].steps` (nhiều bước, nhiều người, cả người nghe: who, do, object, state, prop, to_spot, when before/during/after, back),
+    `library_needs` đồ mới kèm danh sách trạng thái (brief `STATE_BRIEF` bắt khai báo `states`/`use`). Kiểm id/đồ vật/trạng thái/prop, ≤ số câu bước.
+    `content.staged` + `staging_vi`. `job_build_dialog` tự dàn dựng một lần trước khi lập story (settings `auto_stage` false để tắt) rồi thiết kế
+    đồ mới như bối cảnh; nút "🎬 Claude dàn dựng" (kèm yêu cầu) chạy lại; thẻ câu hiện các bước.
+  - Đồ vật có trạng thái (meta `states`: tên → show/hide hậu tố phần + `room` night/day; `use`: side front|auto, dist, reach_h): tay viết
+    `props/{tv (on/off), fridge (closed/open, trong sáng đèn), room_door (closed/open), floor_lamp (on/off, room)}`; Claude thiết kế thêm
+    (design_prop schema nhận states/use, `_write_item` giữ lại). `dialog.place_objects`, `object_visibility` (visibility theo trạng thái), đổi
+    trạng thái có `room` → `lights`.
+  - Động tác chung `interact` (đi tới chỗ dùng, với tay 18 khung, đổi trạng thái ở khung 11, `back` về chỗ/tư thế cũ; không back = ở lại);
+    lights_off/on là interact với đồ có `room` (không có thì đèn cây). Bước của một người xếp hàng nối đuôi (`busy`: đi, với tay, cầm đồ);
+    video tự kéo dài sau câu cuối tới khi việc xong (+1,5 s). Máy quay: `action_shots` chèn cú trung cảnh vào người đang làm (từ trước khi tới
+    đến khi tay rút về) và cú toàn cảnh cho đoạn đi > 1,6 s, cắt các cú theo câu quanh đó (không cú < 15 khung).
+  - Thử thật `projects/stage-test` (11 câu, giọng giả): Claude dàn dựng 7 bước (cả hai nằm giường; Jake dậy tắt đèn và đứng đó vì sắp bị
+    sai tiếp; mở tủ lạnh lấy chai nước, đóng tủ; bật TV; về giường nằm, đưa nước cho Emily) → video 23 → 31 s, `CAMERA OK`.
+    Ảnh: `docs/img/dialog_stage.jpg`. Còn để ý: đồ vật đặt `near` một spot của bối cảnh có thể chồng lên đồ của bối cảnh (tủ lạnh của bếp).
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

@@ -1,0 +1,66 @@
+{
+  "kind": "prop",
+  "name": "room_door",
+  "status": "approved",
+  "title_vi": "Cửa phòng (mở/đóng)",
+  "description_vi": "Mảng tường có cửa gỗ. Trạng thái: closed, open (cửa mở vào trong, ô cửa tối). Người mở đứng trước cửa.",
+  "dim": "3d",
+  "params": {
+    "wall_width": {
+      "type": "number",
+      "default": 2.4,
+      "desc_vi": "rộng mảng tường"
+    },
+    "wall": {
+      "type": "array",
+      "default": [
+        0.86,
+        0.82,
+        0.74
+      ],
+      "desc_vi": "màu tường"
+    },
+    "door": {
+      "type": "array",
+      "default": [
+        0.55,
+        0.33,
+        0.18
+      ],
+      "desc_vi": "màu cửa"
+    }
+  },
+  "states": {
+    "closed": {
+      "show": [
+        "closed",
+        "closed_knob"
+      ],
+      "hide": [
+        "open"
+      ]
+    },
+    "open": {
+      "show": [
+        "open"
+      ],
+      "hide": [
+        "closed",
+        "closed_knob"
+      ]
+    }
+  },
+  "use": {
+    "side": "front",
+    "dist": 0.7,
+    "reach_h": 1.0
+  },
+  "parts": [
+    "closed",
+    "open"
+  ],
+  "tags": [
+    "dialog",
+    "interactive"
+  ]
+}
