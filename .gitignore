@@ -65,3 +65,4 @@ projects/scenes-test/lines/
 projects/_queue.json
 projects/_queue.json.tmp
 projects/queue-*/
+library/voices/*/
