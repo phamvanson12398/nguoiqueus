@@ -48,14 +48,26 @@ Bấm "+ Dự án mới" rồi gõ **3** (hoặc chọn "Đối thoại hài" �
    và "đi tới chỗ… rồi quay về" (ghi chỗ ở ô "Tới chỗ"). Kịch bản tự viết: ghi `(đi tắt đèn)`, `(bật điện)`.
    **Claude tự dàn dựng**: khi bấm Duyệt & dựng, Claude đọc kịch bản và tự quyết định ai làm gì với đồ vật nào (dậy tắt đèn, mở tủ lạnh,
    bật TV, đưa đồ, về giường nằm…); đồ vật chưa có thì Claude vẽ thêm. Nút "🎬 Claude dàn dựng" để làm lại hoặc kèm yêu cầu riêng.
+   **Hai người với nhau**: hành động ôm, đập tay, véo má, ném đồ (mặc định cái gối) vào người kia, ngã ngửa rồi dậy. Kịch bản tự viết:
+   `(ôm chầm lấy anh)`, `(đập tay)`, `(véo má)`, `(ném gối vào Jake)`, `(ngã)`.
+   **Nhân vật quen của kênh**: thẻ nhân vật có nút "⭐ Lưu làm nhân vật kênh" (ngoại hình, giọng, tính cách). Video sau có người cùng tên
+   (kịch bản tự viết hoặc Claude viết) thì tự dùng lại đúng người đó; danh sách ở ô "Nhân vật của kênh".
+   **Nhiều bối cảnh**: ở thẻ câu, ô "🎞 Đổi bối cảnh từ câu này" (vd câu 1-6 ở phòng ngủ, từ câu 7 ra bếp). Kịch bản tự viết: dòng
+   `--- Cảnh 2: siêu thị ---` hoặc `Bối cảnh: trong xe` giữa kịch bản. Tool dựng từng cảnh riêng rồi ghép liền khi render.
 3. **Giọng đọc** (OmniVoice, cài một lần bằng `tools\install_omnivoice.bat`, cần card NVIDIA):
    "Tạo giọng thử" → nghe 3 giọng của mỗi nhân vật → **Chọn** (hoặc tải giọng thật của bạn 3-10 giây) → "Tạo giọng các câu & ghép".
    Câu nào chưa hay: ↻ đọc lại, hoặc tải bản tự thu của câu đó. Sửa chữ một câu thì chỉ câu đó được đọc lại.
    Giọng lưu ở `library/voices/`, video sau dùng lại được (nhân vật quen của kênh).
 4. **Duyệt & dựng**: tool tự lập cảnh trong vài giây (không tốn lượt Claude): máy quay cắt giữa hai người / cận người nói / cận người nghe
    phản ứng / cận hai mặt ở câu chốt, mặt + miệng + cử chỉ theo từng câu, phụ đề (tiêu đề gợi ý ở bước 2 thì tự thêm khi chỉnh sửa video). Muốn đổi máy quay một câu thì sửa
-   ô "Máy quay" của câu đó rồi dựng lại.
-5. **Render** như Shorts.
+   ô "Máy quay" của câu đó rồi dựng lại. Sau khi có ảnh, **Claude tự soát** từng ảnh (đầu bị cắt, người đứng xuyên đồ vật, đồ chồng nhau,
+   người nghe vô cảm ở cú đảo, máy quay câu chốt…), sửa diễn xuất/dàn dựng (không đổi lời, không đọc lại giọng) rồi dựng lại, tối đa 2 vòng.
+   Nút "🔎 Claude tự soát ảnh" để soát lại; ô "Thấy lỗi gì?" + "Nhờ Claude sửa" để chỉ lỗi cụ thể.
+5. **Render** như Shorts (video nhiều bối cảnh: render lần lượt từng cảnh rồi ghép).
+
+Tab **Hàng đợi**: dán nhiều kịch bản (cách nhau bằng dòng `===`) hoặc nhiều chủ đề (mỗi dòng một) → "+ Thêm vào hàng đợi" → "▶ Chạy".
+Máy tự làm lần lượt từng video: kịch bản → giọng (nhân vật mới: tool chọn giọng thử sống nhất) → đọc lời → dựng + xem trước → Claude soát
+→ (render nếu chọn "Làm tới: render xong mp4"). Hết lượt Claude thì tự dừng; "Làm lại" mục lỗi; "Mở dự án" để sửa tiếp như bình thường.
 
 Tab **YouTube**: "Tạo gói YouTube" → 10 tiêu đề, mô tả có mốc chương thật và nguồn, tag, bình luận ghim; video dài có thêm 3 thumbnail
 1280x720 dựng từ chính nhân vật của video (Claude tự chấm và chọn). Bấm "Chép"/"Sao chép" rồi dán vào YouTube Studio.

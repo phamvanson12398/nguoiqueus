@@ -1,0 +1,181 @@
+{
+ "words": [
+  [
+   0.35,
+   "Babe..."
+  ],
+  [
+   0.95,
+   "are"
+  ],
+  [
+   1.17,
+   "you"
+  ],
+  [
+   1.39,
+   "asleep?"
+  ],
+  [
+   2.14,
+   "Not"
+  ],
+  [
+   2.48,
+   "anymore."
+  ],
+  [
+   3.81,
+   "Can"
+  ],
+  [
+   4.06,
+   "you"
+  ],
+  [
+   4.3,
+   "turn"
+  ],
+  [
+   4.55,
+   "off"
+  ],
+  [
+   4.8,
+   "the"
+  ],
+  [
+   5.04,
+   "light?"
+  ],
+  [
+   5.69,
+   "It's"
+  ],
+  [
+   5.94,
+   "in"
+  ],
+  [
+   6.19,
+   "my"
+  ],
+  [
+   6.44,
+   "eyes."
+  ],
+  [
+   6.99,
+   "It's"
+  ],
+  [
+   7.24,
+   "on"
+  ],
+  [
+   7.5,
+   "YOUR"
+  ],
+  [
+   7.75,
+   "side."
+  ],
+  [
+   8.3,
+   "But"
+  ],
+  [
+   8.56,
+   "you're"
+  ],
+  [
+   8.81,
+   "the"
+  ],
+  [
+   9.07,
+   "strong"
+  ],
+  [
+   9.32,
+   "one."
+  ],
+  [
+   9.88,
+   "Fine."
+  ]
+ ],
+ "segments": [
+  [
+   0.35,
+   1.84
+  ],
+  [
+   2.14,
+   3.51
+  ],
+  [
+   3.81,
+   6.69
+  ],
+  [
+   6.99,
+   8.0
+  ],
+  [
+   8.3,
+   9.58
+  ],
+  [
+   9.88,
+   10.69
+  ]
+ ],
+ "duration": 10.54,
+ "frames": 317,
+ "word_count": 26,
+ "lines": [
+  {
+   "n": 1,
+   "speaker": "emily",
+   "start": 0.35,
+   "end": 1.84,
+   "text": "Babe... are you asleep?"
+  },
+  {
+   "n": 2,
+   "speaker": "jake",
+   "start": 2.14,
+   "end": 3.51,
+   "text": "Not anymore."
+  },
+  {
+   "n": 3,
+   "speaker": "emily",
+   "start": 3.81,
+   "end": 6.69,
+   "text": "Can you turn off the light? It's in my eyes."
+  },
+  {
+   "n": 4,
+   "speaker": "jake",
+   "start": 6.99,
+   "end": 8.0,
+   "text": "It's on YOUR side."
+  },
+  {
+   "n": 5,
+   "speaker": "emily",
+   "start": 8.3,
+   "end": 9.58,
+   "text": "But you're the strong one."
+  },
+  {
+   "n": 6,
+   "speaker": "jake",
+   "start": 9.88,
+   "end": 10.69,
+   "text": "Fine."
+  }
+ ]
+}

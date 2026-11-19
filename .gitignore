@@ -60,3 +60,8 @@ projects/duo-test/voice.wav
 projects/duo-test/preview/
 projects/duo-test/lines/
 projects/duo-test/sfx_music.wav
+projects/scenes-test/**/*.wav
+projects/scenes-test/lines/
+projects/_queue.json
+projects/_queue.json.tmp
+projects/queue-*/

@@ -147,8 +147,11 @@ def _apply_cues(text_cues):
     return face, gesture, tags, pause, speed
 
 
+SCENE_RE = re.compile(r"^\s*(?:[-=*#]{2,}\s*)?(?:scene|cảnh|canh|bối cảnh|boi canh|setting|location|địa điểm|int\.|ext\.)\s*\d*\s*[:.\-–—]?\s*(?P<d>.+?)\s*(?:[-=*#]{2,})?\s*$", re.I)
+
+
 def parse(text):
-    head = {}; lines = []; warnings = []; named = 0; canon = {}; pending = []
+    head = {}; lines = []; warnings = []; named = 0; canon = {}; pending = []; scene_next = None
     raw = [l.rstrip() for l in (text or "").replace("\r", "").split("\n")]
     for ln in raw:
         s = ln.strip()
@@ -158,6 +161,9 @@ def parse(text):
             head[HEADERS[m.group(1).strip().lower()]] = m.group(2).strip(); continue
         if not named and not lines and not head.get("title") and re.fullmatch(r"[“\"'«].{2,80}[”\"'»]", s):
             head["title"] = s.strip('“”"\'«» '); continue
+        ms = SCENE_RE.match(s)
+        if ms and lines and named and len(ms.group("d")) >= 3:   # "Cảnh 2: siêu thị" / "--- Setting: the car ---" mid-script
+            scene_next = ms.group("d").strip(" :-–—"); continue
         m = SPEAKER_RE.match(s)
         if m and (m.group("b") or m.group("n")) and len((m.group("b") or m.group("n")).split()) <= 3 and m.group("t") is not None:
             name = (m.group("b") or m.group("n")).strip()
@@ -166,6 +172,7 @@ def parse(text):
             else: canon[key] = name if not name.isupper() or len(name) <= 2 else name.title()
             name = canon[key]
             lines.append({"name": name, "raw": (" ".join(pending) + " " + (m.group("cue") or "") + " " + m.group("t")).strip()}); named += 1
+            if scene_next: lines[-1]["scene"] = scene_next; scene_next = None
             pending = []
         elif lines and named and re.fullmatch(r"(\([^)]*\)|\*[^*]+\*|\[[^\]]+\]|\s)+", s):
             pending.append(s)                                 # a stage direction on its own line: goes with the NEXT line
@@ -193,13 +200,15 @@ def parse(text):
         tags = [f"[{t.strip()}]" for t in keep_tags] + [t for t in tags if t.strip("[]") not in keep_tags]
         if not body:
             if cue_txt:                                               # silent beat: "Jake: (stares at her)"
-                silent = {"who": l["name"], "cues": cue_txt, "face": face, "gesture": gesture, "act": _actions(cue_txt)}
+                silent = {"who": l["name"], "cues": cue_txt, "face": face, "gesture": gesture, "act": _actions(cue_txt), "scene": l.get("scene")}
                 continue
             warnings.append(f"Dòng {k + 1} trống: bỏ qua"); continue
         if l["name"] not in names: names.append(l["name"])
         act, prop, to_spot = _actions(cue_txt)
         entry = {"speaker_name": l["name"], "text": (" ".join(tags) + " " + body).strip() if tags else body, "face": face,
                  "gesture": gesture, "pause": pause, "speed": speed, "cues": cue_txt, "action": act, "prop": prop, "to_spot": to_spot}
+        if l.get("scene"): entry["scene"] = l["scene"]
+        elif silent and silent.get("scene"): entry["scene"] = silent["scene"]
         if silent:                                                    # the silent beat before this line
             entry["pause"] = max(entry["pause"], 1.3)
             entry["silent_before"] = {"who": silent["who"], "action": "; ".join(silent["cues"])}
@@ -309,8 +318,16 @@ def to_content(p, voices=(), minutes=None, have_sets=()):
     vtags.auto_tag(lines)                       # OmniVoice emotion tags at the strong moments (~40 % of lines at most)
     words = sum(len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split()) for l in lines)
     st, need = pick_set(p.get("setting") or p.get("notes"), have_sets)
-    return {"format": "dialog", "title": p.get("title") or lines[0]["text"][:40], "title_vi": "", "hook": (p.get("hook") or "")[:32],
+    needs = [need] if need else []; scenes = []
+    for k, l in enumerate(p["lines"]):         # "Cảnh 2: …" in the script: the video moves to another place from this line
+        if not l.get("scene"): continue
+        s2, n2 = pick_set(l["scene"], have_sets)
+        if n2 and not any(x["name"] == n2["name"] for x in needs): needs.append(n2)
+        scenes.append({"start": k + 1, "set": s2, "params": {"stuck_toast": False} if s2 == "kitchen" else {}, "brief_vi": l["scene"]})
+    if scenes and scenes[0]["start"] > 1:
+        scenes.insert(0, {"start": 1, "set": st, "params": {"stuck_toast": False} if st == "kitchen" else {}, "brief_vi": p.get("setting") or ""})
+    return {**({"scenes": scenes} if len(scenes) > 1 else {}),"format": "dialog", "title": p.get("title") or lines[0]["text"][:40], "title_vi": "", "hook": (p.get("hook") or "")[:32],
             "premise_vi": p.get("notes") or "Kịch bản do bạn tự viết.", "minutes": minutes or round(words / 2.3 / 60, 2),
             "cast": cast, "setting": {"set": st, "params": {"stuck_toast": False} if st == "kitchen" else {}, "brief_vi": p.get("setting") or ""},
             "idle": p.get("idle") if p.get("idle") in ("relaxed", "hold_hands", "hands_hips", "cross_arms") else "relaxed",
-            "lines": lines, "highlight": [], "end_sfx": "none", "library_needs": [need] if need else []}
+            "lines": lines, "highlight": [], "end_sfx": "none", "library_needs": needs}

@@ -1,0 +1,213 @@
+{
+ "format": "dialog",
+ "title": "Just One More Thing",
+ "title_vi": "Ăn gì cũng được",
+ "hook": "When she says 'I don't care'",
+ "premise_vi": "Nửa đêm, hai người đang nằm trên giường. Emily nhờ Jake hết việc này đến việc khác.",
+ "minutes": 1.2,
+ "cast": [
+  {
+   "id": "jake",
+   "name": "Jake",
+   "role": "boyfriend",
+   "gender": "male",
+   "age": "young adult",
+   "body": "adult",
+   "voice_id": "jake_voice",
+   "voice_instruct": "male, young adult, low pitch, american accent",
+   "hair": "short",
+   "hair_color": [
+    0.1,
+    0.06,
+    0.03
+   ],
+   "outfit": "hoodie",
+   "colors": {
+    "cloth": [
+     0.85,
+     0.2,
+     0.08
+    ],
+    "cloth2": [
+     0.05,
+     0.08,
+     0.25
+    ]
+   },
+   "personality_vi": "Kiên nhẫn, chiều người yêu, càng lúc càng bực nhưng vẫn nhường; hài kiểu tỉnh bơ.",
+   "head_shape": "egg",
+   "signature": "cap",
+   "sig_color": [
+    0.95,
+    0.12,
+    0.1
+   ],
+   "posture": "lie"
+  },
+  {
+   "id": "emily",
+   "name": "Emily",
+   "role": "girlfriend",
+   "gender": "female",
+   "age": "young adult",
+   "body": "adult",
+   "voice_id": "emily_voice",
+   "voice_instruct": "female, young adult, high pitch, american accent",
+   "hair": "tied",
+   "hair_color": [
+    0.35,
+    0.15,
+    0.05
+   ],
+   "outfit": "casual_dress",
+   "colors": {
+    "cloth": [
+     0.1,
+     0.5,
+     0.75
+    ],
+    "cloth2": [
+     0.9,
+     0.85,
+     0.75
+    ]
+   },
+   "personality_vi": "Dễ thương, lém lỉnh, nói 'gì cũng được' nhưng thật ra rất kén; luôn tin ý mình là ý mới.",
+   "head_shape": "wide",
+   "signature": "earrings",
+   "sig_color": [
+    0.98,
+    0.75,
+    0.05
+   ],
+   "posture": "lie"
+  }
+ ],
+ "idle": "relaxed",
+ "highlight": [],
+ "end_sfx": "none",
+ "library_needs": [],
+ "staged": true,
+ "staging_vi": "Lúc đầu cả Jake và Emily nằm trên giường, đèn cây sáng ở phía Emily. Tủ lạnh đóng và TV tắt.\n\n- **Câu 6 \"Fine.\":** nói xong, Jake ra khỏi giường, đi vòng sang phía Emily tắt đèn rồi đứng luôn ở đó (`back = false`) vì sắp bị sai tiếp. Phòng tối.\n- **Câu 7:** Emily nhờ lấy nước. Nói xong, Jake đi tới tủ lạnh và mở cửa tủ.\n- **Câu 8 \"your majesty?\":** Jake đứng trước tủ lạnh đang mở, vừa nói vừa lấy chai nước ra rồi đóng tủ.\n- **Câu 9–10:** Jake vẫn đứng ở bếp, cầm chai nước, quay sang TV mà sốc vì nó đang tắt. Không cần thêm bước di chuyển.\n- **Câu 11:** Emily cười xong, Jake đi bật TV. Trong phòng tối chỉ còn ánh TV. Jake lê về giường, nằm xuống rồi đưa chai nước cho Emily.\n\nMỗi lúc chỉ Jake di chuyển. Emily nằm yên ra lệnh suốt cảnh: đó là gag chính. Không cần đồ mới cho thư viện.",
+ "vo_en": "Babe... are you asleep? [sigh] Not anymore. Can you turn off the light? It's in my eyes. It's on YOUR side. But you're the strong one. [dissatisfaction-hnn] Fine. And grab me a water from the fridge? Anything else, your majesty? Turn the TV off too. It's not even on! [laughter] Then turn it on. I can't sleep.",
+ "vo_vi": "          ",
+ "word_count": 54,
+ "sequences": [],
+ "setting": {
+  "set": "kitchen",
+  "params": {
+   "stuck_toast": false
+  },
+  "brief_vi": "phòng ngủ trong bếp"
+ },
+ "lines": [
+  {
+   "speaker": "emily",
+   "text": "Babe... are you asleep?",
+   "text_vi": "",
+   "face": "neutral",
+   "listener_face": "neutral",
+   "gesture": "none",
+   "listener_gesture": "none",
+   "shot": "auto",
+   "pause_before": 0.3,
+   "speed": 1.0,
+   "sfx": "none",
+   "react": "none",
+   "beat": "setup"
+  },
+  {
+   "speaker": "jake",
+   "text": "[sigh] Not anymore.",
+   "text_vi": "",
+   "face": "annoyed",
+   "listener_face": "neutral",
+   "gesture": "none",
+   "listener_gesture": "none",
+   "shot": "auto",
+   "pause_before": 0.3,
+   "speed": 1.0,
+   "sfx": "none",
+   "react": "none",
+   "beat": "setup"
+  },
+  {
+   "speaker": "emily",
+   "text": "Can you turn off the light? It's in my eyes.",
+   "text_vi": "",
+   "face": "worried",
+   "listener_face": "neutral",
+   "gesture": "none",
+   "listener_gesture": "none",
+   "shot": "auto",
+   "pause_before": 0.3,
+   "speed": 1.0,
+   "sfx": "none",
+   "react": "none",
+   "beat": "build"
+  },
+  {
+   "speaker": "jake",
+   "text": "It's on YOUR side.",
+   "text_vi": "",
+   "face": "annoyed",
+   "listener_face": "neutral",
+   "gesture": "none",
+   "listener_gesture": "none",
+   "shot": "auto",
+   "pause_before": 0.3,
+   "speed": 1.0,
+   "sfx": "none",
+   "react": "none",
+   "beat": "build"
+  },
+  {
+   "speaker": "emily",
+   "text": "But you're the strong one.",
+   "text_vi": "",
+   "face": "love",
+   "listener_face": "neutral",
+   "gesture": "none",
+   "listener_gesture": "none",
+   "shot": "auto",
+   "pause_before": 0.3,
+   "speed": 1.0,
+   "sfx": "none",
+   "react": "none",
+   "beat": "build"
+  },
+  {
+   "speaker": "jake",
+   "text": "[dissatisfaction-hnn] Fine.",
+   "text_vi": "",
+   "face": "grumpy",
+   "listener_face": "neutral",
+   "gesture": "none",
+   "listener_gesture": "none",
+   "shot": "auto",
+   "pause_before": 0.3,
+   "speed": 1.0,
+   "sfx": "none",
+   "react": "none",
+   "beat": "build",
+   "steps": [
+    {
+     "who": "jake",
+     "do": "interact",
+     "object": "lamp",
+     "state": "off",
+     "when": "after",
+     "back": false
+    }
+   ]
+  }
+ ],
+ "objects": [
+  {
+   "id": "lamp",
+   "type": "floor_lamp",
+   "near": "emily",
+   "state": "on"
+  }
+ ]
+}

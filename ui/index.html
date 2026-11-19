@@ -84,6 +84,7 @@ small.err{color:var(--bad)}
     <button data-tab="render"><span class="n">5</span>Render</button>
     <button data-tab="youtube"><span class="n">6</span>YouTube</button>
     <button data-tab="library">Thư viện</button>
+    <button data-tab="queue">Hàng đợi</button>
   </nav>
   <span style="flex:1"></span>
   <span id="usage" class="muted" style="white-space:nowrap" title="Số lần gọi Claude (ghi trong logs/)"></span>
@@ -245,6 +246,7 @@ small.err{color:var(--bad)}
       <div class="row" style="margin-top:12px">
         <input type="text" id="fixText" placeholder="Thấy lỗi gì? vd: khung 200 phụ đề che miệng Gary, nắp cống quá nhỏ…" style="flex:1;min-width:300px">
         <select id="fixCh" class="hidden" title="Phần cần sửa"></select><button id="btnFix">Nhờ Claude sửa</button>
+        <button id="btnReview" class="hidden" title="Claude xem từng ảnh (mọi cảnh), tìm lỗi khung hình/dàn dựng/diễn xuất, sửa content rồi tool dựng lại và xem lại (tối đa 2 vòng). Không đổi lời thoại, không đọc lại giọng.">🔎 Claude tự soát ảnh</button>
       </div>
     </div>
   </section>
@@ -320,6 +322,35 @@ small.err{color:var(--bad)}
   </section>
 
   <!-- LIBRARY -->
+  <section id="tab-queue" class="hidden">
+    <div class="panel">
+      <h2>Hàng đợi sản xuất (video đối thoại)</h2>
+      <p class="muted">Dán nhiều kịch bản (mỗi kịch bản cách nhau bằng một dòng <code>===</code>) hoặc nhiều chủ đề (mỗi dòng một chủ đề, Claude viết kịch bản).
+        Bấm Chạy rồi để máy chạy (cả đêm cũng được): mỗi video tự làm lần lượt kịch bản → giọng (tool tự chọn giọng thử sống nhất cho nhân vật mới) →
+        đọc lời → dựng + xem trước → Claude soát ảnh → (render). Hết lượt Claude của gói thì hàng đợi tự dừng, bấm Chạy lại sau. Mỗi video là một dự án bình thường: mở ra sửa tiếp được.</p>
+      <div class="row" style="gap:12px;align-items:flex-start">
+        <div style="flex:2;min-width:300px"><label>Kịch bản (cách nhau bằng dòng ===)</label>
+          <textarea id="qScripts" rows="10" placeholder="Title: The Thermostat War&#10;Mia: It's freezing in here.&#10;Ben: It's 72.&#10;===&#10;&quot;Ăn gì cũng được&quot;&#10;Emily: Ăn gì cũng được.&#10;Jake: Pizza nhé?"></textarea></div>
+        <div style="flex:1;min-width:220px"><label>Chủ đề (mỗi dòng một)</label>
+          <textarea id="qTopics" rows="10" placeholder="Wife hides the TV remote&#10;Kid negotiates bedtime like a lawyer"></textarea></div>
+      </div>
+      <div class="row" style="gap:10px;margin-top:8px">
+        <label>Kịch bản <select id="qMode"><option value="local">Nhận diện ngay (giữ chữ)</option><option value="claude">Nhận diện + Claude thêm diễn xuất</option><option value="improve">Dịch &amp; làm hay hơn</option></select></label>
+        <label>Nhân vật <select id="qStyle"><option value="2d_grey">2D xám</option><option value="2d">2D màu</option><option value="3d">3D</option></select></label>
+        <label>Chủ đề dài <input type="number" id="qMin" value="0.75" min="0.5" max="2" step="0.25" style="width:60px"> phút</label>
+        <label><input type="checkbox" id="qReview" checked> Claude soát ảnh</label>
+        <label>Làm tới <select id="qUntil"><option value="preview">ảnh xem trước</option><option value="render">render xong mp4</option></select></label>
+        <label>Chất lượng <select id="qQual"><option value="fast">Nhanh</option><option value="normal" selected>Chuẩn</option><option value="high">Cao</option></select></label>
+        <button id="qAdd" class="primary">+ Thêm vào hàng đợi</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="row"><h2 style="margin:0;flex:1">Danh sách</h2><span id="qState" class="muted"></span>
+        <button id="qStart" class="primary">▶ Chạy</button><button id="qStop" title="Làm xong video đang chạy rồi dừng">⏸ Dừng sau video này</button><button id="qClear">Xóa mục đã xong</button></div>
+      <div id="qList" style="margin-top:8px"></div>
+    </div>
+  </section>
+
   <section id="tab-library" class="hidden">
     <div class="panel">
       <h2>Thiết kế đồ mới</h2>
@@ -361,7 +392,35 @@ function showTab(t) {
   $$('main > section').forEach(s => s.classList.toggle('hidden', s.id !== 'tab-' + t));
   try { localStorage.setItem('ws_tab', t); } catch (e) {}
   if (t === 'library') loadLibrary();
+  if (t === 'queue') loadQueue();
 }
+// ---------------- production queue ----------------
+const Q_ST = {waiting: '⏳ chờ', running: '⚙️ đang làm', done: '✅ xong', error: '❌ lỗi', cancelled: '⛔ đã hủy'};
+async function loadQueue() {
+  let q; try { q = await api('/api/queue'); } catch (e) { return; }
+  $('#qState').textContent = q.running ? (q.stopping ? 'đang chạy (sẽ dừng sau video này)' : 'đang chạy') : 'đang nghỉ';
+  $('#qList').innerHTML = q.items.length ? q.items.map(it => `<div class="seq" style="padding:8px"><div class="row" style="gap:8px">
+      <b style="flex:1">${esc(it.title)}</b><span class="chip ${it.status === 'done' ? '' : 'draft'}">${Q_ST[it.status] || it.status}</span>
+      <span class="muted">${it.kind === 'script' ? 'kịch bản ' + it.lines + ' dòng' : 'chủ đề'} · ${esc(it.char_style)} · tới ${it.until === 'render' ? 'mp4' : 'xem trước'}</span>
+      ${it.slug ? `<button onclick="openQueued('${esc(it.slug)}')">Mở dự án</button>` : ''}
+      ${it.status === 'error' || it.status === 'cancelled' ? `<button onclick="qAct('retry','${it.id}')">Làm lại</button>` : ''}
+      ${it.status !== 'running' ? `<button onclick="qAct('up','${it.id}')">▲</button><button onclick="qAct('down','${it.id}')">▼</button><button onclick="qAct('remove','${it.id}')">🗑</button>` : ''}</div>
+      ${it.step ? `<div class="muted" style="font-size:12.5px">${esc(it.step)}${it.error ? ' — ' + esc(it.error).slice(0, 300) : ''}</div>` : it.error ? `<div class="muted">${esc(it.error).slice(0, 300)}</div>` : ''}
+      ${(it.log || []).length ? `<pre style="margin:4px 0 0;font-size:12px;white-space:pre-wrap">${esc(it.log.join('\n'))}</pre>` : ''}</div>`).join('')
+    : '<span class="muted">Hàng đợi trống.</span>';
+  clearTimeout(S.qTimer); if (S.tab === 'queue' && q.running) S.qTimer = setTimeout(loadQueue, 4000);
+}
+window.qAct = async (action, id) => { try { await api('/api/queue', {body: {action, id}}); } catch (e) { toast(e.message, 6000); } loadQueue(); };
+window.openQueued = async slug => { await loadProjects(slug); showTab('build'); };
+$('#qAdd').onclick = async () => {
+  try {
+    const r = await api('/api/queue', {body: {action: 'add', scripts: $('#qScripts').value, topics: $('#qTopics').value, mode: $('#qMode').value,
+      char_style: $('#qStyle').value, minutes: parseFloat($('#qMin').value), review: $('#qReview').checked, until: $('#qUntil').value, quality: $('#qQual').value}});
+    toast(`Đã thêm ${r.added} video`); $('#qScripts').value = ''; $('#qTopics').value = ''; loadQueue();
+  } catch (e) { toast(e.message, 7000); }
+};
+$('#qStart').onclick = () => qAct('start'); $('#qStop').onclick = () => qAct('stop'); $('#qClear').onclick = () => qAct('clear_done');
+
 $$('#tabs button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
 
 // ---------------- status + projects ----------------
@@ -695,6 +754,8 @@ window.previewChapter = n => { const f = $('#pvFrames').value.split(/[ ,]+/).map
 function renderBuild() {
   const st = S.state; const s = st.story;
   $('#fixCh').classList.toggle('hidden', st.format !== 'long');
+  $('#btnReview').classList.toggle('hidden', st.format !== 'dialog');
+  if (st.format === 'dialog' && st.review) $('#fixText').placeholder = `Lần soát gần nhất: ${st.review.score}/10 — ${st.review.summary_vi}`.slice(0, 160);
   if (st.format === 'long') {
     $('#fixCh').innerHTML = (st.chapters || []).map(c => `<option value="${c.n}">phần ${c.n}</option>`).join('');
     $('#storyInfo').innerHTML = (st.chapters || []).length ? `Video dài liền mạch, tool chia làm ${st.chapters.length} phần chỉ để dựng/render (người xem không thấy chỗ nối, không có thẻ phần); ${st.chapters.filter(c => c.story).length} phần đã có story. "Duyệt &amp; dựng" làm lần lượt các phần chưa xong (chưa có story, còn đồ chưa thiết kế hoặc chưa có ảnh xem trước); story đã lập thì dùng lại.` : 'Chưa chia phần (tải giọng đọc ở bước 3).';
@@ -705,6 +766,13 @@ function renderBuild() {
   $('#previews').classList.add('thumbs');
   $('#buildHelp').innerHTML = st.format === 'dialog' ? 'Video đối thoại: tool tự lập <code>story.json</code> từ thời gian từng câu (vài giây, không tốn lượt Claude): máy quay cắt giữa cảnh hai người, cận người nói, cận người nghe phản ứng; mặt, miệng, cử chỉ theo từng câu; phụ đề (tiêu đề gợi ý thì bạn tự thêm khi chỉnh sửa). Bối cảnh chưa có thì Claude thiết kế trước. Rồi render vài khung xem trước ở 35 %.'
     : 'Lần lượt: Claude chuyển content thành <code>story.json</code> (camera v3, theo thời gian từng chữ) → thiết kế đồ còn thiếu trong thư viện (tự render rồi tự xem lại) → kiểm tra → render vài khung xem trước ở 35 %.';
+  if ((st.scenes || []).length) {
+    $('#storyInfo').innerHTML = `Video có ${st.scenes.length} bối cảnh: mỗi cảnh dựng thành một phần riêng, Render thì render lần lượt rồi ghép liền thành out.mp4.`;
+    $('#previews').classList.remove('thumbs');
+    $('#previews').innerHTML = st.scenes.map(c => `<div class="panel" style="padding:10px"><h3 style="margin:0 0 6px">Cảnh ${c.n}: ${esc(c.title)} <span class="muted">(${esc(c.set)}, câu ${c.start_line}-${c.end_line}, ${c.story ? 'đã dựng' : 'chưa dựng'})</span></h3>
+      <div class="thumbs">${c.previews.map(f => `<figure><img loading="lazy" src="${P(`/file/chapters/${String(c.n).padStart(2, '0')}/preview/` + f)}?t=${Date.now()}"><figcaption>cảnh ${c.n} · khung ${parseInt(f.slice(2, 6))}</figcaption></figure>`).join('') || '<span class="muted">Chưa có ảnh xem trước.</span>'}</div></div>`).join('');
+    return;
+  }
   $('#storyInfo').innerHTML = s ? `story.json: ${s.frames} khung (${(s.frames / 30).toFixed(1)} s) · camera ${esc(s.camera)} · ${s.sequences} chuỗi · nhân vật: ${s.chars.map(esc).join(', ')}` : 'Chưa có story.json.';
   $('#previews').innerHTML = st.previews.map(f => `<figure><img loading="lazy" src="${P('/file/preview/' + f)}?t=${Date.now()}" data-f="${esc(f)}"><figcaption>khung ${parseInt(f.slice(2, 6))}</figcaption></figure>`).join('') || '<span class="muted">Chưa có ảnh xem trước.</span>';
 }
@@ -714,7 +782,9 @@ $('#btnBuild').onclick = () => {
 };
 $('#btnPreview').onclick = () => { if (S.state.format === 'long') return toast('Video dài: bấm "Xem trước lại" ở từng phần');
   const f = $('#pvFrames').value.split(/[ ,]+/).map(Number).filter(Boolean); run(P('/preview'), {frames: f}, 'Xem trước'); };
+$('#btnReview').onclick = () => run(P('/review'), {rounds: 2, request: $('#fixText').value.trim()}, 'Claude soát ảnh xem trước');
 $('#btnFix').onclick = () => { const t = $('#fixText').value.trim(); if (!t) return toast('Mô tả lỗi trước');
+  if (S.state.format === 'dialog') return run(P('/review'), {rounds: 1, request: t}, 'Claude sửa theo ảnh xem trước');
   const f = (t.match(/khung\s*(\d+)/gi) || []).map(x => parseInt(x.replace(/\D/g, '')));
   run(P('/fix'), {problem: t, frames: f, chapter: S.state.format === 'long' ? parseInt($('#fixCh').value) : null}, 'Sửa theo ảnh xem trước'); };
 
@@ -759,7 +829,8 @@ window.play = f => { const v = $('#player'); v.src = P('/file/' + f) + '?t=' + D
 window.openFile = async f => { const r = await api(P('/open'), {body: {file: f}}); if (!r.ok) play(f); };
 $('#btnRender').onclick = () => { if (S.state.format === 'long') { if (!(S.state.chapters || []).every(c => c.story)) return toast('Dựng đủ các phần ở bước 4 trước');
     return run(P('/render'), {pct: parseInt($('#rPct').value), quality: $('#rQual').value}, 'Render các phần'); }
-  if (!S.state.story) return toast('Chưa có story.json (bước 4)');
+  if (!S.state.story && !(S.state.scenes || []).every(c => c.story)) return toast('Chưa có story.json (bước 4)');
+  if (!S.state.story && !(S.state.scenes || []).length) return toast('Chưa có story.json (bước 4)');
   run(P('/render'), {pct: parseInt($('#rPct').value), frames: $('#rFrames').value.trim() || null, quality: $('#rQual').value}, 'Render'); };
 $('#btnBench').onclick = () => { if (!S.state.story && !(S.state.chapters || []).some(c => c.story)) return toast('Cần dựng xong story (bước 4) để đo');
   run(P('/bench'), {pct: 100, quality: 'normal'}, 'Đo tốc độ máy', () => loadStatus().then(() => renderRender())); };
@@ -973,6 +1044,11 @@ function dlgLineCard(l, i, cast) {
         ${sel('action', D_ACT, 'Hành động ', l.action || 'none')} ${sel('prop', D_PROPS, 'Đồ vật ', l.prop || '')}
         <label>Tới chỗ <input type="text" data-k="to_spot" value="${esc(l.to_spot || '')}" placeholder="partner / away / tên spot" style="width:140px"></label>
       </div>
+      ${i > 0 ? (() => { const sc = ((S.state.content || {}).scenes || []).find(x => x.start === i + 1);
+        const sets = (S.state.lib_sets || []).slice(); if (sc && !sets.includes(sc.set)) sets.push(sc.set);
+        return `<div class="row" style="gap:8px;grid-column:1/-1" title="Câu chuyện đổi chỗ từ câu này (vd ở nhà → trong xe → siêu thị): tool dựng mỗi cảnh riêng rồi ghép liền">
+          <label>🎞 Đổi bối cảnh từ câu này <select data-scene="1"><option value="">— (giữ nguyên chỗ cũ)</option>${sets.map(s => `<option ${sc && sc.set === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}<option value="__new">+ Bối cảnh mới…</option></select></label>
+          ${sc ? `<span class="muted">${esc(sc.brief_vi || '')}</span>` : ''}</div>`; })() : ''}
       ${(l.steps || []).length ? `<div class="full muted" style="font-size:12.5px">🎬 ${l.steps.map(st => esc(`${st.who}: ${D_ACT[st.do] || st.do}${st.object ? ' ' + st.object : ''}${st.state ? ' → ' + st.state : ''}${st.prop ? ' (' + st.prop + ')' : ''}${st.to_spot ? ' → ' + st.to_spot : ''}${st.when && st.when !== 'during' ? ' [' + st.when + ']' : ''}`)).join(' · ')}</div>` : ''}
       </div></div>`;
 }
@@ -1081,6 +1157,15 @@ function collectDialog() {
     for (const k of ['steps', 'object', 'state']) if (orig[k] !== undefined && l[k] === undefined) l[k] = orig[k];
     return l;
   });
+  const old = c.scenes || []; const scenes = [];
+  $$('#dLines .dl').forEach((el, k) => { const s = el.querySelector('[data-scene]'); if (!s || !s.value) return;
+    const o = old.find(x => x.set === s.value && x.start === k + 1) || old.find(x => x.set === s.value) || {};
+    if (s.value === '__new') { const n = prompt(`Bối cảnh mới từ câu ${k + 1}: mô tả ngắn (vd "trong xe hơi đỗ trước siêu thị")`, '');
+      if (!n) { s.value = ''; return; } const st = 'scene_' + n.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 24).replace(/^_|_$/g, '');
+      c.library_needs = (c.library_needs || []).filter(x => x.name !== st).concat([{kind: 'sets', name: st, brief: n}]);
+      scenes.push({start: k + 1, set: st, params: {}, brief_vi: n}); return; }
+    scenes.push(Object.assign({}, o, {start: k + 1, set: s.value, params: o.params || (s.value === 'kitchen' ? {stuck_toast: false} : {}), brief_vi: o.brief_vi || ''})); });
+  if (scenes.length) c.scenes = [{start: 1, set: c.setting.set, params: c.setting.params || {}, brief_vi: c.setting.brief_vi || ''}].concat(scenes); else delete c.scenes;
   return c;
 }
 async function saveDialog(quiet) { const r = await api(P('/content'), {body: {content: collectDialog()}}); if (!quiet) toast(`Đã lưu (${r.word_count} từ)`); return r; }

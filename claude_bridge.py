@@ -41,7 +41,7 @@ WEB_TOOLS = ["WebSearch", "WebFetch"]
 JOB_TOOLS = {"ideas": WEB_TOOLS, "write_content": WEB_TOOLS + ["Read"], "rewrite_seq": [], "plan_shots": READ_TOOLS,
              "design_prop": READ_TOOLS, "design_set": READ_TOOLS, "design_char": READ_TOOLS, "review": READ_TOOLS,
              "design_culture": WEB_TOOLS + ["Read"], "youtube_package": WEB_TOOLS + ["Read"], "review_thumbs": READ_TOOLS, "thumb_prompts": READ_TOOLS, "retention_review": [], "translate_subs": [], "pick_clips": [], "learn_retention": [], "design_outfit": READ_TOOLS, "review_outfit": READ_TOOLS,
-             "fix_from_preview": READ_TOOLS, "dialog_ideas": [], "write_dialog": [], "rewrite_dialog": []}
+             "fix_from_preview": READ_TOOLS, "review_dialog": READ_TOOLS, "dialog_ideas": [], "write_dialog": [], "rewrite_dialog": []}
 
 
 class BridgeError(Exception):
@@ -1007,6 +1007,14 @@ def check_dialog(x, minutes=None):
         if c["body"] == "adult" and c["outfit"] in ("kid_tee", "kid_dress"): e.append(f"{c['id']}: người lớn không mặc đồ trẻ con")
     if len({(c["gender"], c["age"], re.sub(r"[^a-z ]", "", c["voice_instruct"].lower())) for c in x["cast"]}) < len(x["cast"]):
         e.append("các giọng phải khác nhau rõ (giới tính, tuổi hoặc độ cao giọng)")
+    sc = sorted(x.get("scenes") or [], key=lambda q: q["start"]); nl = len(x["lines"])
+    if len(sc) > 3: e.append(f"scenes: tối đa 3 cảnh (đang {len(sc)})")
+    for k, q in enumerate(sc):
+        if not 1 <= q["start"] <= nl: e.append(f"scenes[{k}].start {q['start']} ngoài khoảng 1..{nl}")
+        nxt = sc[k + 1]["start"] if k + 1 < len(sc) else nl + 1
+        if nxt - q["start"] < 3 and q["start"] > 1: e.append(f"scenes[{k}]: cảnh từ câu {q['start']} chỉ có {nxt - q['start']} câu (cần ≥ 3)")
+        if not storycheck.LibIndex().exists("sets", q["set"]) and not any(n.get("name") == q["set"] for n in x.get("library_needs") or []):
+            e.append(f"scenes[{k}].set '{q['set']}' không có trong thư viện: thêm vào library_needs (kind sets) kèm brief")
     for k, l in enumerate(x["lines"]):
         if l["speaker"] not in ids: e.append(f"lines[{k}].speaker '{l['speaker']}' không có trong cast {ids}")
         n = len(re.sub(r"\[[^\]]*\]", " ", l["text"]).split())
@@ -1210,7 +1218,12 @@ def stage_dialog(slug, request="", model=None):
               + D.STAGING_DOC +
               f"\nBối cảnh: {set_name} — {content['setting'].get('brief_vi', '')}\nChỗ trong bối cảnh (spots): "
               f"{json.dumps(smeta.get('spots', {}), ensure_ascii=False)}\n"
-              f"Đồ vật tương tác có sẵn trong thư viện (dùng được trong objects): {json.dumps(inter, ensure_ascii=False)}\n"
+              + "".join(f"Từ câu {sc['start']} đổi sang cảnh {k + 1}: bối cảnh {sc['set']} — {sc.get('brief_vi', '')}; spots "
+                        f"{json.dumps((lib.meta('sets', sc['set']) if lib.exists('sets', sc['set']) else {}).get('spots', {}), ensure_ascii=False)}\n"
+                        for k, sc in enumerate(D.scenes_of(content)) if k > 0)
+              + (f"Video có {len(D.scenes_of(content))} cảnh: mỗi đồ vật ghi `scene` (số cảnh chứa nó); bước của một câu chỉ dùng đồ của cảnh chứa câu đó; "
+                 "đầu mỗi cảnh mọi người đứng (cast posture/holding chỉ áp cho cảnh 1).\n" if D.scenes_of(content) else "")
+              + f"Đồ vật tương tác có sẵn trong thư viện (dùng được trong objects): {json.dumps(inter, ensure_ascii=False)}\n"
               f"Đồ cầm tay (prop): {', '.join(D.PROP_KINDS)}\n"
               f"Nhân vật: {json.dumps(cast, ensure_ascii=False)}\n"
               f"Mô tả cảnh: {content.get('premise_vi', '')}\n"
@@ -1690,6 +1703,73 @@ def apply_patch(doc, changes):
             if c["op"] == "delete": parent.pop(key, None)
             else: parent[key] = c["value"]
     return doc
+
+
+def review_dialog(slug, request="", model=None):
+    """Claude looks at the dialogue video's preview images (every scene) and fixes acting/staging in content.json
+    (camera choice, faces, gestures, who stands where, posture, objects): the tool replans in seconds, nothing is re-voiced"""
+    import dialog as D
+    content = json.load(open(os.path.join(_project_dir(slug), "content.json"), encoding="utf-8"))
+    ctx = D.preview_context(slug)
+    if not ctx: raise BridgeError("chưa có ảnh xem trước (bấm Duyệt & dựng)")
+    sch = load_schema("content_dialog")["properties"]
+    L = sch["lines"]["items"]["properties"]
+    enums = {k: L[k]["enum"] for k in ("shot", "face", "listener_face", "gesture", "listener_gesture", "react") if "enum" in L.get(k, {})}
+    enums["listener_face"] = enums.get("listener_face") or enums["face"]
+    enums["listener_gesture"] = enums.get("listener_gesture") or enums["gesture"]
+    enums["action"] = ["none"]; enums["posture"] = ["stand", "sit", "lie"]; enums["holding"] = [""] + D.PROP_KINDS
+    lib = storycheck.LibIndex()
+    spots = {}
+    for sc in [content["setting"]] + D.scenes_of(content)[1:]:
+        if lib.exists("sets", sc["set"]): spots[sc["set"]] = list(((lib.meta("sets", sc["set"]) or {}).get("spots") or {}))
+    cast = [{k: m.get(k) for k in ("id", "name", "role", "body", "spot", "posture", "holding") if m.get(k) is not None} for m in content["cast"]]
+    lines = [{"n": k + 1, "speaker": l["speaker"], "text": l["text"], "beat": l.get("beat"), "face": l.get("face"), "listener_face": l.get("listener_face"),
+              "gesture": l.get("gesture"), "shot": l.get("shot", "auto"), "pause_before": l.get("pause_before"),
+              **({"action": l["action"]} if l.get("action", "none") != "none" else {}), **({"steps": l["steps"]} if l.get("steps") else {})}
+             for k, l in enumerate(content["lines"])]
+    imgs = "\n".join(f"- {x['image']}  (cảnh {x['scene']} {x['set']}, khung {x['frame']}, {x['t']} s, câu {x['line']} "
+                      f"{'đang nói' if x['speaking'] else 'khoảng lặng sau'}: {x['speaker']} \"{x['text'][:70]}\"; mặt {x['face']}, người nghe {x['listener_face']}, "
+                      f"cử chỉ {x['gesture']}; máy: {x['camera']}" + (f"; hành động: {', '.join(x['actions'])}" if x.get("actions") else "") + ")"
+                      for x in ctx)
+    prompt = ("Bạn soát ảnh xem trước (35 %) của một video đối thoại hài 9:16 trước khi render. Dùng Read xem TỪNG ảnh. Mỗi ảnh ghi kèm "
+              "điều lẽ ra phải thấy. Tìm lỗi người xem nhận ra ngay:\n"
+              "- khung hình: đầu/mặt bị cắt, người nói không ở trong khung, nhân vật quá nhỏ, phụ đề đè mặt, chỉ thấy lưng/đầu ló sau đồ vật;\n"
+              "- dàn dựng: người đứng trong/xuyên đồ vật (tường, bàn, giường, xe), hai người chồng lên nhau, đồ cầm tay bị đầu người kia che, "
+              "đồ vật đặt chồng lên đồ của bối cảnh, ngồi/nằm lơ lửng;\n"
+              "- diễn xuất: mặt không hợp câu (câu sốc mà mặt bình thường), người nghe vô cảm ở cú đảo/câu chốt, cử chỉ lặp lại vô duyên;\n"
+              "- nhịp: cú máy không hợp (câu chốt nên cận hai mặt 'both_close', câu có phản ứng mạnh nên cận người nghe 'listener').\n"
+              "Chỉ sửa được content (KHÔNG đổi lời thoại): line n (cả kịch bản) field shot/face/listener_face/gesture/listener_gesture/react/"
+              "pause_before/action ('none' = bỏ hành động); cast id field spot/posture/holding; object id field near (spot, id người, left/right/behind). "
+              "Tool lập lại story trong vài giây rồi render lại ảnh. Ít sửa mà trúng; ảnh ổn thì fixes rỗng và điểm ≥ 8.\n"
+              f"Giá trị hợp lệ: {json.dumps(enums, ensure_ascii=False)}\nSpots theo bối cảnh: {json.dumps(spots, ensure_ascii=False)}\n"
+              f"Nhân vật: {json.dumps(cast, ensure_ascii=False)}\nĐồ vật: {json.dumps(content.get('objects') or [], ensure_ascii=False)}\n"
+              f"Các câu: {json.dumps(lines, ensure_ascii=False)}\nẢnh:\n{imgs}\n"
+              + (f"Người dùng nhờ để ý: {request}\n" if request else "")
+              + "Trả: score, summary_vi, problems (khung + mô tả), fixes (mỗi cái kèm why_vi).")
+    ids = [m["id"] for m in content["cast"]]; oids = [o["id"] for o in content.get("objects") or []]
+    allspots = {s for v in spots.values() for s in v} | {"left", "center", "right", ""}
+
+    def check(x):
+        e = []
+        for k, fx in enumerate(x["fixes"]):
+            t, f_, v = fx["target"], fx["field"], fx["value"]
+            if f_ not in D.REVIEW_FIELDS[t]: e.append(f"fixes[{k}]: target {t} không sửa được field {f_} (được: {D.REVIEW_FIELDS[t]})"); continue
+            if t == "line" and not 1 <= int(fx.get("n") or 0) <= len(content["lines"]): e.append(f"fixes[{k}]: n phải trong 1..{len(content['lines'])}")
+            if t == "cast" and fx.get("id") not in ids: e.append(f"fixes[{k}]: id phải là một trong {ids}")
+            if t == "object" and fx.get("id") not in oids: e.append(f"fixes[{k}]: id phải là đồ vật {oids}")
+            if f_ in enums and str(v) not in enums[f_]: e.append(f"fixes[{k}]: {f_} = '{v}' không hợp lệ ({enums[f_]})")
+            if f_ == "pause_before" and not isinstance(v, (int, float)): e.append(f"fixes[{k}]: pause_before là số giây")
+            if f_ == "spot" and v not in allspots: e.append(f"fixes[{k}]: spot '{v}' không có (được: {sorted(allspots)})")
+        return e
+    data, info = call("review_dialog", prompt, load_schema("dialog_review"), project=slug, model=model, check=check)
+    if data["fixes"]:
+        D.apply_review_fixes(content, data["fixes"])
+        _save_versioned(slug, "content.json", content)
+    rp = os.path.join(_project_dir(slug), "review_dialog.json")
+    old = json.load(open(rp, encoding="utf-8")) if os.path.exists(rp) else []
+    json.dump((old if isinstance(old, list) else [])[-5:] + [dict(data, time=time.strftime("%Y-%m-%d %H:%M:%S"))], open(rp, "w", encoding="utf-8"),
+              ensure_ascii=False, indent=1)
+    return data
 
 
 def fix_from_preview(slug, problem, images, model=None):

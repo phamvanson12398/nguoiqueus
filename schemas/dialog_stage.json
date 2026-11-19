@@ -36,6 +36,11 @@
      },
      "params": {
       "type": "object"
+     },
+     "scene": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "video nhiều cảnh: số cảnh chứa đồ này (1 = cảnh đầu)"
      }
     }
    }

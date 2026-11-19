@@ -1,0 +1,805 @@
+{
+ "meta": {
+  "title": "Just One More Thing",
+  "slug": "scenes-test/chapters/02",
+  "fps": 30,
+  "frames": 442,
+  "seed": 7,
+  "voice": "voice.wav",
+  "output": "out.mp4",
+  "samples": 32,
+  "aspect": "9:16",
+  "char_style": "2d",
+  "char_tone": "grey",
+  "dialog": true,
+  "fast_build": true
+ },
+ "sets": [
+  {
+   "id": "stage",
+   "type": "street",
+   "params": {},
+   "props": [
+    {
+     "id": "fridge",
+     "type": "fridge",
+     "params": {},
+     "loc": [
+      1.5,
+      4.4,
+      0
+     ]
+    },
+    {
+     "id": "tv",
+     "type": "tv",
+     "params": {},
+     "loc": [
+      -1.5,
+      4.4,
+      0
+     ]
+    }
+   ]
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "shots": [
+   {
+    "a": 1,
+    "b": 89,
+    "type": "full",
+    "frame": {
+     "size": 4.44,
+     "look_dz": 0.27,
+     "move": "still",
+     "subject": [
+      0.0,
+      4.0,
+      0
+     ],
+     "y": -0.3
+    }
+   },
+   {
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    },
+    "a": 90,
+    "b": 123
+   },
+   {
+    "a": 124,
+    "b": 155,
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    }
+   },
+   {
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    },
+    "a": 156,
+    "b": 194
+   },
+   {
+    "a": 195,
+    "b": 253,
+    "type": "medium",
+    "frame": {
+     "size": 2.65,
+     "look_dz": 0.45,
+     "move": "still",
+     "subject": "emily"
+    }
+   },
+   {
+    "a": 254,
+    "b": 346,
+    "type": "medium",
+    "frame": {
+     "size": 3.5,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": [
+      -1.05,
+      3.7,
+      0
+     ]
+    }
+   },
+   {
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    },
+    "a": 347,
+    "b": 380
+   },
+   {
+    "a": 381,
+    "b": 442,
+    "type": "medium",
+    "frame": {
+     "size": 3.5,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": [
+      -1.05,
+      3.7,
+      0
+     ]
+    }
+   }
+  ],
+  "hand": 0.0
+ },
+ "chars": [
+  {
+   "id": "jake",
+   "gaze": -1,
+   "type": "soft",
+   "outfit": "soft_hoodie",
+   "loc": [
+    0.6,
+    4.0,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      0.6,
+      4.0,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 88,
+      "location": [
+       0.6,
+       4.0,
+       0
+      ]
+     },
+     {
+      "from": 89,
+      "to": 89,
+      "location": [
+       "lerp(0.600, 1.500, ease((f - 89) / 1))",
+       "lerp(4.000, 3.650, ease((f - 89) / 1))",
+       0
+      ]
+     },
+     {
+      "from": 90,
+      "to": 154,
+      "location": [
+       1.5,
+       3.65,
+       0
+      ]
+     },
+     {
+      "from": 155,
+      "to": 155,
+      "location": [
+       "lerp(1.500, 1.500, ease((f - 155) / 1))",
+       "lerp(3.650, 3.650, ease((f - 155) / 1))",
+       0
+      ]
+     },
+     {
+      "from": 156,
+      "to": 345,
+      "location": [
+       1.5,
+       3.65,
+       0
+      ]
+     },
+     {
+      "from": 346,
+      "to": 346,
+      "location": [
+       "lerp(1.500, -1.500, ease((f - 346) / 1))",
+       "lerp(3.650, 3.400, ease((f - 346) / 1))",
+       0
+      ]
+     },
+     {
+      "from": 347,
+      "to": 442,
+      "location": [
+       -1.5,
+       3.4,
+       0
+      ],
+      "note": "seated"
+     }
+    ]
+   },
+   "mouth": "soft",
+   "look": {
+    "hair": "short",
+    "hair_color": [
+     0.1,
+     0.06,
+     0.03
+    ],
+    "beard": "none",
+    "seed": 1,
+    "palette": {
+     "cloth": [
+      0.85,
+      0.2,
+      0.08
+     ],
+     "cloth2": [
+      0.05,
+      0.08,
+      0.25
+     ]
+    },
+    "signature": "cap",
+    "sig_color": [
+     0.95,
+     0.12,
+     0.1
+    ]
+   },
+   "head_shape": "egg",
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     87,
+     "smirk"
+    ],
+    [
+     157,
+     "side_eye_l"
+    ],
+    [
+     198,
+     "shock"
+    ],
+    [
+     261,
+     "annoyed"
+    ]
+   ],
+   "blinks": [
+    37,
+    122,
+    224,
+    356
+   ],
+   "talk": [
+    [
+     87,
+     144
+    ],
+    [
+     198,
+     233
+    ]
+   ],
+   "pose": {
+    "default": {
+     "legs": [
+      [
+       -0.06,
+       0.02
+      ],
+      [
+       0.06,
+       -0.02
+      ]
+     ],
+     "body": [
+      0,
+      "0.000 + (-0.460) * ease((f - 379) / 14)"
+     ]
+    },
+    "segments": [
+     {
+      "from": 90,
+      "to": 112,
+      "armR": [
+       "ik",
+       [
+        0.25,
+        1.0
+       ],
+       -1
+      ]
+     },
+     {
+      "from": 156,
+      "to": 178,
+      "armR": [
+       "ik",
+       [
+        0.25,
+        1.0
+       ],
+       -1
+      ]
+     },
+     {
+      "from": 347,
+      "to": 369,
+      "armL": [
+       "ik",
+       [
+        -0.25,
+        0.75
+       ],
+       1
+      ]
+     },
+     {
+      "from": 407,
+      "to": 431,
+      "armL": [
+       "ik",
+       [
+        0.41,
+        0.5
+       ],
+       1
+      ]
+     },
+     {
+      "from": 77,
+      "to": 150,
+      "armL": [
+       "ik",
+       [
+        -0.3,
+        0.34
+       ],
+       1
+      ]
+     },
+     {
+      "from": 188,
+      "to": 239,
+      "armL": [
+       "ik",
+       [
+        -0.3,
+        0.34
+       ],
+       1
+      ]
+     },
+     {
+      "from": 112,
+      "to": 378,
+      "armL": [
+       "ik",
+       [
+        -0.3,
+        0.34
+       ],
+       1
+      ]
+     },
+     {
+      "from": 379,
+      "to": 423,
+      "armL": [
+       "ik",
+       [
+        -0.5,
+        1.18
+       ],
+       1
+      ],
+      "prop_tilt": [
+       0.35,
+       0
+      ]
+     }
+    ],
+    "smooth": 0.2,
+    "calm": true
+   },
+   "hand_props": [
+    {
+     "id": "bottle0",
+     "kind": "bottle",
+     "hand": "L",
+     "ranges": [
+      [
+       112,
+       423
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "emily",
+   "gaze": 1,
+   "type": "soft",
+   "outfit": "soft_dress",
+   "loc": [
+    -0.6,
+    4.0,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      -0.6,
+      4.0,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 442,
+      "location": [
+       -0.6,
+       4.0,
+       0
+      ]
+     }
+    ]
+   },
+   "mouth": "soft",
+   "look": {
+    "hair": "tied",
+    "hair_color": [
+     0.35,
+     0.15,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 2,
+    "palette": {
+     "cloth": [
+      0.1,
+      0.5,
+      0.75
+     ],
+     "cloth2": [
+      0.9,
+      0.85,
+      0.75
+     ]
+    },
+    "signature": "earrings",
+    "sig_color": [
+     0.98,
+     0.75,
+     0.05
+    ]
+   },
+   "head_shape": "wide",
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "happy"
+    ],
+    [
+     91,
+     "neutral"
+    ],
+    [
+     202,
+     "smirk"
+    ],
+    [
+     257,
+     "laugh"
+    ]
+   ],
+   "blinks": [
+    59,
+    166,
+    281,
+    408
+   ],
+   "talk": [
+    [
+     15,
+     78
+    ],
+    [
+     153,
+     189
+    ],
+    [
+     257,
+     335
+    ]
+   ],
+   "pose": {
+    "default": {},
+    "segments": [
+     {
+      "from": 413,
+      "to": 437,
+      "armL": [
+       "ik",
+       [
+        -0.41,
+        0.5
+       ],
+       1
+      ]
+     },
+     {
+      "from": 5,
+      "to": 84
+     },
+     {
+      "from": 143,
+      "to": 195
+     },
+     {
+      "from": 247,
+      "to": 341
+     },
+     {
+      "from": 424,
+      "to": 442,
+      "armL": [
+       "ik",
+       [
+        -0.3,
+        0.34
+       ],
+       1
+      ]
+     }
+    ],
+    "smooth": 0.2,
+    "calm": true
+   },
+   "hand_props": [
+    {
+     "id": "bottle0",
+     "kind": "bottle",
+     "hand": "L",
+     "ranges": [
+      [
+       424,
+       442
+      ]
+     ]
+    }
+   ]
+  }
+ ],
+ "words": [
+  [
+   0.45,
+   "And"
+  ],
+  [
+   0.69,
+   "grab"
+  ],
+  [
+   0.92,
+   "me"
+  ],
+  [
+   1.16,
+   "a"
+  ],
+  [
+   1.39,
+   "water"
+  ],
+  [
+   1.86,
+   "from"
+  ],
+  [
+   2.1,
+   "the"
+  ],
+  [
+   2.33,
+   "fridge?"
+  ],
+  [
+   2.87,
+   "Anything"
+  ],
+  [
+   3.47,
+   "else,"
+  ],
+  [
+   3.93,
+   "your"
+  ],
+  [
+   4.14,
+   "majesty?"
+  ],
+  [
+   5.06,
+   "Turn"
+  ],
+  [
+   5.3,
+   "the"
+  ],
+  [
+   5.54,
+   "TV"
+  ],
+  [
+   5.79,
+   "off"
+  ],
+  [
+   6.03,
+   "too."
+  ],
+  [
+   6.57,
+   "It's"
+  ],
+  [
+   6.8,
+   "not"
+  ],
+  [
+   7.04,
+   "even"
+  ],
+  [
+   7.51,
+   "on!"
+  ],
+  [
+   8.54,
+   "Then"
+  ],
+  [
+   8.9,
+   "turn"
+  ],
+  [
+   9.26,
+   "it"
+  ],
+  [
+   9.62,
+   "on."
+  ],
+  [
+   10.38,
+   "I"
+  ],
+  [
+   10.63,
+   "can't"
+  ],
+  [
+   10.89,
+   "sleep."
+  ]
+ ],
+ "captions": {
+  "style": "word"
+ },
+ "sound": {
+  "auto": {
+   "enabled": false
+  }
+ },
+ "visibility": {
+  "fridge_door_closed": [
+   [
+    1,
+    101
+   ],
+   [
+    168,
+    442
+   ]
+  ],
+  "fridge_door_closed_handle": [
+   [
+    1,
+    101
+   ],
+   [
+    168,
+    442
+   ]
+  ],
+  "fridge_door_open": [
+   [
+    102,
+    167
+   ]
+  ],
+  "tv_screen_off": [
+   [
+    1,
+    358
+   ]
+  ],
+  "tv_screen_on": [
+   [
+    359,
+    442
+   ]
+  ],
+  "tv_screen_on_pic": [
+   [
+    359,
+    442
+   ]
+  ]
+ }
+}

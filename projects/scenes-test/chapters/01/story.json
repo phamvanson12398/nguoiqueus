@@ -1,0 +1,644 @@
+{
+ "meta": {
+  "title": "Just One More Thing",
+  "slug": "scenes-test/chapters/01",
+  "fps": 30,
+  "frames": 409,
+  "seed": 7,
+  "voice": "voice.wav",
+  "output": "out.mp4",
+  "samples": 32,
+  "aspect": "9:16",
+  "char_style": "2d",
+  "char_tone": "grey",
+  "dialog": true,
+  "fast_build": true
+ },
+ "sets": [
+  {
+   "id": "stage",
+   "type": "kitchen",
+   "params": {
+    "stuck_toast": false
+   },
+   "props": [
+    {
+     "id": "furn0_bed",
+     "type": "bed",
+     "params": {
+      "along": "y",
+      "width": 3.45
+     },
+     "loc": [
+      0.0,
+      3.15,
+      0
+     ]
+    },
+    {
+     "id": "lamp",
+     "type": "floor_lamp",
+     "params": {},
+     "loc": [
+      -2.55,
+      4.6,
+      0
+     ]
+    }
+   ]
+  }
+ ],
+ "camera": {
+  "rig": "long",
+  "shots": [
+   {
+    "a": 1,
+    "b": 61,
+    "type": "full",
+    "frame": {
+     "size": 5.33,
+     "look_dz": -0.18,
+     "move": "still",
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ],
+     "y": -0.3,
+     "height": "high"
+    }
+   },
+   {
+    "a": 62,
+    "b": 111,
+    "type": "medium",
+    "frame": {
+     "size": 3.2,
+     "look_dz": 0.14,
+     "move": "still",
+     "subject": "jake",
+     "height": "high"
+    }
+   },
+   {
+    "a": 112,
+    "b": 207,
+    "type": "medium",
+    "frame": {
+     "size": 3.2,
+     "look_dz": 0.14,
+     "move": "still",
+     "subject": "emily",
+     "height": "high"
+    }
+   },
+   {
+    "a": 208,
+    "b": 246,
+    "type": "full",
+    "frame": {
+     "size": 5.33,
+     "look_dz": -0.18,
+     "move": "still",
+     "subject": [
+      0.0,
+      4.3,
+      0
+     ],
+     "y": -0.3,
+     "height": "high"
+    }
+   },
+   {
+    "a": 247,
+    "b": 293,
+    "type": "medium",
+    "frame": {
+     "size": 3.2,
+     "look_dz": 0.14,
+     "move": "still",
+     "subject": "emily",
+     "height": "high"
+    }
+   },
+   {
+    "a": 294,
+    "b": 333,
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    }
+   },
+   {
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    },
+    "a": 334,
+    "b": 367
+   },
+   {
+    "a": 368,
+    "b": 409,
+    "type": "medium",
+    "frame": {
+     "size": 3.0,
+     "look_dz": 0.3,
+     "move": "still",
+     "subject": "jake"
+    }
+   }
+  ],
+  "hand": 0.0
+ },
+ "chars": [
+  {
+   "id": "jake",
+   "gaze": -1,
+   "type": "soft",
+   "outfit": "soft_hoodie",
+   "loc": [
+    0.85,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      0.85,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 332,
+      "location": [
+       0.85,
+       4.3,
+       0
+      ],
+      "note": "seated"
+     },
+     {
+      "from": 333,
+      "to": 333,
+      "location": [
+       "lerp(0.850, -1.930, ease((f - 333) / 1))",
+       "lerp(4.300, 4.250, ease((f - 333) / 1))",
+       0
+      ]
+     },
+     {
+      "from": 334,
+      "to": 409,
+      "location": [
+       -1.93,
+       4.25,
+       0
+      ]
+     }
+    ]
+   },
+   "mouth": "soft",
+   "look": {
+    "hair": "short",
+    "hair_color": [
+     0.1,
+     0.06,
+     0.03
+    ],
+    "beard": "none",
+    "seed": 1,
+    "palette": {
+     "cloth": [
+      0.85,
+      0.2,
+      0.08
+     ],
+     "cloth2": [
+      0.05,
+      0.08,
+      0.25
+     ]
+    },
+    "signature": "cap",
+    "sig_color": [
+     0.95,
+     0.12,
+     0.1
+    ]
+   },
+   "head_shape": "egg",
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     65,
+     "annoyed"
+    ],
+    [
+     119,
+     "neutral"
+    ],
+    [
+     211,
+     "annoyed"
+    ],
+    [
+     254,
+     "neutral"
+    ],
+    [
+     297,
+     "grumpy"
+    ]
+   ],
+   "blinks": [
+    51,
+    154,
+    233,
+    352
+   ],
+   "talk": [
+    [
+     65,
+     106
+    ],
+    [
+     211,
+     241
+    ],
+    [
+     297,
+     322
+    ]
+   ],
+   "pose": {
+    "default": {
+     "legs": [
+      [
+       -0.06,
+       0.02
+      ],
+      [
+       0.06,
+       -0.02
+      ]
+     ],
+     "body": [
+      0,
+      "-0.460 + (0.460) * ease((f - 333) / 1)"
+     ]
+    },
+    "segments": [
+     {
+      "from": 334,
+      "to": 356,
+      "armL": [
+       "ik",
+       [
+        -0.6,
+        0.95
+       ],
+       1
+      ]
+     },
+     {
+      "from": 55,
+      "to": 112
+     },
+     {
+      "from": 201,
+      "to": 247
+     },
+     {
+      "from": 287,
+      "to": 328
+     }
+    ],
+    "smooth": 0.2,
+    "calm": true
+   }
+  },
+  {
+   "id": "emily",
+   "gaze": 1,
+   "type": "soft",
+   "outfit": "soft_dress",
+   "loc": [
+    -0.85,
+    4.3,
+    0
+   ],
+   "blocking": {
+    "default": {
+     "location": [
+      -0.85,
+      4.3,
+      0
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 409,
+      "location": [
+       -0.85,
+       4.3,
+       0
+      ],
+      "note": "seated"
+     }
+    ]
+   },
+   "mouth": "soft",
+   "look": {
+    "hair": "tied",
+    "hair_color": [
+     0.35,
+     0.15,
+     0.05
+    ],
+    "beard": "none",
+    "seed": 2,
+    "palette": {
+     "cloth": [
+      0.1,
+      0.5,
+      0.75
+     ],
+     "cloth2": [
+      0.9,
+      0.85,
+      0.75
+     ]
+    },
+    "signature": "earrings",
+    "sig_color": [
+     0.98,
+     0.75,
+     0.05
+    ]
+   },
+   "head_shape": "wide",
+   "faces": [
+    "neutral",
+    "happy",
+    "smirk",
+    "wink",
+    "angry",
+    "shock",
+    "worried",
+    "grumpy",
+    "focus",
+    "smug_closed",
+    "sad",
+    "love",
+    "laugh",
+    "side_eye_l",
+    "side_eye_r",
+    "annoyed",
+    "blush"
+   ],
+   "expressions": [
+    [
+     1,
+     "neutral"
+    ],
+    [
+     115,
+     "worried"
+    ],
+    [
+     215,
+     "neutral"
+    ],
+    [
+     250,
+     "love"
+    ],
+    [
+     301,
+     "neutral"
+    ]
+   ],
+   "blinks": [
+    37,
+    109,
+    231,
+    356
+   ],
+   "talk": [
+    [
+     11,
+     56
+    ],
+    [
+     115,
+     202
+    ],
+    [
+     250,
+     288
+    ]
+   ],
+   "pose": {
+    "default": {
+     "legs": [
+      [
+       -0.06,
+       0.02
+      ],
+      [
+       0.06,
+       -0.02
+      ]
+     ],
+     "body": [
+      0,
+      -0.46
+     ]
+    },
+    "segments": [
+     {
+      "from": 1,
+      "to": 62
+     },
+     {
+      "from": 105,
+      "to": 208
+     },
+     {
+      "from": 240,
+      "to": 294
+     }
+    ],
+    "smooth": 0.2,
+    "calm": true
+   }
+  }
+ ],
+ "words": [
+  [
+   0.35,
+   "Babe..."
+  ],
+  [
+   0.95,
+   "are"
+  ],
+  [
+   1.17,
+   "you"
+  ],
+  [
+   1.39,
+   "asleep?"
+  ],
+  [
+   2.14,
+   "Not"
+  ],
+  [
+   2.48,
+   "anymore."
+  ],
+  [
+   3.81,
+   "Can"
+  ],
+  [
+   4.06,
+   "you"
+  ],
+  [
+   4.3,
+   "turn"
+  ],
+  [
+   4.55,
+   "off"
+  ],
+  [
+   4.8,
+   "the"
+  ],
+  [
+   5.04,
+   "light?"
+  ],
+  [
+   5.69,
+   "It's"
+  ],
+  [
+   5.94,
+   "in"
+  ],
+  [
+   6.19,
+   "my"
+  ],
+  [
+   6.44,
+   "eyes."
+  ],
+  [
+   6.99,
+   "It's"
+  ],
+  [
+   7.24,
+   "on"
+  ],
+  [
+   7.5,
+   "YOUR"
+  ],
+  [
+   7.75,
+   "side."
+  ],
+  [
+   8.3,
+   "But"
+  ],
+  [
+   8.56,
+   "you're"
+  ],
+  [
+   8.81,
+   "the"
+  ],
+  [
+   9.07,
+   "strong"
+  ],
+  [
+   9.32,
+   "one."
+  ],
+  [
+   9.88,
+   "Fine."
+  ]
+ ],
+ "captions": {
+  "style": "word"
+ },
+ "sound": {
+  "auto": {
+   "enabled": false
+  }
+ },
+ "lights": [
+  [
+   346,
+   "off"
+  ]
+ ],
+ "visibility": {
+  "lamp_shade_off": [
+   [
+    346,
+    409
+   ]
+  ],
+  "lamp_shade_on": [
+   [
+    1,
+    345
+   ]
+  ]
+ }
+}

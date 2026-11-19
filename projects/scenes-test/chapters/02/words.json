@@ -1,0 +1,178 @@
+{
+ "words": [
+  [
+   0.45,
+   "And"
+  ],
+  [
+   0.69,
+   "grab"
+  ],
+  [
+   0.92,
+   "me"
+  ],
+  [
+   1.16,
+   "a"
+  ],
+  [
+   1.39,
+   "water"
+  ],
+  [
+   1.86,
+   "from"
+  ],
+  [
+   2.1,
+   "the"
+  ],
+  [
+   2.33,
+   "fridge?"
+  ],
+  [
+   2.87,
+   "Anything"
+  ],
+  [
+   3.47,
+   "else,"
+  ],
+  [
+   3.93,
+   "your"
+  ],
+  [
+   4.14,
+   "majesty?"
+  ],
+  [
+   5.06,
+   "Turn"
+  ],
+  [
+   5.3,
+   "the"
+  ],
+  [
+   5.54,
+   "TV"
+  ],
+  [
+   5.79,
+   "off"
+  ],
+  [
+   6.03,
+   "too."
+  ],
+  [
+   6.57,
+   "It's"
+  ],
+  [
+   6.8,
+   "not"
+  ],
+  [
+   7.04,
+   "even"
+  ],
+  [
+   7.51,
+   "on!"
+  ],
+  [
+   8.54,
+   "Then"
+  ],
+  [
+   8.9,
+   "turn"
+  ],
+  [
+   9.26,
+   "it"
+  ],
+  [
+   9.62,
+   "on."
+  ],
+  [
+   10.38,
+   "I"
+  ],
+  [
+   10.63,
+   "can't"
+  ],
+  [
+   10.89,
+   "sleep."
+  ]
+ ],
+ "segments": [
+  [
+   0.45,
+   2.57
+  ],
+  [
+   2.87,
+   4.76
+  ],
+  [
+   5.06,
+   6.27
+  ],
+  [
+   6.57,
+   7.74
+  ],
+  [
+   8.54,
+   11.14
+  ]
+ ],
+ "duration": 12.64,
+ "frames": 380,
+ "word_count": 28,
+ "lines": [
+  {
+   "n": 1,
+   "speaker": "emily",
+   "start": 0.45,
+   "end": 2.57,
+   "text": "And grab me a water from the fridge?"
+  },
+  {
+   "n": 2,
+   "speaker": "jake",
+   "start": 2.87,
+   "end": 4.76,
+   "text": "Anything else, your majesty?"
+  },
+  {
+   "n": 3,
+   "speaker": "emily",
+   "start": 5.06,
+   "end": 6.27,
+   "text": "Turn the TV off too."
+  },
+  {
+   "n": 4,
+   "speaker": "jake",
+   "start": 6.57,
+   "end": 7.74,
+   "text": "It's not even on!"
+  },
+  {
+   "n": 5,
+   "speaker": "emily",
+   "start": 8.54,
+   "end": 11.14,
+   "text": "Then turn it on. I can't sleep."
+  }
+ ]
+}

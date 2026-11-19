@@ -706,6 +706,11 @@
      },
      "params": {
       "type": "object"
+     },
+     "scene": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "cảnh chứa đồ này (video nhiều cảnh); trống = cảnh nơi nó được dùng lần đầu"
      }
     }
    }
@@ -713,6 +718,64 @@
   "staged": {
    "type": "boolean",
    "description": "đã được Claude dàn dựng (steps/objects) — tool không tự dàn dựng lại"
+  },
+  "scenes": {
+   "type": "array",
+   "description": "chỉ khi câu chuyện đổi chỗ (nhà → xe → siêu thị): mỗi cảnh bắt đầu từ câu `start` (1 = câu đầu, cảnh đầu = setting). Mỗi cảnh dựng riêng rồi ghép liền. Tối đa 3 cảnh, mỗi cảnh ≥ 3 câu. Một chỗ thì bỏ trống.",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "start",
+     "set"
+    ],
+    "properties": {
+     "start": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "set": {
+      "type": "string",
+      "description": "bối cảnh thư viện hoặc tên mới (đưa vào library_needs)"
+     },
+     "params": {
+      "type": "object"
+     },
+     "brief_vi": {
+      "type": "string"
+     },
+     "posture": {
+      "type": "object",
+      "description": "id → stand/sit/lie lúc vào cảnh này",
+      "additionalProperties": {
+       "type": "string",
+       "enum": [
+        "stand",
+        "sit",
+        "lie"
+       ]
+      }
+     },
+     "holding": {
+      "type": "object",
+      "description": "id → đồ cầm tay lúc vào cảnh này",
+      "additionalProperties": {
+       "type": "string"
+      }
+     },
+     "spots": {
+      "type": "object",
+      "description": "id → spot của bối cảnh này",
+      "additionalProperties": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "staging_vi": {
+   "type": "string",
+   "description": "tóm tắt dàn dựng của Claude (tool ghi)"
   }
  }
 }

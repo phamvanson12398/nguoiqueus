@@ -1,0 +1,104 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "score",
+  "summary_vi",
+  "problems",
+  "fixes"
+ ],
+ "properties": {
+  "score": {
+   "type": "integer",
+   "minimum": 1,
+   "maximum": 10,
+   "description": "điểm cả video theo ảnh (8 = đăng được)"
+  },
+  "summary_vi": {
+   "type": "string"
+  },
+  "problems": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "frame",
+     "what_vi"
+    ],
+    "properties": {
+     "scene": {
+      "type": "integer"
+     },
+     "frame": {
+      "type": "integer"
+     },
+     "what_vi": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "fixes": {
+   "type": "array",
+   "maxItems": 12,
+   "description": "sửa content (không đổi lời thoại): tool lập lại story và xem lại",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "target",
+     "field",
+     "value",
+     "why_vi"
+    ],
+    "properties": {
+     "target": {
+      "type": "string",
+      "enum": [
+       "line",
+       "cast",
+       "object"
+      ]
+     },
+     "n": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "số câu (target line), đánh số cả kịch bản"
+     },
+     "id": {
+      "type": "string",
+      "description": "id nhân vật (cast) hoặc đồ vật (object)"
+     },
+     "field": {
+      "type": "string",
+      "enum": [
+       "action",
+       "face",
+       "gesture",
+       "holding",
+       "listener_face",
+       "listener_gesture",
+       "near",
+       "pause_before",
+       "posture",
+       "react",
+       "shot",
+       "spot"
+      ]
+     },
+     "value": {
+      "type": [
+       "string",
+       "number"
+      ]
+     },
+     "why_vi": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ }
+}

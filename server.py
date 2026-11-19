@@ -253,6 +253,8 @@ def project_state(slug):
                          refs=sorted(f for f in os.listdir(os.path.join(yd, "refs")) if f.endswith(".png")) if os.path.isdir(os.path.join(yd, "refs")) else []) if os.path.isdir(yd) else None
     st["chapters"] = longform.status(slug) if st["format"] == "long" else None
     st["dialog"] = None
+    st["scenes"] = dialog_scenes(slug) if st["format"] == "dialog" else None
+    st["review"] = ((jload(os.path.join(d, "review_dialog.json")) or [None])[-1]) if st["format"] == "dialog" else None
     if st["format"] == "dialog":
         _lib = storycheck.LibIndex()
         st["lib_sets"] = [n for n in _lib.list("sets") if n not in ("parchment_map", "tactical_board", "paper_diagram", "diagram_board")]
@@ -375,7 +377,42 @@ def job_speak(job, slug, only=None, reseed=False):
     return {"duration": w["duration"], "frames": w["frames"]}
 
 
-def job_build_dialog(job, slug, design=True, preview=True):
+def b_frames(h):
+    return h.jbody().get("frames") or []
+
+
+def dialog_previews(job, slug):
+    """re-plan (seconds) and render the preview frames of every scene"""
+    st = dialog.plan(slug, (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("char_style"), log=lambda m: None)
+    subs = [longform.chapter_slug(slug, k + 1) for k in range(len(st))] if isinstance(st, list) else [slug]
+    for sub in subs: job_preview(job, sub, default_preview_frames(sub))
+
+
+def job_review_dialog(job, slug, rounds=1, request=""):
+    """Claude looks at the previews and fixes acting/staging in the content; the tool replans and previews again (max `rounds`)"""
+    if not (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("auto_review", True) and not request and rounds > 1:
+        return None
+    last = None
+    for r in range(1, rounds + 1):
+        job.say(f"Claude soát ảnh xem trước (vòng {r}/{rounds}, khoảng 1-2 phút)…")
+        try:
+            last = bridge.review_dialog(slug, request if r == 1 else "")
+        except Exception as e:
+            if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}")
+            job.say(f"   (không soát được: {e})"); return None
+        job.say(f"   -> {last['score']}/10. {last['summary_vi']}")
+        for p_ in last["problems"][:8]: job.say(f"   • khung {p_['frame']}: {p_['what_vi']}")
+        if not last["fixes"]: break
+        for fx in last["fixes"]:
+            who = f"câu {fx.get('n')}" if fx["target"] == "line" else fx.get("id")
+            job.say(f"   sửa {who}: {fx['field']} = {fx['value']} ({fx['why_vi']})")
+        job.say("   Lập lại story và xem trước lại…")
+        dialog_previews(job, slug)
+        if last["score"] >= 8: break
+    return last
+
+
+def job_build_dialog(job, slug, design=True, preview=True, review=True):
     """dialogue: (new set designed by Claude if needed) -> story.json by the tool itself (no plan_shots) -> preview"""
     c = dialog.content_of(slug); lib = storycheck.LibIndex()
     if not os.path.exists(os.path.join(pdir(slug), "words.json")) or "lines" not in (jload(os.path.join(pdir(slug), "words.json")) or {}):
@@ -391,10 +428,11 @@ def job_build_dialog(job, slug, design=True, preview=True):
             if job.cancelled or bridge.is_usage_limit(e): raise ValueError(f"Hết lượt Claude của gói: {e}")
             job.say(f"   (bỏ qua dàn dựng: {e})")
     needs = list(c.get("library_needs", []))
-    st_ = c["setting"]["set"]
-    if not lib.exists("sets", st_) and not any(n["name"] == st_ for n in needs):       # chosen on the page, never designed yet
-        needs.append({"kind": "sets", "name": st_, "brief": (c["setting"].get("brief_vi") or st_.replace("_", " ")) +
-                      ". Bối cảnh cho video đối thoại: 2-3 người đứng cạnh nhau quay về camera."})
+    for sc_ in [c["setting"]] + list(dialog.scenes_of(c)):     # the main set and every other scene's set
+        st_ = sc_["set"]
+        if not lib.exists("sets", st_) and not any(n["name"] == st_ for n in needs):   # chosen on the page, never designed yet
+            needs.append({"kind": "sets", "name": st_, "brief": (sc_.get("brief_vi") or st_.replace("_", " ")) +
+                          ". Bối cảnh cho video đối thoại: 2-3 người đứng cạnh nhau quay về camera."})
     for need in needs:
         if lib.exists(need["kind"], need["name"]): continue
         if not design: raise ValueError(f"thiếu {need['kind']}/{need['name']}")
@@ -412,12 +450,28 @@ def job_build_dialog(job, slug, design=True, preview=True):
         job.say(f"   -> {last.get('score', '?')}/10 {last.get('summary_vi', '')}")
     job.say("2/3 Lập story.json từ thời gian từng câu (máy quay, mặt, miệng, cử chỉ, phụ đề)…")
     st = dialog.plan(slug, (jload(os.path.join(pdir(slug), "settings.json")) or {}).get("char_style"), log=job.say)
+    if isinstance(st, list):                             # several scenes: one part each, previewed one after the other
+        total = sum(s_["meta"]["frames"] for s_ in st)
+        if not preview: return {"frames": total, "scenes": len(st)}
+        warns = []
+        for k in range(len(st)):
+            sub = longform.chapter_slug(slug, k + 1); frames = default_preview_frames(sub)
+            job.say(f"3/3 Cảnh {k + 1}/{len(st)}: dựng trong Blender và xem trước khung {frames} (35 %)…")
+            out = job_preview(job, sub, frames)["log"]
+            w_ = [f"cảnh {k + 1}: " + l for l in out.splitlines() if l.startswith("WARN")]
+            for l in w_[:6]: job.say("   " + l)
+            warns += w_
+        job.say(f"Xong {len(st)} cảnh ({total} khung).")
+        if design and review: job_review_dialog(job, slug, rounds=2)
+        job.say("Bấm Render: tool render lần lượt từng cảnh rồi ghép thành out.mp4.")
+        return {"frames": total, "scenes": len(st), "warnings": warns}
     if not preview: return {"frames": st["meta"]["frames"]}
     frames = default_preview_frames(slug)
     job.say(f"3/3 Dựng cảnh trong Blender và xem trước khung {frames} (35 %)…")
     out = job_preview(job, slug, frames)["log"]
     warns = [l for l in out.splitlines() if l.startswith("WARN")]
     for l in warns[:10]: job.say("   " + l)
+    if design and review: job_review_dialog(job, slug, rounds=2)
     job.say("Xong: xem ảnh rồi bấm Render. Muốn đổi máy quay một câu: sửa ô 'Máy quay' của câu đó ở bước 2 rồi dựng lại (vài giây, không tốn lượt Claude).")
     return {"frames": st["meta"]["frames"], "warnings": warns}
 
@@ -875,8 +929,27 @@ def job_bench(job, slug, pct=100, quality="normal"):
     return {"sec_per_frame": float(m.group(1))}
 
 
+def dialog_scenes(slug):
+    """a dialogue video with several places: its parts (chapters/NN, one per scene), else None"""
+    if "/chapters/" in slug or not is_dialog(slug): return None
+    c = jload(os.path.join(pdir(slug), "content.json")) or {}
+    return longform.status(slug) if dialog.is_dialog(c) and dialog.scenes_of(c) else None
+
+
+def job_render_scenes(job, slug, pct=100, samples=None, quality="normal"):
+    st = dialog_scenes(slug)
+    if not st or not all(c["story"] for c in st): raise ValueError("chưa dựng đủ các cảnh (bấm Duyệt & dựng)")
+    todo = [c for c in st if not c["rendered"]]
+    for c in todo:
+        job.say(f"===== Render cảnh {c['n']}/{len(st)} ({c['set']}, câu {c['start_line']}-{c['end_line']}) =====")
+        job_render(job, longform.chapter_slug(slug, c["n"]), pct, None, samples, quality)
+    out = longform.concat(slug, log=job.say)
+    return {"file": os.path.basename(out)}
+
+
 def job_render(job, slug, pct=100, frames=None, samples=None, quality="normal"):
     if "/chapters/" not in slug and is_long(slug) and not frames: return job_render_long(job, slug, pct, samples, quality)
+    if not frames and dialog_scenes(slug): return job_render_scenes(job, slug, pct, samples, quality)
     args = ["--render"]
     if shutil.which("ffmpeg") and quality:                     # image sequence: resumable, 'on twos' in fast mode
         args += ["--seq", "--quality", quality]
@@ -903,6 +976,162 @@ def job_splice(job, slug, part):
     out = splice.splice(full, part)
     job.say("Xong: " + os.path.basename(out))
     return {"file": os.path.basename(out)}
+
+
+# =====================================================================
+#  production queue: many dialogue videos one after the other (overnight)
+# =====================================================================
+QUEUE_FILE = os.path.join(PROJECTS, "_queue.json")
+QLOCK = threading.Lock()
+QSTATE = {"thread": None, "stop": False, "job": None}
+
+
+def queue_load():
+    q = jload(QUEUE_FILE, {"items": []}) or {"items": []}
+    for it in q["items"]:                                # a studio restart while one ran: it goes back in line
+        if it.get("status") == "running" and not (QSTATE["thread"] and QSTATE["thread"].is_alive()): it["status"] = "waiting"
+    return q
+
+
+def queue_save(q):
+    os.makedirs(PROJECTS, exist_ok=True)
+    tmp = QUEUE_FILE + ".tmp"; json.dump(q, open(tmp, "w", encoding="utf-8"), ensure_ascii=False, indent=1); os.replace(tmp, QUEUE_FILE)
+
+
+def queue_update(qid, **kw):
+    with QLOCK:
+        q = queue_load()
+        for it in q["items"]:
+            if it["id"] == qid: it.update(kw)
+        queue_save(q)
+
+
+def split_scripts(text):
+    """several scripts pasted at once: separated by a line of === (or ---- / ####) """
+    parts = re.split(r"\n\s*(?:={3,}|-{4,}|#{3,})\s*\n", "\n" + (text or "").replace("\r", "") + "\n")
+    return [p.strip() for p in parts if len(p.strip()) >= 10]
+
+
+def queue_add(b):
+    """b: {scripts: text (several split by ===) | topics: text (one per line), mode, char_style, until, quality, pct, minutes}"""
+    items = []
+    opts = {"mode": b.get("mode") if b.get("mode") in ("local", "claude", "improve") else "local",
+            "char_style": b.get("char_style") if b.get("char_style") in ("2d", "3d", "2d_grey") else "2d_grey",
+            "until": "render" if b.get("until") == "render" else "preview",
+            "quality": b.get("quality") if b.get("quality") in ("fast", "normal", "high") else "normal",
+            "pct": int(b.get("pct") or 100), "minutes": float(b.get("minutes") or 0.75), "review": bool(b.get("review", True))}
+    import script_import
+    for s in split_scripts(b.get("scripts", "")):
+        p = script_import.parse(s)
+        title = p.get("title") or (p["lines"][0]["text"][:40] if p["lines"] else "kịch bản")
+        items.append(dict(opts, kind="script", text=s, title=title))
+    for t in [x.strip() for x in (b.get("topics") or "").splitlines() if len(x.strip()) >= 4]:
+        items.append(dict(opts, kind="topic", text=t, title=t[:60]))
+    if not items: raise ValueError("chưa có gì để thêm: dán kịch bản (nhiều kịch bản cách nhau bằng dòng ===) hoặc chủ đề (mỗi dòng một chủ đề)")
+    with QLOCK:
+        q = queue_load()
+        for it in items:
+            it.update(id=uuid.uuid4().hex[:8], status="waiting", added=time.strftime("%Y-%m-%d %H:%M"), slug=None, step="", error=None)
+            q["items"].append(it)
+        queue_save(q)
+    return items
+
+
+def job_queue_item(job, qid):
+    """one queued video from script/topic to previews (or the finished mp4), without anyone clicking"""
+    it = next(x for x in queue_load()["items"] if x["id"] == qid)
+    slug = it.get("slug")
+
+    def step(name):
+        job.say(f"===== {name} ====="); queue_update(qid, step=name)
+    if not slug or not os.path.isdir(pdir(slug)):
+        base = slug = slugify(it["title"]); k = 2
+        while os.path.exists(os.path.join(PROJECTS, slug)): slug = f"{base}-{k}"; k += 1
+        os.makedirs(pdir(slug)); save_settings(slug, minutes=it["minutes"], title=it["title"], format="dialog", char_style=it["char_style"],
+                                               auto_review=it.get("review", True))
+        queue_update(qid, slug=slug)
+    with LOCK: job.project = slug; BUSY[slug] = job.id         # the page shows this job on the project, other jobs wait
+    c = jload(os.path.join(pdir(slug), "content.json"))
+    if not c:
+        if it["kind"] == "script":
+            step("1/5 Kịch bản")
+            import script_import
+            p = script_import.parse(it["text"])
+            if it["mode"] in ("claude", "improve") or p["vietnamese"]:
+                job_import_script(job, slug, it["text"], p["vietnamese"], it["mode"] == "improve")
+            else:
+                p, draft = read_script(slug, it["text"]); bridge._save_versioned(slug, "content.json", bridge.dialog_fill(draft))
+                job.say(f"Nhận diện ngay: {len(draft['lines'])} câu, nhân vật {', '.join(m['name'] for m in draft['cast'])}")
+        else:
+            step("1/5 Claude viết kịch bản")
+            json.dump({"title": it["text"], "logline": "", "free_topic": True}, open(os.path.join(pdir(slug), "idea.json"), "w", encoding="utf-8"),
+                      ensure_ascii=False, indent=2)
+            job_write(job, slug, it["minutes"])
+    c = dialog.content_of(slug)
+    step("2/5 Giọng nhân vật")
+    for m in c["cast"]:
+        v = tts.voice(m["voice_id"]) or {}
+        if v.get("has_ref"): continue
+        job.say(f"{m['name']}: tạo 3 giọng thử, tool chọn bản sống nhất (đổi ở bước 3 nếu muốn)…")
+        tts.audition(m["voice_id"], m["voice_instruct"], n=3, log=job.say, procs=job.procs, cancelled=lambda: job.cancelled,
+                     name=m["name"], role=m["role"], gender=m["gender"], age=m["age"])
+        best, score = 1, -1
+        for k in (1, 2, 3):
+            f = os.path.join(tts.vdir(m["voice_id"]), f"cand_{k}.wav")
+            if not os.path.exists(f): continue
+            x, sr = tts.read_wav(f); e = tts.expressiveness(x, sr)
+            if e > score: best, score = k, e
+        tts.pick(m["voice_id"], best)
+    step("3/5 Đọc lời thoại")
+    job_speak(job, slug)
+    step("4/5 Dựng + xem trước" + (" + Claude soát" if it.get("review", True) else ""))
+    job_build_dialog(job, slug, True, True, it.get("review", True))
+    if it["until"] == "render":
+        step("5/5 Render")
+        job_render(job, slug, it["pct"], None, None, it["quality"])
+    return {"slug": slug}
+
+
+def queue_worker():
+    while not QSTATE["stop"]:
+        with QLOCK:
+            q = queue_load(); it = next((x for x in q["items"] if x["status"] == "waiting"), None)
+            if it: it["status"] = "running"; it["started"] = time.strftime("%Y-%m-%d %H:%M"); queue_save(q)
+        if not it: break
+        slug_hint = it.get("slug") or "_queue"
+        try:
+            j = Job("queue", slug_hint, job_queue_item, it["id"])
+            with LOCK: JOBS[j.id] = j
+            QSTATE["job"] = j.id; queue_update(it["id"], job=j.id)
+            j.thread.start(); j.thread.join()
+            st = "done" if j.status == "done" else "cancelled" if j.status == "cancelled" else "error"
+            queue_update(it["id"], status=st, error=j.error, finished=time.strftime("%Y-%m-%d %H:%M"))
+            if j.error and ("Hết lượt" in j.error or "usage" in j.error.lower()):     # plan limit: stop, the rest waits
+                QSTATE["stop"] = True
+            if st == "cancelled": QSTATE["stop"] = True
+        except Exception as e:
+            queue_update(it["id"], status="error", error=str(e))
+    QSTATE["job"] = None; QSTATE["thread"] = None
+
+
+def queue_start():
+    if QSTATE["thread"] and QSTATE["thread"].is_alive(): return False
+    QSTATE["stop"] = False
+    QSTATE["thread"] = threading.Thread(target=queue_worker, daemon=True); QSTATE["thread"].start()
+    return True
+
+
+def queue_view():
+    q = queue_load(); running = bool(QSTATE["thread"] and QSTATE["thread"].is_alive())
+    items = []
+    for it in q["items"]:
+        x = {k: v for k, v in it.items() if k != "text"}; x["lines"] = it["text"].count("\n") + 1 if it["kind"] == "script" else 0
+        j = JOBS.get(it.get("job") or "")
+        if j and it["status"] == "running": x["log"] = j.log[-6:]
+        if it.get("slug") and os.path.isdir(os.path.join(PROJECTS, it["slug"])):
+            d = pdir(it["slug"]); x["has_mp4"] = os.path.exists(os.path.join(d, "out.mp4"))
+        items.append(x)
+    return {"items": items, "running": running, "stopping": QSTATE["stop"] and running, "job": QSTATE["job"]}
 
 
 def job_design(job, kind, name, brief, dim, feedback, culture=None):
@@ -1019,13 +1248,37 @@ class Handler(BaseHTTPRequestHandler):
                 j.cancel(); return self.send_json({"ok": True})
             return self.send_json(j.to_json(int(q.get("since", ["0"])[0])))
 
+        if api == ["queue"]:
+            if method == "POST":
+                b = self.jbody(); a = b.get("action")
+                if a == "add": added = queue_add(b); return self.send_json(dict(queue_view(), added=len(added)))
+                if a == "start": queue_start()
+                elif a == "stop": QSTATE["stop"] = True
+                elif a in ("remove", "retry", "up", "down"):
+                    with QLOCK:
+                        q = queue_load(); ix = next((i for i, x in enumerate(q["items"]) if x["id"] == b.get("id")), None)
+                        if ix is None: raise ValueError("không có mục này")
+                        it = q["items"][ix]
+                        if a == "remove":
+                            if it["status"] == "running": raise ValueError("đang làm mục này: bấm Dừng (hủy việc đang chạy) trước")
+                            q["items"].pop(ix)
+                        elif a == "retry": it.update(status="waiting", error=None)
+                        else:
+                            k2 = ix - 1 if a == "up" else ix + 1
+                            if 0 <= k2 < len(q["items"]): q["items"][ix], q["items"][k2] = q["items"][k2], q["items"][ix]
+                        queue_save(q)
+                elif a == "clear_done":
+                    with QLOCK:
+                        q = queue_load(); q["items"] = [x for x in q["items"] if x["status"] not in ("done",)]; queue_save(q)
+            return self.send_json(queue_view())
+
         if api == ["projects"]:
             if method == "GET":
                 os.makedirs(PROJECTS, exist_ok=True)
                 rows = []
                 for s in sorted(os.listdir(PROJECTS)):
                     d = os.path.join(PROJECTS, s)
-                    if not os.path.isdir(d): continue
+                    if not os.path.isdir(d) or s.startswith("_"): continue
                     c = jload(os.path.join(d, "content.json")) or {}; st = jload(os.path.join(d, "story.json")) or {}
                     rows.append({"slug": s, "title": c.get("title") or st.get("meta", {}).get("title") or s,
                                  "mtime": os.path.getmtime(d), "has_story": bool(st), "has_voice": os.path.exists(os.path.join(d, "voice.wav"))})
@@ -1143,6 +1396,12 @@ class Handler(BaseHTTPRequestHandler):
                 b = self.jbody()
                 return self.send_json(start_job("build", slug, job_build, slug, b.get("design", True), b.get("preview", True),
                                                 [int(x) for x in b.get("chapters", [])] or None, bool(b.get("replan"))).to_json())
+            if act == ["preview"] and is_dialog(slug) and not b_frames(self) and dialog_scenes(slug) is not None:
+                return self.send_json(start_job("preview", slug, dialog_previews, slug).to_json())
+            if act == ["review"] and method == "POST":         # dialogue: Claude checks the previews and fixes the acting/staging
+                b = self.jbody()
+                return self.send_json(start_job("review", slug, job_review_dialog, slug, int(b.get("rounds", 1)),
+                                                (b.get("request") or "").strip()).to_json())
             if act == ["preview"]:
                 b = self.jbody(); t = sub_target(slug, b.get("chapter")); frames = b.get("frames") or default_preview_frames(t)
                 return self.send_json(start_job("preview", slug, job_preview, t, [int(f) for f in frames], int(b.get("pct", 35))).to_json())

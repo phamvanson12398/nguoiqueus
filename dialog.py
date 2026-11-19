@@ -375,6 +375,9 @@ STAGING_DOC = """Động tác tool làm được (mỗi bước: who, do, + obje
 - walk_to + to_spot (spot của bối cảnh, partner = lại gần người đang nói chuyện, away = lùi ra, left/right); enter (đi vào cảnh);
   exit (bỏ đi khỏi cảnh).
 - sit_down / lie_down / stand_up: ngồi xuống (ghế/sofa/mép giường), nằm xuống giường (đắp chăn), đứng dậy / ra khỏi giường.
+- Nhiều chỗ: content.scenes [{start, set, posture, holding, spots}] — từ câu `start` câu chuyện chuyển sang bối cảnh khác (tool dựng
+  từng cảnh riêng, ghép liền). Đồ vật (objects) có thể ghi `scene` (số cảnh, 1 = cảnh đầu); trống = cảnh nơi nó được dùng lần đầu.
+  Đừng cho nhân vật đi bộ sang chỗ khác: đổi cảnh. Ở đầu cảnh mới mọi người đứng (trừ posture/holding khai báo cho cảnh đó).
 - take_out / show / use / give / put_away + prop: lấy đồ ra, giơ cho xem, dùng (uống/ăn/xem màn hình), đưa cho người kia, cất đi.
 - Hai người với nhau (`to` = id người kia, trống = người đang nói chuyện cùng): hug (lại gần ôm nhau ~1,3 s rồi về chỗ),
   high_five (đập tay), pinch_cheek (véo má, người kia giật mình), throw + prop (mặc định pillow: lấy đà ném trúng đầu người kia,
@@ -1022,7 +1025,141 @@ def plan_shots(lines_t, content, N):
     return shots
 
 
+def scenes_of(c):
+    """the video's scenes (content.scenes: [{start (1-based line), set, params, brief_vi, posture, holding}]), [] for one place"""
+    sc = sorted([x for x in (c.get("scenes") or []) if int(x.get("start", 1)) >= 1], key=lambda x: int(x["start"]))
+    if not sc: return []
+    if int(sc[0]["start"]) != 1:
+        sc = [{"start": 1, "set": c["setting"]["set"], "params": c["setting"].get("params") or {}, "brief_vi": c["setting"].get("brief_vi", "")}] + sc
+    out = []
+    for x in sc:                                         # one scene per start line
+        if out and int(x["start"]) == int(out[-1]["start"]): out[-1] = x
+        elif int(x["start"]) <= len(c["lines"]): out.append(x)
+    return out if len(out) > 1 else []
+
+
+def object_scene(c, oid, scenes):
+    """the scene where a thing is first used (an object belongs to one place)"""
+    starts = [int(x["start"]) for x in scenes]
+    for k, l in enumerate(c["lines"]):
+        if l.get("object") == oid or any(st.get("object") == oid for st in l.get("steps") or []):
+            return max(i for i, s0 in enumerate(starts) if s0 <= k + 1)
+    return 0
+
+
+def split_scenes(slug, log=print):
+    """several places in one video: every scene becomes a part (chapters/NN: its own content, words, voice slice, story);
+    the parts are rendered one after the other and joined (same as the long-form parts)"""
+    import tts
+    c = content_of(slug); d = pdir(slug); wj = _j(os.path.join(d, "words.json"))
+    scenes = scenes_of(c)
+    if not scenes: return []
+    x, sr = tts.read_wav(os.path.join(d, "voice.wav"))
+    lt = wj["lines"]; n = len(c["lines"]); dur = float(wj["duration"])
+    starts = [int(sc["start"]) - 1 for sc in scenes] + [n]
+    settings = _j(os.path.join(d, "settings.json"), {}) or {}
+    idx = []
+    for k, sc in enumerate(scenes):
+        a_l, b_l = starts[k], starts[k + 1]
+        t0 = 0.0 if k == 0 else max(0.0, lt[a_l]["start"] - 0.45)
+        t1 = dur if k + 1 == len(scenes) else max(t0 + 0.5, lt[b_l]["start"] - 0.45)
+        sub = {kk: vv for kk, vv in c.items() if kk not in ("scenes", "lines", "objects", "setting")}
+        sub["setting"] = {"set": sc["set"], "params": sc.get("params") or {}, "brief_vi": sc.get("brief_vi", "")}
+        sub["lines"] = [dict(l) for l in c["lines"][a_l:b_l]]
+        sub["cast"] = []
+        for m in c["cast"]:                               # who is where at the start of this scene
+            m2 = dict(m); m2.pop("spot", None)
+            if (sc.get("spots") or {}).get(m["id"]): m2["spot"] = sc["spots"][m["id"]]
+            if (sc.get("posture") or {}).get(m["id"]): m2["posture"] = sc["posture"][m["id"]]
+            elif k > 0: m2.pop("posture", None)
+            if (sc.get("holding") or {}).get(m["id"]): m2["holding"] = {"kind": sc["holding"][m["id"]]}
+            elif k > 0: m2.pop("holding", None)
+            sub["cast"].append(m2)
+        sub["objects"] = [o for o in c.get("objects") or [] if int(o.get("scene", object_scene(c, o["id"], scenes) + 1)) == k + 1]
+        sub["staged"] = True
+        words = [[round(w[0] - t0, 3), w[1]] for w in wj["words"] if t0 <= w[0] < t1]
+        lines = [dict(x_, n=i + 1, start=round(x_["start"] - t0, 3), end=round(x_["end"] - t0, 3)) for i, x_ in enumerate(lt[a_l:b_l])]
+        cd = os.path.join(d, "chapters", f"{k + 1:02d}"); os.makedirs(cd, exist_ok=True)
+        _w(os.path.join(cd, "content.json"), sub)
+        _w(os.path.join(cd, "words.json"), {"words": words, "segments": [[l["start"], l["end"]] for l in lines], "duration": round(t1 - t0, 3),
+                                            "frames": int(math.ceil((t1 - t0) * FPS)), "word_count": len(words), "lines": lines})
+        _w(os.path.join(cd, "settings.json"), dict(settings, format="dialog"))
+        tts.write_wav(os.path.join(cd, "voice.wav"), x[int(t0 * sr):int(t1 * sr)], sr)
+        idx.append({"n": k + 1, "title": sc.get("brief_vi") or sc["set"], "set": sc["set"], "start_line": a_l + 1, "end_line": b_l,
+                    "t0": round(t0, 3), "t1": round(t1, 3)})
+    _w(os.path.join(d, "chapters", "index.json"), {"chapters": idx, "kind": "dialog_scenes"})
+    log(f"{len(idx)} cảnh: " + "; ".join(f"{s_['n']}) {s_['set']} câu {s_['start_line']}-{s_['end_line']}" for s_ in idx))
+    return idx
+
+
+def preview_context(slug):
+    """every preview image of the video (all scenes) with what should be on it: time, line (number in the whole script),
+    who speaks, the shot, actions going on -> for Claude's self-review"""
+    c = content_of(slug); d = pdir(slug); out = []
+    parts = []
+    if scenes_of(c) and os.path.exists(os.path.join(d, "chapters", "index.json")):
+        for p_ in _j(os.path.join(d, "chapters", "index.json"))["chapters"]:
+            parts.append((os.path.join(d, "chapters", f"{p_['n']:02d}"), p_["start_line"] - 1, p_["n"], p_["set"]))
+    else:
+        parts.append((d, 0, 1, c["setting"]["set"]))
+    for pd, off, sn, set_name in parts:
+        st = _j(os.path.join(pd, "story.json")); wj = _j(os.path.join(pd, "words.json")); prev = os.path.join(pd, "preview")
+        if not st or not wj or not os.path.isdir(prev): continue
+        shots = st["camera"].get("shots") or []
+        for f_ in sorted(x for x in os.listdir(prev) if x.endswith(".png")):
+            fr = int(f_[2:6]); t = fr / FPS
+            cur = [l for l in wj["lines"] if l["start"] - 0.2 <= t <= l["end"] + 0.4]
+            prv = [l for l in wj["lines"] if l["start"] <= t]
+            l = cur[0] if cur else (prv[-1] if prv else wj["lines"][0])
+            n_ = off + l["n"]; line = c["lines"][n_ - 1]
+            sh = next((s for s in shots if s["a"] <= fr <= s["b"]), {})
+            subj = (sh.get("frame") or {}).get("subject")
+            info = {"image": os.path.join(prev, f_), "scene": sn, "set": set_name, "frame": fr, "t": round(t, 2), "line": n_,
+                    "speaking": bool(cur), "speaker": line["speaker"], "text": line["text"], "face": line.get("face"),
+                    "listener_face": line.get("listener_face"), "gesture": line.get("gesture"), "shot": line.get("shot", "auto"),
+                    "camera": f"{sh.get('type', '?')} on {subj if isinstance(subj, str) else 'group'}"}
+            acts = [line.get("action")] if line.get("action", "none") != "none" else []
+            acts += [f"{s_['who']} {s_['do']}" + (f" {s_.get('object')}" if s_.get("object") else "") for s_ in line.get("steps") or []]
+            if acts: info["actions"] = acts
+            out.append(info)
+    return out
+
+
+REVIEW_FIELDS = {"line": ("shot", "face", "listener_face", "gesture", "listener_gesture", "react", "pause_before", "action"),
+                 "cast": ("spot", "posture", "holding"), "object": ("near",)}
+
+
+def apply_review_fixes(c, fixes):
+    """Claude's fixes from the preview review -> content (only acting/staging fields; words never change)"""
+    done = []
+    for fx in fixes:
+        t, f_, v = fx["target"], fx["field"], fx.get("value")
+        if t == "line":
+            l = c["lines"][int(fx["n"]) - 1]
+            if f_ == "action" and v in ("", "none", None):
+                for k in ("action", "prop", "to_spot"): l.pop(k, None)
+            elif f_ == "pause_before": l[f_] = round(max(0.0, min(2.5, float(v))), 2)
+            else: l[f_] = v
+        elif t == "cast":
+            m = next(m for m in c["cast"] if m["id"] == fx["id"])
+            if v in ("", None, "none") or (f_ == "posture" and v == "stand"): m.pop(f_, None)
+            elif f_ == "holding": m["holding"] = {"kind": v}
+            else: m[f_] = v
+        elif t == "object":
+            o = next(o for o in c.get("objects") or [] if o["id"] == fx["id"])
+            o[f_] = v
+        done.append(fx)
+    return done
+
+
 def plan(slug, char_style=None, log=print):
+    c0 = content_of(slug)
+    if scenes_of(c0):                                    # several places: one story per scene
+        parts = split_scenes(slug, log)
+        for f_ in ["story.json"] + [os.path.join("preview", x) for x in (os.listdir(os.path.join(pdir(slug), "preview"))
+                                                                        if os.path.isdir(os.path.join(pdir(slug), "preview")) else [])]:
+            if os.path.isfile(os.path.join(pdir(slug), f_)): os.remove(os.path.join(pdir(slug), f_))   # the parts replace the one-place story
+        return [plan(f"{slug}/chapters/{p_['n']:02d}", char_style, log) for p_ in parts]
     c = content_of(slug); d = pdir(slug)
     wj = _j(os.path.join(d, "words.json"))
     if not wj or "lines" not in wj: raise ValueError("chưa ghép giọng (bấm 'Ghép giọng' sau khi tạo giọng các câu)")

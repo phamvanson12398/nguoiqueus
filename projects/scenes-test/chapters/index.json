@@ -1,0 +1,23 @@
+{
+ "chapters": [
+  {
+   "n": 1,
+   "title": "phòng ngủ trong bếp",
+   "set": "kitchen",
+   "start_line": 1,
+   "end_line": 6,
+   "t0": 0.0,
+   "t1": 10.54
+  },
+  {
+   "n": 2,
+   "title": "ra phố",
+   "set": "street",
+   "start_line": 7,
+   "end_line": 11,
+   "t0": 10.54,
+   "t1": 23.18
+  }
+ ],
+ "kind": "dialog_scenes"
+}

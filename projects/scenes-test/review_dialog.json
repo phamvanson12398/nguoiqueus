@@ -1,0 +1,80 @@
+[
+ {
+  "score": 5,
+  "summary_vi": "Cảnh 1 (giường trong bếp) xem được: hai người nằm đắp chăn, Jake ra tắt đèn đúng lúc, phòng tối đúng. Cảnh 2 hỏng nặng: bối cảnh nhảy sang đường phố. Hai người đang nằm giường bỗng đứng giữa đường, tủ lạnh và TV đặt chồng lên nhau trên lòng đường. Ở câu 11, Jake không có giường để nằm lại, còn câu chốt chỉ quay mình Jake nên không thấy Emily cười. Bối cảnh của cảnh 2 nằm ngoài các trường sửa được, nên phải đổi tay sang kitchen như cảnh 1. Các sửa bên dưới chỉ gỡ chỗ đồ vật chồng nhau và chỉnh cú máy, nét mặt ở cú đảo và câu chốt.",
+  "problems": [
+   {
+    "scene": 1,
+    "frame": 200,
+    "what_vi": "Cận Emily nhưng nửa đầu Jake (mũ đỏ) bị cắt ở mép phải. Lỗi nhẹ."
+   },
+   {
+    "scene": 2,
+    "frame": 60,
+    "what_vi": "Mất liền mạch: câu 7 đang nằm giường trong bếp mà sang cảnh 2 hai người đã đứng giữa đường phố. Hai vai dính sát, gần như chồng lên nhau. Tủ lạnh bị cắt ở mép phải, cạnh một thùng các-tông."
+   },
+   {
+    "scene": 2,
+    "frame": 200,
+    "what_vi": "Tủ lạnh và TV (khối đen) chồng lên nhau trên đống thùng giữa lòng đường. Jake đứng sát, như lẫn vào tủ lạnh. Cọc giao thông đè chân Jake."
+   },
+   {
+    "scene": 2,
+    "frame": 380,
+    "what_vi": "Câu chốt mà máy chỉ quay Jake, không thấy Emily cười. Jake không nằm lại được vì ngoài đường không có giường (lie_down vô nghĩa). TV và tủ lạnh vẫn chồng nhau sau lưng Jake, cọc đè chân."
+   }
+  ],
+  "fixes": [
+   {
+    "target": "object",
+    "id": "fridge",
+    "field": "near",
+    "value": "right",
+    "why_vi": "Ở street không có spot 'fridge' nên tủ lạnh bị đặt lệch, cắt mép và chồng với TV. Đặt hẳn sang phải."
+   },
+   {
+    "target": "object",
+    "id": "tv",
+    "field": "near",
+    "value": "left",
+    "why_vi": "Tách TV khỏi tủ lạnh, không còn hai đồ chồng lên nhau trên đống thùng."
+   },
+   {
+    "target": "line",
+    "n": 10,
+    "field": "shot",
+    "value": "listener",
+    "why_vi": "Ở cú đảo nên cận Emily để thấy phản ứng của cô."
+   },
+   {
+    "target": "line",
+    "n": 10,
+    "field": "listener_face",
+    "value": "smirk",
+    "why_vi": "Ở cú đảo người nghe không được vô cảm. Emily nhếch mép cho thấy cô biết thừa TV đang tắt."
+   },
+   {
+    "target": "line",
+    "n": 11,
+    "field": "shot",
+    "value": "both_close",
+    "why_vi": "Câu chốt nên cận cả hai mặt: Emily cười, Jake cạn lời."
+   },
+   {
+    "target": "line",
+    "n": 11,
+    "field": "listener_face",
+    "value": "annoyed",
+    "why_vi": "Jake phải tỏ ra bực khi nghe câu chốt, để tương phản với Emily đang cười."
+   },
+   {
+    "target": "line",
+    "n": 9,
+    "field": "listener_face",
+    "value": "side_eye",
+    "why_vi": "Jake liếc ngang khi bị sai lần thứ ba (đang leo thang), không đứng vô cảm."
+   }
+  ],
+  "time": "2026-11-19 07:30:53"
+ }
+]

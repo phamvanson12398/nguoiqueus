@@ -137,7 +137,10 @@ Sau khi có kịch bản, tool gọi Claude dàn dựng (`steps` từng câu, `o
 tình huống có hành động tự nhiên (nhờ tắt đèn, lấy đồ trong tủ lạnh, bật TV…), phần chuyển động để bước dàn dựng lo.
 
 ## 5. Bối cảnh
-- Một bối cảnh cho cả video, chọn trong thư viện (bếp `kitchen` với `stuck_toast: false`, `office`, `street`…). Nếu không hợp thì đặt
-  tên mới (living_room, bedroom, restaurant, car_front_seats, supermarket…) và đưa vào `library_needs` (tối đa 1 món mới).
-- Nhân vật đứng giữa bối cảnh, quay mặt về camera như phim hoạt hình 2D; không đi lại, không ngồi. Cảnh trong xe → đứng cạnh xe ở bãi đỗ;
+- Thường một bối cảnh cho cả video. Câu chuyện thật sự đổi chỗ (ở nhà → trong xe → siêu thị) thì dùng `scenes`: từ câu `start` sang bối cảnh
+  khác (tối đa 3 cảnh, mỗi cảnh ≥ 3 câu); cảnh đầu = `setting`. Tool dựng từng cảnh riêng rồi ghép liền (cắt thẳng). Không bắt nhân vật đi bộ
+  từ chỗ này sang chỗ kia: đổi cảnh. Ở cảnh mới ghi `posture`/`holding` nếu ai ngồi/nằm/cầm gì ngay từ đầu.
+- Bối cảnh chọn trong thư viện (bếp `kitchen` với `stuck_toast: false`, `office`, `street`…). Nếu không hợp thì đặt
+  tên mới (living_room, bedroom, restaurant, car_front_seats, supermarket…) và đưa vào `library_needs` (tối đa 1 bối cảnh mới mỗi cảnh).
+- Nhân vật đứng giữa bối cảnh, quay mặt về camera như phim hoạt hình 2D (ngồi/nằm/đi lại theo mục 4c). Cảnh trong xe → đứng cạnh xe ở bãi đỗ;
   bàn ăn → đứng cạnh bàn; giường/sofa → đứng trước giường/sofa.
