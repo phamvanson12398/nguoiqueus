@@ -559,7 +559,7 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
     `job_render_scenes` render lần lượt + `longform.concat` (không stitch). Đồ vật thuộc cảnh nơi được dùng lần đầu. Trang: ô
     "🎞 Đổi bối cảnh từ câu này" ở thẻ câu (+ bối cảnh mới), ảnh xem trước theo cảnh. Kịch bản tự viết: dòng `--- Cảnh 2: … ---` /
     `Bối cảnh: …` / `INT. …` giữa kịch bản. `check_dialog`: ≤ 3 cảnh, ≥ 3 câu/cảnh, set có hoặc trong library_needs. Dàn dựng biết spots
-    từng cảnh. Thử `projects/scenes-test` (bếp → phố, `CAMERA OK` cả hai, ghép thử bằng ffmpeg).
+    từng cảnh. Thử `projects/scenes-test` (bếp → phố, `CAMERA OK` cả hai, ghép thử bằng ffmpeg). Ảnh: `docs/img/dialog_scenes.jpg`.
   - Claude tự soát ảnh xem trước (`bridge.review_dialog`, schema `dialog_review`): `dialog.preview_context` ghi kèm mỗi ảnh (mọi cảnh)
     câu nào, ai nói, mặt, cử chỉ, máy quay, hành động; Claude Read từng ảnh, chấm điểm, liệt kê lỗi, trả `fixes` chỉ trên content
     (line: shot/face/listener_face/gesture/listener_gesture/react/pause_before/action; cast: spot/posture/holding; object: near) — kiểm giá
@@ -570,7 +570,7 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - Hàng đợi sản xuất (`server.py`: `queue_*`, `job_queue_item`, `projects/_queue.json`, tab "Hàng đợi"): dán nhiều kịch bản (cách nhau
     `===`) hoặc chủ đề; mỗi mục: tạo dự án → kịch bản (nhận diện / Claude / làm hay hơn; chủ đề → write_dialog) → giọng (nhân vật mới:
     3 giọng thử, chọn bản `expressiveness` cao nhất) → speak → build (+ soát) → render tùy chọn. Một luồng chạy lần lượt, việc của mục
-    hiện trên dự án đó; hết lượt Claude hoặc hủy → dừng hàng đợi; Làm lại/▲▼/xóa. Studio khởi động lại thì mục đang chạy về "chờ".
+    hiện trên dự án đó; hết lượt Claude hoặc hủy → dừng hàng đợi; Làm lại/▲▼/xóa. Studio khởi động lại thì mục đang chạy về "chờ". Thử: 2 kịch bản (giọng giả) tự chạy tới xem trước, có Claude dàn dựng; ảnh `docs/img/dialog_queue.jpg`.
   - Lỗi cũ tìm thấy: content đã dàn dựng có `staging_vi` mà schema không có → bấm Lưu bị từ chối (đã thêm vào schema).
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
