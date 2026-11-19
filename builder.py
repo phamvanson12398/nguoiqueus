@@ -323,6 +323,7 @@ class Builder:
                         head_tilt=self.env.val(spec.get("tilt", 0.0), ns, w),
                         body=tuple(self.env.val(spec.get("body", [0, 0]), ns, w)),
                         lean=self.env.val(spec.get("lean", 0.0), ns, w), smooth=float(P.get("smooth", 0.0)),
+                        **({"calm": True} if P.get("calm") else {}),
                         **({"prop_tilt": tuple(self.env.val(spec["prop_tilt"], ns, w))} if "prop_tilt" in spec else {}),
                         **({"rest": self.env.val(spec["rest"], ns, w)} if "rest" in spec else {}))
         for e in cs.get("fx", []):

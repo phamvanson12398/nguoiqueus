@@ -132,6 +132,7 @@ gài từ trước) — tối đa khoảng 1/3 số câu có action.
   → "...Now I can't see my phone." (cú chốt).
 
 ## 4d. Dàn dựng
+Di chuyển tới chỗ làm việc (đèn, tủ lạnh, TV, cửa) và ra/vào giường được thể hiện bằng CẮT CẢNH (người đó đã ở đó), không đi bộ.
 Sau khi có kịch bản, tool gọi Claude dàn dựng (`steps` từng câu, `objects`): xem `dialog.STAGING_DOC`. Khi viết kịch bản, cứ viết
 tình huống có hành động tự nhiên (nhờ tắt đèn, lấy đồ trong tủ lạnh, bật TV…), phần chuyển động để bước dàn dựng lo.
 

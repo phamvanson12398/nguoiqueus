@@ -535,6 +535,13 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - Thử thật `projects/stage-test` (11 câu, giọng giả): Claude dàn dựng 7 bước (cả hai nằm giường; Jake dậy tắt đèn và đứng đó vì sắp bị
     sai tiếp; mở tủ lạnh lấy chai nước, đóng tủ; bật TV; về giường nằm, đưa nước cho Emily) → video 23 → 31 s, `CAMERA OK`.
     Ảnh: `docs/img/dialog_stage.jpg`. Còn để ý: đồ vật đặt `near` một spot của bối cảnh có thể chồng lên đồ của bối cảnh (tủ lạnh của bếp).
+- Góp ý tiếp ("đi xuyên giường vô lý: chuyển cảnh là đang ở chỗ cần làm luôn, xong chuyển cảnh về nằm; nhân vật đừng lắc lư"):
+  - Cắt thay cho đi: `plan_actions.jump` (blocking đổi chỗ trong 1 khung, `instant` → tư thế đổi ngay, `_steps` bước T=1) cho interact/
+    lights/errand (cắt tới chỗ làm → với tay → đổi trạng thái ở +12 → cắt về chỗ cũ ở +36, nằm/ngồi lại ngay), lie_down vào giường và
+    stand_up ra khỏi giường. `action_shots`: cú trung cảnh vào người đó bắt đầu ĐÚNG khung cắt (`_lock`, không bị gộp/xê dịch), các cú
+    theo câu nối lại sau đó. walk_to/enter/exit vẫn đi bộ (đất trống).
+  - `pose.calm` (đối thoại): không đung đưa thân, không lắc đầu/nghiêng đầu theo lời, tay không trôi; bỏ nghiêng đầu mặc định khi nói.
+    Shorts cũ không đổi (calm mặc định tắt). Thử lại `projects/stage-test`: `CAMERA OK`, ảnh `docs/img/dialog_stage.jpg`.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).

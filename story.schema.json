@@ -1740,6 +1740,10 @@
        "minimum": 0,
        "maximum": 1,
        "description": "0 = tắt; 0,15-0,3 = cử chỉ và đầu chuyển mượt (vào chậm, ra chậm), tay đung đưa nhẹ"
+      },
+      "calm": {
+       "type": "boolean",
+       "description": "dialogue: no idle sway, head bobbing or arm drift (the character stands still between gestures)"
       }
      }
     },

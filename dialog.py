@@ -463,7 +463,8 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
         return None, None
 
     busy = {i: 0 for i in range(n)}                 # frame until which someone is busy walking/doing (steps queue after it)
-    moments = []                                     # (a, b, who, walk|do, where): the camera should see these
+    moments = []                                     # (a, b, who, kind, where): cut to these (the camera shows them there)
+    instant = {i: set() for i in range(n)}          # frames where someone's posture changes at a cut (no easing)
 
     def walk(i, a, to, speed=WALK):
         a = max(a, busy[i] + 1)
@@ -472,6 +473,11 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
         b = min(N + 40, a + max(int(0.8 * FPS), int(round(dist / speed * FPS))))
         way[i].append((a, b, p0, to)); busy[i] = b
         return b
+
+    def jump(i, f, to):
+        """be somewhere else from frame f on, hidden by a camera cut (no walking through beds and furniture)"""
+        p0 = pos(i, f); way[i].append((f - 1, f - 1, p0, (round(to[0], 3), round(to[1], 3)))); busy[i] = max(busy[i], f)
+        instant[i].add(f)
 
     for i, m in enumerate(cast):                    # items held from the start
         h = m.get("holding") or {}
@@ -511,11 +517,11 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
                 if o != i and abs(pos(o, a)[0] - to[0]) < MIN_GAP and abs(pos(o, a)[1] - to[1]) < 0.8:
                     to = (pos(o, a)[0] + (MIN_GAP if to[0] >= pos(o, a)[0] else -MIN_GAP), to[1])
             walk(i, max(2, a - 4), (round(to[0], 3), round(to[1], 3)))
-        if acts == "lie_down" and i in beds and not inbed[i]:      # walks to the bed first, then lies down (posture: a - 18)
-            to = (beds[i]["x"], beds[i]["y"]); p0 = pos(i, max(a, busy[i]))
-            dur = max(int(0.8 * FPS), int(round(math.hypot(to[0] - p0[0], to[1] - p0[1]) / WALK * FPS)))
-            walk(i, max(2, a - 24 - dur), to)
-        if is_step and acts == "lie_down": extra_post[i].append((max(2, a - 18, busy[i] + 2), "lie"))
+        if acts == "lie_down" and i in beds and not inbed[i]:      # cut: already in bed (lying, under the blanket)
+            t = max(2, a - 18, busy[i] + 2)
+            jump(i, t, (beds[i]["x"], beds[i]["y"])); moments.append((t, min(N, t + 40), i, "cut", None))
+            if is_step: extra_post[i].append((t, "lie"))
+        elif is_step and acts == "lie_down": extra_post[i].append((max(2, a - 18, busy[i] + 2), "lie"))
         if acts == "lie_down": inbed[i] = True
         if acts in ERRANDS or acts == "interact":  # walk to a thing, use it (it changes state: light off, TV on…), come back
             p_home = pos(i, a); was_in = inbed[i]; post = cur_post[i]
@@ -544,30 +550,35 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
                 target = tuple(spots[sw]["xy"]); rs = 1 if target[0] >= p_home[0] else -1; reach = [0.6 * rs, 0.95]
             else:                                          # errand somewhere off to the side
                 target = (round(p_home[0] + sd * 2.4, 3), round(p_home[1] - 0.3, 3)); rs = sd; reach = [0.6 * rs, 0.95]
-            t0 = min(N, a + 6 + (POSE_T + 4 if post != "stand" else 0))       # gets up first (posture planner puts "stand" before the walk)
-            t_go = max(t0, busy[i] + 1)
-            b1 = walk(i, t0, target)
-            moments.append((t_go, b1, i, "walk", target)); moments.append((b1, b1 + 22, i, "do", target))
+            t_cut = min(N, max(a + 6, busy[i] + 2))        # cut: already there (never walks through the bed)
+            jump(i, t_cut, target)
+            if post != "stand": extra_post[i].append((t_cut, "stand"))
             hand = "R" if rs > 0 else "L"
-            act[i].append({"from": b1 + 1, "to": min(N, b1 + 18), "arm" + hand: ["ik", [round(reach[0], 3), round(reach[1], 3)], -rs]})
-            busy[i] = max(busy[i], b1 + 22)                 # the next thing starts after the hand is back
+            act[i].append({"from": t_cut, "to": min(N, t_cut + 22), "arm" + hand: ["ik", [round(reach[0], 3), round(reach[1], 3)], -rs]})
+            press = min(N, t_cut + 12)
             if oid and new_state:
                 if new_state not in objs[oid]["states"]: log(f"   lưu ý: câu {k + 1}: '{oid}' không có trạng thái '{new_state}' ({', '.join(objs[oid]['states'])})")
-                else: obj_states.append((min(N, b1 + 11), oid, new_state))
+                else: obj_states.append((press, oid, new_state))
             elif sw and acts in ("lights_off", "lights_on"):
-                lights.append((min(N, b1 + 11), "off" if acts == "lights_off" else "on"))
-            if l.get("back", True) is not False:
-                b2 = walk(i, min(N, b1 + 20), (round(p_home[0], 3), round(p_home[1], 3)))
-                if post != "stand": extra_post[i].append((min(N, b2 + 2), post))   # back into bed / onto the sofa
+                lights.append((press, "off" if acts == "lights_off" else "on"))
+            if l.get("back", True) is not False:            # cut back: already home, in bed / on the sofa again
+                t_back = min(N, t_cut + 36)
+                jump(i, t_back, p_home)
+                if post != "stand": extra_post[i].append((t_back, post))
                 inbed[i] = was_in
+                moments.append((t_cut, t_back - 1, i, "away", target))
             else:
-                inbed[i] = False; cur_post[i] = "stand"
+                inbed[i] = False; cur_post[i] = "stand"; busy[i] = max(busy[i], t_cut + 30)
+                moments.append((t_cut, min(N, t_cut + 33), i, "away", target))
         if acts in ("sit_down", "lie_down", "stand_up"): cur_post[i] = {"sit_down": "sit", "lie_down": "lie", "stand_up": "stand"}[acts]
-        if acts == "stand_up" and inbed[i]:         # gets up, then steps out of the bed on the free side
+        if acts == "stand_up" and inbed[i]:         # cut: already up, standing beside the bed on the free side
             others = [pos(o, a)[0] for o in range(n) if o != i]
             sd = -1 if others and sum(others) / len(others) > pos(i, a)[0] else 1
             bx = beds[i]["x"] if i in beds else pos(i, a)[0]
-            walk(i, a - 2, (round(bx + sd * 1.6, 3), round(pos(i, a)[1] - 0.5, 3))); inbed[i] = False
+            t = max(2, a - 18, busy[i] + 2)
+            jump(i, t, (round(bx + sd * 1.6, 3), round(pos(i, a)[1] - 0.5, 3))); inbed[i] = False
+            moments.append((t, min(N, t + 40), i, "cut", None))
+            if is_step: extra_post[i].append((t, "stand"))
         if acts == "exit":                          # says the line, then walks off on their side
             others = [pos(o, b)[0] for o in range(n) if o != i and not out[o]]
             if others:                              # away from the others, never through them
@@ -675,7 +686,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
     if any(o_["states"].get(o_.get("state0") or "", {}).get("room") == "night" for o_ in objs.values()):
         lights.insert(0, (1, "off"))                     # a light that starts switched off: the room starts dark
     plan_actions.extras = {"objects": objs, "obj_states": sorted(obj_states), "lights": lights, "post": extra_post,
-                           "moments": moments, "busy_end": max([0] + list(busy.values()) + [f_ for e_ in extra_post.values() for f_, _q in e_])}
+                           "moments": moments, "instant": instant, "busy_end": max([0] + list(busy.values()) + [f_ for e_ in extra_post.values() for f_, _q in e_])}
     return hp, blocking, act, hold_at, pos, way
 
 
@@ -694,15 +705,18 @@ FURNITURE = {"chair": {"seat": 0.5, "depth": 0.58}, "sofa": {"seat": 0.52, "dept
 
 
 def _steps(base, events, T=POSE_T):
-    """an expression: base + sum of eased steps (value changes at each event frame) -> smooth, no segments needed"""
+    """an expression: base + sum of eased steps (value changes at each event frame) -> smooth, no segments needed;
+    an event (f, v, 1) changes at once from frame f (a camera cut)"""
     out = f"{base:.3f}"; prev = base; changed = False
-    for f0, v in events:
-        if abs(v - prev) > 1e-4: out += f" + ({v - prev:.3f}) * ease((f - {f0}) / {T})"; changed = True
+    for e in events:
+        f0, v = e[0], e[1]; t = e[2] if len(e) > 2 else T
+        if abs(v - prev) > 1e-4:
+            out += f" + ({v - prev:.3f}) * ease((f - {f0 - 1 if t <= 1 else f0}) / {max(1, t)})"; changed = True
         prev = v
     return out if changed else round(base, 3)
 
 
-def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), log=print, extra=None):
+def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), log=print, extra=None, instant=None):
     """per cast member: pose-default fields (legs/body/rest as smooth expressions of f), the furniture to put in the set,
     posture_at(i, f) and the frame ranges spent sitting/lying."""
     cast = c["cast"]; L = c["lines"]; n = len(cast); ids = [m["id"] for m in cast]; spots = spots or {}
@@ -775,10 +789,13 @@ def plan_postures(c, lt, xs, ys, way, spots, N, fr, kids, dirs, beds_list=(), lo
             else:
                 legs_L.append((f0, STAND_LEGS[0])); legs_R.append((f0, STAND_LEGS[1])); by.append((f0, 0.0))
         if all(q == "stand" for _f, q, _s in ev[i]): fields[i] = {}; continue
+        inst = (instant or {}).get(i, set())
+        T_ = lambda f: 1 if f in inst else POSE_T             # at a cut the pose is already there
+        legs_L = [(f, v, T_(f)) for f, v in legs_L]; legs_R = [(f, v, T_(f)) for f, v in legs_R]; by = [(f, v, T_(f)) for f, v in by]
         b0 = lambda lst, j=None: (lst[0][1] if j is None else lst[0][1][j])
         fields[i] = {
-            "legs": [[_steps(b0(legs_L, 0), [(f, v[0]) for f, v in legs_L[1:]]), _steps(b0(legs_L, 1), [(f, v[1]) for f, v in legs_L[1:]])],
-                     [_steps(b0(legs_R, 0), [(f, v[0]) for f, v in legs_R[1:]]), _steps(b0(legs_R, 1), [(f, v[1]) for f, v in legs_R[1:]])]],
+            "legs": [[_steps(b0(legs_L, 0), [(f, v[0], t) for f, v, t in legs_L[1:]]), _steps(b0(legs_L, 1), [(f, v[1], t) for f, v, t in legs_L[1:]])],
+                     [_steps(b0(legs_R, 0), [(f, v[0], t) for f, v, t in legs_R[1:]]), _steps(b0(legs_R, 1), [(f, v[1], t) for f, v, t in legs_R[1:]])]],
             "body": [0, _steps(b0(by), by[1:])]}
         cur = None
         for f0, q, _s in ev[i] + [(N + 1, "end", None)]:
@@ -840,27 +857,20 @@ def object_visibility(objs, changes, N):
 
 
 def action_shots(shots, moments, ids, xs, N):
-    """cut to whoever is doing something (arriving at the fridge, switching the TV on): a medium shot on them from just before
-    they arrive until their hand is back; a long walk (> 1.6 s) gets a wide shot that holds both ends of the walk"""
+    """someone is somewhere else for a moment (switching the light off, at the fridge, getting into bed): a medium shot on them that
+    starts EXACTLY at the cut where they appear there (they never walk across the room), and the line shots resume after it"""
     ins = []
     for a, b, i, kind, where in moments:
-        if kind == "do":
-            ins.append((max(1, a - 14), min(N, b + 12), {"type": "medium", "frame": dict(SHOT["speaker"][1], subject=ids[i])}))
-        elif b - a > 48:
-            x0 = xs[i]; mx = round((x0 + where[0]) / 2, 3); spread = abs(where[0] - x0)
-            ins.append((a, max(a + 1, b - 15), {"type": "wide", "frame": dict(SHOT["wide"][1], subject=[mx, round(where[1], 3), 0],
-                                                                                size=round(max(4.6, (spread + 2.0) * 16 / 9), 2), y=-0.3)}))
+        if kind in ("away", "cut"):
+            ins.append([a, min(N, max(b, a + 27)), {"type": "medium", "frame": dict(SHOT["speaker"][1], subject=ids[i]), "_lock": True}])
     if not ins: return shots
     ins.sort(key=lambda x: x[0])
-    merged = []
-    for a, b, sh in ins:                                     # overlapping inserts: the later one wins from its start
-        if merged and a <= merged[-1][1]: merged[-1] = (merged[-1][0], a - 1, merged[-1][2])
-        if merged and merged[-1][1] - merged[-1][0] < 15: merged.pop()
-        merged.append((a, b, sh))
+    for k in range(len(ins) - 1):                            # back-to-back moments: each ends where the next one starts
+        if ins[k][1] >= ins[k + 1][0]: ins[k][1] = ins[k + 1][0] - 1
     out = []
     for s in shots:                                          # cut the line shots around the inserts
         pieces = [(s["a"], s["b"])]
-        for a, b, _sh in merged:
+        for a, b, _sh in ins:
             nxt = []
             for p0, p1 in pieces:
                 if b < p0 or a > p1: nxt.append((p0, p1)); continue
@@ -868,16 +878,17 @@ def action_shots(shots, moments, ids, xs, N):
                 if b < p1: nxt.append((b + 1, p1))
             pieces = nxt
         for p0, p1 in pieces: out.append(dict(s, a=p0, b=p1))
-    for a, b, sh in merged: out.append(dict(sh, a=a, b=b))
+    for a, b, sh in ins: out.append(dict(sh, a=a, b=b))
     out.sort(key=lambda s: s["a"])
     final = []
-    for s in out:                                            # no flash cuts: a piece under 15 frames joins its neighbour
-        if final and s["b"] - s["a"] < 14: final[-1]["b"] = s["b"]; continue
-        if final and final[-1]["b"] - final[-1]["a"] < 14 and final[-1] not in [m[2] for m in merged]:
-            s = dict(s, a=final[-1]["a"]); final.pop()
+    for s in out:                                            # no flash cuts: a short line-shot piece is absorbed by its neighbour,
+        if not s.get("_lock") and s["b"] - s["a"] < 14:      # but an insert never moves (its first frame is the cut)
+            if final and not final[-1].get("_lock"): final[-1]["b"] = s["b"]; continue
+            if final: final[-1]["b"] = s["b"]; continue
         final.append(s)
     for k in range(len(final) - 1): final[k]["b"] = final[k + 1]["a"] - 1
     final[-1]["b"] = N
+    for s in final: s.pop("_lock", None)
     return final
 
 
@@ -995,7 +1006,7 @@ def plan(slug, char_style=None, log=print):
     if N > N0: log(f"   hành động kéo dài: video dài thêm {(N - N0) / FPS:.1f} s sau câu cuối (lặng, để thấy việc làm xong)")
     pex = plan_actions.extras
     pfields, furniture, posture_at, seated = plan_postures(c, lt, xs, ys, ways, (smeta or {}).get("spots"), N, fr, kids, dirs, bed_list, log,
-                                                           extra=pex["post"])
+                                                           extra=pex["post"], instant=pex["instant"])
     objs, lights = pex["objects"], pex["lights"]
 
     def inbed_at(i, f):
@@ -1043,7 +1054,6 @@ def plan(slug, char_style=None, log=print):
             else:
                 g = l.get("gesture", "none")
                 pose = gesture_pose(g, dd, gap, ks) if g and g != "none" else {}
-                pose.setdefault("tilt", 0.05 * dd)               # a small lean of the head toward the partner while talking
                 segs.append({"from": max(1, a - 10), "to": min(N, b + 6), **pose})      # starts early: smoothing glides into it
         for sg in segs:                                   # a gesture keeps the item in the hand that holds it
             for arm, spec_ in hold_at(i, (sg["from"] + sg["to"]) // 2).items(): sg.setdefault(arm, spec_)
@@ -1068,7 +1078,7 @@ def plan(slug, char_style=None, log=print):
                             if m.get("signature", "none") != "none" else {})},
                 "head_shape": m.get("head_shape", "round"),
                 "faces": ALL_FACES, "expressions": clean, "blinks": blinks, "talk": talk,
-                "pose": {"default": default, "segments": segs, "smooth": 0.2}}
+                "pose": {"default": default, "segments": segs, "smooth": 0.2, "calm": True}}
         if hprops[i]: spec["hand_props"] = hprops[i]
         if reacts: spec["reacts"] = reacts
         if rfx: spec["reaction_fx"] = rfx

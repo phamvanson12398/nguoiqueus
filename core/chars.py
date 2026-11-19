@@ -139,7 +139,7 @@ def _soft(c, key, target, k, wrap=False):
 
 
 def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02), head_tilt=0.0, body=(0, 0), breath=True, lean=0.0,
-              smooth=0.0, prop_tilt=(0.0, 0.0), rest=0.0):
+              smooth=0.0, prop_tilt=(0.0, 0.0), rest=0.0, calm=False):
     """arm specs: ('ang', a1, a2) or ('ik', (x, y), bend) in torso coords.
     V2: forearms drag behind fast upper-arm moves (follow-through), reactions add squash/stretch, head lags the body.
     smooth (0 = off, ~0.15-0.3): gestures and head moves glide in and out, arms drift a little at rest (dialogue videos)."""
@@ -153,8 +153,9 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
             a1, a2 = spec[1], spec[2]
         if smooth:
             ph = len(c.name) + (0 if side == "L" else 2.1)
-            a1 = _soft(c, "a1" + side, a1, smooth, True) + 0.025 * math.sin(f / ctx.FPS * 1.3 + ph)
-            a2 = _soft(c, "a2" + side, a2, smooth, True) + 0.03 * math.sin(f / ctx.FPS * 1.1 + ph + 0.7)
+            drift = 0.0 if calm else 1.0                      # calm (dialogue): arms rest still, no idle drift
+            a1 = _soft(c, "a1" + side, a1, smooth, True) + drift * 0.025 * math.sin(f / ctx.FPS * 1.3 + ph)
+            a2 = _soft(c, "a2" + side, a2, smooth, True) + drift * 0.03 * math.sin(f / ctx.FPS * 1.1 + ph + 0.7)
         v = a1 - c.prev.get(side, a1); c.vel[side] = 0.55 * c.vel.get(side, 0.0) + 0.45 * v; c.prev[side] = a1
         a2 = a2 - max(-0.5, min(0.5, 1.6 * c.vel[side]))            # forearm drags behind
         lp[0].rotation_euler = (0, 0, a1); lp[1].rotation_euler = (0, 0, a2)
@@ -167,7 +168,7 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
     t = f / ctx.FPS
     dy, sy, rlean = react_offsets(c, f)
     b = (1 + (0.014 * math.sin(t * 2.4 + len(c.name)) if breath else 0)) * sy
-    sway = 0.02 * noise1(t * 0.8, len(c.name))                      # idle weight shift
+    sway = 0.0 if calm else 0.02 * noise1(t * 0.8, len(c.name))     # idle weight shift (none when calm)
     c.body.scale = (1 / math.sqrt(b), b, 1); c.body.location = (body[0], body[1] + dy, 0)
     c.body.rotation_euler = (0, 0, lean + rlean + sway + rest)          # rest: lying down (the head does not lag it)
     timing.key(c.body, "scale", f); timing.key(c.body, "location", f); timing.key(c.body, "rotation_euler", f)
@@ -177,7 +178,8 @@ def pose_char(c, f, armL=None, armR=None, legL=(-0.06, 0.02), legR=(0.06, -0.02)
     if smooth:                                 # head eases into each tilt; talking nods follow the voice softly
         head_tilt = _soft(c, "tilt", head_tilt, smooth * 0.7)
         talk = _soft(c, "talk", talk, 0.25)
-        c.head.rotation_euler = (0, 0, head_tilt + 0.03 * math.sin(t * 1.7) + c.lag_tilt + 0.06 * talk * math.sin(t * 5.5))
+        k_ = 0.0 if calm else 1.0                        # calm: the head stays upright (no bobbing, no talking wobble)
+        c.head.rotation_euler = (0, 0, head_tilt + k_ * 0.03 * math.sin(t * 1.7) + c.lag_tilt + k_ * 0.06 * talk * math.sin(t * 5.5))
     else:
         c.head.rotation_euler = (0, 0, head_tilt + 0.03 * math.sin(t * 1.7) + c.lag_tilt + 0.05 * talk * math.sin(f * 0.9))
     c.head.location = (0, c.head.location[1], c.head.location[2]); timing.key(c.head, "rotation_euler", f)
