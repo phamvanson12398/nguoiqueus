@@ -583,6 +583,12 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - `projects/an-gi-cung-duoc`: Claude dàn dựng (Jake cầm túi đồ, lấy điện thoại đặt DoorDash, giơ màn hình, cất; cuối lấy khoai tây,
     đưa Emily, Emily ăn). Ảnh: `docs/img/dialog_feedback_v6.jpg`. Mục 1 (render 100 %) và 2 (rút ngắn) để người dùng làm.
 
+- Lỗi người dùng gặp ("Monday Morning Keys", khung 1870: hai người chồng lên nhau, áo cà vạt + túi + chìa khóa của Jake lẫn vào Emily):
+  việc tương tác/errand nhảy thẳng tới spot của bối cảnh (`counter` của bếp = chỗ Emily đứng) mà không tránh người. Giờ đứng cạnh người đó
+  (cách `MIN_GAP`, phía xa họ) và với tay về phía đồ. Đồ mới (nhận, take_out, ném) chọn tay bằng `hand_for`: tay trống trước, cả hai bận thì
+  món cũ trong tay đó được đặt xuống (trước đây 2 món vẽ chồng trong một tay). Thử bằng kịch bản tổng hợp (`plan_actions` trực tiếp) + dựng lại
+  story của người dùng: `docs/img/dialog_overlap_fix.jpg`.
+
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
 - Đồng hồ việc chạy trên trang giữa các lần hỏi; hỏi tiến độ có giới hạn 8 s, hỏng ≥ 4 lần liền thì báo "Studio không trả lời"

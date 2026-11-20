@@ -470,6 +470,17 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
         if color: it["color"] = color
         items[i].append(it); open_[i][hand] = it; return it
 
+    def hand_for(i, prefer, f):
+        """the hand a new item goes to at frame f: `prefer` if free, else the other one if free, else `prefer` after the item
+        already in it is put down (seen: two coffees drawn in one hand, a person ending up with an item in each hand + more)"""
+        for h_, it_ in list(open_[i].items()):
+            if it_["b"] < f: open_[i].pop(h_, None)          # already gone (put away / given)
+        other = "L" if prefer == "R" else "R"
+        if prefer not in open_[i]: return prefer
+        if other not in open_[i]: return other
+        old = open_[i].pop(prefer); old["b"] = max(old["a"], f - 1)
+        return prefer
+
     def find(i, kind):
         for h, it in open_[i].items():
             if kind in (None, "", it["kind"]): return h, it
@@ -523,7 +534,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
             item = kind or "pillow"
             h, it = find(i, item)
             if it is None:
-                h = hi if hi not in open_[i] else ("L" if hi == "R" else "R"); it = give_item(i, item, h, max(1, t - 10))
+                h = hand_for(i, hi, max(1, t - 10)); it = give_item(i, item, h, max(1, t - 10))
             sh = _sgn(h)
             act[i].append({"from": t, "to": t + 10, "arm" + h: ["ik", [round(-d * 0.25 * ks, 3), round(1.35 * ks, 3)], -sh]})
             act[i].append({"from": t + 11, "to": t + 22, "arm" + h: ["ik", [round(d * 0.62 * ks, 3), round(1.05 * ks, 3)], -sh]})
@@ -617,6 +628,17 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
             else:                                          # errand somewhere off to the side
                 target = (round(p_home[0] + sd * 2.4, 3), round(p_home[1] - 0.3, 3)); rs = sd; reach = [0.6 * rs, 0.95]
             t_cut = min(N, max(a + 6, busy[i] + 2))        # cut: already there (never walks through the bed)
+            # never onto someone else (seen: the kitchen 'counter' spot was where the partner stood, so he appeared INSIDE her):
+            # stand beside them, on the side away from them, and reach toward the thing
+            aim = target
+            for o in range(n):
+                if o == i: continue
+                po = pos(o, t_cut)
+                if abs(po[0] - target[0]) < MIN_GAP and abs(po[1] - target[1]) < 0.8:
+                    sd_o = 1 if (target[0] > po[0] or (target[0] == po[0] and p_home[0] > po[0])) else -1
+                    target = (round(po[0] + sd_o * MIN_GAP, 3), target[1])
+            if target != aim:
+                rs = 1 if aim[0] >= target[0] else -1; reach = [0.6 * rs, reach[1]]
             jump(i, t_cut, target)
             if post != "stand": extra_post[i].append((t_cut, "stand"))
             hand = "R" if rs > 0 else "L"
@@ -658,7 +680,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
         if acts in ("take_out", "show", "use", "give", "put_away"): busy[i] = max(busy[i], a + 16)
         hand, d = near_hand(i, a)
         if acts in ("take_out", "show", "use", "give") and kind and find(i, kind)[1] is None:
-            h = hand if hand not in open_[i] else ("L" if hand == "R" else "R")
+            h = hand_for(i, hand, max(1, a - 12))
             give_item(i, kind, h, max(1, a - 12))
         if acts in ("show", "use", "give", "put_away"):
             h, it = find(i, kind)
@@ -683,8 +705,7 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
                 arm, _ = action_arm("give", it["kind"], h, dj, reach, ks)
                 act[i].append({"from": max(1, b - 14), "to": min(N, b + 10), "arm" + h: arm})
                 kj = 0.66 if kids[j] else 1.0
-                hj = "R" if -dj > 0 else "L"
-                if hj in open_[j]: hj = "L" if hj == "R" else "R"
+                hj = hand_for(j, "R" if -dj > 0 else "L", min(N, b + 3))
                 armj, _ = action_arm("take", it["kind"], hj, -dj, reach, kj)
                 act[j].append({"from": max(1, b - 8), "to": min(N, b + 16), "arm" + hj: armj})
                 it["b"] = min(N, b + 2); open_[i].pop(h, None)
