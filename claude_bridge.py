@@ -1029,6 +1029,13 @@ def check_dialog(x, minutes=None):
     if nt > max(3, round(nl * 0.6)): e.append(f"{nt}/{nl} câu có thẻ cảm xúc: quá dày, giữ khoảng 30-45 %")
     held = {c["id"]: {(c.get("holding") or {}).get("kind")} - {None} for c in x["cast"]}
     posture = {c["id"]: c.get("posture") or "stand" for c in x["cast"]}
+    for k, l in enumerate(x["lines"]):                     # the twist and the punchline are played straight (user: "natural is funnier")
+        if l.get("beat") in ("twist", "punchline", "tag"):
+            if "shock" in (l.get("face"), l.get("listener_face")):
+                e.append(f"lines[{k}] ({l['beat']}): không dùng mặt shock ở cú đảo/câu chốt — diễn tỉnh bơ, tự nhiên "
+                         f"(người nói neutral/smirk/smug_closed, người nghe side_eye/annoyed/neutral/blush)")
+            if l.get("react") in ("hop", "flinch"):
+                e.append(f"lines[{k}] ({l['beat']}): bỏ react {l['react']} ở cú đảo/câu chốt (react none, phản ứng bằng mặt nhỏ)")
     for k, l in enumerate(x["lines"]):                     # props in hand / walking make sense in order
         a, pr, who = l.get("action", "none"), l.get("prop") or "", l["speaker"]
         if a in ("take_out", "show", "give") and not pr: e.append(f"lines[{k}] action {a} cần prop (đồ vật gì)")

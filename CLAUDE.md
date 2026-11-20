@@ -589,6 +589,12 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   món cũ trong tay đó được đặt xuống (trước đây 2 món vẽ chồng trong một tay). Thử bằng kịch bản tổng hợp (`plan_actions` trực tiếp) + dựng lại
   story của người dùng: `docs/img/dialog_overlap_fix.jpg`.
 
+- Người dùng: "cầm 2 cốc cafe" + "bỏ mặt hoảng hốt ở cú twist, bình thường thôi mới thật và hay":
+  - nhận một món cùng loại đang cầm → thay món cũ (không bao giờ cầm 2 cốc); take_out món đã có thì không tạo thêm;
+  - cú đảo / câu chốt / tag diễn tỉnh bơ: `dialog.calm_faces` (shock → neutral cho người nói, side_eye cho người nghe), bỏ react hop/flinch,
+    giọng không gắn thẻ [surprise-*] và không tăng âm lượng shock ở các câu đó (áp cả content cũ khi lập story); `check_dialog` báo lỗi để
+    Claude viết đúng từ đầu; DIALOG_RULES mục 3: shock tối đa 1 lần giữa video, react hầu như none.
+
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
 - Đồng hồ việc chạy trên trang giữa các lần hỏi; hỏi tiến độ có giới hạn 8 s, hỏng ≥ 4 lần liền thì báo "Studio không trả lời"

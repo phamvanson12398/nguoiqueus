@@ -212,7 +212,7 @@ def assemble(slug, log=print):
     for k, l in enumerate(c["lines"]):
         x, sr = tts.read_wav(line_file(slug, k, l["speaker"]))
         x = tts.resample(tts.trim(x, sr), sr, tts.SR)
-        x = tts.level(x) * (10 ** (tts.emotion_gain_db(l.get("face")) / 20))      # same level for everyone, then emotion
+        x = tts.level(x) * (10 ** (tts.emotion_gain_db(calm_faces(l)[0]) / 20))      # same level for everyone, then emotion
         gap = LEAD if k == 0 else pause_for(c["lines"], k)
         pieces.append(np.zeros(int(round(gap * tts.SR)), np.float32)); t += gap
         a = t; dur = len(x) / tts.SR
@@ -315,6 +315,18 @@ def place_cast(cast, lines, stage, spots=None, log=print):
                 else: xs[a] -= push; xs[b] += push
     return [round(x, 3) for x in xs], [round(y, 3) for y in ys]
 
+
+
+STRAIGHT_TWIST = True    # the twist / punchline / tag are played straight: no shocked face, no jump (user: natural is funnier)
+
+
+def calm_faces(l):
+    """(speaker face, listener face) of a line; on the twist / punchline / tag a 'shock' becomes a deadpan face"""
+    sp, li = l.get("face") or "neutral", l.get("listener_face") or "neutral"
+    if STRAIGHT_TWIST and l.get("beat") in ("twist", "punchline", "tag"):
+        if sp == "shock": sp = "neutral"
+        if li == "shock": li = "side_eye"
+    return sp, li
 
 
 def _face(f, d):
@@ -705,7 +717,9 @@ def plan_actions(c, lt, xs, ys, stage, spots, N, fr, kids, addressee, log=print,
                 arm, _ = action_arm("give", it["kind"], h, dj, reach, ks)
                 act[i].append({"from": max(1, b - 14), "to": min(N, b + 10), "arm" + h: arm})
                 kj = 0.66 if kids[j] else 1.0
-                hj = hand_for(j, "R" if -dj > 0 else "L", min(N, b + 3))
+                hs, same = find(j, it["kind"])             # already holding one of these: swap it, never two coffees
+                if same is not None: same["b"] = min(N, b + 2); open_[j].pop(hs, None); hj = hs
+                else: hj = hand_for(j, "R" if -dj > 0 else "L", min(N, b + 3))
                 armj, _ = action_arm("take", it["kind"], hj, -dj, reach, kj)
                 act[j].append({"from": max(1, b - 8), "to": min(N, b + 16), "arm" + hj: armj})
                 it["b"] = min(N, b + 2); open_[i].pop(h, None)
@@ -1265,9 +1279,9 @@ def plan(slug, char_style=None, log=print):
         # faces: speaker's face when their line starts, listener's reaction a few frames after the other starts
         ex = []
         for k, (x, l) in enumerate(zip(lt, c["lines"])):
-            a = fr(x["start"])
-            if l["speaker"] == m["id"]: ex.append([a, _face(l["face"], dd)])
-            else: ex.append([min(N, a + 4), _face(l.get("listener_face") or "neutral", dd)])
+            a = fr(x["start"]); sp_f, li_f = calm_faces(l)
+            if l["speaker"] == m["id"]: ex.append([a, _face(sp_f, dd)])
+            else: ex.append([min(N, a + 4), _face(li_f, dd)])
         ex[0][0] = 1
         clean = []
         for f_, face in sorted(ex, key=lambda e: e[0]):
@@ -1280,7 +1294,7 @@ def plan(slug, char_style=None, log=print):
         for k, (x, l) in enumerate(zip(lt, c["lines"])):
             a, b = fr(x["start"]), fr(x["end"])
             if l["speaker"] != m["id"]:
-                if l.get("react", "none") != "none":
+                if l.get("react", "none") != "none" and not (STRAIGHT_TWIST and l.get("beat") in ("twist", "punchline", "tag")):
                     reacts.append([min(N, a + 3), l["react"]])
                     if l["react"] in ("hop", "flinch"): rfx.append(min(N, a + 3))
                 g = l.get("listener_gesture", "none")

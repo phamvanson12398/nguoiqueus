@@ -45,6 +45,7 @@ def _words(text): return len(re.findall(r"[A-Za-z0-9'’]+", TAG_RE.sub(" ", tex
 def pick(line):
     """the tag that fits a line (from its face and wording), or None"""
     t = TAG_RE.sub(" ", line.get("text", "")).strip(); low = t.lower(); f = line.get("face") or "neutral"
+    if f == "shock" and line.get("beat") in ("twist", "punchline", "tag"): f = "neutral"     # the twist is said straight (dialog.calm_faces)
     n = _words(t)
     if re.search(r"\b(ha){2,}\b|\bhehe\b|\blol\b", low) or f == "laugh": return "[laughter]"
     if f in ("shock",):

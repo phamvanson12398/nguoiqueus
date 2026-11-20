@@ -74,11 +74,14 @@ Người xem chính là khán giả Mỹ: viết như sitcom/sketch Mỹ, ngư�
 - Hài ấm áp, không cay độc: không chính trị, không tôn giáo, không chê ngoại hình/giới/sắc tộc; cặp đôi vẫn thương nhau ở cuối.
 
 ## 3. Diễn xuất (mỗi câu)
-- `face` người nói và `listener_face` người nghe đổi theo nghĩa câu; người nghe PHẢN ỨNG là nửa cái hài (side_eye, annoyed, shock, sad).
+- `face` người nói và `listener_face` người nghe đổi theo nghĩa câu; người nghe PHẢN ỨNG là nửa cái hài (side_eye, annoyed, smirk, sad).
+- **Diễn tự nhiên, tỉnh bơ** (người dùng: "bình thường thôi mới thật và hay"): cú đảo và câu chốt nói bình thường như chuyện hiển nhiên;
+  KHÔNG mặt `shock`, KHÔNG `react` hop/flinch ở cú đảo / câu chốt / câu tag. Người nghe phản ứng nhỏ: liếc (side_eye), annoyed, nhếch môi,
+  im lặng nhìn. `shock` chỉ khi thật sự bất ngờ ở giữa video, tối đa 1 lần; giọng đọc cũng không dùng thẻ [surprise-*] ở cú đảo.
   Mặt có sẵn: neutral happy smirk wink angry shock worried grumpy focus smug_closed sad love laugh side_eye annoyed blush.
 - `gesture`/`listener_gesture`: point, hands_hips, cross_arms, shrug, wave, hold_hands, think, fist, hands_up, open_arms, facepalm, none.
   Ít thôi: cử chỉ ở câu quan trọng, còn lại none (tư thế `idle`). `hold_hands` cần cả hai người cùng làm.
-- `react` (người nghe giật mình/nảy lên): ở cú đảo hoặc câu chốt, 1-3 lần cả video.
+- `react` (người nghe giật mình/nảy lên): hầu như `none`; tối đa 1 lần cả video và không ở cú đảo/câu chốt.
 - `shot`: để `auto` phần lớn (tool tự cắt: hai người, cận người nói, cận người nghe phản ứng). Đặt `both_close` cho cú chốt,
   `listener` khi phản ứng mới là trò cười, `wide` cho câu đầu nếu cần thấy bối cảnh.
 - `sfx` và `end_sfx`: luôn `none`. Video đối thoại KHÔNG có nhạc nền và tiếng động, chỉ có giọng; cái hài nằm ở lời, ngữ điệu, mặt và khoảng lặng.
