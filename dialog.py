@@ -318,14 +318,19 @@ def place_cast(cast, lines, stage, spots=None, log=print):
 
 
 STRAIGHT_TWIST = True    # the twist / punchline / tag are played straight: no shocked face, no jump (user: natural is funnier)
+CALM_ACTING = True       # whole dialogue videos: no 'shock' face (O mouth), no hop/flinch, no burst lines + '!' (user: "lố, cứ bình thường")
 
 
 def calm_faces(l):
-    """(speaker face, listener face) of a line; on the twist / punchline / tag a 'shock' becomes a deadpan face"""
+    """(speaker face, listener face) of a line. Twist / punchline / tag: a 'shock' becomes deadpan (neutral / side-eye);
+    elsewhere a mild worried look (raised brows, small mouth) instead of the big O-mouth shock"""
     sp, li = l.get("face") or "neutral", l.get("listener_face") or "neutral"
     if STRAIGHT_TWIST and l.get("beat") in ("twist", "punchline", "tag"):
         if sp == "shock": sp = "neutral"
         if li == "shock": li = "side_eye"
+    if CALM_ACTING:
+        if sp == "shock": sp = "worried"
+        if li == "shock": li = "worried"
     return sp, li
 
 
@@ -1294,7 +1299,7 @@ def plan(slug, char_style=None, log=print):
         for k, (x, l) in enumerate(zip(lt, c["lines"])):
             a, b = fr(x["start"]), fr(x["end"])
             if l["speaker"] != m["id"]:
-                if l.get("react", "none") != "none" and not (STRAIGHT_TWIST and l.get("beat") in ("twist", "punchline", "tag")):
+                if l.get("react", "none") != "none" and not CALM_ACTING:   # (calm: no jumps/flinches from the script at all)
                     reacts.append([min(N, a + 3), l["react"]])
                     if l["react"] in ("hop", "flinch"): rfx.append(min(N, a + 3))
                 g = l.get("listener_gesture", "none")
@@ -1328,8 +1333,9 @@ def plan(slug, char_style=None, log=print):
                 "faces": ALL_FACES, "expressions": clean, "blinks": blinks, "talk": talk,
                 "pose": {"default": default, "segments": segs, "smooth": 0.2, "calm": True}}
         if hprops[i]: spec["hand_props"] = hprops[i]
-        for r_ in pex["reacts"].get(i, []):                  # hugged / pinched / hit by a pillow
-            reacts.append(r_); rfx.append(r_[0])
+        for r_ in pex["reacts"].get(i, []):                  # hugged / pinched / hit by a pillow: a small flinch, no burst lines
+            reacts.append(r_)
+            if not CALM_ACTING: rfx.append(r_[0])
         if reacts: spec["reacts"] = reacts
         if rfx: spec["reaction_fx"] = rfx
         chars.append(spec)

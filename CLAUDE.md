@@ -594,6 +594,9 @@ Lời thoại tiếng Anh. Tích hợp luôn OmniVoice. Chọn nhân vật 2D/3D
   - cú đảo / câu chốt / tag diễn tỉnh bơ: `dialog.calm_faces` (shock → neutral cho người nói, side_eye cho người nghe), bỏ react hop/flinch,
     giọng không gắn thẻ [surprise-*] và không tăng âm lượng shock ở các câu đó (áp cả content cũ khi lập story); `check_dialog` báo lỗi để
     Claude viết đúng từ đầu; DIALOG_RULES mục 3: shock tối đa 1 lần giữa video, react hầu như none.
+  - Tiếp ("đoạn này lố, cứ bình thường": "it's seven-forty!" nhảy nhòe + miệng O + dấu "!"): `CALM_ACTING` cho cả video đối thoại —
+    shock → worried (ở cú đảo vẫn neutral/side_eye), không react từ content, không `reaction_fx` (tia + "!"); bị véo/ném chỉ rụt nhẹ.
+    `check_dialog` cấm shock và react hop/flinch. Ảnh `docs/img/dialog_calm.jpg`.
 
 ## Trang không "đứng im" khi Claude làm lâu (Windows)
 - Mỗi phút trong lúc gọi Claude: dòng "… Claude vẫn đang làm (N phút)" (lập story thường 10-15 phút, trước đây không in gì).
